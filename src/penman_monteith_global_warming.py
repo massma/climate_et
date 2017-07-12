@@ -45,7 +45,7 @@ G = 0.05*Rn # soil heat flux (W/m2)
 G0 = 7.91e-3 
 G1 = 0.88e-3 
 rhoA = 1.205 # mean air density
-cP = 1000. # specific heat air
+cP = 1004. # specific heat air
 Ta = 25. # C 273.15+
 RH = 70. 
 # VPD = es*(1-RH/100)
@@ -64,18 +64,6 @@ ra = (np.log((zmeas-d)/z0m)*np.log((zmeas-d)/z0h))/k**2/uz
 Delta = (met.vapor_pres(Ta+0.1)-met.vapor_pres(Ta))/0.1*vp_factor
 es = met.vapor_pres(Ta)*vp_factor
 gamma = 66. # psychrometric constant
-
-# note: the bulk surface resistance describes the resistence of the vapour
-# flow through the transpiring crop and soil evaporation. when veg does not
-# cover the soil completely, the resistence factor should include the
-# effects of evap from the soil surface.if the crop is not transpiring at
-# its potential rate then teh resistence depends on the water status of the
-# veg. we can do an approximation
-
-
-# alternate route for grasses
-# LAIa =12*h
-# rs approximation
 
 VPD     = es*(1-RH/100)
 rl      = 1./(G0+G1/np.sqrt(VPD))             # bulk stomatal resist of illuminated leaf

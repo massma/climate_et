@@ -1,0 +1,10 @@
+long_name,PFTs,G1mean,G1std,G2mean,G2std,R2mean,R2std
+evergreen needleleaf forests,ENF,8.563 ,2.792 ,-6.257 ,2.771 ,0.268 ,0.089 
+evergreen broadleaf forests,EBF,12.980 ,4.324 ,-7.881 ,2.446 ,0.326 ,0.095 
+decibuous broadleaf forests,DBF,12.558 ,3.510 ,-6.077 ,2.567 ,0.224 ,0.173 
+croplands,CRO,15.637 ,6.123 ,-11.570 ,5.535 ,0.359 ,0.151 
+grasslands,GRA,11.055 ,4.644 ,-6.891 ,4.318 ,0.288 ,0.153 
+savannas,SAV,5.481 ,2.308 ,-2.683 ,1.040 ,0.295 ,0.106 
+woody savannas,WSA,6.522 ,2.903 ,-3.364 ,1.445 ,0.255 ,0.110 
+closed shrublands,CSH,6.668 ,3.135 ,-3.219 ,0.996 ,0.227 ,0.216 
+mixed forests,MF,8.814 ,0.853 ,-3.686 ,1.430 ,0.156 ,0.090 
