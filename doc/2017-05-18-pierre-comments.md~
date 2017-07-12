@@ -33,4 +33,3 @@ Still some parts I do not understand (sorry if I am slow).... Why would VPD/delt
 
 In fact desat/dT is proportional to Esat times a very minorly T dependent function. 
 Indeed the VPD plot appears to be strong but in this one I didn't include the T dependence in desat/dT. If you include it it cancels out the VPD term and then only appears as 1/Delta rs/ra.
-
