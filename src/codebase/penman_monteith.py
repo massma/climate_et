@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 import metcalcs as met
 
-
 #geophysical constats
 VP_FACTOR = 100. #convert hPa -> Pa
 K = 0.41 # vonkarmans constant
@@ -19,7 +18,7 @@ GAMMA = 66. # psychrometric constant
 # see "Survey and synthesis of intra- and interspecific variation
 # in stomatal sensitivity to vapour pressure deficit" - Oren
 # Gs = G1+G2*ln(VPD) in mm/s
-OREN = pd.read_csv('../../dat/orens_model.csv')
+OREN = pd.read_csv('../dat/orens_model.csv')
 # convert to m/s
 OREN.iloc[:, 2:6] = OREN.iloc[:, 2:6]/1000.
 OREN.index = OREN.PFTs
@@ -55,7 +54,8 @@ def penman_monteith(atmos, canopy):
     atmos['delta'] = (met.vapor_pres(atmos['t_a']+0.1)\
                      -met.vapor_pres(atmos['t_a']))/0.1*VP_FACTOR
     atmos['e_s'] = met.vapor_pres(atmos['t_a'])*VP_FACTOR
-    atmos['vpd'] = atmos['e_s']*(1.-atmos['rh']/100.)
+    if 'vpd' not in atmos:
+        atmos['vpd'] = atmos['e_s']*(1.-atmos['rh']/100.)
     atmos['g_flux'] = 0.05*atmos['r_n'] # soil heat flux (W/m2)
 
     canopy['d'] = 2./3.*canopy['height']

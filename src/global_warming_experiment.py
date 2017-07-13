@@ -5,13 +5,11 @@ of ET, addressing task 1 in the readme.
 """
 import os
 import copy
+import itertools
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from importlib import reload
-import codebase.penman_monteith as penman_monteith
-import metcalcs as met
-reload(penman_monteith)
+from codebase.penman_monteith import penman_monteith
 
 # penamn monteith global warming impact calculation
 FONT = {'family' : 'normal',
@@ -45,9 +43,9 @@ def plot_results(result, co2max=1200.):
     return
 
 
-def d_et_d_vpd(_atmos, canopy, pert):
+def gw_experiment_wrapper(atmos, canopy, gw_pert):
     """
-    numerically calculate dET/dpert
+    wrapper for doing simple GW experiments
 
     atmos :: dict of atmospheric vars, should contain:
         r_n :: net radiation (W/m2)
@@ -60,34 +58,42 @@ def d_et_d_vpd(_atmos, canopy, pert):
         pft :: plant functional type
         height :: crop height (m)
         lai :: leaf area index (pierre says 1 is max feasible)
-    pert :: dictionary of atmos variables with 1 changed
+    gw_pert :: dictionary of global warming perturbation
+               vars and their change from 350 ppm conditions
     """
-    result = (penman_monteith.penman_monteith(_atmos, canopy)\
-              -penman_monteith.penman_monteith(pert, canopy))\
-             /(_atmos['vpd']-pert['vpd'])
 
+    result = {}
+    ctrl = penman_monteith(atmos, canopy)
+
+    # be careful below b/c if altering a buch of vars then the
+    # combinations could get out of control
+    for i in range(1, len(gw_pert.keys())+1):
+        for pair in itertools.combinations(gw_pert.keys(), i):
+            exp_dict = copy.deepcopy(atmos)
+            newkey = ''
+            for key in pair:
+                exp_dict[key] += gw_pert[key]
+            newkey = '-'.join(pair)
+            result[newkey] = penman_monteith(exp_dict, canopy)-ctrl
+
+    plot_results(result)
     return result
 
 if str(__name__) == "__main__":
-    ATMOS = {}
-    ATMOS['r_n'] = 300. #W/m2
-    ATMOS['rho_a'] = 1.205 #density kg/m3
-    ATMOS['t_a'] = t_a = np.linspace(0., 35.) # C
-    ATMOS['rh'] = np.linspace(20., 99.) # rel humdidity
-    ATMOS['t_a'], ATMOS['rh'] = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
-    ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
-    ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
+    ATMOSPHEREENV = {}
+    ATMOSPHEREENV['r_n'] = 300. #W/m2
+    ATMOSPHEREENV['rho_a'] = 1.205 #density kg/m3
+    ATMOSPHEREENV['t_a'] = 25. # C
+    ATMOSPHEREENV['rh'] = 70. # rel humdidity
+    ATMOSPHEREENV['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
 
-    print(ATMOS['vpd'].max())
-    PERT = copy.deepcopy(ATMOS)
-    PERT['vpd'] += 1. # add 1 hpa for perturbation
-    print(ATMOS['vpd'].max())
-    print(PERT['vpd'].max())
-          
-    
-    CANOPY = {}
-    CANOPY['pft'] = 'EBF'
-    CANOPY['height'] = 10. # plant heigh m
-    CANOPY['lai'] = 1. # leaf area index pierre says 1 max feasible
+    CANOPYENV = {}
+    CANOPYENV['pft'] = 'EBF'
+    CANOPYENV['height'] = 10. # plant heigh m
+    CANOPYENV['lai'] = 1. # leaf area index pierre says 1 max feasible
 
-    RESULT = d_et_d_vpd(ATMOS, CANOPY, PERT)
+    GW_PERT = {}
+    GW_PERT['t_a'] = np.linspace(0., 3.7)
+    GW_PERT['r_n'] = np.linspace(0, 8.5)
+    RESULT = gw_experiment_wrapper(ATMOSPHEREENV, CANOPYENV, GW_PERT)
+
