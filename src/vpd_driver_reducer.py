@@ -55,26 +55,22 @@ class AtmosphereEnv():
     rh :: percent relative humidity
     u_z :: wind speed at measurement height (m/s)
     """
+    # pylint: disable=too-many-instance-attributes
+    # 9 is reasonable in this case.
+    # pylint : disable=too-few-public-methods
+    # probably going to add functions to these classes
     def __init__(self, r_n=300., rho_a=1.205, t_a=25., rh=70., u_z=2.):
         self.r_n = r_n
         self.rho_a = rho_a
         self.t_a = t_a
         self.rh = rh
         self.u_z = u_z
-
-    def derived_quantities(self):
-        """
-        calculates derived quantities this is in a 
-        seperate script because they are likely to be modified
-        """
         self.delta = (met.vapor_pres(self.t_a+0.1)\
                  -met.vapor_pres(self.t_a))/0.1*VP_FACTOR
         self.e_s = met.vapor_pres(self.t_a)*VP_FACTOR
         self.vpd = self.e_s*(1.-self.rh/100.)
         self.g_flux = 0.05*self.r_n # soil heat flux (W/m2)
-        return self
 
-    return self
 
 class CanopyEnv():
     """
@@ -83,28 +79,22 @@ class CanopyEnv():
     height :: crop height (m)
     lai :: leaf area idex (pierre says 1 is max feasible)
     """
+    # pylint : disable=too-few-public-methods
+    # probably going to add functions to these classes
+
     def __init__(self, pft='EBF', height=10., lai=1.):
         self.pft = pft
         self.height = height
         self.lai = lai
-
-
-    def derived_quantities(self):
-        """
-        calculates derived quantities this is in a 
-        seperate script because they are likely to be modified
-        """
         self.d = 2./3.*self.height
         self.z0m = 0.1*self.height
         self.z0h = self.z0m
         self.zmeas = 2.+self.height
 
-        return self
-    
-    return self
 
-def wrapper(atmos=AtmosphereEnv().derived_quantities(),\
-            canopy=CanopyEnv().derived_quantities()):
+
+def wrapper(atmos=AtmosphereEnv(),\
+            canopy=CanopyEnv()):
     """
     wrapper for script function
     atmos :: class of atmospheric vars
@@ -121,12 +111,12 @@ def wrapper(atmos=AtmosphereEnv().derived_quantities(),\
     #derived constants
     r_a = (np.log((canopy.zmeas-canopy.d)/canopy.z0m)\
            *np.log((canopy.zmeas-canopy.d)/canopy.z0h))/K**2/atmos.u_z
-    r_s = r_l(vpd, canopy.pft)/canopy.lai
+    r_s = r_l(atmos.vpd, canopy.pft)/canopy.lai
 
-    lambda_et_ref = (atmos.delta*(atmos.r_n-g_flux)+atmos.rho_a*CP*vpd/r_a)/\
+    lambda_et_ref = (atmos.delta*(atmos.r_n-g_flux)+atmos.rho_a*CP*atmos.vpd/r_a)/\
                     (atmos.delta+(1.+GAMMA)*(r_s/r_a))
     lambda_et_r_n = (atmos.delta*(atmos.r_n+dr_n_dco2*(co2-co2[1])-g_flux)\
-                     +atmos.rho_a*CP*vpd/r_a)\
+                     +atmos.rho_a*CP*atmos.vpd/r_a)\
                      /(atmos.delta+(1+GAMMA)*(r_s/r_a))
 
     t_globalwarming = atmos.t_a + dt_dco2*(co2-co2[1])
