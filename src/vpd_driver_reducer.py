@@ -1,3 +1,4 @@
+#! ~/edward/bin/python
 """
 this script explores the whether VPD is a driver or reducer
 of ET, addressing task 1 in the readme.
@@ -11,111 +12,179 @@ import metcalcs as met
 
 
 # penamn monteith global warming impact calculation
-font = {'family' : 'normal',
+FONT = {'family' : 'normal',
         'weight' : 'bold',
         'size'   : 12}
 
-mpl.rc('font', **font)
-
+mpl.rc('font', **FONT)
 
 plt.close('all')
 
-# gw stuff I iwll remove, just in now to make sure I don't
-# break script
-CO2 = np.arange(350., 1200.) #[ppm]
-DeltaCO2 = CO2[-1]-CO2[0]
-dT_dCO2 = 3.7/DeltaCO2
-dRn_dCO2 = 8.5/DeltaCO2
+#geophysical constats
+VP_FACTOR = 100. #convert hPa -> Pa
+K = 0.41 # vonkarmans constant
+CP = 1004. # specific heat air
+GAMMA = 66. # psychrometric constant
 
 # From Changjie's oren model for stomatal resistance
 # see "Survey and synthesis of intra- and interspecific variation
 # in stomatal sensitivity to vapour pressure deficit" - Oren
 # Gs = G1+G2*ln(VPD) in mm/s
-oren = pd.read_csv('../dat/orens_model.csv')
+OREN = pd.read_csv('../dat/orens_model.csv')
 # convert to m/s
-oren.iloc[:, 2:6] = oren.iloc[:, 2:6]/1000.
-oren.index = oren.PFTs
+OREN.iloc[:, 2:6] = OREN.iloc[:, 2:6]/1000.
+OREN.index = OREN.PFTs
 
-# user adjustable constants
-PFT = 'EBF' #evergreen broadleaf
-Rn = 300. # net radiation (W/m2)
-G1 = oren.loc[PFT].G1mean
-G2 = oren.loc[PFT].G2mean
-rhoA = 1.205 # mean air density
-Ta = 25. # C 273.15+
-RH = 70. # precent
-uz = 2. # wind speed at height
-h = 10. # crop height
-rlmin = 20.
-LAI = 1. # max feasible LAI
+def r_l(vpd, pft):
+    """
+    calculates canopy resistance given vpd and plant functional type
+    vpd : vapor pressure deficit in Pa
+    pft : three letter plant functional type
+    returns canopy resistance in m/s
+    """
+    g_1 = OREN.loc[pft].G1mean
+    g_2 = OREN.loc[pft].G2mean
+    return 1./(g_1 + g_2*np.log(vpd/1000.))
 
-#geophysical constats
-vp_factor = 100. #convert hPa -> Pa
-k = 0.41 # vonkarmans constant
-cP = 1004. # specific heat air
-gamma = 66. # psychrometric constant
+class AtmosphereEnv():
+    """
+    Atmospheric variables:
+    r_n :: net radiation (W/m2)
+    rho_a :: mean air density
+    t_a :: t air in C
+    rh :: percent relative humidity
+    u_z :: wind speed at measurement height (m/s)
+    """
+    def __init__(self, r_n=300., rho_a=1.205, t_a=25., rh=70., u_z=2.):
+        self.r_n = r_n
+        self.rho_a = rho_a
+        self.t_a = t_a
+        self.rh = rh
+        self.u_z = u_z
 
-#derived constants
-G = 0.05*Rn # soil heat flux (W/m2)
-d = 2./3.*h
-z0m = 0.1*h
-z0h = z0m
-zmeas = 2.+h
-ra = (np.log((zmeas-d)/z0m)*np.log((zmeas-d)/z0h))/k**2/uz
-Delta = (met.vapor_pres(Ta+0.1)-met.vapor_pres(Ta))/0.1*vp_factor
-es = met.vapor_pres(Ta)*vp_factor
+    def derived_quantities(self):
+        """
+        calculates derived quantities this is in a 
+        seperate script because they are likely to be modified
+        """
+        self.delta = (met.vapor_pres(self.t_a+0.1)\
+                 -met.vapor_pres(self.t_a))/0.1*VP_FACTOR
+        self.e_s = met.vapor_pres(self.t_a)*VP_FACTOR
+        self.vpd = self.e_s*(1.-self.rh/100.)
+        self.g_flux = 0.05*self.r_n # soil heat flux (W/m2)
+        return self
 
-VPD = es*(1.-RH/100.)
-rl = 1./(G1 + G2*np.log(VPD/1000.)) #believe oren's take 
-rs = rl/LAI
+    return self
 
-lambdaETref = (Delta*(Rn-G)+rhoA*cP*VPD/ra)/(Delta+(1.+gamma)*(rs/ra))
-lambdaET_Rn = (Delta*(Rn+dRn_dCO2*(CO2-CO2[1])-G)+rhoA*cP*VPD/ra)\
-              /(Delta+(1+gamma)*(rs/ra))
+class CanopyEnv():
+    """
+    canopy variables:
+    pft :: plant functional type
+    height :: crop height (m)
+    lai :: leaf area idex (pierre says 1 is max feasible)
+    """
+    def __init__(self, pft='EBF', height=10., lai=1.):
+        self.pft = pft
+        self.height = height
+        self.lai = lai
 
-T_globalwarming = Ta + dT_dCO2*(CO2-CO2[1])
-Delta_globalwarming = (met.vapor_pres(T_globalwarming+0.1)\
-                       -met.vapor_pres(T_globalwarming))/0.1*vp_factor
-VPD_globalwarming = met.vapor_pres(T_globalwarming)*(1.-RH/100.)*vp_factor
-rs_globalwarming = 1/(G1+G2*np.log(VPD_globalwarming/1000.))/LAI
 
-lambdaET_warming = (Delta_globalwarming*(Rn-G)+rhoA*cP*VPD_globalwarming/ra)\
-                   /(Delta_globalwarming+(1+gamma)*(rs_globalwarming/ra))
-lambdaET_warming_nostoma = (Delta_globalwarming*(Rn-G)\
-                            +rhoA*cP*VPD_globalwarming/ra)\
-                            /(Delta_globalwarming+(1+gamma)*(rs/ra))
-lambdaET_warming_VPDonly = (Delta*(Rn-G)+rhoA*cP*VPD_globalwarming/ra)\
-                           /(Delta+(1+gamma)*(rs_globalwarming/ra))
-lambdaET_full = (Delta_globalwarming*(Rn+dRn_dCO2*(CO2-CO2[1])-G)\
-                 +rhoA*cP*VPD_globalwarming/ra)/\
-                 (Delta_globalwarming+(1+gamma)*(rs_globalwarming/ra))
+    def derived_quantities(self):
+        """
+        calculates derived quantities this is in a 
+        seperate script because they are likely to be modified
+        """
+        self.d = 2./3.*self.height
+        self.z0m = 0.1*self.height
+        self.z0h = self.z0m
+        self.zmeas = 2.+self.height
 
-DeltaET_Rn = lambdaET_Rn - lambdaETref
-DeltaET_warming = lambdaET_warming - lambdaETref
-DeltaET_warming_nostoma = lambdaET_warming_nostoma - lambdaETref
-DeltaET_warming_VPDonly = lambdaET_warming_VPDonly - lambdaETref
-DeltaET_full = lambdaET_full - lambdaETref
+        return self
+    
+    return self
 
-fig = plt.figure()
-ax1 = fig.add_subplot(211)
-ax1.plot(CO2, DeltaET_Rn, '-b', label=r'$\delta ET_{Rn}$')
-ax1.plot(CO2, DeltaET_warming, '-r', label=r'$\delta ET_{warming}$')
-ax1.plot(CO2, DeltaET_warming_nostoma, '-g', label=r'$\delta ET_{warming no stoma}$')
-ax1.plot(CO2, DeltaET_warming_VPDonly, '-c', label=r'$\delta ET_{VPD only}$')
-ax1.plot(CO2, DeltaET_full, '-r', linewidth=2, label=r'$\delta ET_{full}$')
-plt.legend(loc='best', fontsize=8)
-#set(gca,'FontSize',16)
-ax1.set_xlabel('[CO_2] (ppm)')
-ax1.tick_params(right=True)#,axis=ax1.yaxis)
-ax1.set_ylabel(r'$\delta$ ET (W/m**2)')
-ax2 = fig.add_subplot(212)
-ax2.plot(CO2, 100*(Delta_globalwarming/Delta-1), '-r', label=r'$\Delta$ (#)')
-ax2.plot(CO2, 100*(VPD_globalwarming/Delta_globalwarming*(Delta/VPD)-1),\
-         '-b', label=r'VPD / $\Delta$ (#)')
-#set(gca,'FontSize',16)
-ax2.set_xlabel('[CO_2] (ppm)')
-ax2.tick_params(right=True)#,axis=ax2.yaxis)
-plt.legend(loc='best', fontsize=8)
-# ylim([0 6])
-plt.savefig('%s/temp/penman.png' % os.environ['PLOTS'])
-plt.show(block=False)
+def wrapper(atmos=AtmosphereEnv().derived_quantities(),\
+            canopy=CanopyEnv().derived_quantities()):
+    """
+    wrapper for script function
+    atmos :: class of atmospheric vars
+    canopy :: class of canopy vars
+    """
+
+    # gw stuff I iwll remove, just in now to make sure I don't
+    # break script
+    co2 = np.arange(350., 1200.) #[ppm]
+    delta_co2 = co2[-1]-co2[0]
+    dt_dco2 = 3.7/delta_co2
+    dr_n_dco2 = 8.5/delta_co2
+
+    #derived constants
+    r_a = (np.log((canopy.zmeas-canopy.d)/canopy.z0m)\
+           *np.log((canopy.zmeas-canopy.d)/canopy.z0h))/K**2/atmos.u_z
+    r_s = r_l(vpd, canopy.pft)/canopy.lai
+
+    lambda_et_ref = (atmos.delta*(atmos.r_n-g_flux)+atmos.rho_a*CP*vpd/r_a)/\
+                    (atmos.delta+(1.+GAMMA)*(r_s/r_a))
+    lambda_et_r_n = (atmos.delta*(atmos.r_n+dr_n_dco2*(co2-co2[1])-g_flux)\
+                     +atmos.rho_a*CP*vpd/r_a)\
+                     /(atmos.delta+(1+GAMMA)*(r_s/r_a))
+
+    t_globalwarming = atmos.t_a + dt_dco2*(co2-co2[1])
+    delta_globalwarming = (met.vapor_pres(t_globalwarming+0.1)\
+                           -met.vapor_pres(t_globalwarming))/0.1*VP_FACTOR
+    vpd_globalwarming = met.vapor_pres(t_globalwarming)\
+                        *(1.-atmos.rh/100.)*VP_FACTOR
+    r_s_globalwarming = r_l(vpd_globalwarming, canopy.pft)/canopy.lai
+
+    lambda_et_warming = (delta_globalwarming*(atmos.r_n-g_flux)\
+                         +atmos.rho_a*CP*vpd_globalwarming/r_a)\
+                       /(delta_globalwarming+(1+GAMMA)*(r_s_globalwarming/r_a))
+    lambda_et_warming_nostoma = (delta_globalwarming*(atmos.r_n-g_flux)\
+                                +atmos.rho_a*CP*vpd_globalwarming/r_a)\
+                                /(delta_globalwarming+(1+GAMMA)*(r_s/r_a))
+    lambda_et_warming_vpdonly = (delta*(atmos.r_n-g_flux)\
+                                 +atmos.rho_a*CP*vpd_globalwarming/r_a)\
+                               /(delta+(1.+GAMMA)*(r_s_globalwarming/r_a))
+    lambda_et_full = (delta_globalwarming\
+                      *(atmos.r_n+dr_n_dco2*(co2-co2[1])-g_flux)\
+                     +atmos.rho_a*CP*vpd_globalwarming/r_a)/\
+                     (delta_globalwarming+(1.+GAMMA)*(r_s_globalwarming/r_a))
+
+    delta_et_r_n = lambda_et_r_n - lambda_et_ref
+    delta_et_warming = lambda_et_warming - lambda_et_ref
+    delta_et_warming_nostoma = lambda_et_warming_nostoma - lambda_et_ref
+    delta_et_warming_vpdonly = lambda_et_warming_vpdonly - lambda_et_ref
+    delta_et_full = lambda_et_full - lambda_et_ref
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(211)
+    ax1.plot(co2, delta_et_r_n, '-b', label=r'$\delta ET_{rn}$')
+    ax1.plot(co2, delta_et_warming, '-r', label=r'$\delta ET_{warming}$')
+    ax1.plot(co2, delta_et_warming_nostoma, '-g', \
+             label=r'$\delta ET_{warming no stoma}$')
+    ax1.plot(co2, delta_et_warming_vpdonly, '-c', \
+             label=r'$\delta ET_{vpd only}$')
+    ax1.plot(co2, delta_et_full, '-r', linewidth=2,\
+             label=r'$\delta ET_{full}$')
+    plt.legend(loc='best', fontsize=8)
+    #set(gca,'FontSize',16)
+    ax1.set_xlabel('[CO_2] (ppm)')
+    ax1.tick_params(right=True)#,axis=ax1.yaxis)
+    ax1.set_ylabel(r'$\delta$ ET (W/m**2)')
+    ax2 = fig.add_subplot(212)
+    ax2.plot(co2, 100*(delta_globalwarming/delta-1), \
+             '-r', label=r'$\delta$ (#)')
+    ax2.plot(co2, 100*(vpd_globalwarming/delta_globalwarming*(delta/vpd)-1),\
+             '-b', label=r'VPD / $\delta$ (#)')
+    #set(gca,'FontSize',16)
+    ax2.set_xlabel('[CO_2] (ppm)')
+    ax2.tick_params(right=True)#,axis=ax2.yaxis)
+    plt.legend(loc='best', fontsize=8)
+    # ylim([0 6])
+    plt.savefig('%s/temp/penman.png' % os.environ['PLOTS'])
+    plt.show(block=False)
+    return
+
+if str(__name__) == "__main__":
+    wrapper()
+    print('done')
