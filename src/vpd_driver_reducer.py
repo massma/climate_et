@@ -48,8 +48,9 @@ def r_l(vpd, pft):
 
 def r_a(atmos, canopy):
     """returns atmospheric resistance in s/m"""
-    return (np.log((canopy.zmeas-canopy.d)/canopy.z0m)\
-            *np.log((canopy.zmeas-canopy.d)/canopy.z0h))/K**2/atmos.u_z
+    return (np.log((canopy['zmeas']-canopy['d'])/canopy['z0m'])\
+            *np.log((canopy['zmeas']-canopy['d'])/canopy['z0h']))\
+            /K**2/atmos['u_z']
 
 def r_s(atmos, canopy):
     """returns stomatal resistance in s/m"""
@@ -61,7 +62,17 @@ def penman_monteith(atmos, canopy):
     atmos :: dict of atmospheric vars
     canopy :: class of canopy vars
     """
+    atmos['delta'] = (met.vapor_pres(atmos['t_a']+0.1)\
+                     -met.vapor_pres(atmos['t_a']))/0.1*VP_FACTOR
+    atmos['e_s'] = met.vapor_pres(atmos['t_a'])*VP_FACTOR
+    atmos['vpd'] = atmos['e_s']*(1.-atmos['rh']/100.)
+    atmos['g_flux'] = 0.05*atmos['r_n'] # soil heat flux (W/m2)
 
+    canopy['d'] = 2./3.*canopy['height']
+    canopy['z0m'] = 0.1*canopy['height']
+    canopy['z0h'] = canopy['z0m']
+    canopy['zmeas'] = 2.+canopy['height']
+    
     #derived constants
     _r_a = r_a(atmos, canopy)
     _r_s = r_s(atmos, canopy)
@@ -73,22 +84,48 @@ def penman_monteith(atmos, canopy):
 
 def gw_experiment_wrapper(atmos, canopy, gw_pert):
     """
-    wrapper for script function
-    atmos :: class of atmospheric vars
-    canopy :: class of canopy vars
+    wrapper for doing simple GW experiments
+
+    atmos :: dict of atmospheric vars, should contain:
+        r_n :: net radiation (W/m2)
+        rho_a :: mean air density
+        t_a :: t air in C
+        rh :: percent relative humidity
+        u_z :: wind speed at measurement height (m/s)
+        delta = (met.vapor_pres(self.t_a+0.1)\
+                 -met.vapor_pres(self.t_a))/0.1*VP_FACTOR
+        e_s = saturation vapor pressure (Pa)
+        vpd = vapor pressure (Pa)
+        g_flux = ground heat flux (not atmos but currenly
+                 derived from r_n)
+
+    canopy :: dict of canopy vars, should contain:
+        pft :: plant functional type
+        height :: crop height (m)
+        lai :: leaf area idex (pierre says 1 is max feasible)
+        d = 2./3.*height
+        z0m = 0.1*height
+        z0h = z0m
+        zmeas  = 2.+height measurement height in m
     gw_pert :: dictionary of global warming perturbation
+               vars
     """
 
     cntrl = penman_monteith(atmos, canopy)
 
     result = {}
+    # be careful below b/c if altering a buch of vars then the
+    # combinations could get out of control
     for i in range(1, len(gw_pert.keys())+1):
         for pair in itertools.combinations(gw_pert.keys(), i):
             exp_dict = atmos.copy()
             newkey = ''
             for key in pair:
+                #print('before: ', key, exp_dict[key])
                 exp_dict[key] += gw_pert[key]
+                #print('after: ', key, exp_dict[key])
             newkey = '-'.join(pair)
+            print(newkey, '\n', exp_dict)
             result[newkey] = penman_monteith(exp_dict, canopy) - cntrl
 
     # fig = plt.figure()
@@ -127,20 +164,11 @@ if str(__name__) == "__main__":
     ATMOSPHEREENV['t_a'] = 25. # C
     ATMOSPHEREENV['rh'] = 70. # rel humdidity
     ATMOSPHEREENV['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
-    ATMOSPHEREENV['delta'] = (met.vapor_pres(ATMOSPHEREENV['t_a']+0.1)\
-                     -met.vapor_pres(ATMOSPHEREENV['t_a']))/0.1*VP_FACTOR
-    ATMOSPHEREENV['e_s'] = met.vapor_pres(ATMOSPHEREENV['t_a'])*VP_FACTOR
-    ATMOSPHEREENV['vpd'] = ATMOSPHEREENV['e_s']*(1.-ATMOSPHEREENV['rh']/100.)
-    ATMOSPHEREENV['g_flux'] = 0.05*ATMOSPHEREENV['r_n'] # soil heat flux (W/m2)
 
     CANOPYENV = {}
     CANOPYENV['pft'] = 'EBF'
     CANOPYENV['height'] = 10. # plant heigh m
     CANOPYENV['lai'] = 1. # leaf area index pierre says 1 max feasible
-    CANOPYENV['d'] = 2./3.*CANOPYENV['height']
-    CANOPYENV['z0m'] = 0.1*CANOPYENV['height']
-    CANOPYENV['z0h'] = CANOPYENV['z0m']
-    CANOPYENV['zmeas'] = 2.+CANOPYENV['height']
 
     GW_PERT = {}
     GW_PERT['t_a'] = np.linspace(0., 3.7)
