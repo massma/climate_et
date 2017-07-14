@@ -8,38 +8,36 @@ import copy
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from codebase.penman_monteith import penman_monteith
 import metcalcs as met
 
 # penamn monteith global warming impact calculation
 FONT = {'family' : 'normal',
-        'weight' : 'bold',
+        'weight' : 'normal',
         'size'   : 12}
 
 mpl.rc('font', **FONT)
 
 plt.close('all')
 
-
-def plot_results(result, atmos,):
+def plot_results(result, atmos):
     """plot GW experiment results"""
-    co2 = np.linspace(350., co2max)
 
     fig = plt.figure()
-    ax1 = fig.add_subplot(111)
-    for key in result:
-        if co2.size != result[key].size:
-            result[key] *= np.ones(co2.shape)
-        ax1.plot(co2, result[key], label=r'$\delta$ %s' % (key))
-
-    plt.legend(loc='best', fontsize=8)
-    #set(gca,'FontSize',16)
-    ax1.set_xlabel('[CO_2] (ppm)')
-    ax1.tick_params(right=True)#,axis=ax1.yaxis)
-    ax1.set_ylabel(r'$\delta$ ET (W/m**2)')
-    plt.legend(loc='best', fontsize=8)
-    plt.savefig('%s/temp/penman.png' % os.environ['PLOTS'])
+    # ax = fig.add_subplot(111, projection='3d')
+    # ax.plot_wireframe(atmos['rh'], atmos['t_a'],\
+    #                   result)
+    ax = fig.add_subplot(111)
+    # vmax = np.absolute([result.max(), result.min()]).max()
+    vmax = 3.*result.std()
+    color = ax.pcolormesh(atmos['rh'], atmos['t_a'], result, cmap='RdBu',\
+                          vmin=-vmax, vmax=vmax)
+    ax.set_xlabel('RH')
+    ax.set_ylabel('T')
+    cbar = plt.colorbar(color)
+    cbar.set_label(r'$\frac{\partial ET}{\partial VPD}$'\
+                   ' ($W m^{-2}$  $Pa^{-1}$)')
+    # plt.savefig('%s/temp/vpd.png' % os.environ['PLOTS'])
     plt.show(block=False)
     return
 
@@ -65,14 +63,14 @@ def d_et_d_vpd(atmos, canopy, pert, var='vpd'):
     result = (penman_monteith(atmos, canopy)\
               -penman_monteith(pert, canopy))\
              /(atmos[var]-pert[var])
-
+    plot_results(result, atmos)
     return result
 
 if str(__name__) == "__main__":
     ATMOS = {}
     ATMOS['r_n'] = 300. #W/m2
     ATMOS['rho_a'] = 1.205 #density kg/m3
-    ATMOS['t_a'] = np.linspace(0., 35.) # C
+    ATMOS['t_a'] = np.linspace(15., 35.) # C
     ATMOS['rh'] = np.linspace(20., 99.) # rel humdidity
     ATMOS['t_a'], ATMOS['rh'] = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
     ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
