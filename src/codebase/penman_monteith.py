@@ -13,6 +13,8 @@ VP_FACTOR = 100. #convert hPa -> Pa
 K = 0.41 # vonkarmans constant
 CP = 1004. # specific heat air
 GAMMA = 66. # psychrometric constant
+LV = 2.5e6
+R_AIR = .0289645 # mean kg/mol dry air
 
 # From Changjie's oren model for stomatal resistance
 # see "Survey and synthesis of intra- and interspecific variation
@@ -21,12 +23,33 @@ GAMMA = 66. # psychrometric constant
 OREN = pd.read_csv('../dat/orens_model.csv')
 # convert to m/s
 OREN.iloc[:, 2:6] = OREN.iloc[:, 2:6]/1000.
-OREN.index = OREN.PFTs
+OREN.index = OREN.PFT
 
-#below need to get actual values for Chiangjie
-MEDLYN = pd.read_csv('../dat/orens_model.csv')
-MEDLYN['g0'] = MEDLYN.G1mean
-MEDLYN['g1'] = MEDLYN.G2mean
+#below taken from Franks et al (with Berry)
+MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
+                     comment='#', delimiter=',')
+MEDLYN.index = MEDLYN.PFT
+
+WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
+                     comment='#', delimiter=',')
+WUE.index = WUE.PFT
+
+
+def medlyn_g_w(vpd, co2, pft, et):
+    """
+    returns leaf stomatal conductance in m/s
+    et : W/m2
+    pft : planf functional type
+    vpd : Pa
+    co2 : ppm
+    """
+    #convert g C -> mu mol C
+    wue = WUE.loc[atmos['pft'],'u_wue_yearly']*1.e6/12.011
+    # note bellow assumes that atmos co2 is same as leaf, might be bad
+    _g1 = MEDLYN.loc[atmos['pft'],'g1M'] # note this sqrt(kPa)
+    g_w = 1.6*(1. + _g1/np.sqrt(vpd/1000.))*wue*et/LV/sqrt(vpd/100.)/co2
+    return g_w
+
 
 def oren_r_l(vpd, pft):
     """
@@ -49,7 +72,7 @@ def r_a(atmos, canopy):
             /K**2/atmos['u_z']
 
 def r_s(atmos, canopy):
-    """returns stomatal resistance in s/m"""
+    """returns canopy mean stomatal resistance in s/m"""
     return oren_r_l(atmos['vpd'], canopy['pft'])/canopy['lai']
 
 def penman_monteith(atmos, canopy):
@@ -89,6 +112,6 @@ def optmizer_wrapper(_et, atmos, canopy):
     """
     med_coef = MEDLYN.loc[canopy['pft']]
     atmos['r_s'] = 1./(atmos['lai']\
-                   *(med_coef.g0 \
-                     + med_coef.g1*_et*atmos['u_wue']/atmos['vpd']))
+                   *medlyn_g_w(atmos['vpd'], atmos['co2'], canopy['pft'], _et))
     return penman_monteith(atmos, canopy) - _et
+

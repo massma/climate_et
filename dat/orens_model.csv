@@ -1,5 +1,5 @@
-long_name,PFTs,G1mean,G1std,G2mean,G2std,R2mean,R2std
-evergreen needleleaf forests,ENF,8.563 ,2.792 ,-6.257 ,2.771 ,0.268 ,0.089 
+long_name,PFT,G1mean,G1std,G2mean,G2std,R2mean,R2std
+evergreen needleleaf forests,ENF,8.563 ,2.792 ,-6.257 ,2.771 ,0.268 ,0.089
 evergreen broadleaf forests,EBF,12.980 ,4.324 ,-7.881 ,2.446 ,0.326 ,0.095 
 decibuous broadleaf forests,DBF,12.558 ,3.510 ,-6.077 ,2.567 ,0.224 ,0.173 
 croplands,CRO,15.637 ,6.123 ,-11.570 ,5.535 ,0.359 ,0.151 

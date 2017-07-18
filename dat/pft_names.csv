@@ -1,0 +1,11 @@
+# added by Adam from http://www.cgd.ucar.edu/tss/clm/pfts/pft-physiology.htm
+long_name,PFTs,z0,d
+evergreen needleleaf forests,ENF,
+evergreen broadleaf forests,EBF,
+decibuous broadleaf forests,DBF,
+croplands,CRO,
+grasslands,GRA,
+savannas,SAV,
+woody savannas,WSA,
+closed shrublands,CSH,
+mixed forests,MF,

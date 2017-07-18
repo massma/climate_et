@@ -1,0 +1,10 @@
+# taken from Zhou et. al. 2015 "Daily underlying water use efficency..."
+long_name,PFT,site_years,uWUE_r,u_wue_cv,u_wue_daily,u_wue_daily_std,u_wue_yearly,u_wue_yearly_std,i_wue_r,i_wue_cv,i_wue_daily,i_wue_daily_std,i_wue_yearly,i_wue_yearly_std
+cropland,CRO,26,0.85,0.22,11.24,2.90,11.42,3.03,0.81,0.27,40.57,11.66,41.78,12.42
+deciduous broadleaf forest,DBF,31,0.84,0.22,9.55,1.60,9.36,1.57,0.79,0.32,28.54,6.32,28.92,6.26
+grassland,GRA,23,0.84,0.24,7.88,1.78,8.05,1.84,0.82,0.32,29.78,7.55,31.15,8.10
+evergreen needleleaf forest,ENF,23,0.88,0.21,9.96,2.81,9.90,2.73,0.85,0.31,34.49,9.49,35.81,9.57
+woody savanna,WSA,8,0.84,0.28,9.39,1.35,8.66,1.14,0.66,0.36,39.32,3.25,36.59,2.58
+mixed forest,MF,7,0.85,0.28,9.07,2.00,8.99,1.86,0.86,0.35,29.49,6.45,30.93,5.97
+closed shrubland,CSH,5,0.86,0.21,6.84,1.44,6.55,1.32,0.83,0.23,20.84,8.28,20.64,8.19
+average,AVG,0,0.85,0.23,9.52,2.53,9.47,2.56,0.81,0.31,32.87,10.05,33.62,10.32

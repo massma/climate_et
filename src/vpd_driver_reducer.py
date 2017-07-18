@@ -72,19 +72,21 @@ if str(__name__) == "__main__":
     ATMOS['rho_a'] = 1.205 #density kg/m3
     ATMOS['t_a'] = np.linspace(15., 35.) # C
     ATMOS['rh'] = np.linspace(20., 99.) # rel humdidity
-    ATMOS['t_a'], ATMOS['rh'] = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
+
     ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
     ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
 
-    print(ATMOS['vpd'].max())
-    PERT = copy.deepcopy(ATMOS)
-    PERT['vpd'] += 1. # add 1 hpa for perturbation
-    print(ATMOS['vpd'].max())
-    print(PERT['vpd'].max())
 
     CANOPY = {}
     CANOPY['pft'] = 'EBF'
     CANOPY['height'] = 10. # plant heigh m
     CANOPY['lai'] = 1. # leaf area index pierre says 1 max feasible
+
+    ATMOS['t_a'], ATMOS['rh'],  = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
+
+    PERT = copy.deepcopy(ATMOS)
+    PERT['vpd'] += 1. # add 1 hpa for perturbation
+
+
 
     RESULT = d_et_d_vpd(ATMOS, CANOPY, PERT)
