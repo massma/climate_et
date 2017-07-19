@@ -100,7 +100,7 @@ def d_et_d_vpd(atmos, canopy, pert, var='vpd', thresh=2.):
     results = it.operands[-1]
     # results[results < -thresh] = np.nan
     # results[results > thresh] = np.nan
-    plot_results(results, atmos)
+    # plot_results(results, atmos)
     return results
 
 if str(__name__) == "__main__":
@@ -109,10 +109,11 @@ if str(__name__) == "__main__":
     ATMOS['rho_a'] = 1.205 #density kg/m3
     ATMOS['t_a'] = np.linspace(15., 35.,50) # C
     ATMOS['rh'] = np.linspace(40., 95.,50) # rel humdidity
-    ATMOS['co2'] = np.array([400.,800.])
-    ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
-            np.meshgrid(ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'])
-    #ATMOS['t_a'], ATMOS['rh'], = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
+    ATMOS['co2'] = 400.
+    # ATMOS['co2'] = np.array([400.,800.])
+    # ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
+    #         np.meshgrid(ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'])
+    ATMOS['t_a'], ATMOS['rh'], = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
 
     ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
     ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
@@ -127,5 +128,10 @@ if str(__name__) == "__main__":
 
     PERT = copy.deepcopy(ATMOS)
     PERT['vpd'] += 1. # add 1 PA for perturbation
+    result_atm = d_et_d_vpd(ATMOS, CANOPY, PERT)
 
-    result = d_et_d_vpd(ATMOS, CANOPY, PERT)
+    PERT['vpd_leaf'] += 1.
+    result_full = d_et_d_vpd(ATMOS, CANOPY, PERT)
+
+    PERT['vpd'] -= 1.
+    result_leaf = d_et_d_vpd(ATMOS, CANOPY, PERT)

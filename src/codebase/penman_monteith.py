@@ -115,8 +115,12 @@ def optimizer_wrapper(_et, *env_vars):
     scipy.optmize.fsolve
     """
     _atmos, _canopy = env_vars
+    if 'vpd_leaf' in _atmos:
+        vpd = _atmos['vpd_leaf']
+    else:
+        vpd = _atmos['vpd']
     _atmos['r_s'] = 1./(_canopy['lai']\
-                    *medlyn_g_w(_atmos['vpd'], _atmos['co2'], _atmos['rho_a'],\
+                    *medlyn_g_w(vpd, _atmos['co2'], _atmos['rho_a'],\
                                _canopy['pft'], _et))
     if _et == 0.:
         return 0.
