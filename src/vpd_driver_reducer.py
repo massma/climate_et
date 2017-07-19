@@ -84,34 +84,31 @@ def d_et_d_vpd(atmos, canopy, pert, var='vpd', thresh=2.):
     _atmos = atmos.copy()
     _canopy = canopy.copy()
     it = np.nditer([atmos['t_a'], atmos['rh'], atmos['vpd'],\
-                    atmos['co2'], pert[var], None, None])
-    for t_a, rh, vpd, co2, pert_vpd, result, result_pert in it:
+                    atmos['co2'], pert[var], None])
+    for t_a, rh, vpd, co2, pert_vpd, result in it:
         _atmos['t_a'] = t_a
         _atmos['rh'] = rh
         _atmos['vpd'] = vpd
         _atmos['co2'] = co2
         _pert = _atmos.copy()
         _pert[var] = pert_vpd
-        # result[...] = (pm.medlyn_penman_monteith(_atmos, _canopy)\
-        #                -pm.medlyn_penman_monteith(_pert, _canopy))\
-        #                /(_atmos[var]-_pert[var])
-        result[...] = pm.medlyn_penman_monteith(_atmos, _canopy)
-        result_pert[...] = pm.medlyn_penman_monteith(_pert, _canopy)
+        result[...] = (pm.medlyn_penman_monteith(_atmos, _canopy)\
+                       -pm.medlyn_penman_monteith(_pert, _canopy))\
+                       /(_atmos[var]-_pert[var])
 
 
-    results = it.operands[-2]
-    results_pert = it.operands[-1]
+    results = it.operands[-1]
     # results[results < -thresh] = np.nan
     # results[results > thresh] = np.nan
-    #plot_results(results, atmos)
-    return results,results_pert
+    plot_results(results, atmos)
+    return results
 
 if str(__name__) == "__main__":
     ATMOS = {}
     ATMOS['r_n'] = 300. #W/m2
     ATMOS['rho_a'] = 1.205 #density kg/m3
-    ATMOS['t_a'] = np.linspace(15., 35.,4) # C
-    ATMOS['rh'] = np.linspace(20., 95.,4) # rel humdidity
+    ATMOS['t_a'] = np.linspace(15., 35.,50) # C
+    ATMOS['rh'] = np.linspace(40., 95.,50) # rel humdidity
     ATMOS['co2'] = np.array([400.,800.])
 
     ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
@@ -130,4 +127,4 @@ if str(__name__) == "__main__":
     PERT = copy.deepcopy(ATMOS)
     PERT['vpd'] += 1. # add 1 PA for perturbation
 
-    result, result_pert = d_et_d_vpd(ATMOS, CANOPY, PERT)
+    result = d_et_d_vpd(ATMOS, CANOPY, PERT)

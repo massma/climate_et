@@ -116,11 +116,14 @@ def optimizer_wrapper(_et, *env_vars):
     """
     _atmos, _canopy = env_vars
     _atmos['r_s'] = 1./(_canopy['lai']\
-                   *medlyn_g_w(_atmos['vpd'], _atmos['co2'], _atmos['rho_a'],\
+                    *medlyn_g_w(_atmos['vpd'], _atmos['co2'], _atmos['rho_a'],\
                                _canopy['pft'], _et))
-    return penman_monteith(_atmos, _canopy) - _et
+    if _et == 0.:
+        return 0.
+    else:
+        return penman_monteith(_atmos, _canopy) - _et
 
-def medlyn_penman_monteith(_atmos, _canopy, et0=300.):
+def medlyn_penman_monteith(_atmos, _canopy, et0=10000.):
     """
     This module solves for ET using scipy optmize fsolve with WUE.
     This is a relatively simple function so should always converge.
