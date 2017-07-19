@@ -8,8 +8,12 @@ import copy
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from codebase.penman_monteith import penman_monteith
+import codebase.penman_monteith as pm
 import metcalcs as met
+
+import importlib
+
+importlib.reload(pm)
 
 # penamn monteith global warming impact calculation
 FONT = {'family' : 'normal',
@@ -24,25 +28,39 @@ def plot_results(result, atmos):
     """plot GW experiment results"""
 
     fig = plt.figure()
+    fig.set_figheight(fig.get_figheight()*2)
     # ax = fig.add_subplot(111, projection='3d')
     # ax.plot_wireframe(atmos['rh'], atmos['t_a'],\
     #                   result)
-    ax = fig.add_subplot(111)
+    ax1 = fig.add_subplot(211)
     # vmax = np.absolute([result.max(), result.min()]).max()
-    vmax = 3.*result.std()
-    color = ax.pcolormesh(atmos['rh'], atmos['t_a'], result, cmap='RdBu',\
-                          vmin=-vmax, vmax=vmax)
-    ax.set_xlabel('RH')
-    ax.set_ylabel('T')
+    vmax = 3.*result[:,:,0].std()
+    color = ax1.pcolormesh(atmos['rh'][:,:,0], atmos['t_a'][:,:,0],\
+                           result[:,:,0], cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax1.set_xlabel('RH')
+    ax1.set_ylabel('T')
+    ax1.set_title('CO2: %f' % atmos['co2'][:,:,0].mean())
     cbar = plt.colorbar(color)
     cbar.set_label(r'$\frac{\partial ET}{\partial VPD}$'\
                    ' ($W m^{-2}$  $Pa^{-1}$)')
-    # plt.savefig('%s/temp/vpd.png' % os.environ['PLOTS'])
+
+    vmax = 3.*result[:,:,1].std()
+    ax2 = fig.add_subplot(212)
+    color = ax2.pcolormesh(atmos['rh'][:,:,1], atmos['t_a'][:,:,1],\
+                           result[:,:,1], cmap='RdBu', vmin=-vmax, vmax=vmax)
+    ax2.set_xlabel('RH')
+    ax2.set_ylabel('T')
+    ax2.set_title('CO2: %f' % atmos['co2'][:,:,1].mean())
+    cbar = plt.colorbar(color)
+    cbar.set_label(r'$\frac{\partial ET}{\partial VPD}$'\
+                   ' ($W m^{-2}$  $Pa^{-1}$)')
+
+    plt.savefig('%s/temp/vpd.png' % os.environ['PLOTS'])
     plt.show(block=False)
     return
 
 
-def d_et_d_vpd(atmos, canopy, pert, var='vpd'):
+def d_et_d_vpd(atmos, canopy, pert, var='vpd', thresh=2.):
     """
     numerically calculate dET/dpert
 
@@ -59,32 +77,57 @@ def d_et_d_vpd(atmos, canopy, pert, var='vpd'):
         lai :: leaf area index (pierre says 1 is max feasible)
     pert :: dictionary of atmos variables with 1 changed
     var :: variable key derivative is taken wrt
+    thresh :: this is a p/m min/max threshold for the output
+             sometimes the solver struggles, so this hopes to fix
     """
-    result = (penman_monteith(atmos, canopy)\
-              -penman_monteith(pert, canopy))\
-             /(atmos[var]-pert[var])
-    plot_results(result, atmos)
-    return result
+    # there is probably a much better way to do below
+    _atmos = atmos.copy()
+    _canopy = canopy.copy()
+    it = np.nditer([atmos['t_a'], atmos['rh'], atmos['vpd'],\
+                    atmos['co2'], pert[var], None, None])
+    for t_a, rh, vpd, co2, pert_vpd, result, result_pert in it:
+        _atmos['t_a'] = t_a
+        _atmos['rh'] = rh
+        _atmos['vpd'] = vpd
+        _atmos['co2'] = co2
+        _pert = _atmos.copy()
+        _pert[var] = pert_vpd
+        # result[...] = (pm.medlyn_penman_monteith(_atmos, _canopy)\
+        #                -pm.medlyn_penman_monteith(_pert, _canopy))\
+        #                /(_atmos[var]-_pert[var])
+        result[...] = pm.medlyn_penman_monteith(_atmos, _canopy)
+        result_pert[...] = pm.medlyn_penman_monteith(_pert, _canopy)
+
+
+    results = it.operands[-2]
+    results_pert = it.operands[-1]
+    # results[results < -thresh] = np.nan
+    # results[results > thresh] = np.nan
+    #plot_results(results, atmos)
+    return results,results_pert
 
 if str(__name__) == "__main__":
     ATMOS = {}
     ATMOS['r_n'] = 300. #W/m2
     ATMOS['rho_a'] = 1.205 #density kg/m3
-    ATMOS['t_a'] = np.linspace(15., 35.) # C
-    ATMOS['rh'] = np.linspace(20., 99.) # rel humdidity
+    ATMOS['t_a'] = np.linspace(15., 35.,4) # C
+    ATMOS['rh'] = np.linspace(20., 95.,4) # rel humdidity
+    ATMOS['co2'] = np.array([400.,800.])
+
+    ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
+            np.meshgrid(ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'])
 
     ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
     ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
 
 
     CANOPY = {}
-    CANOPY['pft'] = 'EBF'
+    CANOPY['pft'] = 'DBF'
     CANOPY['height'] = 10. # plant heigh m
     CANOPY['lai'] = 1. # leaf area index pierre says 1 max feasible
 
-    ATMOS['t_a'], ATMOS['rh'],  = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
 
     PERT = copy.deepcopy(ATMOS)
-    PERT['vpd'] += 1. # add 1 hpa for perturbation
+    PERT['vpd'] += 1. # add 1 PA for perturbation
 
-    RESULT = d_et_d_vpd(ATMOS, CANOPY, PERT)
+    result, result_pert = d_et_d_vpd(ATMOS, CANOPY, PERT)

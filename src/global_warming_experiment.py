@@ -10,6 +10,9 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from codebase.penman_monteith import penman_monteith
+import importlib
+
+importlib.reload(pm)
 
 # penamn monteith global warming impact calculation
 FONT = {'family' : 'normal',

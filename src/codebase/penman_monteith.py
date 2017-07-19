@@ -7,6 +7,7 @@ ET using penman-monteith
 import numpy as np
 import pandas as pd
 import metcalcs as met
+from scipy.optimize import fsolve
 
 #geophysical constats
 VP_FACTOR = 100. #convert hPa -> Pa
@@ -64,47 +65,48 @@ def oren_r_l(vpd, pft):
     g_2 = OREN.loc[pft].G2mean
     return 1./(g_1 + g_2*np.log(vpd/1000.))
 
-def r_a(atmos, canopy):
+def r_a(_atmos, _canopy):
     """
     returns atmospheric resistance in s/m,
     see pg 298, eq. 20.36  in Shuttleworth
     """
-    return (np.log((canopy['zmeas']-canopy['d'])/canopy['z0m'])\
-            *np.log((canopy['zmeas']-canopy['d'])/canopy['z0h']))\
-            /K**2/atmos['u_z']
+    return (np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0m'])\
+            *np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0h']))\
+            /K**2/_atmos['u_z']
 
-def r_s(atmos, canopy):
-    """returns canopy mean stomatal resistance in s/m"""
-    return oren_r_l(atmos['vpd'], canopy['pft'])/canopy['lai']
+def r_s(_atmos, _canopy):
+    """returns _canopy mean stomatal resistance in s/m"""
+    return oren_r_l(_atmos['vpd'], _canopy['pft'])/_canopy['lai']
 
-def penman_monteith(atmos, canopy):
+def penman_monteith(_atmos, _canopy):
     """
     returns ET in W/m2
-    atmos :: dict of atmospheric vars
-    canopy :: class of canopy vars
+    _atmos :: dict of atmospheric vars
+    _canopy :: class of _canopy vars
     """
     #derived constants
-    atmos['delta'] = (met.vapor_pres(atmos['t_a']+0.1)\
-                     -met.vapor_pres(atmos['t_a']))/0.1*VP_FACTOR
-    atmos['e_s'] = met.vapor_pres(atmos['t_a'])*VP_FACTOR
+    _atmos['delta'] = (met.vapor_pres(_atmos['t_a']+0.1)\
+                     -met.vapor_pres(_atmos['t_a']))/0.1*VP_FACTOR
+    _atmos['e_s'] = met.vapor_pres(_atmos['t_a'])*VP_FACTOR
 
     # below allows us to provide vpd
-    if 'vpd' not in atmos:
-        atmos['vpd'] = atmos['e_s']*(1.-atmos['rh']/100.)
-    atmos['g_flux'] = 0.05*atmos['r_n'] # soil heat flux (W/m2)
+    if 'vpd' not in _atmos:
+        _atmos['vpd'] = _atmos['e_s']*(1.-_atmos['rh']/100.)
+    _atmos['g_flux'] = 0.05*_atmos['r_n'] # soil heat flux (W/m2)
 
-    canopy['d'] = 2./3.*canopy['height'] #zero plain displacement
-    canopy['z0m'] = 0.1*canopy['height'] # height moisture source/sink
-    canopy['z0h'] = canopy['z0m'] # height of heat source/sink
-    canopy['zmeas'] = 2.+canopy['height'] # measurement height
+    _canopy['d'] = 2./3.*_canopy['height'] #zero plain displacement
+    _canopy['z0m'] = 0.1*_canopy['height'] # height moisture source/sink
+    _canopy['z0h'] = _canopy['z0m'] # height of heat source/sink
+    _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
-    _r_a = r_a(atmos, canopy)
-    if 'r_s' not in atmos:
-        atmos['r_s'] = r_s(atmos, canopy)
+    _r_a = r_a(_atmos, _canopy)
+    if 'r_s' not in _atmos:
+        _atmos['r_s'] = r_s(_atmos, _canopy)
 
-    _et = (atmos['delta']*\
-           (atmos['r_n']-atmos['g_flux'])+atmos['rho_a']*CP*atmos['vpd']/_r_a)\
-           /(atmos['delta']+GAMMA*(1. + atmos['r_s']/_r_a))
+    _et = (_atmos['delta']*\
+           (_atmos['r_n']-_atmos['g_flux'])+\
+           _atmos['rho_a']*CP*_atmos['vpd']/_r_a)\
+           /(_atmos['delta']+GAMMA*(1. + _atmos['r_s']/_r_a))
     return _et
 
 def optimizer_wrapper(_et, *env_vars):
@@ -112,8 +114,18 @@ def optimizer_wrapper(_et, *env_vars):
     solves for ET using uWUE, designed to be called by
     scipy.optmize.fsolve
     """
-    atmos, canopy = env_vars
-    atmos['r_s'] = 1./(canopy['lai']\
-                   *medlyn_g_w(atmos['vpd'], atmos['co2'], atmos['rho_a'],\
-                               canopy['pft'], _et))
-    return penman_monteith(atmos, canopy) - _et
+    _atmos, _canopy = env_vars
+    _atmos['r_s'] = 1./(_canopy['lai']\
+                   *medlyn_g_w(_atmos['vpd'], _atmos['co2'], _atmos['rho_a'],\
+                               _canopy['pft'], _et))
+    return penman_monteith(_atmos, _canopy) - _et
+
+def medlyn_penman_monteith(_atmos, _canopy, et0=300.):
+    """
+    This module solves for ET using scipy optmize fsolve with WUE.
+    This is a relatively simple function so should always converge.
+    Optional argument et0 is the first guess for et to pass to solver.
+    """
+    #et0 = np.ones(atmos['vpd'].shape)*et0
+    _et = fsolve(optimizer_wrapper, et0, args=(_atmos, _canopy))
+    return _et

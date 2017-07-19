@@ -25,9 +25,13 @@ canopy['pft'] = 'DBF'
 canopy['height'] = 10. # plant heigh m
 canopy['lai'] = 1. # leaf area index pierre says 1 max feasible
 
-data_out = fsolve(pm.optimizer_wrapper, 100.,\
-                  full_output=True, args=(atmos, canopy))
+et = pm.medlyn_penman_monteith(atmos, canopy)
 
 print('Medlyn r_l: %f, Oren r_l: %f' % \
       (atmos['r_s'], pm.oren_r_l(atmos['vpd'], canopy['pft'])))
+atmos.pop('r_s')
+et_oren = pm.penman_monteith(atmos, canopy)
+print('Medlyn et: %f, Oren et: %f' % \
+      (et, et_oren))
+
 # _et = pm.optimizer_wrapper(100.,atmos,canopy)
