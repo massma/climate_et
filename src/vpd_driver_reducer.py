@@ -7,12 +7,12 @@ import os
 import copy
 import importlib
 from collections import OrderedDict
+import time
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import codebase.penman_monteith as pm
 import metcalcs as met
-
 
 importlib.reload(pm)
 
@@ -58,7 +58,7 @@ def plot_results(result, atmos):
     return
 
 
-def d_et_d_vpd(atmos, canopy, pert, var=('vpd', 'vpd_leaf'), dvar=1.):
+def d_et_d_vpd(atmos, canopy, pert, dvar=1.):
     """
     numerically calculate dET/dpert
 
@@ -73,37 +73,26 @@ def d_et_d_vpd(atmos, canopy, pert, var=('vpd', 'vpd_leaf'), dvar=1.):
         pft :: plant functional type
         height :: crop height (m)
         lai :: leaf area index (pierre says 1 is max feasible)
-    pert :: dictionary of atmos variables with 1 changed
+    pert :: dictionary of atmos variables with changed
     var :: variable key derivative is taken wrt
     thresh :: this is a p/m min/max threshold for the output
              sometimes the solver struggles, so this hopes to fix
     dvar :: this is what the difference in the variable is (defaul 1 hPa)
     """
-    # there is probably a much better way to do below
-    _atmos = atmos.copy()
-    _canopy = canopy.copy()
-    _it = np.nditer([atmos['t_a'], atmos['rh'], atmos['vpd'],\
-                    atmos['co2'], pert[var[0]], pert[var[1]], None])
-    for _atmos['t_a'], _atmos['rh'], _atmos['vpd'], _atmos['co2'],\
-        pert_vpd, pert_vpd2, result in _it:
-        _pert = _atmos.copy()
-        _pert[var[0]] = pert_vpd
-        _pert[var[1]] = pert_vpd2
-        # for key in _atmos:
-        #     print(key,_atmos[key])
-        # for key in _pert:
-        #     print(key,_pert[key])
-        result[...] = (pm.medlyn_penman_monteith(_pert, _canopy)\
-                       -pm.medlyn_penman_monteith(_atmos, _canopy))\
+
+    result = (pm.medlyn_penman_monteith(pert, canopy)\
+                       -pm.medlyn_penman_monteith(atmos, canopy))\
                        /dvar
-    return _it.operands[-1]
+    return result
 
 if str(__name__) == "__main__":
+    TIME = time.time()
+    NVARS = 50
     ATMOS = {}
     ATMOS['r_n'] = 300. #W/m2
     ATMOS['rho_a'] = 1.205 #density kg/m3
-    ATMOS['t_a'] = np.linspace(15., 35., 50) # C
-    ATMOS['rh'] = np.linspace(40., 95., 50) # rel humdidity
+    ATMOS['t_a'] = np.linspace(15., 35., NVARS) # C
+    ATMOS['rh'] = np.linspace(40., 95., NVARS) # rel humdidity
     ATMOS['co2'] = 400.
     # ATMOS['co2'] = np.array([400.,800.])
     # ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
@@ -138,3 +127,4 @@ if str(__name__) == "__main__":
     RESULT['atm'] = d_et_d_vpd(ATMOS, CANOPY, PERT)
 
     plot_results(RESULT, ATMOS)
+    print('time was %f s' % (time.time()-TIME))

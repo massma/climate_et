@@ -136,5 +136,19 @@ def medlyn_penman_monteith(_atmos, _canopy, et0=10000.):
     Optional argument et0 is the first guess for et to pass to solver.
     """
     #et0 = np.ones(atmos['vpd'].shape)*et0
-    _et = fsolve(optimizer_wrapper, et0, args=(_atmos, _canopy))
-    return _et
+
+    packed_array = []
+    keys = _atmos.keys()
+    for key in _atmos:
+        packed_array.append(np.copy(_atmos[key]))
+    packed_array.append(None)
+
+    _it = np.nditer(packed_array)
+    for array in _it:
+        _atmos = {}
+        for i, key in enumerate(keys):
+            _atmos[key] = array[i]
+        result = array[-1]
+        result[...] = fsolve(optimizer_wrapper, et0, args=(_atmos, _canopy))
+
+    return _it.operands[-1]

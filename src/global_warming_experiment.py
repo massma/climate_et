@@ -6,11 +6,12 @@ of ET, addressing task 1 in the readme.
 import os
 import copy
 import itertools
+import importlib
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from codebase.penman_monteith import penman_monteith
-import importlib
+import codebase.penman_monteith as pm
+import metcalcs as met
 
 importlib.reload(pm)
 
@@ -41,6 +42,7 @@ def plot_results(result, co2max=1200.):
     ax1.tick_params(right=True)#,axis=ax1.yaxis)
     ax1.set_ylabel(r'$\delta$ ET (W/m**2)')
     plt.legend(loc='best', fontsize=8)
+    plt.tight_layout()
     plt.savefig('%s/temp/penman.png' % os.environ['PLOTS'])
     plt.show(block=False)
     return
@@ -66,7 +68,7 @@ def gw_experiment_wrapper(atmos, canopy, gw_pert):
     """
 
     result = {}
-    ctrl = penman_monteith(atmos, canopy)
+    ctrl = pm.medlyn_penman_monteith(atmos, canopy)
 
     # be careful below b/c if altering a buch of vars then the
     # combinations could get out of control
@@ -77,26 +79,31 @@ def gw_experiment_wrapper(atmos, canopy, gw_pert):
             for key in pair:
                 exp_dict[key] += gw_pert[key]
             newkey = '-'.join(pair)
-            result[newkey] = penman_monteith(exp_dict, canopy)-ctrl
+            exp_dict['vpd'] = met.vapor_pres(exp_dict['t_a'])\
+                              *(1.-exp_dict['rh']/100.)*100.
+            result[newkey] = pm.medlyn_penman_monteith(exp_dict, canopy)-ctrl
 
     plot_results(result)
     return result
 
 if str(__name__) == "__main__":
-    ATMOSPHEREENV = {}
-    ATMOSPHEREENV['r_n'] = 300. #W/m2
-    ATMOSPHEREENV['rho_a'] = 1.205 #density kg/m3
-    ATMOSPHEREENV['t_a'] = 25. # C
-    ATMOSPHEREENV['rh'] = 70. # rel humdidity
-    ATMOSPHEREENV['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
+    ATMOS = {}
+    ATMOS['r_n'] = 300. #W/m2
+    ATMOS['rho_a'] = 1.205 #density kg/m3
+    ATMOS['t_a'] = 20. # C
+    ATMOS['rh'] = 80. # rel humdidity
+    ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
+    ATMOS['co2'] = 350. #ppm
+    ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
 
-    CANOPYENV = {}
-    CANOPYENV['pft'] = 'EBF'
-    CANOPYENV['height'] = 10. # plant heigh m
-    CANOPYENV['lai'] = 1. # leaf area index pierre says 1 max feasible
+
+    CANOPY = {}
+    CANOPY['pft'] = 'DBF'
+    CANOPY['height'] = 10. # plant heigh m
+    CANOPY['lai'] = 8. # leaf area index pierre says 1 max feasible
 
     GW_PERT = {}
     GW_PERT['t_a'] = np.linspace(0., 3.7)
     GW_PERT['r_n'] = np.linspace(0, 8.5)
-    RESULT = gw_experiment_wrapper(ATMOSPHEREENV, CANOPYENV, GW_PERT)
-
+    GW_PERT['co2'] = np.linspace(350., 1200.) - 350.
+    RESULT = gw_experiment_wrapper(ATMOS, CANOPY, GW_PERT)
