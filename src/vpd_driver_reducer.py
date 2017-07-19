@@ -5,13 +5,14 @@ of ET, addressing task 1 in the readme.
 """
 import os
 import copy
+import importlib
+from collections import OrderedDict
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import codebase.penman_monteith as pm
 import metcalcs as met
 
-import importlib
 
 importlib.reload(pm)
 
@@ -26,41 +27,38 @@ plt.close('all')
 
 def plot_results(result, atmos):
     """plot GW experiment results"""
-
+    nplots = len(result)
     fig = plt.figure()
-    fig.set_figheight(fig.get_figheight()*2)
-    # ax = fig.add_subplot(111, projection='3d')
-    # ax.plot_wireframe(atmos['rh'], atmos['t_a'],\
-    #                   result)
-    ax1 = fig.add_subplot(211)
-    # vmax = np.absolute([result.max(), result.min()]).max()
-    vmax = 3.*result[:,:,0].std()
-    color = ax1.pcolormesh(atmos['rh'][:,:,0], atmos['t_a'][:,:,0],\
-                           result[:,:,0], cmap='RdBu', vmin=-vmax, vmax=vmax)
-    ax1.set_xlabel('RH')
-    ax1.set_ylabel('T')
-    ax1.set_title('CO2: %f' % atmos['co2'][:,:,0].mean())
-    cbar = plt.colorbar(color)
-    cbar.set_label(r'$\frac{\partial ET}{\partial VPD}$'\
-                   ' ($W m^{-2}$  $Pa^{-1}$)')
+    fig.set_figheight(fig.get_figheight()*nplots)
 
-    vmax = 3.*result[:,:,1].std()
-    ax2 = fig.add_subplot(212)
-    color = ax2.pcolormesh(atmos['rh'][:,:,1], atmos['t_a'][:,:,1],\
-                           result[:,:,1], cmap='RdBu', vmin=-vmax, vmax=vmax)
-    ax2.set_xlabel('RH')
-    ax2.set_ylabel('T')
-    ax2.set_title('CO2: %f' % atmos['co2'][:,:,1].mean())
-    cbar = plt.colorbar(color)
-    cbar.set_label(r'$\frac{\partial ET}{\partial VPD}$'\
-                   ' ($W m^{-2}$  $Pa^{-1}$)')
-
+    _ax = []
+    for i, key in enumerate(result):
+        print(i)
+        print(key)
+        _ax.append(fig.add_subplot(nplots, 1, i+1))
+        vmax = result[key].mean() + 3.*result[key].std()
+        vmin = -vmax
+        if i > 0:
+            cmap = 'viridis'
+            vmax = None
+            vmin = None
+        else:
+            cmap = 'RdBu'
+        color = _ax[i].pcolormesh(atmos['rh'], atmos['t_a'], result[key],\
+                                 cmap=cmap, vmin=vmin, vmax=vmax)
+        _ax[i].set_xlabel('RH')
+        _ax[i].set_ylabel('T')
+        _ax[i].set_title('%s VPD Changing' % str(key))
+        cbar = plt.colorbar(color)
+        cbar.set_label(r'$\frac{\partial ET}{\partial VPD_{%s}}$'\
+                       ' ($W m^{-2}$  $Pa^{-1}$)' % key)
+    plt.tight_layout()
     plt.savefig('%s/temp/vpd.png' % os.environ['PLOTS'])
     plt.show(block=False)
     return
 
 
-def d_et_d_vpd(atmos, canopy, pert, var='vpd', thresh=2.):
+def d_et_d_vpd(atmos, canopy, pert, var=('vpd', 'vpd_leaf'), dvar=1.):
     """
     numerically calculate dET/dpert
 
@@ -79,36 +77,33 @@ def d_et_d_vpd(atmos, canopy, pert, var='vpd', thresh=2.):
     var :: variable key derivative is taken wrt
     thresh :: this is a p/m min/max threshold for the output
              sometimes the solver struggles, so this hopes to fix
+    dvar :: this is what the difference in the variable is (defaul 1 hPa)
     """
     # there is probably a much better way to do below
     _atmos = atmos.copy()
     _canopy = canopy.copy()
-    it = np.nditer([atmos['t_a'], atmos['rh'], atmos['vpd'],\
-                    atmos['co2'], pert[var], None])
-    for t_a, rh, vpd, co2, pert_vpd, result in it:
-        _atmos['t_a'] = t_a
-        _atmos['rh'] = rh
-        _atmos['vpd'] = vpd
-        _atmos['co2'] = co2
+    _it = np.nditer([atmos['t_a'], atmos['rh'], atmos['vpd'],\
+                    atmos['co2'], pert[var[0]], pert[var[1]], None])
+    for _atmos['t_a'], _atmos['rh'], _atmos['vpd'], _atmos['co2'],\
+        pert_vpd, pert_vpd2, result in _it:
         _pert = _atmos.copy()
-        _pert[var] = pert_vpd
-        result[...] = (pm.medlyn_penman_monteith(_atmos, _canopy)\
-                       -pm.medlyn_penman_monteith(_pert, _canopy))\
-                       /(_atmos[var]-_pert[var])
-
-
-    results = it.operands[-1]
-    # results[results < -thresh] = np.nan
-    # results[results > thresh] = np.nan
-    # plot_results(results, atmos)
-    return results
+        _pert[var[0]] = pert_vpd
+        _pert[var[1]] = pert_vpd2
+        # for key in _atmos:
+        #     print(key,_atmos[key])
+        # for key in _pert:
+        #     print(key,_pert[key])
+        result[...] = (pm.medlyn_penman_monteith(_pert, _canopy)\
+                       -pm.medlyn_penman_monteith(_atmos, _canopy))\
+                       /dvar
+    return _it.operands[-1]
 
 if str(__name__) == "__main__":
     ATMOS = {}
     ATMOS['r_n'] = 300. #W/m2
     ATMOS['rho_a'] = 1.205 #density kg/m3
-    ATMOS['t_a'] = np.linspace(15., 35.,50) # C
-    ATMOS['rh'] = np.linspace(40., 95.,50) # rel humdidity
+    ATMOS['t_a'] = np.linspace(15., 35., 50) # C
+    ATMOS['rh'] = np.linspace(40., 95., 50) # rel humdidity
     ATMOS['co2'] = 400.
     # ATMOS['co2'] = np.array([400.,800.])
     # ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
@@ -117,7 +112,7 @@ if str(__name__) == "__main__":
 
     ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
     ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
-    ATMOS['vpd_leaf'] = ATMOS['vpd'].copy()
+    #ATMOS['vpd_leaf'] = ATMOS['vpd'].copy()
 
 
     CANOPY = {}
@@ -127,11 +122,19 @@ if str(__name__) == "__main__":
 
 
     PERT = copy.deepcopy(ATMOS)
-    PERT['vpd'] += 1. # add 1 PA for perturbation
-    result_atm = d_et_d_vpd(ATMOS, CANOPY, PERT)
 
-    PERT['vpd_leaf'] += 1.
-    result_full = d_et_d_vpd(ATMOS, CANOPY, PERT)
+    RESULT = OrderedDict()
+
+    PERT['vpd_leaf'] = PERT['vpd'] + 1.
+    PERT['vpd'] += 1. # add 1 PA for perturbation
+    RESULT['full'] = d_et_d_vpd(ATMOS, CANOPY, PERT)
+
 
     PERT['vpd'] -= 1.
-    result_leaf = d_et_d_vpd(ATMOS, CANOPY, PERT)
+    RESULT['leaf'] = d_et_d_vpd(ATMOS, CANOPY, PERT)
+
+    PERT['vpd_leaf'] -= 1.
+    PERT['vpd'] += 1.
+    RESULT['atm'] = d_et_d_vpd(ATMOS, CANOPY, PERT)
+
+    plot_results(RESULT, ATMOS)

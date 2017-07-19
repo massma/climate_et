@@ -122,10 +122,12 @@ def optimizer_wrapper(_et, *env_vars):
     _atmos['r_s'] = 1./(_canopy['lai']\
                     *medlyn_g_w(vpd, _atmos['co2'], _atmos['rho_a'],\
                                _canopy['pft'], _et))
+
     if _et == 0.:
-        return 0.
+        f_out = 0.
     else:
-        return penman_monteith(_atmos, _canopy) - _et
+        f_out = penman_monteith(_atmos, _canopy) - _et
+    return f_out
 
 def medlyn_penman_monteith(_atmos, _canopy, et0=10000.):
     """
