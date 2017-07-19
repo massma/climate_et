@@ -87,6 +87,4 @@ if str(__name__) == "__main__":
     PERT = copy.deepcopy(ATMOS)
     PERT['vpd'] += 1. # add 1 hpa for perturbation
 
-
-
     RESULT = d_et_d_vpd(ATMOS, CANOPY, PERT)

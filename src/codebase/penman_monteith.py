@@ -35,7 +35,7 @@ WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
 WUE.index = WUE.PFT
 
 
-def medlyn_g_w(vpd, co2, pft, et):
+def medlyn_g_w(vpd, co2, rho, pft, _et):
     """
     returns leaf stomatal conductance in m/s
     et : W/m2
@@ -44,10 +44,12 @@ def medlyn_g_w(vpd, co2, pft, et):
     co2 : ppm
     """
     #convert g C -> mu mol C
-    wue = WUE.loc[atmos['pft'],'u_wue_yearly']*1.e6/12.011
+    wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
     # note bellow assumes that atmos co2 is same as leaf, might be bad
-    _g1 = MEDLYN.loc[atmos['pft'],'g1M'] # note this sqrt(kPa)
-    g_w = 1.6*(1. + _g1/np.sqrt(vpd/1000.))*wue*et/LV/sqrt(vpd/100.)/co2
+    _g1 = MEDLYN.loc[pft, 'g1M'] # note this sqrt(kPa)
+    # below is units mol air / m2 / s
+    g_w = 1.6*(1. + _g1/np.sqrt(vpd/1000.))*wue*_et/LV/np.sqrt(vpd/100.)/co2
+    g_w = g_w*R_AIR/rho
     return g_w
 
 
@@ -105,13 +107,13 @@ def penman_monteith(atmos, canopy):
            /(atmos['delta']+GAMMA*(1. + atmos['r_s']/_r_a))
     return _et
 
-def optmizer_wrapper(_et, atmos, canopy):
+def optimizer_wrapper(_et, *env_vars):
     """
     solves for ET using uWUE, designed to be called by
     scipy.optmize.fsolve
     """
-    med_coef = MEDLYN.loc[canopy['pft']]
-    atmos['r_s'] = 1./(atmos['lai']\
-                   *medlyn_g_w(atmos['vpd'], atmos['co2'], canopy['pft'], _et))
+    atmos, canopy = env_vars
+    atmos['r_s'] = 1./(canopy['lai']\
+                   *medlyn_g_w(atmos['vpd'], atmos['co2'], atmos['rho_a'],\
+                               canopy['pft'], _et))
     return penman_monteith(atmos, canopy) - _et
-
