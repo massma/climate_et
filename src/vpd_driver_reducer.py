@@ -110,12 +110,13 @@ if str(__name__) == "__main__":
     ATMOS['t_a'] = np.linspace(15., 35.,50) # C
     ATMOS['rh'] = np.linspace(40., 95.,50) # rel humdidity
     ATMOS['co2'] = np.array([400.,800.])
-
     ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
             np.meshgrid(ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'])
+    #ATMOS['t_a'], ATMOS['rh'], = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
 
     ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
     ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
+    ATMOS['vpd_leaf'] = ATMOS['vpd'].copy()
 
 
     CANOPY = {}
