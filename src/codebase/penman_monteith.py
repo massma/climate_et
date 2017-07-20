@@ -26,7 +26,7 @@ OREN = pd.read_csv('../dat/orens_model.csv')
 OREN.iloc[:, 2:6] = OREN.iloc[:, 2:6]/1000.
 OREN.index = OREN.PFT
 
-#below taken from Franks et al (with Berry)
+#see comments in files below for info on source, etc.
 MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
                      comment='#', delimiter=',')
 MEDLYN.index = MEDLYN.PFT
@@ -35,6 +35,13 @@ WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
                      comment='#', delimiter=',')
 WUE.index = WUE.PFT
 
+LAI = pd.read_csv('../dat/bonan_et_al_table4_lai.csv',\
+                     comment='#', delimiter=',')
+LAI.index = LAI.PFT
+
+DIM = pd.read_csv('../dat/bonan_et_al_table5_dimensions.csv',\
+                     comment='#', delimiter=',')
+DIM.index = DIM.PFT
 
 def medlyn_g_w(vpd, co2, rho, pft, _et):
     """
@@ -94,10 +101,11 @@ def penman_monteith(_atmos, _canopy):
         _atmos['vpd'] = _atmos['e_s']*(1.-_atmos['rh']/100.)
     _atmos['g_flux'] = 0.05*_atmos['r_n'] # soil heat flux (W/m2)
 
-    _canopy['d'] = 2./3.*_canopy['height'] #zero plain displacement
-    _canopy['z0m'] = 0.1*_canopy['height'] # height moisture source/sink
-    _canopy['z0h'] = _canopy['z0m'] # height of heat source/sink
-    _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
+    if 'z0m' not in _canopy:
+        _canopy['d'] = 2./3.*_canopy['height'] #zero plain displacement
+        _canopy['z0m'] = 0.1*_canopy['height'] # height moisture source/sink
+        _canopy['z0h'] = _canopy['z0m'] # height of heat source/sink
+        _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
     _r_a = r_a(_atmos, _canopy)
     if 'r_s' not in _atmos:
@@ -129,13 +137,21 @@ def optimizer_wrapper(_et, *env_vars):
         f_out = penman_monteith(_atmos, _canopy) - _et
     return f_out
 
-def medlyn_penman_monteith(_atmos, _canopy, et0=10000.):
+def medlyn_penman_monteith(_atmos, _canopy, et0=1000.):
     """
     This module solves for ET using scipy optmize fsolve with WUE.
     This is a relatively simple function so should always converge.
     Optional argument et0 is the first guess for et to pass to solver.
     """
     #et0 = np.ones(atmos['vpd'].shape)*et0
+
+    if 'height' not in _canopy:
+        _dim = DIM.loc[_canopy['pft']]
+        _canopy['z0m'] = _dim.rough_len
+        _canopy['height'] = _dim.rough_len/_dim.rough_len_factor
+        _canopy['d'] = _canopy['height']*_dim.displacement_height
+        _canopy['z0h'] = _canopy['z0m'] # height of heat source/sink
+        _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
     packed_array = []
     keys = _atmos.keys()
