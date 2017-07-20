@@ -107,7 +107,6 @@ def main():
         atmos['vpd'] = met.vapor_pres(atmos['t_a'])*(1.-atmos['rh']/100.)*100.
         #atmos['vpd_leaf'] = atmos['vpd'].copy()
 
-
         canopy = {}
         canopy['pft'] = pft
         canopy['lai'] = 1. # leaf area index pierre says 1 max feasible
