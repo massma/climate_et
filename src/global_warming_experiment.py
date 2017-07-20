@@ -68,7 +68,7 @@ def gw_experiment_wrapper(atmos, canopy, gw_pert):
     """
 
     result = {}
-    ctrl = pm.medlyn_penman_monteith(atmos, canopy)
+    ctrl = pm.recursive_penman_monteith(atmos, canopy)
 
     # be careful below b/c if altering a buch of vars then the
     # combinations could get out of control
@@ -81,7 +81,7 @@ def gw_experiment_wrapper(atmos, canopy, gw_pert):
             newkey = '-'.join(pair)
             exp_dict['vpd'] = met.vapor_pres(exp_dict['t_a'])\
                               *(1.-exp_dict['rh']/100.)*100.
-            result[newkey] = pm.medlyn_penman_monteith(exp_dict, canopy)-ctrl
+            result[newkey] = pm.recursive_penman_monteith(exp_dict, canopy)-ctrl
 
     plot_results(result)
     return result
@@ -99,8 +99,7 @@ if str(__name__) == "__main__":
 
     CANOPY = {}
     CANOPY['pft'] = 'DBF'
-    CANOPY['height'] = 10. # plant heigh m
-    CANOPY['lai'] = 8. # leaf area index pierre says 1 max feasible
+    CANOPY['stomatal_model'] = 'medlyn'
 
     GW_PERT = {}
     GW_PERT['t_a'] = np.linspace(0., 3.7)

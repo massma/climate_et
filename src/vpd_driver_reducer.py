@@ -9,6 +9,7 @@ import importlib
 from collections import OrderedDict
 import time
 import numpy as np
+import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import codebase.penman_monteith as pm
@@ -24,6 +25,11 @@ FONT = {'family' : 'normal',
 mpl.rc('font', **FONT)
 
 plt.close('all')
+
+LAI = pd.read_csv('../dat/bonan_et_al_table4_lai.csv',\
+                     comment='#', delimiter=',')
+LAI.index = LAI.PFT
+
 
 def plot_results(result, atmos, canopy):
     """plot GW experiment results"""
@@ -48,14 +54,15 @@ def plot_results(result, atmos, canopy):
                                  cmap=cmap, vmin=vmin, vmax=vmax)
         _ax[i].set_xlabel('RH')
         _ax[i].set_ylabel('T')
-        _ax[i].set_title('PFT: %s; %s VPD Changing'\
-                         % (canopy['pft'], str(key)))
+        _ax[i].set_title('PFT: %s; Model: %s; %s VPD Changing'\
+                         % (canopy['pft'], canopy['stomatal_model'], str(key)))
         cbar = plt.colorbar(color)
         cbar.set_label(r'$\frac{\partial ET}{\partial VPD_{%s}}$'\
                        ' ($W m^{-2}$  $Pa^{-1}$)' % key)
     plt.tight_layout()
-    plt.savefig('%s/climate_et/%s_vpd.png'\
-                % (os.environ['PLOTS'], canopy['pft']))
+    plt.savefig('%s/climate_et/%s_%s_vpd_debug.png'\
+                % (os.environ['PLOTS'], canopy['pft'],\
+                   canopy['stomatal_model']))
     plt.show(block=False)
     return
 
@@ -82,14 +89,17 @@ def d_et_d_vpd(atmos, canopy, pert, dvar=1.):
     dvar :: this is what the difference in the variable is (defaul 1 hPa)
     """
 
-    result = (pm.medlyn_penman_monteith(pert, canopy)\
-                       -pm.medlyn_penman_monteith(atmos, canopy))\
+    result = (pm.recursive_penman_monteith(pert, canopy)\
+              -pm.recursive_penman_monteith(atmos, canopy))\
                        /dvar
     return result
 
 def main():
-    pfts = ['CRO', 'DBF', 'C3G', 'C4G', 'ENF', 'SH']
-    nvars = 100
+    """wrapper for main script"""
+    wue = pd.read_csv('../dat/zhou_et_al_table_4.csv',
+                        comment='#', delimiter=',')
+    pfts = wue.PFT.values[:-1]
+    nvars = 20
     for pft in pfts:
         time_start = time.time()
         atmos = {}
@@ -109,7 +119,7 @@ def main():
 
         canopy = {}
         canopy['pft'] = pft
-        canopy['lai'] = 1. # leaf area index pierre says 1 max feasible
+        canopy['stomatal_model'] = 'medlyn'
 
         pert = copy.deepcopy(atmos)
 
@@ -132,43 +142,3 @@ def main():
 
 if str(__name__) == "__main__":
     main()
-    # TIME = time.time()
-    # NVARS = 10
-    # ATMOS = {}
-    # ATMOS['r_n'] = 300. #W/m2
-    # ATMOS['rho_a'] = 1.205 #density kg/m3
-    # ATMOS['t_a'] = np.linspace(15., 35., NVARS) # C
-    # ATMOS['rh'] = np.linspace(40., 95., NVARS) # rel humdidity
-    # ATMOS['co2'] = 400.
-    # # ATMOS['co2'] = np.array([400.,800.])
-    # # ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'] = \
-    # #         np.meshgrid(ATMOS['t_a'], ATMOS['rh'], ATMOS['co2'])
-    # ATMOS['t_a'], ATMOS['rh'], = np.meshgrid(ATMOS['t_a'], ATMOS['rh'])
-
-    # ATMOS['u_z'] = 2. #wind speed at meas. hiehgt (m/s)
-    # ATMOS['vpd'] = met.vapor_pres(ATMOS['t_a'])*(1.-ATMOS['rh']/100.)*100.
-    # #ATMOS['vpd_leaf'] = ATMOS['vpd'].copy()
-
-
-    # CANOPY = {}
-    # CANOPY['pft'] = 'DBF'
-    # CANOPY['lai'] = 1. # leaf area index pierre says 1 max feasible
-
-
-    # PERT = copy.deepcopy(ATMOS)
-
-    # RESULT = OrderedDict()
-
-    # PERT['vpd_leaf'] = PERT['vpd'] + 1.
-    # PERT['vpd'] += 1. # add 1 PA for perturbation
-    # RESULT['full'] = d_et_d_vpd(ATMOS, CANOPY, PERT)
-
-    # PERT['vpd'] -= 1.
-    # RESULT['leaf'] = d_et_d_vpd(ATMOS, CANOPY, PERT)
-
-    # PERT['vpd_leaf'] -= 1.
-    # PERT['vpd'] += 1.
-    # RESULT['atm'] = d_et_d_vpd(ATMOS, CANOPY, PERT)
-
-    # plot_results(RESULT, ATMOS)
-    # print('time was %f s' % (time.time()-TIME))

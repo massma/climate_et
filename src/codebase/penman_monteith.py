@@ -27,9 +27,9 @@ OREN.iloc[:, 2:6] = OREN.iloc[:, 2:6]/1000.
 OREN.index = OREN.PFT
 
 #see comments in files below for info on source, etc.
-MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
+WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
                      comment='#', delimiter=',')
-MEDLYN.index = MEDLYN.PFT
+WUE_MEDLYN.index = WUE_MEDLYN.PFT
 
 WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
                      comment='#', delimiter=',')
@@ -43,9 +43,45 @@ DIM = pd.read_csv('../dat/bonan_et_al_table5_dimensions.csv',\
                      comment='#', delimiter=',')
 DIM.index = DIM.PFT
 
+ROUGH = pd.read_csv('../dat/wrf_roughness_length.csv',
+                    comment='#', delimiter=',')
+ROUGH.index = ROUGH.PFT
+
+MEDLYN = pd.read_csv('../dat/changjie_medlyn.csv',\
+                     comment='#', delimiter=',')
+#convert to m/s
+MEDLYN.iloc[:, 2:6] = MEDLYN.iloc[:, 2:6]/1000.
+MEDLYN.index = MEDLYN.PFT
+
+LEUNING = pd.read_csv('../dat/changjie_leuning.csv',\
+                     comment='#', delimiter=',')
+#convert to m/s
+LEUNING.iloc[:, 2:6] = LEUNING.iloc[:, 2:6]/1000.
+LEUNING.index = LEUNING.PFT
+
+FITTED_M = pd.read_csv('../dat/changjie_fitted_m.csv',\
+                     comment='#', delimiter=',')
+#convert to m/s
+FITTED_M.iloc[:, 2:6] = FITTED_M.iloc[:, 2:6]/1000.
+FITTED_M.index = FITTED_M.PFT
+
+
+def oren_r_e(vpd, pft):
+    """
+    calculates ecosystem canopy resistance given vpd and plant functional type
+    vpd : vapor pressure deficit in Pa
+    pft : three letter plant functional type
+    returns canopy resistance in s/m
+    """
+    g_1 = OREN.loc[pft].G1mean
+    g_2 = OREN.loc[pft].G2mean
+    return 1./(g_1 + g_2*np.log(vpd/1000.))
+
 def medlyn_g_w(vpd, co2, rho, pft, _et):
     """
     returns leaf stomatal conductance in m/s
+    this function, unlike the others, uses LAI, but this also
+    creates problems
     et : W/m2
     pft : planf functional type
     vpd : Pa
@@ -54,23 +90,51 @@ def medlyn_g_w(vpd, co2, rho, pft, _et):
     #convert g C -> mu mol C
     wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
     # note bellow assumes that atmos co2 is same as leaf, might be bad
-    _g1 = MEDLYN.loc[pft, 'g1M'] # note this sqrt(kPa)
+    _g1 = WUE_MEDLYN.loc[pft, 'g1M'] # note this sqrt(kPa)
     # below is units mol air / m2 / s
     g_w = 1.6*(1. + _g1/np.sqrt(vpd/1000.))*wue*_et/LV/np.sqrt(vpd/100.)/co2
     g_w = g_w*R_AIR/rho
     return g_w
 
-
-def oren_r_l(vpd, pft):
+def medlyn_r_e(vpd, co2, pft, _et):
     """
-    calculates canopy resistance given vpd and plant functional type
+    calculates ecosystem canopy resistance given vpd and plant functional type
     vpd : vapor pressure deficit in Pa
     pft : three letter plant functional type
     returns canopy resistance in s/m
     """
-    g_1 = OREN.loc[pft].G1mean
-    g_2 = OREN.loc[pft].G2mean
-    return 1./(g_1 + g_2*np.log(vpd/1000.))
+    #convert g C -> mu mol C
+    wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+    g_0 = MEDLYN.loc[pft].G0mean
+    g_1 = MEDLYN.loc[pft].G1mean
+    return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.)/co2)
+
+def leuning_r_e(vpd, co2, pft, _et):
+    """
+    calculates ecosystem canopy resistance given vpd and plant functional type
+    vpd : vapor pressure deficit in Pa
+    pft : three letter plant functional type
+    returns canopy resistance in s/m
+    """
+    #convert g C -> mu mol C
+    wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+    g_0 = LEUNING.loc[pft].G0mean
+    g_1 = LEUNING.loc[pft].G1mean
+    return 1./(g_0 + g_1/(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.)/co2)
+
+def fitted_m_r_e(vpd, co2, pft, _et):
+    """
+    calculates ecosystem canopy resistance given vpd and plant functional type
+    vpd : vapor pressure deficit in Pa
+    pft : three letter plant functional type
+    returns canopy resistance in s/m
+    """
+    #convert g C -> mu mol C
+    wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+    g_0 = FITTED_M.loc[pft].G0mean
+    g_1 = FITTED_M.loc[pft].G1mean
+    _m = FITTED_M.loc[pft].m_mean
+    return 1./(g_0 + g_1/(vpd/1000.)**_m*wue*_et/LV/np.sqrt(vpd/100.)/co2)
 
 def r_a(_atmos, _canopy):
     """
@@ -80,10 +144,6 @@ def r_a(_atmos, _canopy):
     return (np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0m'])\
             *np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0h']))\
             /K**2/_atmos['u_z']
-
-def r_s(_atmos, _canopy):
-    """returns _canopy mean stomatal resistance in s/m"""
-    return oren_r_l(_atmos['vpd'], _canopy['pft'])/_canopy['lai']
 
 def penman_monteith(_atmos, _canopy):
     """
@@ -109,7 +169,7 @@ def penman_monteith(_atmos, _canopy):
 
     _r_a = r_a(_atmos, _canopy)
     if 'r_s' not in _atmos:
-        _atmos['r_s'] = r_s(_atmos, _canopy)
+        _atmos['r_s'] = oren_r_e(_atmos['vpd'], _canopy['pft'])
 
     _et = (_atmos['delta']*\
            (_atmos['r_n']-_atmos['g_flux'])+\
@@ -127,28 +187,50 @@ def optimizer_wrapper(_et, *env_vars):
         vpd = _atmos['vpd_leaf']
     else:
         vpd = _atmos['vpd']
-    _atmos['r_s'] = 1./(_canopy['lai']\
-                    *medlyn_g_w(vpd, _atmos['co2'], _atmos['rho_a'],\
-                               _canopy['pft'], _et))
 
-    if _et == 0.:
-        f_out = 0.
+    if _canopy['stomatal_model'] == 'medlyn':
+        _atmos['r_s'] = medlyn_r_e(_atmos['vpd'], _atmos['co2'],\
+                                   _canopy['pft'], _et)
+    elif _canopy['stomatal_model'] == 'leuning':
+        _atmos['r_s'] = leuning_r_e(_atmos['vpd'], _atmos['co2'],\
+                                    _canopy['pft'], _et)
+    elif _canopy['stomatal_model'] == 'fitted_m':
+        _atmos['r_s'] = fitted_m_r_e(_atmos['vpd'], _atmos['co2'],\
+                                     _canopy['pft'], _et)
+    elif _canopy['stomatal_model'] == 'medlyn_lai':
+        _atmos['r_s'] = 1./(_canopy['lai']\
+                            *medlyn_g_w(vpd, _atmos['co2'], _atmos['rho_a'],\
+                                        _canopy['pft'], _et))
     else:
-        f_out = penman_monteith(_atmos, _canopy) - _et
+        print("ERROR!!! Neither r_s nor stomatal_model defined!")
+
+    # if _et == 0.:
+    #     f_out = 0.
+    # else:
+    #     f_out = penman_monteith(_atmos, _canopy) - _et
+    f_out = penman_monteith(_atmos, _canopy) - _et
     return f_out
 
-def medlyn_penman_monteith(_atmos, _canopy, et0=1000.):
+def recursive_penman_monteith(_atmos, _canopy, et0=1000.):
     """
     This module solves for ET using scipy optmize fsolve with WUE.
     This is a relatively simple function so should always converge.
     Optional argument et0 is the first guess for et to pass to solver.
     """
     #et0 = np.ones(atmos['vpd'].shape)*et0
-
     if 'height' not in _canopy:
-        _dim = DIM.loc[_canopy['pft']]
-        _canopy['z0m'] = _dim.rough_len
-        _canopy['height'] = _dim.rough_len/_dim.rough_len_factor
+        try:
+            _dim = DIM.loc[_canopy['pft']]
+        except KeyError:
+            # dimesnsions are roughly either forest or not, so in case
+            # we don't have dim. data for a PFT use that distiction
+            if _canopy['pft'][-1] == 'F':
+                _dim = DIM.loc['DBF']
+            else:
+                _dim = DIM.loc['SH']
+        _rough = ROUGH.loc[_canopy['pft'], 'z0']
+        _canopy['z0m'] = _rough
+        _canopy['height'] = _rough/_dim.rough_len_factor
         _canopy['d'] = _canopy['height']*_dim.displacement_height
         _canopy['z0h'] = _canopy['z0m'] # height of heat source/sink
         _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
