@@ -96,7 +96,7 @@ def medlyn_g_w(vpd, co2, rho, pft, _et):
     g_w = g_w*R_AIR/rho
     return g_w
 
-def medlyn_r_e(vpd, co2, pft, _et):
+def medlyn_r_e(vpd, pft, _et):
     """
     calculates ecosystem canopy resistance given vpd and plant functional type
     vpd : vapor pressure deficit in Pa
@@ -107,9 +107,9 @@ def medlyn_r_e(vpd, co2, pft, _et):
     wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
     g_0 = MEDLYN.loc[pft].G0mean
     g_1 = MEDLYN.loc[pft].G1mean
-    return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.)/co2)
+    return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
 
-def leuning_r_e(vpd, co2, pft, _et):
+def leuning_r_e(vpd, pft, _et):
     """
     calculates ecosystem canopy resistance given vpd and plant functional type
     vpd : vapor pressure deficit in Pa
@@ -120,9 +120,9 @@ def leuning_r_e(vpd, co2, pft, _et):
     wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
     g_0 = LEUNING.loc[pft].G0mean
     g_1 = LEUNING.loc[pft].G1mean
-    return 1./(g_0 + g_1/(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.)/co2)
+    return 1./(g_0 + g_1/(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
 
-def fitted_m_r_e(vpd, co2, pft, _et):
+def fitted_m_r_e(vpd, pft, _et):
     """
     calculates ecosystem canopy resistance given vpd and plant functional type
     vpd : vapor pressure deficit in Pa
@@ -134,7 +134,7 @@ def fitted_m_r_e(vpd, co2, pft, _et):
     g_0 = FITTED_M.loc[pft].G0mean
     g_1 = FITTED_M.loc[pft].G1mean
     _m = FITTED_M.loc[pft].m_mean
-    return 1./(g_0 + g_1/(vpd/1000.)**_m*wue*_et/LV/np.sqrt(vpd/100.)/co2)
+    return 1./(g_0 + g_1/(vpd/1000.)**_m*wue*_et/LV/np.sqrt(vpd/100.))
 
 def r_a(_atmos, _canopy):
     """
@@ -189,14 +189,11 @@ def optimizer_wrapper(_et, *env_vars):
         vpd = _atmos['vpd']
 
     if _canopy['stomatal_model'] == 'medlyn':
-        _atmos['r_s'] = medlyn_r_e(_atmos['vpd'], _atmos['co2'],\
-                                   _canopy['pft'], _et)
+        _atmos['r_s'] = medlyn_r_e(vpd, _canopy['pft'], _et)
     elif _canopy['stomatal_model'] == 'leuning':
-        _atmos['r_s'] = leuning_r_e(_atmos['vpd'], _atmos['co2'],\
-                                    _canopy['pft'], _et)
+        _atmos['r_s'] = leuning_r_e(vpd, _canopy['pft'], _et)
     elif _canopy['stomatal_model'] == 'fitted_m':
-        _atmos['r_s'] = fitted_m_r_e(_atmos['vpd'], _atmos['co2'],\
-                                     _canopy['pft'], _et)
+        _atmos['r_s'] = fitted_m_r_e(vpd, _canopy['pft'], _et)
     elif _canopy['stomatal_model'] == 'medlyn_lai':
         _atmos['r_s'] = 1./(_canopy['lai']\
                             *medlyn_g_w(vpd, _atmos['co2'], _atmos['rho_a'],\

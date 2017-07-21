@@ -138,6 +138,11 @@ def main():
 
         plot_results(result, atmos, canopy)
         print('for pft %s, time was %f s' % (pft, time.time()-time_start))
+    os.system('rm -rf %s/%s_full.png'\
+              % (os.environ['PLOTS'], canopy['stomatal_model']))
+    os.system('convert +append %s/*%s*.png %s/%s_full.png'\
+              % (os.environ['PLOTS'], canopy['stomatal_model'],\
+                 os.environ['PLOTS'], canopy['stomatal_model']))
     return
 
 if str(__name__) == "__main__":
