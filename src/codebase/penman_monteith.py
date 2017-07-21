@@ -16,6 +16,7 @@ CP = 1004. # specific heat air
 GAMMA = 66. # psychrometric constant
 LV = 2.5e6
 R_AIR = .0289645 # mean kg/mol dry air
+R_STAR = 8.3144598 #J /mol/K
 
 # From Changjie's oren model for stomatal resistance
 # see "Survey and synthesis of intra- and interspecific variation
@@ -52,6 +53,15 @@ MEDLYN = pd.read_csv('../dat/changjie_medlyn.csv',\
 #convert to m/s
 MEDLYN.iloc[:, 2:6] = MEDLYN.iloc[:, 2:6]/1000.
 MEDLYN.index = MEDLYN.PFT
+
+
+ADAM_MEDLYN = pd.read_csv('../dat/adam_medlyn.csv',\
+                     comment='#', delimiter=',')
+#now I take care of below conversion in adam funciton, b/c units
+# for this are acutall mol/m2/s
+# #convert to m/s - note only need to convert g0 b/c of functional form
+# ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
+ADAM_MEDLYN.index = ADAM_MEDLYN.PFT
 
 LEUNING = pd.read_csv('../dat/changjie_leuning.csv',\
                      comment='#', delimiter=',')
@@ -108,6 +118,21 @@ def medlyn_r_e(vpd, pft, _et):
     g_0 = MEDLYN.loc[pft].G0mean
     g_1 = MEDLYN.loc[pft].G1mean
     return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
+
+def adam_medlyn_r_e(vpd, t_a, pft, _et):
+    """
+    calculates ecosystem canopy resistance given vpd and plant functional type
+    vpd : vapor pressure deficit in Pa
+    pft : three letter plant functional type
+    returns canopy resistance in s/m
+    """
+    #convert g C -> mu mol C
+    wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+    # below assumes 1000hPa pressure
+    g_0 = ADAM_MEDLYN.loc[pft].g0_mean*(R_STAR*(273.15 + t_a))/100000.
+    g_1 = ADAM_MEDLYN.loc[pft].g1_mean
+    return 1./(g_0*wue*_et/LV/np.sqrt(vpd/100.)*(1. + g_1/np.sqrt(vpd/1000.)))
+
 
 def leuning_r_e(vpd, pft, _et):
     """
@@ -194,6 +219,9 @@ def optimizer_wrapper(_et, *env_vars):
         _atmos['r_s'] = leuning_r_e(vpd, _canopy['pft'], _et)
     elif _canopy['stomatal_model'] == 'fitted_m':
         _atmos['r_s'] = fitted_m_r_e(vpd, _canopy['pft'], _et)
+    elif _canopy['stomatal_model'] == 'adam_medlyn':
+        _atmos['r_s'] = adam_medlyn_r_e(vpd, _atmos['t_a'],\
+                                        _canopy['pft'], _et)
     elif _canopy['stomatal_model'] == 'medlyn_lai':
         _atmos['r_s'] = 1./(_canopy['lai']\
                             *medlyn_g_w(vpd, _atmos['co2'], _atmos['rho_a'],\

@@ -94,12 +94,11 @@ def d_et_d_vpd(atmos, canopy, pert, dvar=1.):
                        /dvar
     return result
 
-def main():
+def main(nvars=10):
     """wrapper for main script"""
     wue = pd.read_csv('../dat/zhou_et_al_table_4.csv',
                         comment='#', delimiter=',')
     pfts = wue.PFT.values[:-1]
-    nvars = 20
     for pft in pfts:
         time_start = time.time()
         atmos = {}
@@ -119,7 +118,7 @@ def main():
 
         canopy = {}
         canopy['pft'] = pft
-        canopy['stomatal_model'] = 'medlyn'
+        canopy['stomatal_model'] = 'adam_medlyn'
 
         pert = copy.deepcopy(atmos)
 
@@ -138,12 +137,13 @@ def main():
 
         plot_results(result, atmos, canopy)
         print('for pft %s, time was %f s' % (pft, time.time()-time_start))
-    os.system('rm -rf %s/%s_full.png'\
+    os.system('rm -rf %s/climate_et/%s_full.png'\
               % (os.environ['PLOTS'], canopy['stomatal_model']))
-    os.system('convert +append %s/*%s*.png %s/%s_full.png'\
+    os.system('convert +append %s/climate_et/*%s*.png '\
+              '%s/climate_et/%s_full.png'\
               % (os.environ['PLOTS'], canopy['stomatal_model'],\
                  os.environ['PLOTS'], canopy['stomatal_model']))
-    return
+    return atmos
 
 if str(__name__) == "__main__":
-    main()
+    ATMOS = main()

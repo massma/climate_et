@@ -84,7 +84,7 @@ def gw_experiment_wrapper(atmos, canopy, gw_pert):
             result[newkey] = pm.recursive_penman_monteith(exp_dict, canopy)-ctrl
 
     plot_results(result)
-    return result
+    return result, ctrl
 
 if str(__name__) == "__main__":
     ATMOS = {}
@@ -99,10 +99,10 @@ if str(__name__) == "__main__":
 
     CANOPY = {}
     CANOPY['pft'] = 'DBF'
-    CANOPY['stomatal_model'] = 'medlyn'
+    CANOPY['stomatal_model'] = 'adam_medlyn'
 
     GW_PERT = {}
     GW_PERT['t_a'] = np.linspace(0., 3.7)
     GW_PERT['r_n'] = np.linspace(0, 8.5)
     GW_PERT['co2'] = np.linspace(350., 1200.) - 350.
-    RESULT = gw_experiment_wrapper(ATMOS, CANOPY, GW_PERT)
+    RESULT, CTRL = gw_experiment_wrapper(ATMOS, CANOPY, GW_PERT)

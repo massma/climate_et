@@ -46,7 +46,9 @@ def calc_coef():
             print("file %s 's pft has no uWUE, moving on" % filename)
             continue
         vpd = data['VPD']
+        # note below is in mol/m2/s
         g_s = data['Gs']
+        #g_s = 1./data['Rs']
         gpp = data['GEP']
         _et = data['LE']
         index = ((~np.isnan(gpp)) & (~np.isnan(g_s)) &\
@@ -89,11 +91,11 @@ def generate_coef_stats(_coef):
     return pd.DataFrame(data=_dout)
 
 def main():
-    """wrapper for main function"""
+    """wrapper for main script"""
     coef = calc_coef()
     statistics = coef.groupby('PFT').apply(generate_coef_stats)
     statistics.index = statistics.index.droplevel(1)
-    outdir = '../dat/adam_medlyn_model.csv'
+    outdir = '../dat/adam_medlyn.csv'
     statistics.to_csv(outdir)
     return
 
