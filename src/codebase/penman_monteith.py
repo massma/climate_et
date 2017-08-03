@@ -12,7 +12,7 @@ from scipy.optimize import fsolve
 #geophysical constats
 VP_FACTOR = 100. #convert hPa -> Pa
 K = 0.41 # vonkarmans constant
-CP = 1004. # specific heat air
+CP = 1012. # specific heat air, got from Changjie (I usually use 1004)
 GAMMA = 66. # psychrometric constant
 LV = 2.5e6
 R_AIR = .0289645 # mean kg/mol dry air
@@ -170,6 +170,19 @@ def r_a(_atmos, _canopy):
             *np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0h']))\
             /K**2/_atmos['u_z']
 
+def delta(_atmos):
+    """calculates delta in Pa/C"""
+    return 4098.*_atmos['e_s']/((237.3+TA)**2)
+
+def gamma(_atmos):
+    """calculates gamma in Pa/C from pressure and T"""
+    return 1.e-6*CP*_atmos['p_a']/(0.622*(2.501-0.00236*_atmos['t_a']))
+
+def rho_air(_atmos):
+    """returns rho in kg/m3"""
+    return (_atmos['p_a']/(287.05*(_atmos['t_a']+273.15)))\
+        *(1.-(0.378*_atmos['e_s']/_atmos['p_a']*_atmos['rh']/100.))
+
 def penman_monteith(_atmos, _canopy):
     """
     returns ET in W/m2
@@ -177,9 +190,10 @@ def penman_monteith(_atmos, _canopy):
     _canopy :: class of _canopy vars
     """
     #derived constants
-    _atmos['delta'] = (met.vapor_pres(_atmos['t_a']+0.1)\
-                     -met.vapor_pres(_atmos['t_a']))/0.1*VP_FACTOR
     _atmos['e_s'] = met.vapor_pres(_atmos['t_a'])*VP_FACTOR
+    _atmos['delta'] = delta(_atmos)
+    _atmos['gamma'] = gamma(_atmos)
+    _atmos['rho_a'] = rho_air(_atmos)
 
     # below allows us to provide vpd
     if 'vpd' not in _atmos:
@@ -199,7 +213,7 @@ def penman_monteith(_atmos, _canopy):
     _et = (_atmos['delta']*\
            (_atmos['r_n']-_atmos['g_flux'])+\
            _atmos['rho_a']*CP*_atmos['vpd']/_r_a)\
-           /(_atmos['delta']+GAMMA*(1. + _atmos['r_s']/_r_a))
+           /(_atmos['delta']+_atmos['gamma']*(1. + _atmos['r_s']/_r_a))
     return _et
 
 def optimizer_wrapper(_et, *env_vars):
