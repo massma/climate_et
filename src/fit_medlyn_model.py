@@ -46,13 +46,36 @@ def calc_coef():
     except KeyError:
       print("file %s 's pft has no uWUE, moving on" % filename)
       continue
-    vpd = data['VPD']
+
+    atmos = {}
+    atmos['t_a'] = np.squeeze(data['TA']) #C
+    atmos['rh'] = np.squeeze(data['RH']*100.) #percent
+    atmos['h'] = np.squeeze(data['H'])
+    atmos['r_n'] = np.squeeze(data['NETRAD'])
+    atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
+    atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
+    atmos['u_z'] = np.squeeze(data['WS'])
+
+    canopy = {}
+    canopy['g_flux'] = np.squeeze(data['G'])
+    canopy['height'] = float(sitelist.loc[data['sitecode'], 'Canopy_h'])
+    canopy['zmeas'] = float(sitelist.loc[data['sitecode'], 'Measure_h'])
+    canopy['r_s'] = np.squeeze(data['Rs']) #s/m
+
+
+    atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
+    canopy['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
+                        (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
+                       /np.squeeze(data['LE'])-atmos['delta'])\
+                      /atmos['gamma'])-1.)*atmos['r_a']
+
+    vpd = atmos['vpd']
     # note below is in mol/m2/s
-    g_s = data['Gs']
-    # below is mm/s
-    #g_s = 1./data['Rs']
-    gpp = data['GEP']
-    _et = data['LE']
+    #g_s = data['Gs']
+    # below is mm/s ?
+    g_s = 1./canopy['r_s']
+    gpp = np.squeeze(data['GEP'])
+    _et = np.squeeze(data['LE'])
     index = ((~np.isnan(gpp)) & (~np.isnan(g_s)) &\
          (~np.isnan(vpd)) & (~np.isnan(data['SWC'])) &
          (~np.isnan(_et)))
