@@ -28,7 +28,10 @@ SITELIST.index = SITELIST.Site
 #   return _g[0]*_gpp*(1. + _g[1]/np.sqrt(_vpd)) - _g_s
 
 def medlyn_fit(_g, *data):
-  """function to fit using leastsq"""
+  """
+  function to fit using leastsq,
+  vpd should be in kPa, _g and _g_s in mm/s, and et in q/m2
+  """
   _vpd, _g_s, _pft, _et = data
   wue = WUE.loc[_pft, 'u_wue_yearly']*1.e6/12.011
   return _g[0]*wue*_et/LV/np.sqrt(_vpd*10.)\
@@ -79,13 +82,16 @@ def calc_coef():
     # note below is in mol/m2/s
     #g_s = data['Gs']
     # below is mm/s ?
-    g_s = 1./canopy['r_s']/1000.
+    g_s = 1./canopy['r_s']*1000.
+    g_s[g_s < 0.] = np.nan
+    g_s[g_s > 100.] = np.nan
+    vpd[vpd <=0.] = np.nan
     _et = np.squeeze(data['LE'])
     index = ((~np.isnan(g_s)) & (~np.isnan(vpd))\
              & (~np.isnan(np.squeeze(data['SWC']))) &
              (~np.isnan(_et)))
     g_s = g_s[index]
-    vpd = vpd[index]
+    vpd = vpd[index]/1000.
     _et = _et[index]
     print(_et.shape)
     if _et.size == 0:
@@ -93,7 +99,7 @@ def calc_coef():
       continue
     _g, ier = leastsq(medlyn_fit, [0.04, 0.7],\
                args=(vpd, g_s, pft, _et))
-    print(_g[1]/np.sqrt(vpd.mean()))
+    print(g_s.mean())
     if (ier <= 4) & (ier > 0):
       _coef.loc[filename, 'g0'] = _g[0]
       _coef.loc[filename, 'g1'] = _g[1]
@@ -105,8 +111,9 @@ def calc_coef():
     _coef.loc[filename, 'count'] = _et.size
   print('wall time was %f s' % (time.time()-time_start))
   print('r2: %f' % _coef.r2.mean())
-  return _coef.dropna()
-  return _coef
+  #return _coef.dropna()
+  return _coef.dropna(), vpd
+
 def generate_coef_stats(_coef):
   """
   calcualted mean and std deviation of each PFT
@@ -123,14 +130,14 @@ def generate_coef_stats(_coef):
 
 def main():
   """wrapper for main script"""
-  coef = calc_coef()
+  coef, vpd = calc_coef()
 
   # statistics = coef.groupby('PFT').apply(generate_coef_stats)
   # statistics.index = statistics.index.droplevel(1)
   # outdir = '../dat/adam_medlyn.csv'
   # statistics.to_csv(outdir)
-  return coef
+  return coef, vpd
 
 if str(__name__) == '__main__':
-  COEF = main()
+  COEF, VPD = main()
 
