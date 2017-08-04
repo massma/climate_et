@@ -244,11 +244,11 @@ def rho_air(_atmos):
   return (_atmos['p_a']/(287.05*(_atmos['t_a']+273.15)))\
     *(1.-(0.378*_atmos['e_s']/_atmos['p_a']*_atmos['rh']/100.))
 
-def penman_monteith(_atmos, _canopy):
+def penman_monteith_prep(_atmos, _canopy):
   """
-  returns ET in W/m2
-  _atmos :: dict of atmospheric vars
-  _canopy :: class of _canopy vars
+  does calculations on data sructures
+  atmos and canopy requred by penman moneith
+  returns updated data structures
   """
   #derived constants
   _atmos['e_s'] = met.vapor_pres(_atmos['t_a'])*VP_FACTOR
@@ -271,17 +271,27 @@ def penman_monteith(_atmos, _canopy):
     _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
   if 'ustar' in _atmos:
-    _r_a = corrected_r_a(_atmos, _canopy)
+    _atmos['r_a'] = corrected_r_a(_atmos, _canopy)
   else:
-    _r_a = r_a(_atmos, _canopy)
+    _atmos['r_a'] = r_a(_atmos, _canopy)
 
   if 'r_s' not in _canopy:
     _canopy['r_s'] = oren_r_e(_atmos['vpd'], _canopy['pft'])
 
+  return _atmos, _canopy
+
+def penman_monteith(_atmos, _canopy):
+  """
+  returns ET in W/m2
+  _atmos :: dict of atmospheric vars
+  _canopy :: class of _canopy vars
+  """
+  _atmos, _canopy = penman_monteith_prep(_atmos, _canopy)
+
   _et = (_atmos['delta']*\
        (_atmos['r_n']-_canopy['g_flux'])+\
-       _atmos['rho_a']*CP*_atmos['vpd']/_r_a)\
-       /(_atmos['delta']+_atmos['gamma']*(1. + _canopy['r_s']/_r_a))
+         _atmos['rho_a']*CP*_atmos['vpd']/_atmos['r_a'])\
+       /(_atmos['delta']+_atmos['gamma']*(1. + _canopy['r_s']/_atmos['r_a']))
   return _et
 
 def optimizer_wrapper(_et, *env_vars):
