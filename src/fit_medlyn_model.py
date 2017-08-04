@@ -7,6 +7,7 @@ import os
 import glob
 import pandas as pd
 import numpy as np
+import codebase.penman_monteith as pm
 from scipy.optimize import leastsq
 import scipy.io as io
 
@@ -16,6 +17,11 @@ WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
 WUE.index = WUE.PFT
 LV = 2.5e6
 
+SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
+                       'Site_list_(canopy_height).csv' % os.environ['DATA'],\
+                       delimiter=',')
+SITELIST.index = SITELIST.Site
+
 # def medlyn_fit(_g, *data):
 #   """function to fit using leastsq"""
 #   _vpd, _gpp, _g_s, pft = data
@@ -23,7 +29,7 @@ LV = 2.5e6
 
 def medlyn_fit(_g, *data):
   """function to fit using leastsq"""
-  _vpd, _gpp, _g_s, _pft, _et = data
+  _vpd, _g_s, _pft, _et = data
   wue = WUE.loc[_pft, 'u_wue_yearly']*1.e6/12.011
   return _g[0]*wue*_et/LV/np.sqrt(_vpd*10.)\
     *(1. + _g[1]/np.sqrt(_vpd)) - _g_s
@@ -58,8 +64,8 @@ def calc_coef():
 
     canopy = {}
     canopy['g_flux'] = np.squeeze(data['G'])
-    canopy['height'] = float(sitelist.loc[data['sitecode'], 'Canopy_h'])
-    canopy['zmeas'] = float(sitelist.loc[data['sitecode'], 'Measure_h'])
+    canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
+    canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
     canopy['r_s'] = np.squeeze(data['Rs']) #s/m
 
 
@@ -73,34 +79,34 @@ def calc_coef():
     # note below is in mol/m2/s
     #g_s = data['Gs']
     # below is mm/s ?
-    g_s = 1./canopy['r_s']
-    gpp = np.squeeze(data['GEP'])
+    g_s = 1./canopy['r_s']/1000.
     _et = np.squeeze(data['LE'])
-    index = ((~np.isnan(gpp)) & (~np.isnan(g_s)) &\
-         (~np.isnan(vpd)) & (~np.isnan(data['SWC'])) &
-         (~np.isnan(_et)))
+    index = ((~np.isnan(g_s)) & (~np.isnan(vpd))\
+             & (~np.isnan(np.squeeze(data['SWC']))) &
+             (~np.isnan(_et)))
     g_s = g_s[index]
-    gpp = gpp[index]
     vpd = vpd[index]
     _et = _et[index]
-    #print(_et.shape)
-
+    print(_et.shape)
+    if _et.size == 0:
+      print('filename %s has no data' % filename)
+      continue
     _g, ier = leastsq(medlyn_fit, [0.04, 0.7],\
-               args=(vpd, gpp, g_s, pft, _et))
+               args=(vpd, g_s, pft, _et))
     print(_g[1]/np.sqrt(vpd.mean()))
     if (ier <= 4) & (ier > 0):
       _coef.loc[filename, 'g0'] = _g[0]
       _coef.loc[filename, 'g1'] = _g[1]
     _coef.loc[filename, 'PFT'] = str(np.squeeze(data['cover_type']))
     _coef.loc[filename, 'r2'] = 1. - \
-                                np.sum(medlyn_fit(_g, vpd, gpp,\
+                                np.sum(medlyn_fit(_g, vpd,\
                                                   g_s, pft, _et)**2)\
-                                                  /np.sum((g_s - g_s.mean())**2)
+                                                /np.sum((g_s - g_s.mean())**2)
     _coef.loc[filename, 'count'] = _et.size
   print('wall time was %f s' % (time.time()-time_start))
   print('r2: %f' % _coef.r2.mean())
   return _coef.dropna()
-
+  return _coef
 def generate_coef_stats(_coef):
   """
   calcualted mean and std deviation of each PFT
@@ -118,12 +124,13 @@ def generate_coef_stats(_coef):
 def main():
   """wrapper for main script"""
   coef = calc_coef()
-  statistics = coef.groupby('PFT').apply(generate_coef_stats)
-  statistics.index = statistics.index.droplevel(1)
-  outdir = '../dat/adam_medlyn.csv'
-  statistics.to_csv(outdir)
-  return
+
+  # statistics = coef.groupby('PFT').apply(generate_coef_stats)
+  # statistics.index = statistics.index.droplevel(1)
+  # outdir = '../dat/adam_medlyn.csv'
+  # statistics.to_csv(outdir)
+  return coef
 
 if str(__name__) == '__main__':
-  main()
+  COEF = main()
 
