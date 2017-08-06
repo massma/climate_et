@@ -85,6 +85,7 @@ def calc_coef():
     g_s = 1./canopy['r_s']*1000.
     g_s[g_s < 0.] = np.nan
     g_s[g_s > 100.] = np.nan
+    #g_s = g_s/1000.*atmos['p_a']/(pm.R_STAR*(273.15+atmos['t_a']))
     vpd[vpd <=0.] = np.nan
     _et = np.squeeze(data['LE'])
     index = ((~np.isnan(g_s)) & (~np.isnan(vpd))\
@@ -111,8 +112,8 @@ def calc_coef():
     _coef.loc[filename, 'count'] = _et.size
   print('wall time was %f s' % (time.time()-time_start))
   print('r2: %f' % _coef.r2.mean())
-  #return _coef.dropna()
-  return _coef.dropna(), vpd
+  return _coef.dropna()
+
 
 def generate_coef_stats(_coef):
   """
@@ -130,14 +131,14 @@ def generate_coef_stats(_coef):
 
 def main():
   """wrapper for main script"""
-  coef, vpd = calc_coef()
-
-  # statistics = coef.groupby('PFT').apply(generate_coef_stats)
-  # statistics.index = statistics.index.droplevel(1)
-  # outdir = '../dat/adam_medlyn.csv'
-  # statistics.to_csv(outdir)
-  return coef, vpd
+  coef = calc_coef()
+  coef.to_csv('../dat/site_coef_mm_s_medlyn.csv')
+  statistics = coef.groupby('PFT').apply(generate_coef_stats)
+  statistics.index = statistics.index.droplevel(1)
+  outdir = '../dat/adam_mm_s_medlyn.csv'
+  statistics.to_csv(outdir)
+  return coef
 
 if str(__name__) == '__main__':
-  COEF, VPD = main()
+  main()
 
