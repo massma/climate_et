@@ -37,6 +37,38 @@ def medlyn_fit(_g, *data):
   return _g[0]*wue*_et/LV/np.sqrt(_vpd*10.)\
     *(1. + _g[1]/np.sqrt(_vpd)) - _g_s
 
+def load_mat_data(filename):
+  """
+  takes a filename (matlab file from changjie),
+  and returns data structures for penman_monteith,
+  as well as a dictionary for the mat file
+  """
+  data = io.loadmat(filename)
+
+  atmos = {}
+  atmos['t_a'] = np.squeeze(data['TA']) #C
+  atmos['rh'] = np.squeeze(data['RH']*100.) #percent
+  atmos['h'] = np.squeeze(data['H'])
+  atmos['r_n'] = np.squeeze(data['NETRAD'])
+  atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
+  atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
+  atmos['u_z'] = np.squeeze(data['WS'])
+
+  canopy = {}
+  canopy['g_flux'] = np.squeeze(data['G'])
+  canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
+  canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
+  canopy['r_s'] = np.squeeze(data['Rs']) #s/m
+
+
+  atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
+  canopy['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
+                      (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
+                     /np.squeeze(data['LE'])-atmos['delta'])\
+                    /atmos['gamma'])-1.)*atmos['r_a']
+  return atmos, canopy, data
+
+
 def calc_coef():
   """
   calcualtes best fit coefficients and r2 for each site in ameriflux
@@ -48,35 +80,14 @@ def calc_coef():
 
   time_start = time.time()
   for filename in filenames[:]:
-    data = io.loadmat(filename)
+
+    atmos, canopy, data = load_mat_data(filename)
     pft = str(np.squeeze(data['cover_type']))
     try:
       _ = WUE.loc[pft, :]
     except KeyError:
       print("file %s 's pft has no uWUE, moving on" % filename)
       continue
-
-    atmos = {}
-    atmos['t_a'] = np.squeeze(data['TA']) #C
-    atmos['rh'] = np.squeeze(data['RH']*100.) #percent
-    atmos['h'] = np.squeeze(data['H'])
-    atmos['r_n'] = np.squeeze(data['NETRAD'])
-    atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
-    atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
-    atmos['u_z'] = np.squeeze(data['WS'])
-
-    canopy = {}
-    canopy['g_flux'] = np.squeeze(data['G'])
-    canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
-    canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
-    canopy['r_s'] = np.squeeze(data['Rs']) #s/m
-
-
-    atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
-    canopy['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
-                        (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
-                       /np.squeeze(data['LE'])-atmos['delta'])\
-                      /atmos['gamma'])-1.)*atmos['r_a']
 
     vpd = atmos['vpd']
     # note below is in mol/m2/s
@@ -86,7 +97,7 @@ def calc_coef():
     g_s[g_s < 0.] = np.nan
     g_s[g_s > 100.] = np.nan
     #g_s = g_s/1000.*atmos['p_a']/(pm.R_STAR*(273.15+atmos['t_a']))
-    vpd[vpd <=0.] = np.nan
+    vpd[vpd <= 0.] = np.nan
     _et = np.squeeze(data['LE'])
     index = ((~np.isnan(g_s)) & (~np.isnan(vpd))\
              & (~np.isnan(np.squeeze(data['SWC']))) &
@@ -141,4 +152,3 @@ def main():
 
 if str(__name__) == '__main__':
   main()
-

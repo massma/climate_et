@@ -23,6 +23,7 @@ sitelist = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        'Site_list_(canopy_height).csv' % os.environ['DATA'],\
                        delimiter=',')
 sitelist.index = sitelist.Site
+
 filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
 _ds = np.ones(len(filenames))*np.nan
 _coef = pd.DataFrame(data={'PFT' : _ds, 'g0' : _ds, 'g1' : _ds,\
