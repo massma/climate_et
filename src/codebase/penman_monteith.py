@@ -55,7 +55,7 @@ MEDLYN.iloc[:, 2:6] = MEDLYN.iloc[:, 2:6]/1000.
 MEDLYN.index = MEDLYN.PFT
 
 
-ADAM_MEDLYN = pd.read_csv('../dat/adam_medlyn.csv',\
+ADAM_MEDLYN = pd.read_csv('../dat/adam_mm_s_medlyn.csv',\
            comment='#', delimiter=',')
 #now I take care of below conversion in adam funciton, b/c units
 # for this are acutall mol/m2/s
@@ -119,7 +119,7 @@ def medlyn_r_e(vpd, pft, _et):
   g_1 = MEDLYN.loc[pft].G1mean
   return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
 
-def adam_medlyn_r_e(vpd, t_a, pft, _et):
+def adam_medlyn_r_e(vpd, t_a, _canopy, _et):
   """
   calculates ecosystem canopy resistance given vpd and plant functional type
   vpd : vapor pressure deficit in Pa
@@ -127,10 +127,13 @@ def adam_medlyn_r_e(vpd, t_a, pft, _et):
   returns canopy resistance in s/m
   """
   #convert g C -> mu mol C
-  wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
-
-  g_0 = ADAM_MEDLYN.loc[pft].g0_mean*(R_STAR*(273.15 + t_a))/atmos['p_a']
-  g_1 = ADAM_MEDLYN.loc[pft].g1_mean
+  wue = WUE.loc[_canopy['pft'], 'u_wue_yearly']*1.e6/12.011
+  if 'g0' in _canopy:
+    g_0 = _canopy['g0']
+    g_1 = _canopy['g1']
+  else:
+    g_0 = ADAM_MEDLYN.loc[pft].g0_mean/1000.
+    g_1 = ADAM_MEDLYN.loc[pft].g1_mean
   return 1./(g_0*wue*_et/LV/np.sqrt(vpd/100.)*(1. + g_1/np.sqrt(vpd/1000.)))
 
 
