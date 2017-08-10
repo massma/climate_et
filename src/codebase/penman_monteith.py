@@ -270,10 +270,11 @@ def penman_monteith_prep(_atmos, _canopy):
   if 'zmeas' not in _canopy:
     _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
-  if 'ustar' in _atmos:
-    _atmos['r_a'] = corrected_r_a(_atmos, _canopy)
-  else:
-    _atmos['r_a'] = r_a(_atmos, _canopy)
+  if 'r_a' not in _atmos:
+    if 'ustar' in _atmos:
+      _atmos['r_a'] = corrected_r_a(_atmos, _canopy)
+    else:
+      _atmos['r_a'] = r_a(_atmos, _canopy)
 
   if 'r_s' not in _canopy:
     _canopy['r_s'] = oren_r_e(_atmos['vpd'], _canopy['pft'])
@@ -328,13 +329,12 @@ def optimizer_wrapper(_et, *env_vars):
   f_out = penman_monteith(_atmos, _canopy) - _et
   return f_out
 
-def recursive_penman_monteith(_atmos, _canopy, et0=1000.):
+def recursive_penman_monteith(_atmos, _canopy, et0=1000., name='et'):
   """
   This module solves for ET using scipy optmize fsolve with WUE.
   This is a relatively simple function so should always converge.
   Optional argument et0 is the first guess for et to pass to solver.
   """
-  #et0 = np.ones(atmos['vpd'].shape)*et0
   if 'height' not in _canopy:
     try:
       _dim = DIM.loc[_canopy['pft']]
@@ -351,18 +351,11 @@ def recursive_penman_monteith(_atmos, _canopy, et0=1000.):
     _canopy['d'] = _canopy['height']*_dim.displacement_height
     _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
-  packed_array = []
-  keys = _atmos.keys()
-  for key in _atmos:
-    packed_array.append(np.copy(_atmos[key]))
-  packed_array.append(None)
+  result = pd.Series(data=np.ones(_atmos.shape[0])*np.nan,\
+                     index=_atmos.index, name=name)
 
-  _it = np.nditer(packed_array)
-  for array in _it:
-    _atmos = {}
-    for i, key in enumerate(keys):
-      _atmos[key] = array[i]
-    result = array[-1]
-    result[...] = fsolve(optimizer_wrapper, et0, args=(_atmos, _canopy))
+  for index in result.index:
+    result.loc[index] = fsolve(optimizer_wrapper, et0,\
+                           args=(_atmos.loc[index, :], _canopy.loc[index, :]))
 
-  return _it.operands[-1]
+  return result

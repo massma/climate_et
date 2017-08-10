@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import codebase.penman_monteith as pm
 from scipy.optimize import leastsq
+import codebase.data_io as d_io
 import scipy.io as io
 
 
@@ -37,38 +38,6 @@ def medlyn_fit(_g, *data):
   return _g[0]*wue*_et/LV/np.sqrt(_vpd*10.)\
     *(1. + _g[1]/np.sqrt(_vpd)) - _g_s
 
-def load_mat_data(filename):
-  """
-  takes a filename (matlab file from changjie),
-  and returns data structures for penman_monteith,
-  as well as a dictionary for the mat file
-  """
-  data = io.loadmat(filename)
-
-  atmos = {}
-  atmos['t_a'] = np.squeeze(data['TA']) #C
-  atmos['rh'] = np.squeeze(data['RH']*100.) #percent
-  atmos['h'] = np.squeeze(data['H'])
-  atmos['r_n'] = np.squeeze(data['NETRAD'])
-  atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
-  atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
-  atmos['u_z'] = np.squeeze(data['WS'])
-
-  canopy = {}
-  canopy['g_flux'] = np.squeeze(data['G'])
-  canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
-  canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
-  canopy['r_s'] = np.squeeze(data['Rs']) #s/m
-
-
-  atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
-  canopy['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
-                      (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
-                     /np.squeeze(data['LE'])-atmos['delta'])\
-                    /atmos['gamma'])-1.)*atmos['r_a']
-  return atmos, canopy, data
-
-
 def calc_coef():
   """
   calcualtes best fit coefficients and r2 for each site in ameriflux
@@ -81,7 +50,12 @@ def calc_coef():
   time_start = time.time()
   for filename in filenames[:]:
 
-    atmos, canopy, data = load_mat_data(filename)
+    atmos, canopy, data = d_io.load_mat_data(filename)
+    canopy['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
+                    (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
+                   /np.squeeze(data['LE'])-atmos['delta'])\
+                  /atmos['gamma'])-1.)*atmos['r_a']
+
     pft = str(np.squeeze(data['cover_type']))
     try:
       _ = WUE.loc[pft, :]
