@@ -51,45 +51,31 @@ def calc_coef():
   for filename in filenames[:]:
 
     atmos, canopy, data = d_io.load_mat_data(filename)
-    canopy['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
-                    (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
-                   /np.squeeze(data['LE'])-atmos['delta'])\
-                  /atmos['gamma'])-1.)*atmos['r_a']
+    _et = data['et_obs']
+    if _et.size == 0:
+      print('filename %s has no data' % filename)
+      continue
 
-    pft = str(np.squeeze(data['cover_type']))
+    canopy['r_s'] = data['r_s']
+    pft = canopy.iloc[0,:].loc['pft']
     try:
       _ = WUE.loc[pft, :]
     except KeyError:
       print("file %s 's pft has no uWUE, moving on" % filename)
       continue
 
-    vpd = atmos['vpd']
+    vpd = atmos['vpd']/1000.
     # note below is in mol/m2/s
     #g_s = data['Gs']
     # below is mm/s ?
-    g_s = 1./canopy['r_s']*1000.
-    g_s[g_s < 0.] = np.nan
-    g_s[g_s > 100.] = np.nan
-    #g_s = g_s/1000.*atmos['p_a']/(pm.R_STAR*(273.15+atmos['t_a']))
-    vpd[vpd <= 0.] = np.nan
-    _et = np.squeeze(data['LE'])
-    index = ((~np.isnan(g_s)) & (~np.isnan(vpd))\
-             & (~np.isnan(np.squeeze(data['SWC']))) &
-             (~np.isnan(_et)))
-    g_s = g_s[index]
-    vpd = vpd[index]/1000.
-    _et = _et[index]
-    print(_et.shape)
-    if _et.size == 0:
-      print('filename %s has no data' % filename)
-      continue
+    g_s = data['g_s']
     _g, ier = leastsq(medlyn_fit, [0.04, 0.7],\
                args=(vpd, g_s, pft, _et))
     print(g_s.mean())
     if (ier <= 4) & (ier > 0):
       _coef.loc[filename, 'g0'] = _g[0]
       _coef.loc[filename, 'g1'] = _g[1]
-    _coef.loc[filename, 'PFT'] = str(np.squeeze(data['cover_type']))
+    _coef.loc[filename, 'PFT'] = canopy['pft'].iloc[0]
     _coef.loc[filename, 'r2'] = 1. - \
                                 np.sum(medlyn_fit(_g, vpd,\
                                                   g_s, pft, _et)**2)\
