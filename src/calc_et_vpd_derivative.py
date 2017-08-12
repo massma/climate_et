@@ -32,13 +32,14 @@ SITELIST.index = SITELIST.Site
 """wrapper for main script"""
 coef = pd.read_csv('../dat/site_coef_mm_s_medlyn.csv')
 coef.index = coef['Unnamed: 0']
-for idx in coef.index[2:3]:
-  atmos, canopy, data = d_io.load_mat_data(idx)
+for index in coef.index[2:3]:
+  atmos, canopy, data = d_io.load_mat_data(index)
   canopy['stomatal_model'] = 'medlyn'
+  # belof converts from mm/s to m/s, only do g0 b/c of funcitonal form
+  canopy['g0'] = coef.loc[index, 'g0']/1000.
+  canopy['g1'] = coef.loc[index, 'g1']
   canopy = canopy.iloc[:5,:]
   atmos = atmos.iloc[:5,:]
   et = pm.recursive_penman_monteith(atmos, canopy)
-  etobs = pd.Series(data=np.squeeze(data['LE']),\
-                    index=np.squeeze(data['time'])[et.index])
 # if str(__name__) == '__main__':
 #   coef = main()
