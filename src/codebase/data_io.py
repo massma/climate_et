@@ -3,13 +3,10 @@
 This module uses site specific medlyn fits to calcualte
 simulated ET, VPD and d ET/ d VPD for full, leaf and atm
 """
-import time
 import os
-import glob
 import pandas as pd
 import numpy as np
 import codebase.penman_monteith as pm
-from scipy.optimize import leastsq
 import scipy.io as io
 
 
@@ -24,8 +21,13 @@ def load_mat_data(filename):
   takes a filename (matlab file from changjie),
   and returns data structures for penman_monteith,
   as well as a dictionary for the mat file
+  _data is misc. data to be output
   """
   data = io.loadmat(filename)
+  _data = {}
+  # below mm/s
+  _data['et_obs'] = np.squeeze(data['LE'])
+  _data['swc'] = np.squeeze(data['SWC'])
 
   atmos = {}
   atmos['t_a'] = np.squeeze(data['TA']) #C
@@ -43,15 +45,29 @@ def load_mat_data(filename):
   canopy['r_s'] = np.squeeze(data['Rs']) #s/m
 
   atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
+  atmos['vpd'][atmos['vpd'] <= 0.] = np.nan
   canopy.pop('r_s')
   atmos = pd.DataFrame(data=atmos, index=np.squeeze(data['time']))
   canopy = pd.DataFrame(data=canopy, index=np.squeeze(data['time']))
-
+  _data = pd.DataFrame(data=_data, index=np.squeeze(data['time']))
+  _dataclmns = _data.columns
   canopyclmns = canopy.columns
   atmosclmns = atmos.columns
-  df = pd.concat([atmos, canopy], axis=1).dropna()
+  df = pd.concat([atmos, canopy, _data], axis=1).dropna()
+  _data = df[_dataclmns]
   atmos = df[atmosclmns]
   canopy = df[canopyclmns]
   canopy['pft'] = str(np.squeeze(data['cover_type']))
-  return atmos, canopy, data
-
+  # below is s/m
+  _data['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
+                    (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
+                   /np.squeeze(_data['et_obs'])-atmos['delta'])\
+                  /atmos['gamma'])-1.)*atmos['r_a']
+  #below is mm/s
+  _data['g_s'] = 1./_data['r_s']*1000.
+  _data.loc[_data['g_s'] < 0., 'g_s'] = np.nan
+  _data.loc[_data['g_s'] > 100., 'g_s'] = np.nan
+  _data = _data.dropna()
+  atmos = atmos.loc[_data.index, :]
+  canopy = canopy.loc[_data.index, :]
+  return atmos, canopy, _data
