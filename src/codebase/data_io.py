@@ -54,9 +54,9 @@ def load_mat_data(filename):
   canopyclmns = canopy.columns
   atmosclmns = atmos.columns
   df = pd.concat([atmos, canopy, _data], axis=1).dropna()
-  _data = df[_dataclmns]
-  atmos = df[atmosclmns]
-  canopy = df[canopyclmns]
+  _data = df[_dataclmns].copy()
+  atmos = df[atmosclmns].copy()
+  canopy = df[canopyclmns].copy()
   canopy['pft'] = str(np.squeeze(data['cover_type']))
   # below is s/m
   _data['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\

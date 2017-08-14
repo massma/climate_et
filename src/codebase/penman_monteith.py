@@ -134,7 +134,9 @@ def adam_medlyn_r_e(vpd, t_a, _canopy, _et):
   else:
     g_0 = ADAM_MEDLYN.loc[pft].g0_mean/1000.
     g_1 = ADAM_MEDLYN.loc[pft].g1_mean
-  return 1./(g_0*wue*_et/LV/np.sqrt(vpd/100.)*(1. + g_1/np.sqrt(vpd/1000.)))
+  _canopy.loc['r_s'] = 1./(g_0*wue*_et/LV/np.sqrt(vpd/100.)\
+                           *(1. + g_1/np.sqrt(vpd/1000.)))
+  return _canopy
 
 
 def leuning_r_e(vpd, pft, _et):
@@ -316,8 +318,8 @@ def optimizer_wrapper(_et, *env_vars):
   elif _canopy['stomatal_model'] == 'fitted_m':
     _canopy['r_s'] = fitted_m_r_e(vpd, _canopy['pft'], _et)
   elif _canopy['stomatal_model'] == 'adam_medlyn':
-    _canopy['r_s'] = adam_medlyn_r_e(vpd, _atmos['t_a'],\
-                    _canopy['pft'], _et)
+    _canopy = adam_medlyn_r_e(vpd, _atmos['t_a'],\
+                              _canopy, _et)
   elif _canopy['stomatal_model'] == 'medlyn_lai':
     _canopy['r_s'] = 1./(_canopy['lai']\
               *medlyn_g_w(vpd, _atmos['co2'], _atmos['rho_a'],\
@@ -359,6 +361,7 @@ def recursive_penman_monteith(_atmos, _canopy, et0=1000., name='et'):
 
   for index in result.index:
     result.loc[index] = fsolve(optimizer_wrapper, et0,\
-                           args=(_atmos.loc[index, :], _canopy.loc[index, :]))
+                           args=(_atmos.loc[index, :].copy(),\
+                                 _canopy.loc[index, :].copy()))
 
   return result

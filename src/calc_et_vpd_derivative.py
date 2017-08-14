@@ -34,7 +34,7 @@ coef = pd.read_csv('../dat/site_coef_mm_s_medlyn.csv')
 coef.index = coef['Unnamed: 0']
 for index in coef.index[2:3]:
   atmos, canopy, data = d_io.load_mat_data(index)
-  canopy['stomatal_model'] = 'medlyn'
+  canopy['stomatal_model'] = 'adam_medlyn'
   # belof converts from mm/s to m/s, only do g0 b/c of funcitonal form
   canopy['g0'] = coef.loc[index, 'g0']/1000.
   canopy['g1'] = coef.loc[index, 'g1']
