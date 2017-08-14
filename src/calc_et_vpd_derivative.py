@@ -5,15 +5,9 @@ simulated ET, VPD and d ET/ d VPD for full, leaf and atm
 """
 import time
 import os
-import glob
 import importlib
-import seaborn as sns
-import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
 import codebase.penman_monteith as pm
-from scipy.optimize import leastsq
-import scipy.io as io
 import codebase.data_io as d_io
 
 importlib.reload(d_io)
