@@ -35,19 +35,16 @@ def make_ax_plot(_ax, var, _df, plot_meta):
   if plot_meta['cmap'] == 'viridis':
     vmax = var.mean() + nstd*var.std()
     vmin = var.mean() - nstd*var.std()
-  print(var.shape)
-  print(_df['rh'])
-  print(_df['t_a'])
-  print(plot_meta['cmap'])
-  print(vmin)
-  print(vmax)
-  print(var)
-  color = _ax.scatter(_df['rh'], _df['t_a'], c=var, alpha=0.2, s=4,\
-                         cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
+  try:
+    color = _ax.scatter(_df['rh'], _df['t_a'], c=var, alpha=0.2, s=4,\
+                           cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
+  except ValueError as e:
+    print('Value error: %s' % e)
+    return
   _ax.set_xlabel('RH')
   _ax.set_ylabel('T')
-  _ax.set_title('Site: %s; PFT: %s; %s VPD Changing'\
-                % (plot_meta['site'], str(_df['pft'][0]),\
+  _ax.set_title('Analysis: %s,  PFT: %s; %s VPD Changing'\
+                % (plot_meta['label'], str(_df['pft'][0]),\
                    plot_meta['delta']))
   cbar = plt.colorbar(color)
   cbar.set_label(r'$\frac{\partial ET}{\partial VPD_{%s}}$'\
@@ -82,16 +79,19 @@ def scatter_plot(_df, plot_meta):
   plt.tight_layout()
   # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
   #             % (os.environ['PLOTS'], str(_df['pft'][0]), plot_meta['site'],))
-  plt.savefig('%s/climate_et/%s_plots/%s_vpd_debug.png'\
-              % (os.environ['PLOTS'], plot_meta['label'], str(_df['pft'][0])))
-
+  try:
+    plt.savefig('%s/climate_et/%s_plots/%s_vpd_debug.png'\
+                % (os.environ['PLOTS'], plot_meta['label'], str(_df['pft'][0])))
+  except FileNotFoundError:
+    os.system('mkdir %s/climate_et/%s_plots'\
+                % (os.environ['PLOTS'], plot_meta['label']))
+    plt.savefig('%s/climate_et/%s_plots/%s_vpd_debug.png'\
+                % (os.environ['PLOTS'], plot_meta['label'], str(_df['pft'][0])))
   plt.show(block=False)
   return
 
-def plot_wrapper(_df, *args):
+def plot_wrapper(_df, plot_meta):
   """takes a groupby _df and parses it to plot"""
-  plot_meta = {}
-  plot_meta['label'] = args
   scatter_plot(_df, plot_meta)
   return
 
@@ -101,4 +101,4 @@ def plot_wrapper(_df, *args):
 #   scatter_plot(atmos, canopy, data, site)
 
 df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
-df.groupby('pft').apply(plot_wrapper, 'pft')
+df.groupby('pft').apply(plot_wrapper, {'label' : 'pft'})
