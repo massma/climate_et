@@ -27,7 +27,7 @@ def unpack_df(filename):
   site = ''.join(filename.split('/')[-1].split('.')[:-1])
   return atmos, canopy, data, site
 
-def make_ax_plot(_ax, var, atmos, canopy, plot_meta):
+def make_ax_plot(_ax, var, _df, plot_meta):
   """makes an axis plot"""
   nstd = 2.
   vmax = var.mean() + nstd*var.std()
@@ -35,19 +35,26 @@ def make_ax_plot(_ax, var, atmos, canopy, plot_meta):
   if plot_meta['cmap'] == 'viridis':
     vmax = var.mean() + nstd*var.std()
     vmin = var.mean() - nstd*var.std()
-  color = _ax.scatter(atmos['rh'], atmos['t_a'], c=var, alpha=0.2, s=4,\
+  print(var.shape)
+  print(_df['rh'])
+  print(_df['t_a'])
+  print(plot_meta['cmap'])
+  print(vmin)
+  print(vmax)
+  print(var)
+  color = _ax.scatter(_df['rh'], _df['t_a'], c=var, alpha=0.2, s=4,\
                          cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
   _ax.set_xlabel('RH')
   _ax.set_ylabel('T')
   _ax.set_title('Site: %s; PFT: %s; %s VPD Changing'\
-                % (plot_meta['site'], str(canopy['pft'][0]),\
+                % (plot_meta['site'], str(_df['pft'][0]),\
                    plot_meta['delta']))
   cbar = plt.colorbar(color)
   cbar.set_label(r'$\frac{\partial ET}{\partial VPD_{%s}}$'\
                  ' ($W m^{-2}$  $Pa^{-1}$)' % plot_meta['delta'])
   return
 
-def scatter_plot(atmos, canopy, data, site):
+def scatter_plot(_df, plot_meta):
   """
   creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
   """
@@ -56,26 +63,36 @@ def scatter_plot(atmos, canopy, data, site):
   fig.set_figheight(fig.get_figheight()*nplots)
 
   ax1 = fig.add_subplot(nplots, 1, 1)
-  var = data['et_all'] - data['et']
-  plot_meta = {'cmap' : 'RdBu', 'delta' : 'full', 'site' : site}
-  make_ax_plot(ax1, var, atmos, canopy, plot_meta)
+  var = _df['et_all'] - _df['et']
+  plot_meta['cmap'] = 'RdBu'
+  plot_meta['delta'] = 'full'
+  make_ax_plot(ax1, var, df, plot_meta)
 
   ax2 = fig.add_subplot(nplots, 1, 2)
-  var = data['et_leaf'] - data['et']
+  var = _df['et_leaf'] - _df['et']
   plot_meta['cmap'] = 'viridis'
   plot_meta['delta'] = 'leaf'
-  make_ax_plot(ax2, var, atmos, canopy, plot_meta)
+  make_ax_plot(ax2, var, df, plot_meta)
 
   ax3 = fig.add_subplot(nplots, 1, 3)
-  var = data['et_atm'] - data['et']
+  var = _df['et_atm'] - _df['et']
   plot_meta['delta'] = 'atm'
-  make_ax_plot(ax3, var, atmos, canopy, plot_meta)
+  make_ax_plot(ax3, var, df, plot_meta)
 
   plt.tight_layout()
-  plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
-              % (os.environ['PLOTS'], str(canopy['pft'][0]), site,))
-  plt.show(block=False)
+  # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
+  #             % (os.environ['PLOTS'], str(_df['pft'][0]), plot_meta['site'],))
+  plt.savefig('%s/climate_et/%s_plots/%s_vpd_debug.png'\
+              % (os.environ['PLOTS'], plot_meta['label'], str(_df['pft'][0])))
 
+  plt.show(block=False)
+  return
+
+def plot_wrapper(_df, *args):
+  """takes a groupby _df and parses it to plot"""
+  plot_meta = {}
+  plot_meta['label'] = args
+  scatter_plot(_df, plot_meta)
   return
 
 # filenames = glob.glob('%s/changjie/pandas_data/*' % os.environ['DATA'])
@@ -83,3 +100,5 @@ def scatter_plot(atmos, canopy, data, site):
 #   atmos, canopy, data, site = unpack_df(filename)
 #   scatter_plot(atmos, canopy, data, site)
 
+df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
+df.groupby('pft').apply(plot_wrapper, 'pft')
