@@ -62,9 +62,9 @@ def make_ax_plot(_ax, var, _df, plot_meta):
     vmax = var.mean() + 0.8 # 5.*var.mean() #nstd*var.std()
     vmin = var.mean() - 0.8 # 5.*var.mean() #nstd*var.std()
 
-  color = _ax.scatter(_df['rh'], _df['t_a'], c=var, alpha=0.5, s=1,\
-                         cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
-  _ax.set_xlabel('RH')
+  color = _ax.scatter(_df[plot_meta['x_axis']], _df['t_a'], c=var, alpha=0.5,\
+                      s=1, cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
+  _ax.set_xlabel(plot_meta['x_axis'])
   _ax.set_ylabel('T')
   _ax.set_title('Analysis: %s,  PFT: %s; %s VPD Changing'\
                 % (plot_meta['label'], str(_df['pft'][0]),\
@@ -102,14 +102,14 @@ def scatter_plot(_df, plot_meta):
   plt.tight_layout()
   # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
   #             % (os.environ['PLOTS'], str(_df['pft'][0]), plot_meta['site'],))
-  fname = '%s/climate_et/%s_plots/%s_%s_vpd_debug_%s.png'\
+  fname = '%s/climate_et/%s_plots/%s_%s_vpd_debug_%s_%s.png'\
           % (os.environ['PLOTS'], plot_meta['folder_label'],\
-             str(_df['pft'][0]), plot_meta['label'], plot_meta['log'])
+             str(_df['pft'][0]), plot_meta['label'],\
+             plot_meta['log'], plot_meta['x_axis'])
   try:
     plt.savefig(fname)
   except FileNotFoundError:
-    os.system('mkdir %s/climate_et/%s_plots'\
-                % (os.environ['PLOTS'], plot_meta['label']))
+    os.system('mkdir %s' % '/'.join(fname.split('/')[:-1]))
     plt.savefig(fname)
   plt.show(block=False)
   return
@@ -124,23 +124,49 @@ def plot_wrapper(_df, plot_meta):
   return
 
 
-df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
-print(df.shape)
-min_et = 0. # W/m2
-df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
-print(df.shape)
-# # min_diff = 50. # W/m2
-# # df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
-# # print(df.shape)
-plot_meta = {'folder_label' : 'pft', 'log' : 'true'}
-df.groupby('pft').apply(plot_wrapper, plot_meta)
-plot_meta = {'folder_label' : 'site', 'log' : 'true'}
-df.groupby('site').apply(plot_wrapper, plot_meta)
-plot_meta = {'folder_label' : 'pft', 'log' : 'false'}
-df.groupby('pft').apply(plot_wrapper, plot_meta)
-# plot_meta = {'folder_label' : 'site', 'log' : 'false'}
+# df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
+# print(df.shape)
+# min_et = 0. # W/m2
+# df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
+# print(df.shape)
+# # # min_diff = 50. # W/m2
+# # # df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
+# # # print(df.shape)
+# plot_meta = {'folder_label' : 'pft', 'log' : 'true', 'x_axis' : 'vpd'}
+# df.groupby('pft').apply(plot_wrapper, plot_meta)
+# plot_meta = {'folder_label' : 'site', 'log' : 'true', 'x_axis' : 'vpd'}
 # df.groupby('site').apply(plot_wrapper, plot_meta)
+# plot_meta = {'folder_label' : 'pft', 'log' : 'false', 'x_axis' : 'vpd'}
+# df.groupby('pft').apply(plot_wrapper, plot_meta)
+plot_meta = {'folder_label' : 'site', 'log' : 'false', 'x_axis' : 'vpd'}
+df.groupby('site').apply(plot_wrapper, plot_meta)
+plot_meta = {'folder_label' : 'site', 'log' : 'false', 'x_axis' : 'rh'}
+df.groupby('site').apply(plot_wrapper, plot_meta)
 
-plot_meta['label'] = 'full_ds'
-plot_meta['folder_label'] = 'full_ds'
-#plot_wrapper(df, plot_meta)
+# # plot_meta = {'folder_label' : 'site', 'log' : 'false'}
+# # df.groupby('site').apply(plot_wrapper, plot_meta)
+
+
+os.system('convert +append %s/climate_et/pft_plots/*false.png '\
+          '%s/climate_et/false_rh_full.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+os.system('convert +append %s/climate_et/pft_plots/*true.png '\
+          '%s/climate_et/true_rh_full.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
+          '%s/climate_et/true_vpd_full.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
+          '%s/climate_et/false_vpd_full.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+for x_axis in ['vpd', 'rh']:
+  for log in ['false', 'true']:
+    plot_meta['label'] = 'full_ds'
+    plot_meta['folder_label'] = 'full_ds'
+    plot_meta['x_axis'] = x_axis
+    plot_meta['log'] = log
+    plot_wrapper(df, plot_meta)
