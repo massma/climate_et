@@ -31,6 +31,9 @@ def make_ax_plot(_ax, var, _df, plot_meta):
   """makes an axis plot"""
   if plot_meta['log']:
     var = var/_df['et_obs']
+    vmax = 0.8/175.
+  else:
+    vmax = 0.8 # *_df.et_obs.mean()
   nstd = 1.0
   print(_df['pft'][0])
   print(var.std())
@@ -38,13 +41,13 @@ def make_ax_plot(_ax, var, _df, plot_meta):
   # var[var > (var.mean() + nstd*var.std())] = np.nan
   # var[var < (var.mean() - nstd*var.std())] = np.nan
   # vmax = 5.*var.mean() #var.mean() + nstd*var.std()
-  vmax = 0.005*_df.et_obs.mean()
-  vmin = -vmax
-  # if plot_meta['cmap'] == 'viridis':
-  #   vmax = var.mean() + 5.*var.mean() #nstd*var.std()
-  #   vmin = var.mean() - 5.*var.mean() #nstd*var.std()
 
-  color = _ax.scatter(_df['rh'], _df['t_a'], c=var, alpha=0.2, s=4,\
+  vmin = -vmax
+  if plot_meta['cmap'] == 'viridis':
+    vmax = var.mean() + 0.8 # 5.*var.mean() #nstd*var.std()
+    vmin = var.mean() - 0.8 # 5.*var.mean() #nstd*var.std()
+
+  color = _ax.scatter(_df['rh'], _df['t_a'], c=var, alpha=0.2, s=1,\
                          cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
   _ax.set_xlabel('RH')
   _ax.set_ylabel('T')
@@ -97,6 +100,7 @@ def scatter_plot(_df, plot_meta):
 
 def plot_wrapper(_df, plot_meta):
   """takes a groupby _df and parses it to plot"""
+  print(_df.shape)
   scatter_plot(_df, plot_meta)
   return
 
@@ -115,3 +119,5 @@ print(df.shape)
 # df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
 # print(df.shape)
 df.groupby('pft').apply(plot_wrapper, {'label' : 'pft', 'log' : False})
+df = df[~(df.pft == 'WSA')]
+plot_wrapper(df, {'label' : 'full_ds', 'log' : False})
