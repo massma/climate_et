@@ -124,34 +124,33 @@ def plot_wrapper(_df, plot_meta):
   return
 
 
-# df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
+df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
+print(df.shape)
+min_et = 0. # W/m2
+df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
 # print(df.shape)
-# min_et = 0. # W/m2
-# df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
+# min_diff = 50. # W/m2
+# df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
 # print(df.shape)
-# # # min_diff = 50. # W/m2
-# # # df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
-# # # print(df.shape)
-# plot_meta = {'folder_label' : 'pft', 'log' : 'true', 'x_axis' : 'vpd'}
-# df.groupby('pft').apply(plot_wrapper, plot_meta)
-# plot_meta = {'folder_label' : 'site', 'log' : 'true', 'x_axis' : 'vpd'}
-# df.groupby('site').apply(plot_wrapper, plot_meta)
-# plot_meta = {'folder_label' : 'pft', 'log' : 'false', 'x_axis' : 'vpd'}
-# df.groupby('pft').apply(plot_wrapper, plot_meta)
-plot_meta = {'folder_label' : 'site', 'log' : 'false', 'x_axis' : 'vpd'}
-df.groupby('site').apply(plot_wrapper, plot_meta)
-plot_meta = {'folder_label' : 'site', 'log' : 'false', 'x_axis' : 'rh'}
-df.groupby('site').apply(plot_wrapper, plot_meta)
 
-# # plot_meta = {'folder_label' : 'site', 'log' : 'false'}
-# # df.groupby('site').apply(plot_wrapper, plot_meta)
+plt.close('all')
+for x_axis in ['vpd', 'rh']:
+  for log in ['false', 'true']:
+    plot_meta['label'] = 'full_ds'
+    plot_meta['folder_label'] = 'full_ds'
+    plot_meta['x_axis'] = x_axis
+    plot_meta['log'] = log
+    plot_wrapper(df, plot_meta)
+    plot_meta['folder_label'] = 'pft'
+    df.groupby('pft').apply(plot_wrapper, plot_meta)
+    plot_meta['folder_label'] = 'site'
+    df.groupby('site').apply(plot_wrapper, plot_meta)
 
-
-os.system('convert +append %s/climate_et/pft_plots/*false.png '\
+os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
           '%s/climate_et/false_rh_full.png'\
           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-os.system('convert +append %s/climate_et/pft_plots/*true.png '\
+os.system('convert +append %s/climate_et/pft_plots/*true_rh.png '\
           '%s/climate_et/true_rh_full.png'\
           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
@@ -162,11 +161,3 @@ os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
 os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
           '%s/climate_et/false_vpd_full.png'\
           % (os.environ['PLOTS'], os.environ['PLOTS']))
-
-for x_axis in ['vpd', 'rh']:
-  for log in ['false', 'true']:
-    plot_meta['label'] = 'full_ds'
-    plot_meta['folder_label'] = 'full_ds'
-    plot_meta['x_axis'] = x_axis
-    plot_meta['log'] = log
-    plot_wrapper(df, plot_meta)
