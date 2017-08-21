@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import metcalcs as met
 
 def split_df(_df):
   """
@@ -44,8 +45,11 @@ def concat_dfs(filenames):
 
 def make_ax_plot(_ax, var, _df, plot_meta):
   """makes an axis plot"""
-  if plot_meta['log'] == 'true':
+  if plot_meta['log'] == 'log':
     var = var/_df['et_obs']
+    vmax = 0.8/175.
+  elif plot_meta['log'] == 'r_n':
+    var = var/(_df['r_n'] - _df['g_flux'])
     vmax = 0.8/175.
   else:
     vmax = 0.8 # *_df.et_obs.mean()
@@ -64,6 +68,12 @@ def make_ax_plot(_ax, var, _df, plot_meta):
 
   color = _ax.scatter(_df[plot_meta['x_axis']], _df['t_a'], c=var, alpha=0.5,\
                       s=1, cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
+  if (plot_meta['x_axis'] == 'vpd'):
+    t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
+    test = met.vapor_pres(t_a)*100.*(1. - 0.90)
+    _ax.plot(test, t_a, 'k-')
+    test = met.vapor_pres(t_a)*100.*(1. - 0.2)
+    _ax.plot(test, t_a, 'k-')
   _ax.set_xlabel(plot_meta['x_axis'])
   _ax.set_ylabel('T')
   _ax.set_title('Analysis: %s,  PFT: %s; %s VPD Changing'\
@@ -102,7 +112,7 @@ def scatter_plot(_df, plot_meta):
   plt.tight_layout()
   # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
   #             % (os.environ['PLOTS'], str(_df['pft'][0]), plot_meta['site'],))
-  fname = '%s/climate_et/%s_plots/%s_%s_vpd_debug_%s_%s.png'\
+  fname = '%s/climate_et/%s_plots/%s_%s_%s_%s.png'\
           % (os.environ['PLOTS'], plot_meta['folder_label'],\
              str(_df['pft'][0]), plot_meta['label'],\
              plot_meta['log'], plot_meta['x_axis'])
@@ -134,30 +144,31 @@ df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
 # print(df.shape)
 
 plt.close('all')
+plot_meta = {}
 for x_axis in ['vpd', 'rh']:
-  for log in ['false', 'true']:
-    plot_meta['label'] = 'full_ds'
+  for log in ['log', 'r_n', '']:
+    plot_meta['label'] = 'full_ds' 
     plot_meta['folder_label'] = 'full_ds'
     plot_meta['x_axis'] = x_axis
     plot_meta['log'] = log
-    plot_wrapper(df, plot_meta)
+    # plot_wrapper(df, plot_meta)
     plot_meta['folder_label'] = 'pft'
     df.groupby('pft').apply(plot_wrapper, plot_meta)
-    plot_meta['folder_label'] = 'site'
-    df.groupby('site').apply(plot_wrapper, plot_meta)
+    # plot_meta['folder_label'] = 'site'
+    # df.groupby('site').apply(plot_wrapper, plot_meta)
 
-os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
-          '%s/climate_et/false_rh_full.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
+# os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
+#           '%s/climate_et/false_rh_full.png'\
+#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-os.system('convert +append %s/climate_et/pft_plots/*true_rh.png '\
-          '%s/climate_et/true_rh_full.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
+# os.system('convert +append %s/climate_et/pft_plots/*true_rh.png '\
+#           '%s/climate_et/true_rh_full.png'\
+#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
-          '%s/climate_et/true_vpd_full.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
+# os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
+#           '%s/climate_et/true_vpd_full.png'\
+#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
-          '%s/climate_et/false_vpd_full.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
+# os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
+#           '%s/climate_et/false_vpd_full.png'\
+#           % (os.environ['PLOTS'], os.environ['PLOTS']))
