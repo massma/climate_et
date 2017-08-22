@@ -43,7 +43,6 @@ def load_mat_data(filename):
   canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
   canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
   canopy['r_s'] = np.squeeze(data['Rs']) #s/m
-
   atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
   atmos['vpd'][atmos['vpd'] <= 0.] = np.nan
   canopy.pop('r_s')

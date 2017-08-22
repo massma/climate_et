@@ -63,6 +63,15 @@ ADAM_MEDLYN = pd.read_csv('../dat/adam_mm_s_medlyn.csv',\
 # ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
 ADAM_MEDLYN.index = ADAM_MEDLYN.PFT
 
+ADAM_MEDLYN_ET = pd.read_csv('../dat/adam_mm_s_medlyn.csv',\
+           comment='#', delimiter=',')
+#now I take care of below conversion in adam funciton, b/c units
+# for this are acutall mol/m2/s
+# #convert to m/s - note only need to convert g0 b/c of functional form
+# ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
+ADAM_MEDLYN_ET.index = ADAM_MEDLYN_ET.PFT
+
+
 LEUNING = pd.read_csv('../dat/changjie_leuning.csv',\
            comment='#', delimiter=',')
 #convert to m/s
@@ -136,6 +145,26 @@ def adam_medlyn_r_e(vpd, t_a, _canopy, _et):
     g_1 = ADAM_MEDLYN.loc[pft].g1_mean
   _canopy.loc['r_s'] = 1./(g_0*wue*_et/LV/np.sqrt(vpd/100.)\
                            *(1. + g_1/np.sqrt(vpd/1000.)))
+  return _canopy
+
+def et_adam_medlyn_r_e(vpd, _canopy):
+  """
+  calculates ecosystem canopy resistance given vpd and plant functional type
+  vpd : vapor pressure deficit in Pa
+  pft : three letter plant functional type
+  returns canopy resistance in W/m2 * s/m
+  """
+  #convert g C -> mu mol C
+  wue = WUE.loc[_canopy['pft'].iloc[0], 'u_wue_yearly']*1.e6/12.011
+  if 'g0' in _canopy:
+    g_0 = _canopy['g0']
+    g_1 = _canopy['g1']
+  else:
+    g_0 = ADAM_MEDLYN_ET.loc[pft].g0_mean/1000.
+    g_1 = ADAM_MEDLYN_ET.loc[pft].g1_mean
+  print(wue)
+  _canopy['r_s'] = 1./(g_0*wue/LV/np.sqrt(vpd/100.)\
+                       *(1. + g_1/np.sqrt(vpd/1000.)))
   return _canopy
 
 
@@ -284,8 +313,24 @@ def penman_monteith_prep(_atmos, _canopy):
   if 'r_s' not in _canopy:
     _canopy['r_s'] = oren_r_e(_atmos['vpd'], _canopy['pft'])
 
-  return _atmos, _canopy
+  if 'height' not in _canopy:
+    try:
+      _dim = DIM.loc[_canopy['pft']]
+    except KeyError:
+      # dimesnsions are roughly either forest or not, so in case
+      # we don't have dim. data for a PFT use that distiction
+      if _canopy['pft'][-1] == 'F':
+        _dim = DIM.loc['DBF']
+      else:
+        _dim = DIM.loc['SH']
+    _rough = ROUGH.loc[_canopy['pft'], 'z0']
+    _canopy['z0'] = _rough
+    _canopy['height'] = _rough/_dim.rough_len_factor
+    _canopy['d'] = _canopy['height']*_dim.displacement_height
+    _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
+  return _atmos, _canopy
+  
 def penman_monteith(_atmos, _canopy):
   """
   returns ET in W/m2
@@ -298,6 +343,28 @@ def penman_monteith(_atmos, _canopy):
        (_atmos['r_n']-_canopy['g_flux'])+\
          _atmos['rho_a']*CP*_atmos['vpd']/_atmos['r_a'])\
        /(_atmos['delta']+_atmos['gamma']*(1. + _canopy['r_s']/_atmos['r_a']))
+  return _et
+
+def penman_monteith_uwue(_atmos, _canopy):
+  """
+  returns ET in W/m2, different from penman_monteith in that uWUE effeciency
+  is used to change the functional form of the problem
+  _atmos :: dict of atmospheric vars
+  _canopy :: class of _canopy vars
+  """
+  if 'vpd_leaf' in _atmos:
+    vpd = _atmos['vpd_leaf']
+  else:
+    vpd = _atmos['vpd']
+
+  _canopy = et_adam_medlyn_r_e(vpd, _canopy)
+
+  _atmos, _canopy = penman_monteith_prep(_atmos, _canopy)
+
+  _et = (_atmos['delta']*\
+       (_atmos['r_n']-_canopy['g_flux'])+\
+         (_atmos['rho_a']*CP*_atmos['vpd'] - _canopy['r_s'])/_atmos['r_a'])\
+         /(_atmos['delta']+_atmos['gamma'])
   return _et
 
 def optimizer_wrapper(_et, *env_vars):
@@ -340,21 +407,6 @@ def recursive_penman_monteith(_atmos, _canopy, et0=1000., name='et'):
   This is a relatively simple function so should always converge.
   Optional argument et0 is the first guess for et to pass to solver.
   """
-  if 'height' not in _canopy:
-    try:
-      _dim = DIM.loc[_canopy['pft']]
-    except KeyError:
-      # dimesnsions are roughly either forest or not, so in case
-      # we don't have dim. data for a PFT use that distiction
-      if _canopy['pft'][-1] == 'F':
-        _dim = DIM.loc['DBF']
-      else:
-        _dim = DIM.loc['SH']
-    _rough = ROUGH.loc[_canopy['pft'], 'z0']
-    _canopy['z0'] = _rough
-    _canopy['height'] = _rough/_dim.rough_len_factor
-    _canopy['d'] = _canopy['height']*_dim.displacement_height
-    _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
   result = pd.Series(data=np.ones(_atmos.shape[0])*np.nan,\
                      index=_atmos.index, name=name)

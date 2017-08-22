@@ -28,6 +28,17 @@ SITELIST.index = SITELIST.Site
 #   _vpd, _gpp, _g_s, pft = data
 #   return _g[0]*_gpp*(1. + _g[1]/np.sqrt(_vpd)) - _g_s
 
+def medlyn_fit_div_et(_g, *data):
+  """
+  function to fit using leastsq,
+  vpd should be in kPa, _g and _g_s in mm/s, and et in q/m2,
+  same as medlyn_fit except conductance is divided by ET
+  """
+  _vpd, _g_s, _pft, _et = data
+  wue = WUE.loc[_pft, 'u_wue_yearly']*1.e6/12.011
+  return _g[0]*wue/LV/np.sqrt(_vpd*10.)\
+    *(1. + _g[1]/np.sqrt(_vpd)) - _g_s
+
 def medlyn_fit(_g, *data):
   """
   function to fit using leastsq,
@@ -68,8 +79,10 @@ def calc_coef():
     # note below is in mol/m2/s
     #g_s = data['Gs']
     # below is mm/s ?
-    g_s = data['g_s']
-    _g, ier = leastsq(medlyn_fit, [0.04, 0.7],\
+    # g_s = data['g_s']
+    #below is mm/s/W/m2
+    g_s = data['g_s']/_et
+    _g, ier = leastsq(medlyn_fit_div_et, [0.04/_et.mean(), 0.7/_et.mean()],\
                args=(vpd, g_s, pft, _et))
     print(g_s.mean())
     if (ier <= 4) & (ier > 0):
@@ -77,7 +90,7 @@ def calc_coef():
       _coef.loc[filename, 'g1'] = _g[1]
     _coef.loc[filename, 'PFT'] = canopy['pft'].iloc[0]
     _coef.loc[filename, 'r2'] = 1. - \
-                                np.sum(medlyn_fit(_g, vpd,\
+                                np.sum(medlyn_fit_div_et(_g, vpd,\
                                                   g_s, pft, _et)**2)\
                                                 /np.sum((g_s - g_s.mean())**2)
     _coef.loc[filename, 'count'] = _et.size
@@ -101,14 +114,14 @@ def generate_coef_stats(_coef):
   return pd.DataFrame(data=_dout)
 
 def main():
-  """wrapper for main script"""
-  coef = calc_coef()
-  coef.to_csv('../dat/site_coef_mm_s_medlyn.csv')
-  statistics = coef.groupby('PFT').apply(generate_coef_stats)
-  statistics.index = statistics.index.droplevel(1)
-  outdir = '../dat/adam_mm_s_medlyn.csv'
-  statistics.to_csv(outdir)
+"""wrapper for main script"""
+coef = calc_coef()
+coef.to_csv('../dat/site_coef_mm_s_W_m2_medlyn.csv')
+statistics = coef.groupby('PFT').apply(generate_coef_stats)
+statistics.index = statistics.index.droplevel(1)
+outdir = '../dat/adam_mm_s_W_m2_medlyn.csv'
+statistics.to_csv(outdir)
   return coef
 
-if str(__name__) == '__main__':
-  main()
+# if str(__name__) == '__main__':
+#   main()

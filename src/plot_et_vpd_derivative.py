@@ -28,18 +28,20 @@ def unpack_df(filename):
   site = ''.join(filename.split('/')[-1].split('.')[:-1])
   return atmos, canopy, data, site
 
-def concat_dfs(filenames):
+def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
   """
   puts all the individual site data into one pdf, and adds a site column to df
   """
   dfs = []
-  filenames = glob.glob('%s/changjie/pandas_data/*' % os.environ['DATA'])
+  filenames = glob.glob('%s/changjie/%s/*'\
+                        % (os.environ['DATA'], folder))
   for filename in filenames[:]:
     _df = pd.read_pickle(filename)
     _df['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
     dfs.append(_df)
   full_df = pd.concat(dfs)
-  full_df.to_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
+  full_df.to_pickle('%s/changjie/%s.pkl'\
+                    % (os.environ['DATA'], fname))
   return full_df
 
 
@@ -133,42 +135,66 @@ def plot_wrapper(_df, plot_meta):
   scatter_plot(_df, plot_meta)
   return
 
-
-df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
-print(df.shape)
-min_et = 0. # W/m2
-df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
-# print(df.shape)
-# min_diff = 50. # W/m2
-# df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
-# print(df.shape)
-
 plt.close('all')
-plot_meta = {}
-for x_axis in ['vpd', 'rh']:
-  for log in ['log', 'r_n', '']:
-    plot_meta['label'] = 'full_ds' 
-    plot_meta['folder_label'] = 'full_ds'
-    plot_meta['x_axis'] = x_axis
-    plot_meta['log'] = log
-    # plot_wrapper(df, plot_meta)
-    plot_meta['folder_label'] = 'pft'
-    df.groupby('pft').apply(plot_wrapper, plot_meta)
-    # plot_meta['folder_label'] = 'site'
-    # df.groupby('site').apply(plot_wrapper, plot_meta)
+filenames = glob.glob('%s/changjie/pandas_data_v2/*'\
+                      % (os.environ['DATA']))
+for filename in filenames[:]:
+  _df1 = pd.read_pickle(filename)
+  try:
+    _df2 = pd.read_pickle('%s/changjie/pandas_data/%s'\
+                          % (os.environ['DATA'], filename.split('/')[-1]))
+  except FileNotFoundError:
+    print('Error: file %s has original equivalent' % filename)
+    continue
+  plt.figure()
+  plt.scatter(_df1.et, _df2.et, s=1)
+  plt.savefig('%s/garb_%s.png'\
+              % (os.environ['PLOTS'], filename.split('/')[-1].split('.')[0]))
 
-# os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
-#           '%s/climate_et/false_rh_full.png'\
-#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# os.system('convert +append %s/climate_et/pft_plots/*true_rh.png '\
-#           '%s/climate_et/true_rh_full.png'\
-#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
-#           '%s/climate_et/true_vpd_full.png'\
-#           % (os.environ['PLOTS'], os.environ['PLOTS']))
+# df1 = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
+# df2 = pd.read_pickle('%s/changjie/full_pandas_v2.pkl' % os.environ['DATA'])
+# plt.figure()
+# plt.plot(df1.et, df2.et, 'ko', s=1)
+# plt.savefig('%s/garb0000.png')
 
-# os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
-#           '%s/climate_et/false_vpd_full.png'\
-#           % (os.environ['PLOTS'], os.environ['PLOTS']))
+# df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
+
+# print(df.shape)
+# min_et = 0. # W/m2
+# df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
+# # print(df.shape)
+# # min_diff = 50. # W/m2
+# # df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
+# # print(df.shape)
+
+# plt.close('all')
+# plot_meta = {}
+# for x_axis in ['vpd', 'rh']:
+#   for log in ['log', 'r_n', '']:
+#     plot_meta['label'] = 'full_ds' 
+#     plot_meta['folder_label'] = 'full_ds'
+#     plot_meta['x_axis'] = x_axis
+#     plot_meta['log'] = log
+#     # plot_wrapper(df, plot_meta)
+#     plot_meta['folder_label'] = 'pft'
+#     df.groupby('pft').apply(plot_wrapper, plot_meta)
+#     # plot_meta['folder_label'] = 'site'
+#     # df.groupby('site').apply(plot_wrapper, plot_meta)
+
+# # os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
+# #           '%s/climate_et/false_rh_full.png'\
+# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+# # os.system('convert +append %s/climate_et/pft_plots/*true_rh.png '\
+# #           '%s/climate_et/true_rh_full.png'\
+# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+# # os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
+# #           '%s/climate_et/true_vpd_full.png'\
+# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+# # os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
+# #           '%s/climate_et/false_vpd_full.png'\
+# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
