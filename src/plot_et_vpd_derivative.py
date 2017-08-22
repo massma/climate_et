@@ -144,12 +144,29 @@ for filename in filenames[:]:
     _df2 = pd.read_pickle('%s/changjie/pandas_data/%s'\
                           % (os.environ['DATA'], filename.split('/')[-1]))
   except FileNotFoundError:
-    print('Error: file %s has original equivalent' % filename)
+    print('Error: file %s has no original equivalent' % filename)
     continue
+  _df1.loc[_df1.r_a < 1.e-4] = np.nan
+  _df2.loc[_df2.r_a < 1.e-4] = np.nan
   plt.figure()
-  plt.scatter(_df1.et, _df2.et, s=1)
-  plt.savefig('%s/garb_%s.png'\
-              % (os.environ['PLOTS'], filename.split('/')[-1].split('.')[0]))
+  plt.scatter(_df1.et_obs, _df1.et, s=1)
+  name = filename.split('/')[-1]
+  plt.savefig('%s/garb_%s_explicit.png'\
+              % (os.environ['PLOTS'], name.split('.')[0]))
+
+  plt.figure()
+  plt.scatter(_df2.et_obs, _df2.et, s=1)
+  t1 = _df1.loc[np.absolute(_df1.et - _df1.et_obs) < 100., 'et'].copy()
+  print('for %s, explicit fraction good is %f'\
+        % (name, float(t1.count())/float(_df1.et.count())))
+  t1 = _df2.loc[np.absolute(_df2.et - _df2.et_obs) < 100., 'et'].copy()
+  print('for %s, implicit fraction good is %f'\
+        % (name, float(t1.count())/float(_df2.et.count())))
+  if name == 'FI-Hyy.pkl':
+    df = _df1.copy()
+  
+  plt.savefig('%s/garb_%s_implicit.png'\
+              % (os.environ['PLOTS'], name.split('.')[0]))
 
 
 

@@ -310,8 +310,8 @@ def penman_monteith_prep(_atmos, _canopy):
     else:
       _atmos['r_a'] = r_a(_atmos, _canopy)
 
-  if 'r_s' not in _canopy:
-    _canopy['r_s'] = oren_r_e(_atmos['vpd'], _canopy['pft'])
+  # if 'r_s' not in _canopy:
+  #   _canopy['r_s'] = oren_r_e(_atmos['vpd'], _canopy['pft'])
 
   if 'height' not in _canopy:
     try:
@@ -358,9 +358,8 @@ def penman_monteith_uwue(_atmos, _canopy):
     vpd = _atmos['vpd']
 
   _canopy = et_adam_medlyn_r_e(vpd, _canopy)
-
   _atmos, _canopy = penman_monteith_prep(_atmos, _canopy)
-
+  _atmos.loc[_atmos['r_a'] < 0.1, 'r_a'] = np.nan
   _et = (_atmos['delta']*\
        (_atmos['r_n']-_canopy['g_flux'])+\
          (_atmos['rho_a']*CP*_atmos['vpd'] - _canopy['r_s'])/_atmos['r_a'])\
