@@ -63,7 +63,7 @@ ADAM_MEDLYN = pd.read_csv('../dat/adam_mm_s_medlyn.csv',\
 # ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
 ADAM_MEDLYN.index = ADAM_MEDLYN.PFT
 
-ADAM_MEDLYN_ET = pd.read_csv('../dat/adam_mm_s_medlyn.csv',\
+ADAM_MEDLYN_ET = pd.read_csv('../dat/adam_mm_s_W_m2_medlyn.csv',\
            comment='#', delimiter=',')
 #now I take care of below conversion in adam funciton, b/c units
 # for this are acutall mol/m2/s
