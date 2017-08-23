@@ -63,13 +63,13 @@ ADAM_MEDLYN = pd.read_csv('../dat/adam_mm_s_medlyn.csv',\
 # ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
 ADAM_MEDLYN.index = ADAM_MEDLYN.PFT
 
-ADAM_MEDLYN_ET = pd.read_csv('../dat/adam_mm_s_W_m2_medlyn.csv',\
-           comment='#', delimiter=',')
-#now I take care of below conversion in adam funciton, b/c units
-# for this are acutall mol/m2/s
-# #convert to m/s - note only need to convert g0 b/c of functional form
-# ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
-ADAM_MEDLYN_ET.index = ADAM_MEDLYN_ET.PFT
+# ADAM_MEDLYN_UWUE = pd.read_csv('../dat/adam_mm_s_W_m2_medlyn.csv',\
+#            comment='#', delimiter=',')
+# #now I take care of below conversion in adam funciton, b/c units
+# # for this are acutall mol/m2/s
+# # #convert to m/s - note only need to convert g0 b/c of functional form
+# # ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
+# ADAM_MEDLYN_UWUE.index = ADAM_MEDLYN_UWUE.PFT
 
 
 LEUNING = pd.read_csv('../dat/changjie_leuning.csv',\
@@ -147,7 +147,7 @@ def adam_medlyn_r_e(vpd, t_a, _canopy, _et):
                            *(1. + g_1/np.sqrt(vpd/1000.)))
   return _canopy
 
-def et_adam_medlyn_r_e(vpd, _canopy):
+def et_adam_medlyn_r_e(vpd, _canopy, _atmos):
   """
   calculates ecosystem canopy resistance given vpd and plant functional type
   vpd : vapor pressure deficit in Pa
@@ -156,15 +156,21 @@ def et_adam_medlyn_r_e(vpd, _canopy):
   """
   #convert g C -> mu mol C
   wue = WUE.loc[_canopy['pft'].iloc[0], 'u_wue_yearly']*1.e6/12.011
-  if 'g0' in _canopy:
-    g_0 = _canopy['g0']
+  if 'lai' in _canopy:
+    lai = _canopy['lai']
     g_1 = _canopy['g1']
   else:
-    g_0 = ADAM_MEDLYN_ET.loc[pft].g0_mean/1000.
-    g_1 = ADAM_MEDLYN_ET.loc[pft].g1_mean
-  print(wue)
-  _canopy['r_s'] = 1./(g_0*wue/LV/np.sqrt(vpd/100.)\
-                       *(1. + g_1/np.sqrt(vpd/1000.)))
+    # g_0 = ADAM_MEDLYN_UWUE.loc[pft].g0_mean/1000.
+    # g_1 = ADAM_MEDLYN_UWUE.loc[pft].g1_mean
+    lai = 1.
+    try:
+      g_1 = WUE_MEDLYN.loc[_canopy['pft'].iloc[0]].g1M
+    except KeyError:
+      g_1 = np.nan
+  _g = lai*R_STAR*(273.15 + _atmos['t_a'])/_atmos['p_a']\
+       *1.6*(1. + g_1/np.sqrt(vpd/1000.))\
+       *wue/(_atmos['c_a']*np.sqrt(vpd/100.)*LV)
+  _canopy['r_s'] = 1./_g
   return _canopy
 
 
@@ -306,12 +312,14 @@ def penman_monteith_prep(_atmos, _canopy):
 
   if 'r_a' not in _atmos:
     if 'ustar' in _atmos:
-      _atmos['r_a'] = corrected_r_a(_atmos, _canopy)
+      # _atmos['r_a'] = corrected_r_a(_atmos, _canopy)
+      # _atmos['r_a_uncorrected'] = r_a(_atmos, _canopy)
+      _atmos['r_a'] = r_a(_atmos, _canopy)
     else:
       _atmos['r_a'] = r_a(_atmos, _canopy)
 
-  # if 'r_s' not in _canopy:
-  #   _canopy['r_s'] = oren_r_e(_atmos['vpd'], _canopy['pft'])
+  if 'c_a' not in _atmos:
+    _atmos['c_a'] = 400. #ppm
 
   if 'height' not in _canopy:
     try:
@@ -357,12 +365,15 @@ def penman_monteith_uwue(_atmos, _canopy):
   else:
     vpd = _atmos['vpd']
 
-  _canopy = et_adam_medlyn_r_e(vpd, _canopy)
+
   _atmos, _canopy = penman_monteith_prep(_atmos, _canopy)
-  _atmos.loc[_atmos['r_a'] < 0.1, 'r_a'] = np.nan
+  _canopy = et_adam_medlyn_r_e(vpd, _canopy, _atmos)
+
+  # _atmos.loc[_atmos['r_a'] < 0.1, 'r_a'] = np.nan
   _et = (_atmos['delta']*\
        (_atmos['r_n']-_canopy['g_flux'])+\
-         (_atmos['rho_a']*CP*_atmos['vpd'] - _canopy['r_s'])/_atmos['r_a'])\
+         (_atmos['rho_a']*CP*_atmos['vpd']\
+          - _atmos['gamma']*_canopy['r_s'])/_atmos['r_a'])\
          /(_atmos['delta']+_atmos['gamma'])
   return _et
 

@@ -37,6 +37,10 @@ def load_mat_data(filename):
   atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
   atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
   atmos['u_z'] = np.squeeze(data['WS'])
+  if data['flag_Ca'] == 1:
+    atmos['c_a'] = np.squeeze(data['Ca'])
+  else:
+    atmos['c_a'] = np.ones(atmos['p_a'].shape)*400. #ppm
 
   canopy = {}
   canopy['g_flux'] = np.squeeze(data['G'])
@@ -66,6 +70,7 @@ def load_mat_data(filename):
   _data['g_s'] = 1./_data['r_s']*1000.
   _data.loc[_data['g_s'] < 0., 'g_s'] = np.nan
   _data.loc[_data['g_s'] > 100., 'g_s'] = np.nan
+  _data.loc[_data['et_obs'] <= 0.0, 'et_obs'] = np.nan
   _data = _data.dropna()
   atmos = atmos.loc[_data.index, :]
   canopy = canopy.loc[_data.index, :]

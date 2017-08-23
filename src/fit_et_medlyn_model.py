@@ -11,7 +11,10 @@ import codebase.penman_monteith as pm
 from scipy.optimize import leastsq
 import codebase.data_io as d_io
 import scipy.io as io
+import importlib
 
+importlib.reload(pm)
+importlib.reload(d_io)
 
 WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
            comment='#', delimiter=',')
@@ -23,31 +26,19 @@ SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        delimiter=',')
 SITELIST.index = SITELIST.Site
 
-# def medlyn_fit(_g, *data):
-#   """function to fit using leastsq"""
-#   _vpd, _gpp, _g_s, pft = data
-#   return _g[0]*_gpp*(1. + _g[1]/np.sqrt(_vpd)) - _g_s
-
-def medlyn_fit_div_et(_g, *data):
+def medlyn_fit_et(g_coef, *args):
   """
-  function to fit using leastsq,
-  vpd should be in kPa, _g and _g_s in mm/s, and et in q/m2,
-  same as medlyn_fit except conductance is divided by ET
+  wrapper to solve for g using obs et
   """
-  _vpd, _g_s, _pft, _et = data
-  wue = WUE.loc[_pft, 'u_wue_yearly']*1.e6/12.011
-  return _g[0]*wue/LV/np.sqrt(_vpd*10.)\
-    *(1. + _g[1]/np.sqrt(_vpd)) - _g_s
-
-def medlyn_fit(_g, *data):
-  """
-  function to fit using leastsq,
-  vpd should be in kPa, _g and _g_s in mm/s, and et in q/m2
-  """
-  _vpd, _g_s, _pft, _et = data
-  wue = WUE.loc[_pft, 'u_wue_yearly']*1.e6/12.011
-  return _g[0]*wue*_et/LV/np.sqrt(_vpd*10.)\
-    *(1. + _g[1]/np.sqrt(_vpd)) - _g_s
+  atmos, canopy, data = args
+  canopy['g0'] = g_coef[0]
+  canopy['g1'] = g_coef[1]
+  # print(canopy['g0'])
+  # print(canopy['g1'])
+  data['et'] = pm.penman_monteith_uwue(atmos, canopy)
+  data.loc[data.et > 1000., 'et'] = 1000.
+  data.loc[data.et <= 0., 'et'] = 0.
+  return data['et'] - data['et_obs']
 
 def calc_coef():
   """
@@ -63,37 +54,25 @@ def calc_coef():
 
     atmos, canopy, data = d_io.load_mat_data(filename)
     _et = data['et_obs']
-    _et[_et <= 1.0] = np.nan 
     if _et.size == 0:
       print('filename %s has no data' % filename)
       continue
-    print('min et', _et.min())
-    canopy['r_s'] = data['r_s']
     pft = canopy.iloc[0,:].loc['pft']
     try:
       _ = WUE.loc[pft, :]
     except KeyError:
       print("file %s 's pft has no uWUE, moving on" % filename)
       continue
-
-    vpd = atmos['vpd']/1000.
-    # note below is in mol/m2/s
-    #g_s = data['Gs']
-    # below is mm/s ?
-    # g_s = data['g_s']
-    #below is mm/s/W/m2
-    g_s = data['g_s']/_et
-    _g, ier = leastsq(medlyn_fit_div_et, [0.04/_et.mean(), 0.7/_et.mean()],\
-               args=(vpd, g_s, pft, _et))
-    print(g_s.mean())
+    _g, ier = leastsq(medlyn_fit_et, [0.04/_et.mean(), 0.7/_et.mean()],\
+               args=(atmos, canopy, data))
     if (ier <= 4) & (ier > 0):
       _coef.loc[filename, 'g0'] = _g[0]
       _coef.loc[filename, 'g1'] = _g[1]
     _coef.loc[filename, 'PFT'] = canopy['pft'].iloc[0]
     _coef.loc[filename, 'r2'] = 1. - \
-                                np.sum(medlyn_fit_div_et(_g, vpd,\
-                                                  g_s, pft, _et)**2)\
-                                                /np.sum((g_s - g_s.mean())**2)
+                                np.sum(medlyn_fit_et(_g, atmos,\
+                                                         canopy, data)**2)\
+                                                /np.sum((_et - _et.mean())**2)
     _coef.loc[filename, 'count'] = _et.size
   print('wall time was %f s' % (time.time()-time_start))
   print('r2: %f' % _coef.r2.mean())
@@ -102,7 +81,8 @@ def calc_coef():
 
 def generate_coef_stats(_coef):
   """
-  calcualted mean and std deviation of each PFT
+  calcualted mean and std deviation of each PFT,\
+  note should prob group by pft and run lsq
   """
   _dout = {}
   for key in ['g0', 'g1', 'r2']:
