@@ -28,17 +28,16 @@ SITELIST.index = SITELIST.Site
 
 
 start = time.time()
-coef = pd.read_csv('../dat/site_coef_mm_s_medlyn.csv')
+coef = pd.read_csv('../dat/site_coef_mm_s_W_m2_medlyn_lai.csv')
 coef.index = coef['Unnamed: 0']
-outdir = '%s/changjie/pandas_data_v2/' % os.environ['DATA']
+outdir = '%s/changjie/pandas_data_lai_fit/' % os.environ['DATA']
 for i, index in enumerate(coef.index[:]):
   print('Working on %s, file number %d, time elapsed: %f m' \
         % (index, i, (time.time()-start)/60.))
   atmos, canopy, data = d_io.load_mat_data(index)
   canopy['et_stomatal_model'] = 'adam_medlyn'
-  # belof converts from mm/s to m/s, only do g0 b/c of funcitonal form
-  # canopy['g0'] = coef.loc[index, 'g0']/1000.
-  # canopy['g1'] = coef.loc[index, 'g1']
+  canopy['lai'] = coef.loc[index, 'lai']
+  canopy['g1'] = coef.loc[index, 'g1']
   #data['et'] = pm.recursive_penman_monteith(atmos, canopy)
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
   #et threshold

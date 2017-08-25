@@ -135,9 +135,9 @@ def plot_wrapper(_df, plot_meta):
   scatter_plot(_df, plot_meta)
   return
 
-
+suff = 'lai_fit'
 plt.close('all')
-filenames = glob.glob('%s/changjie/pandas_data_v2/*'\
+filenames = glob.glob('%s/changjie/pandas_data_lai_fit/*'\
                       % (os.environ['DATA']))
 for filename in filenames[:]:
   _df1 = pd.read_pickle(filename)
@@ -153,12 +153,13 @@ for filename in filenames[:]:
     plt.figure()
     plt.scatter(_df1.et_obs, _df1.et, s=1)
     name = filename.split('/')[-1]
-    plt.savefig('%s/garb_%s_explicit.png'\
-                % (os.environ['PLOTS'], name.split('.')[0]))
+    plt.savefig('%s/climate_et/%s/garb_%s_explicit.png'\
+                % (os.environ['PLOTS'], suff,  name.split('.')[0]))
 
     plt.figure()
     plt.scatter(_df2.et_obs, _df2.et, s=1)
     t1 = _df1.loc[np.absolute(_df1.et - _df1.et_obs) < 100., 'et'].copy()
+
     print('for %s, explicit fraction good is %f'\
           % (name, float(t1.count())/float(_df1.et.count())))
     t1 = _df2.loc[np.absolute(_df2.et - _df2.et_obs) < 100., 'et'].copy()
@@ -167,8 +168,8 @@ for filename in filenames[:]:
     if name == 'FI-Hyy.pkl':
       df = _df1.copy()
 
-    plt.savefig('%s/garb_%s_implicit.png'\
-                % (os.environ['PLOTS'], name.split('.')[0]))
+    plt.savefig('%s/climate_et/%s/garb_%s_implicit.png'\
+                % (os.environ['PLOTS'], suff, name.split('.')[0]))
 
 
 

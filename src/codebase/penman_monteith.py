@@ -35,6 +35,7 @@ WUE_MEDLYN.index = WUE_MEDLYN.PFT
 WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
                   comment='#', delimiter=',')
 WUE.index = WUE.PFT
+WUE.loc[:, 'u_wue_yearly'] = WUE.loc[:, 'u_wue_yearly']*1.e6/12.011
 
 LAI = pd.read_csv('../dat/bonan_et_al_table4_lai.csv',\
                   comment='#', delimiter=',')
@@ -107,7 +108,7 @@ def medlyn_g_w(vpd, co2, rho, pft, _et):
   co2 : ppm
   """
   #convert g C -> mu mol C
-  wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+  wue = WUE.loc[pft, 'u_wue_yearly']
   # note bellow assumes that atmos co2 is same as leaf, might be bad
   _g1 = WUE_MEDLYN.loc[pft, 'g1M'] # note this sqrt(kPa)
   # below is units mol air / m2 / s
@@ -123,7 +124,7 @@ def medlyn_r_e(vpd, pft, _et):
   returns canopy resistance in s/m
   """
   #convert g C -> mu mol C
-  wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+  wue = WUE.loc[pft, 'u_wue_yearly']
   g_0 = MEDLYN.loc[pft].G0mean
   g_1 = MEDLYN.loc[pft].G1mean
   return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
@@ -136,7 +137,7 @@ def adam_medlyn_r_e(vpd, t_a, _canopy, _et):
   returns canopy resistance in s/m
   """
   #convert g C -> mu mol C
-  wue = WUE.loc[_canopy['pft'], 'u_wue_yearly']*1.e6/12.011
+  wue = WUE.loc[_canopy['pft'], 'u_wue_yearly']
   if 'g0' in _canopy:
     g_0 = _canopy['g0']
     g_1 = _canopy['g1']
@@ -155,7 +156,7 @@ def et_adam_medlyn_r_e(vpd, _canopy, _atmos):
   returns canopy resistance in W/m2 * s/m
   """
   #convert g C -> mu mol C
-  wue = WUE.loc[_canopy['pft'].iloc[0], 'u_wue_yearly']*1.e6/12.011
+  wue = WUE.loc[_canopy['pft'].iloc[0], 'u_wue_yearly']
   if 'lai' in _canopy:
     lai = _canopy['lai']
     g_1 = _canopy['g1']
@@ -180,7 +181,7 @@ def leuning_r_e(vpd, pft, _et):
   returns canopy resistance in s/m
   """
   #convert g C -> mu mol C
-  wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+  wue = WUE.loc[pft, 'u_wue_yearly']
   g_0 = LEUNING.loc[pft].G0mean
   g_1 = LEUNING.loc[pft].G1mean
   return 1./(g_0 + g_1/(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
@@ -193,7 +194,7 @@ def fitted_m_r_e(vpd, pft, _et):
   returns canopy resistance in s/m
   """
   #convert g C -> mu mol C
-  wue = WUE.loc[pft, 'u_wue_yearly']*1.e6/12.011
+  wue = WUE.loc[pft, 'u_wue_yearly']
   g_0 = FITTED_M.loc[pft].G0mean
   g_1 = FITTED_M.loc[pft].G1mean
   _m = FITTED_M.loc[pft].m_mean
