@@ -160,8 +160,6 @@ def et_adam_medlyn_r_e(vpd, _canopy, _atmos):
     lai = _canopy['lai']
     g_1 = _canopy['g1']
   else:
-    # g_0 = ADAM_MEDLYN_UWUE.loc[pft].g0_mean/1000.
-    # g_1 = ADAM_MEDLYN_UWUE.loc[pft].g1_mean
     lai = 1.
     try:
       g_1 = WUE_MEDLYN.loc[_canopy['pft'].iloc[0]].g1M

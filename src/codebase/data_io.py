@@ -37,6 +37,8 @@ def load_mat_data(filename):
   atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
   atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
   atmos['u_z'] = np.squeeze(data['WS'])
+  atmos['u_z'][atmos['u_z'] <= 0.] = np.nan
+
   if data['flag_Ca'] == 1:
     atmos['c_a'] = np.squeeze(data['Ca'])
   else:

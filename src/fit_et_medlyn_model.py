@@ -21,6 +21,11 @@ WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
 WUE.index = WUE.PFT
 LV = 2.5e6
 
+WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
+                         comment='#', delimiter=',')
+WUE_MEDLYN.index = WUE_MEDLYN.PFT
+
+
 SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        'Site_list_(canopy_height).csv' % os.environ['DATA'],\
                        delimiter=',')
@@ -31,13 +36,11 @@ def medlyn_fit_et(g_coef, *args):
   wrapper to solve for g using obs et
   """
   atmos, canopy, data = args
-  canopy['g0'] = g_coef[0]
+  canopy['lai'] = g_coef[0]
   canopy['g1'] = g_coef[1]
-  # print(canopy['g0'])
-  # print(canopy['g1'])
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
-  data.loc[data.et > 1000., 'et'] = 1000.
-  data.loc[data.et <= 0., 'et'] = 0.
+  # data.loc[data.et > 1000., 'et'] = 1000.
+  # data.loc[data.et <= 0., 'et'] = 0.
   return data['et'] - data['et_obs']
 
 def calc_coef():
@@ -63,7 +66,12 @@ def calc_coef():
     except KeyError:
       print("file %s 's pft has no uWUE, moving on" % filename)
       continue
-    _g, ier = leastsq(medlyn_fit_et, [0.04/_et.mean(), 0.7/_et.mean()],\
+    try:
+      g_1 = pm.WUE_MEDLYN.loc[pft, 'g1M']
+    except KeyError:
+      g_1 = pm.WUE_MEDLYN.loc[:, 'g1M'].mean()
+
+    _g, ier = leastsq(medlyn_fit_et, [1.0, g_1],\
                args=(atmos, canopy, data))
     if (ier <= 4) & (ier > 0):
       _coef.loc[filename, 'g0'] = _g[0]
