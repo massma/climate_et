@@ -72,6 +72,8 @@ def calc_coef():
                            loss='cauchy', args=(atmos, canopy, data))
     if result['success']:
       _coef.loc[filename, 'lai'] = result['x'][0]
+    else:
+      print('ERRORR!!!! filename %s failed!' % filename)
       #_coef.loc[filename, 'g1'] = result['x'][1]
       _coef.loc[filename, 'g1'] = canopy['g1'].iloc[0]
     _coef.loc[filename, 'PFT'] = canopy['pft'].iloc[0]
