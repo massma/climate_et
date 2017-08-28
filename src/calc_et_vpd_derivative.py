@@ -23,31 +23,39 @@ SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        delimiter=',')
 SITELIST.index = SITELIST.Site
 
+def calc_derivative(atmos, canopy, data):
+  """adds various derivative fields to data, given atmos and canopy"""
+  data['et'] = pm.penman_monteith_uwue(atmos, canopy)
+  data['scaling'] = 1./(atmos['r_a']*(atmos['delta'] + atmos['gamma']))
+  data['vpd_atm'] = atmos['rho_a']*pm.CP
+  data['vpd_leaf'] = atmos['gamma']*atmos['c_a']/\
+                     (canopy['lai']*1.6*canopy['uwue'])\
+                     *(2.*canopy['g1'] + np.sqrt(atmos['vpd']))\
+                     /(2.*(canopy['g1'] + np.sqrt(atmos['vpd']))**2)
+  data['lai_fit'] = atmos['gamma']*atmos['c_a']*np.sqrt(atmos['vpd'])\
+                    /(atmos['r_a']\
+                      *(data['et_obs']*(atmos['gamma']+atmos['delta'])\
+                        -atmos['delta']*(atmos['r_n']-canopy['g_flux'])\
+                        -1./atmos['r_a']*atmos['rho_a']*pm.CP*atmos['vpd'])
+                      *1.6*canopy['uwue']*(1.+canopy['g1']/atmos['vpd']))
+  return
 #def main():
 """wrapper for main script"""
 
 
 start = time.time()
-coef = pd.read_csv('../dat/site_coef_mm_s_W_m2_medlyn_lai.csv')
+coef = pd.read_csv('../dat/site_coef_mm_s_W_m2_medlyn_lai_nolim.csv')
 coef.index = coef['Unnamed: 0']
-outdir = '%s/changjie/pandas_data_lai_fit/' % os.environ['DATA']
-for i, index in enumerate(coef.index[:]):
+outdir = '%s/changjie/pandas_data_lai_fit_nolim/' % os.environ['DATA']
+for i, index in enumerate(coef.index[:1]):
   print('Working on %s, file number %d, time elapsed: %f m' \
         % (index, i, (time.time()-start)/60.))
   atmos, canopy, data = d_io.load_mat_data(index)
   canopy['et_stomatal_model'] = 'adam_medlyn'
   canopy['lai'] = coef.loc[index, 'lai']
   canopy['g1'] = coef.loc[index, 'g1']
-  #data['et'] = pm.recursive_penman_monteith(atmos, canopy)
-  data['et'] = pm.penman_monteith_uwue(atmos, canopy)
-  #et threshold
-  # atmos['vpd_leaf'] = atmos['vpd'] + 1.0
-  # data['et_leaf'] = pm.recursive_penman_monteith(atmos, canopy)
-  # atmos['vpd_leaf'] = atmos['vpd']
-  # atmos['vpd'] = atmos['vpd'] + 1.0
-  # data['et_atm'] = pm.recursive_penman_monteith(atmos, canopy)
-  # atmos['vpd_leaf'] = atmos['vpd_leaf'] + 1.0
-  # data['et_all'] = pm.recursive_penman_monteith(atmos, canopy)
+  canopy['uwue'] = pm.WUE.loc[canopy['pft'].iloc[0], 'u_wue_yearly']
+  atmos, canopy, data = calc_derivative(atmos, canopy, derivative)
   dfout = pd.concat([atmos, canopy, data], axis=1)
   fname = ''.join(index.split('/')[-1].split('.')[:-1])
   dfout.to_pickle('%s/%s.pkl' % (outdir, fname))
