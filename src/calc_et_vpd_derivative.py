@@ -23,22 +23,31 @@ SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        delimiter=',')
 SITELIST.index = SITELIST.Site
 
+def leaf_vpd(atmos, canopy, lai):
+  """calculates the leaf term in dET/dVPD (see doc folder)"""
+  return atmos['gamma']*atmos['c_a']*atmos['p_a']*/\
+    (lai*1.6*pm.R_STAR*(273.15+atmos['t_a'])*canopy['uwue'])\
+    *(2.*canopy['g1'] + np.sqrt(atmos['vpd']))\
+    /(2.*(canopy['g1'] + np.sqrt(atmos['vpd']))**2)
+
+
 def calc_derivative(atmos, canopy, data):
   """adds various derivative fields to data, given atmos and canopy"""
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
   data['scaling'] = 1./(atmos['r_a']*(atmos['delta'] + atmos['gamma']))
   data['vpd_atm'] = atmos['rho_a']*pm.CP
-  data['vpd_leaf'] = atmos['gamma']*atmos['c_a']/\
-                     (canopy['lai']*1.6*canopy['uwue'])\
-                     *(2.*canopy['g1'] + np.sqrt(atmos['vpd']))\
-                     /(2.*(canopy['g1'] + np.sqrt(atmos['vpd']))**2)
-  data['lai_fit'] = atmos['gamma']*atmos['c_a']*np.sqrt(atmos['vpd'])\
+  data['vpd_leaf'] = leaf_vpd(atmos, canopy, canopy['lai'])
+  data['lai_fit'] = atmos['gamma']*atmos['c_a']\
+                    *np.sqrt(atmos['vpd'])*atmos['p_a']\
                     /(atmos['r_a']\
                       *(data['et_obs']*(atmos['gamma']+atmos['delta'])\
                         -atmos['delta']*(atmos['r_n']-canopy['g_flux'])\
                         -1./atmos['r_a']*atmos['rho_a']*pm.CP*atmos['vpd'])
-                      *1.6*canopy['uwue']*(1.+canopy['g1']/atmos['vpd']))
-  return
+                      *1.6*pm.R_STAR*(273.15 + canopy['t_a'])\
+                      *canopy['uwue']*(1.+canopy['g1']/atmos['vpd']))
+  data['vpd_leaf_hourly'] = leaf_vpd(atmos, canopy, data['lai_fit'])
+  return data
+
 #def main():
 """wrapper for main script"""
 
@@ -55,7 +64,7 @@ for i, index in enumerate(coef.index[:1]):
   canopy['lai'] = coef.loc[index, 'lai']
   canopy['g1'] = coef.loc[index, 'g1']
   canopy['uwue'] = pm.WUE.loc[canopy['pft'].iloc[0], 'u_wue_yearly']
-  atmos, canopy, data = calc_derivative(atmos, canopy, derivative)
+  data = calc_derivative(atmos, canopy, data)
   dfout = pd.concat([atmos, canopy, data], axis=1)
   fname = ''.join(index.split('/')[-1].split('.')[:-1])
   dfout.to_pickle('%s/%s.pkl' % (outdir, fname))

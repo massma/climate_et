@@ -31,11 +31,15 @@ OREN.index = OREN.PFT
 WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
                          comment='#', delimiter=',')
 WUE_MEDLYN.index = WUE_MEDLYN.PFT
+# convert from sqrt(kPa) to sqrt(Pa)
+WUE_MEDLYN.loc[:, 'g1M'] = WUE_MEDLYN.loc[:, 'g1M']*np.sqrt(1000.)
 
 WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
                   comment='#', delimiter=',')
 WUE.index = WUE.PFT
-WUE.loc[:, 'u_wue_yearly'] = WUE.loc[:, 'u_wue_yearly']*1.e6/12.011
+# convert from g C to micromol, and from sqrt(hPa) to sqrt(PA)
+WUE.loc[:, 'u_wue_yearly'] = WUE.loc[:, 'u_wue_yearly']\
+                             *1.e6/12.011*np.sqrt(100.)
 
 LAI = pd.read_csv('../dat/bonan_et_al_table4_lai.csv',\
                   comment='#', delimiter=',')
@@ -112,7 +116,7 @@ def medlyn_g_w(vpd, co2, rho, pft, _et):
   # note bellow assumes that atmos co2 is same as leaf, might be bad
   _g1 = WUE_MEDLYN.loc[pft, 'g1M'] # note this sqrt(kPa)
   # below is units mol air / m2 / s
-  g_w = 1.6*(1. + _g1/np.sqrt(vpd/1000.))*wue*_et/LV/np.sqrt(vpd/100.)/co2
+  g_w = 1.6*(1. + _g1/np.sqrt(vpd))*wue*_et/LV/np.sqrt(vpd)/co2
   g_w = g_w*R_AIR/rho
   return g_w
 
@@ -127,7 +131,7 @@ def medlyn_r_e(vpd, pft, _et):
   wue = WUE.loc[pft, 'u_wue_yearly']
   g_0 = MEDLYN.loc[pft].G0mean
   g_1 = MEDLYN.loc[pft].G1mean
-  return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
+  return 1./(g_0 + g_1/np.sqrt(vpd/1000.)*wue*_et/LV/np.sqrt(vpd))
 
 def adam_medlyn_r_e(vpd, t_a, _canopy, _et):
   """
@@ -144,7 +148,7 @@ def adam_medlyn_r_e(vpd, t_a, _canopy, _et):
   else:
     g_0 = ADAM_MEDLYN.loc[pft].g0_mean/1000.
     g_1 = ADAM_MEDLYN.loc[pft].g1_mean
-  _canopy.loc['r_s'] = 1./(g_0*wue*_et/LV/np.sqrt(vpd/100.)\
+  _canopy.loc['r_s'] = 1./(g_0*wue*_et/LV/np.sqrt(vpd)\
                            *(1. + g_1/np.sqrt(vpd/1000.)))
   return _canopy
 
@@ -167,8 +171,8 @@ def et_adam_medlyn_r_e(vpd, _canopy, _atmos):
     except KeyError:
       g_1 = np.nan
   _g = lai*R_STAR*(273.15 + _atmos['t_a'])/_atmos['p_a']\
-       *1.6*(1. + g_1/np.sqrt(vpd/1000.))\
-       *wue/(_atmos['c_a']*np.sqrt(vpd/100.)*LV)
+       *1.6*(1. + g_1/np.sqrt(vpd))\
+       *wue/(_atmos['c_a']*np.sqrt(vpd)*LV)
   _canopy['r_s'] = 1./_g
   return _canopy
 
@@ -184,7 +188,7 @@ def leuning_r_e(vpd, pft, _et):
   wue = WUE.loc[pft, 'u_wue_yearly']
   g_0 = LEUNING.loc[pft].G0mean
   g_1 = LEUNING.loc[pft].G1mean
-  return 1./(g_0 + g_1/(vpd/1000.)*wue*_et/LV/np.sqrt(vpd/100.))
+  return 1./(g_0 + g_1/(vpd/1000.)*wue*_et/LV/np.sqrt(vpd))
 
 def fitted_m_r_e(vpd, pft, _et):
   """
@@ -198,7 +202,7 @@ def fitted_m_r_e(vpd, pft, _et):
   g_0 = FITTED_M.loc[pft].G0mean
   g_1 = FITTED_M.loc[pft].G1mean
   _m = FITTED_M.loc[pft].m_mean
-  return 1./(g_0 + g_1/(vpd/1000.)**_m*wue*_et/LV/np.sqrt(vpd/100.))
+  return 1./(g_0 + g_1/(vpd/1000.)**_m*wue*_et/LV/np.sqrt(vpd))
 
 def psim(ksi):
   """

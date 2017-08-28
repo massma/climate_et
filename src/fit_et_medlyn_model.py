@@ -29,8 +29,8 @@ def medlyn_fit_et(g_coef, *args):
   canopy['lai'] = g_coef[0]
   # canopy['g1'] = g_coef[1]
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
-  data.loc[data.et > 1000., 'et'] = 1000.
-  data.loc[data.et <= 0., 'et'] = 0.
+  # data.loc[data.et > 1000., 'et'] = 1000.
+  # data.loc[data.et <= 0., 'et'] = 0.
   return data['et'] - data['et_obs']
 
 def calc_coef():
@@ -75,7 +75,7 @@ def calc_coef():
     else:
       print('ERRORR!!!! filename %s failed!' % filename)
       #_coef.loc[filename, 'g1'] = result['x'][1]
-      _coef.loc[filename, 'g1'] = canopy['g1'].iloc[0]
+    _coef.loc[filename, 'g1'] = canopy['g1'].iloc[0]
     _coef.loc[filename, 'PFT'] = canopy['pft'].iloc[0]
     _coef.loc[filename, 'r2'] = 1. - \
                                 np.sum(medlyn_fit_et(result['x'], atmos,\
@@ -105,10 +105,10 @@ def generate_coef_stats(_coef):
 # def main():
 """wrapper for main script"""
 coef = calc_coef()
-coef.to_csv('../dat/site_coef_mm_s_W_m2_medlyn_lai.csv')
+coef.to_csv('../dat/site_coef_mm_s_W_m2_medlyn_lai_nolim.csv')
 statistics = coef.groupby('PFT').apply(generate_coef_stats)
 statistics.index = statistics.index.droplevel(1)
-outdir = '../dat/adam_mm_s_W_m2_medlyn_lai.csv'
+outdir = '../dat/adam_mm_s_W_m2_medlyn_lai_nolim.csv'
 statistics.to_csv(outdir)
 #   return coef
 
