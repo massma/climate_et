@@ -51,18 +51,11 @@ def calc_coef():
       print('filename %s has no data' % filename)
       continue
     pft = canopy.iloc[0,:].loc['pft']
-    try:
-      _ = pm.WUE.loc[pft, :]
-    except KeyError:
-      print("file %s 's pft (%s) has no uWUE, moving on" % (filename, pft))
+    if np.isnan(canopy['uwue'].iloc[0]):
       continue
-    try:
-      canopy['g1'] = pm.WUE_MEDLYN.loc[pft, 'g1M']
-    except KeyError:
+    if np.isnan(canopy['g1'].iloc[0]):
       canopy['g1'] = pm.WUE_MEDLYN.loc[:, 'g1M'].mean()
-      print('error, no medlyn coeffieent for %s, pft: %s' % (filename, pft))
       continue
-
     # result = least_squares(medlyn_fit_et, [1.0, canopy['g1'].iloc[0]],\
     #                        bounds=(0., np.inf),\
     #                        loss='cauchy', args=(atmos, canopy, data))

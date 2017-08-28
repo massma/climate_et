@@ -15,6 +15,31 @@ SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        delimiter=',')
 SITELIST.index = SITELIST.Site
 
+def atmos_dict(data):
+  """generates an atmos dictionary"""
+  atmos = {}
+  atmos['t_a'] = np.squeeze(data['TA']) #C
+  atmos['rh'] = np.squeeze(data['RH']*100.) #percent
+  atmos['h'] = np.squeeze(data['H'])
+  atmos['r_n'] = np.squeeze(data['NETRAD'])
+  atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
+  atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
+  atmos['u_z'] = np.squeeze(data['WS'])
+  atmos['u_z'][atmos['u_z'] <= 0.] = np.nan
+  if data['flag_Ca'] == 1:
+    atmos['c_a'] = np.squeeze(data['Ca'])
+  else:
+    atmos['c_a'] = np.ones(atmos['p_a'].shape)*400. #ppm
+  return atmos
+
+def canopy_dict(data):
+  """generates a canopy dict from loaded data"""
+  canopy = {}
+  canopy['g_flux'] = np.squeeze(data['G'])
+  canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
+  canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
+  canopy['r_s'] = np.squeeze(data['Rs']) #s/m
+  return canopy
 
 def load_mat_data(filename):
   """
@@ -29,26 +54,9 @@ def load_mat_data(filename):
   _data['et_obs'] = np.squeeze(data['LE'])
   _data['swc'] = np.squeeze(data['SWC'])
 
-  atmos = {}
-  atmos['t_a'] = np.squeeze(data['TA']) #C
-  atmos['rh'] = np.squeeze(data['RH']*100.) #percent
-  atmos['h'] = np.squeeze(data['H'])
-  atmos['r_n'] = np.squeeze(data['NETRAD'])
-  atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
-  atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
-  atmos['u_z'] = np.squeeze(data['WS'])
-  atmos['u_z'][atmos['u_z'] <= 0.] = np.nan
+  atmos = atmos_dict(data)
+  canopy = canopy_dict(data)
 
-  if data['flag_Ca'] == 1:
-    atmos['c_a'] = np.squeeze(data['Ca'])
-  else:
-    atmos['c_a'] = np.ones(atmos['p_a'].shape)*400. #ppm
-
-  canopy = {}
-  canopy['g_flux'] = np.squeeze(data['G'])
-  canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
-  canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
-  canopy['r_s'] = np.squeeze(data['Rs']) #s/m
   atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
   atmos['vpd'][atmos['vpd'] <= 0.] = np.nan
   canopy.pop('r_s')
@@ -70,10 +78,23 @@ def load_mat_data(filename):
                   /atmos['gamma'])-1.)*atmos['r_a']
   #below is mm/s
   _data['g_s'] = 1./_data['r_s']*1000.
-  _data.loc[_data['g_s'] < 0., 'g_s'] = np.nan
-  _data.loc[_data['g_s'] > 100., 'g_s'] = np.nan
+  # _data.loc[_data['g_s'] < 0., 'g_s'] = np.nan
+  # _data.loc[_data['g_s'] > 100., 'g_s'] = np.nan
   _data.loc[_data['et_obs'] <= 0.0, 'et_obs'] = np.nan
   _data = _data.dropna()
   atmos = atmos.loc[_data.index, :]
   canopy = canopy.loc[_data.index, :]
+
+  pft = canopy.iloc[0, :].loc['pft']
+  try:
+    canopy['uwue'] = pm.WUE.loc[pft, :]
+  except KeyError:
+    print("file %s 's pft (%s) has no uWUE, setting to nan" % (filename, pft))
+    canopy['uwue'] = np.nan
+  try:
+    canopy['g1'] = pm.WUE_MEDLYN.loc[pft, 'g1M']
+  except KeyError:
+    canopy['g1'] = np.nan
+    print('error, no medlyn coeffieent for %s, pft: %s, setting to nan'\
+          % (filename, pft))
   return atmos, canopy, _data
