@@ -161,20 +161,20 @@ def histogram(_df, plot_meta):
   plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
   return
 
-concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-plot_meta = {}
-plot_meta['folder_label'] = 'site'
-plot_meta['folder'] = 'hist_plots'
-plot_meta['var'] = 'lai'
-print(df.shape)
-df = df.groupby('site').apply(site_clean)
-print(df.shape)
-df = clean_df(df)
-df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-print(df.shape)
-df.groupby('site').apply(histogram, plot_meta)
-plt.close('all')
+# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+# df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
+# plot_meta = {}
+# plot_meta['folder_label'] = 'site'
+# plot_meta['folder'] = 'hist_plots'
+# plot_meta['var'] = 'lai'
+# print(df.shape)
+# df = df.groupby('site').apply(site_clean)
+# print(df.shape)
+# df = clean_df(df)
+# df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+# print(df.shape)
+# df.groupby('site').apply(histogram, plot_meta)
+# plt.close('all')
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
