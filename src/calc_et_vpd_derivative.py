@@ -27,7 +27,7 @@ SITELIST.index = SITELIST.Site
 
 def leaf_vpd(atmos, canopy, lai):
   """calculates the leaf term in dET/dVPD (see doc folder)"""
-  return atmos['gamma']*atmos['c_a']*atmos['p_a']/\
+  return atmos['gamma']*atmos['c_a']*pm.LV*atmos['p_a']/\
     (lai*1.6*pm.R_STAR*(273.15+atmos['t_a'])*canopy['uwue'])\
     *(2.*canopy['g1'] + np.sqrt(atmos['vpd']))\
     /(2.*(canopy['g1'] + np.sqrt(atmos['vpd']))**2)
@@ -35,14 +35,14 @@ def leaf_vpd(atmos, canopy, lai):
 
 def calc_derivative(atmos, canopy, data):
   """adds various derivative fields to data, given atmos and canopy"""
-  canopy['lai'] = atmos['gamma']*atmos['c_a']\
+  canopy['lai'] = atmos['gamma']*atmos['c_a']*pm.LV\
                 *np.sqrt(atmos['vpd'])*atmos['p_a']\
                 /(atmos['r_a']\
                   *(data['et_obs']*(atmos['gamma']+atmos['delta'])\
                     -atmos['delta']*(atmos['r_n']-canopy['g_flux'])\
                     -1./atmos['r_a']*atmos['rho_a']*pm.CP*atmos['vpd'])
                   *1.6*pm.R_STAR*(273.15 + atmos['t_a'])\
-                  *canopy['uwue']*(1.+canopy['g1']/atmos['vpd']))
+                  *canopy['uwue']*(1.+canopy['g1']/np.sqrt(atmos['vpd'])))
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
   data['scaling'] = 1./(atmos['r_a']*(atmos['delta'] + atmos['gamma']))
   data['vpd_atm'] = atmos['rho_a']*pm.CP

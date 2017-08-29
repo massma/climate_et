@@ -33,21 +33,21 @@ we can use:
 
 As long as we put uWUE into $\mu mol$, we can use the uWUE provided by Zhou et. al. To do this just multiply be a factor $ \frac{1 mol C}{12.011 g C} \frac{1.e6 \mu mol}{1 mol}$. Then make sure that units of VPD match. If using Franks et al. 2017 and Zhou et al. then VPD within the medlyn model should be in kPa, and VPD cancelling uWUE should be in hPa.
 
-Then we can show that if we multiply $g_s$ by $\frac{ uWUE \; ET}{A \sqrt{D_s}}$ (which is equivalent to 1 with unit conversion above), we can rearrange Penman Moneith to get:
+Then we can show that if we multiply $g_s$ by $\frac{ uWUE \; ET}{A \sqrt{D_s} L_v}$ (which is equivalent to 1 with unit conversion above), we can rearrange Penman Moneith to get:
 
 \begin{equation}
-  \lambda E = \frac{\Delta R + g_a \left( \rho_a c_p D_{s} - \frac{\gamma c_s \sqrt{D_s} P }{\text{LAI } R \; T \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})} \right) }{ \Delta + \gamma}
+  \lambda E = \frac{\Delta R + g_a \left( \rho_a c_p D_{s} - \frac{\gamma c_s \sqrt{D_s} L_v P }{\text{LAI } R \; T \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})} \right) }{ \Delta + \gamma}
 \end{equation}
 
 If we want to solve for LAI as a function of all other knowns, we have:
 \begin{equation}
-LAI  = \frac{g_a \gamma c_s \sqrt{D_s} P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p D_{s}\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}
+LAI  = \frac{g_a \gamma c_s \sqrt{D_s} L_v P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p D_{s}\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}
 \end{equation}
 
 Now taking the derivative w.r.t. $D_s$ we get:
 
 \begin{equation}
-\frac{\partial \;  \lambda E}{\partial \; D_s} = \frac{g_a}{\Delta + \gamma}   \left( \rho_a c_p - \frac{\gamma c_s  P }{\text{LAI }1.6 \; R\; T \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D_s}}{2 (g_1 + \sqrt{D_s})^2}\right) \right)
+\frac{\partial \;  \lambda E}{\partial \; D_s} = \frac{g_a}{\Delta + \gamma}   \left( \rho_a c_p - \frac{\gamma c_s L_v  P }{\text{LAI }1.6 \; R\; T \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D_s}}{2 (g_1 + \sqrt{D_s})^2}\right) \right)
 \end{equation}
 
 
