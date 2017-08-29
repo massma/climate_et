@@ -135,37 +135,10 @@ def plot_wrapper(_df, plot_meta):
   scatter_plot(_df, plot_meta)
   return
 
-suff = 'lai'
-plt.close('all')
-filenames = glob.glob('%s/changjie/pandas_data_lai/*'\
-                      % (os.environ['DATA']))
-for filename in filenames[:]:
-  _df1 = pd.read_pickle(filename)
-  if _df1.et.count() > 0:
-    plt.figure()
-    plt.scatter(_df1.et_obs, _df1.et, s=1)
-    name = filename.split('/')[-1]
-    plt.savefig('%s/climate_et/%s/garb_%s_explicit.png'\
-                % (os.environ['PLOTS'], suff,  name.split('.')[0]))
-    t1 = _df1.loc[np.absolute(_df1.et - _df1.et_obs) < 1., 'et'].copy()
-    print('for %s, explicit fraction good is %f'\
-          % (name, float(t1.count())/float(_df1.et.count())))
+# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
 
-# df1 = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
-# df2 = pd.read_pickle('%s/changjie/full_pandas_v2.pkl' % os.environ['DATA'])
-# plt.figure()
-# plt.plot(df1.et, df2.et, 'ko', s=1)
-# plt.savefig('%s/garb0000.png')
-
-# df = pd.read_pickle('%s/changjie/full_pandas.pkl' % os.environ['DATA'])
-
-# print(df.shape)
-# min_et = 0. # W/m2
-# df = df.loc[(df.et_obs > min_et) & (df.et > min_et), :]
-# # print(df.shape)
-# # min_diff = 50. # W/m2
-# # df = df.loc[(np.absolute(df.et_obs - df.et) < min_diff), :]
-# # print(df.shape)
+print(df.shape)
 
 # plt.close('all')
 # plot_meta = {}
