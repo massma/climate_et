@@ -136,6 +136,17 @@ def plot_wrapper(_df, plot_meta):
   scatter_plot(_df, plot_meta)
   return
 
+def clean_df(_df):
+  """remove unphysical LAI values from a df"""
+  out = _df.loc[((_df['lai'] > 0.1) & (_df['lai'] < 100.)), :].copy()
+  return out
+
+def site_clean(_df):
+  """this will remove some percentile of data"""
+  out = _df.loc[((_df.lai < _df.lai.quantile(q=0.95)) & \
+                (_df.lai > _df.lai.quantile(q=0.05))), :].copy()
+  return out
+
 def histogram(_df, plot_meta):
   """takes a groupby _df and makes histogram plots"""
   fig = plt.figure()
@@ -153,13 +164,17 @@ def histogram(_df, plot_meta):
 plt.close('all')
 df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
 
+
 plot_meta = {}
 plot_meta['folder_label'] = 'site'
 plot_meta['folder'] = 'hist_plots'
 plot_meta['var'] = 'lai'
 print(df.shape)
+df = df.groupby('site').apply(site_clean)
+print(df.shape)
+df = clean_df(df)
+print(df.shape)
 df.groupby('site').apply(histogram, plot_meta)
-# plt.close('all')
 
 # for x_axis in ['vpd', 'rh']:
 #   for log in ['log', 'r_n', '']:
