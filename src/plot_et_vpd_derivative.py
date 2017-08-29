@@ -9,6 +9,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import metcalcs as met
+import seaborn as sns
 
 def split_df(_df):
   """
@@ -135,13 +136,31 @@ def plot_wrapper(_df, plot_meta):
   scatter_plot(_df, plot_meta)
   return
 
+def histogram(_df, plot_meta):
+  """takes a groupby _df and makes histogram plots"""
+  fig = plt.figure()
+  ax = fig.add_subplot(111)
+  sns.distplot(_df[plot_meta['var']], ax=ax)
+  ax.set_xlabel(plot_meta['var'])
+  if plot_meta['folder_label'] == 'site':
+    outname = '%s/%s.png' % (plot_meta['folder'], _df.site.iloc[0])
+  elif plot_meta['folder_label'] == 'pft':
+    outname = '%s/%s.png' % (plot_meta['folder'], _df.pft.iloc[0])
+  plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
+  return
+
 # concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+plt.close('all')
 df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
 
+plot_meta = {}
+plot_meta['folder_label'] = 'site'
+plot_meta['folder'] = 'hist_plots'
+plot_meta['var'] = 'lai'
 print(df.shape)
-
+df.groupby('site').apply(histogram, plot_meta)
 # plt.close('all')
-# plot_meta = {}
+
 # for x_axis in ['vpd', 'rh']:
 #   for log in ['log', 'r_n', '']:
 #     plot_meta['label'] = 'full_ds' 
