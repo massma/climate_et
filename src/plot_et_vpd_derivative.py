@@ -51,9 +51,9 @@ def make_ax_plot(_ax, var, _df, plot_meta):
   if plot_meta['log'] == 'log':
     var = var/_df['et_obs']
     vmax = 0.8/175.
-  elif plot_meta['log'] == 'r_n':
-    var = var/(_df['r_n'] - _df['g_flux'])
-    vmax = 0.8/175.
+  elif plot_meta['log'] == 'scaling':
+    var = var/_df['scaling']
+    vmax = 2000.
   else:
     vmax = 0.8 # *_df.et_obs.mean()
   nstd = 1.0
@@ -97,29 +97,29 @@ def scatter_plot(_df, plot_meta):
 
   ax1 = fig.add_subplot(nplots, 1, 1)
   # var = _df['et_all'] - _df['et']
-  var = _df['scaling']*(_df['vpd_atm'] - _df['vpd_leaf'])
+  var = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
   plot_meta['cmap'] = 'RdBu'
   plot_meta['delta'] = 'full'
   make_ax_plot(ax1, var, _df, plot_meta)
 
   ax2 = fig.add_subplot(nplots, 1, 2)
-  var = _df['et_leaf'] - _df['et']
+  var = _df['scaling']*(_df['vpd_leaf'])
   plot_meta['cmap'] = 'RdBu'
   plot_meta['delta'] = 'leaf'
   make_ax_plot(ax2, var, _df, plot_meta)
 
   ax3 = fig.add_subplot(nplots, 1, 3)
-  var = _df['et_atm'] - _df['et']
+  var = _df['scaling']*(_df['vpd_atm'])
   plot_meta['delta'] = 'atm'
   make_ax_plot(ax3, var, _df, plot_meta)
 
   plt.tight_layout()
   # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
   #             % (os.environ['PLOTS'], str(_df['pft'][0]), plot_meta['site'],))
-  fname = '%s/climate_et/%s_plots/%s_%s_%s_%s.png'\
+  fname = '%s/climate_et/%s_%s_%s_plots/%s_%s.png'\
           % (os.environ['PLOTS'], plot_meta['folder_label'],\
-             str(_df['pft'][0]), plot_meta['label'],\
-             plot_meta['log'], plot_meta['x_axis'])
+             plot_meta['log'], plot_meta['x_axis'],
+             str(_df['pft'][0]), plot_meta['label'])
   try:
     plt.savefig(fname)
   except FileNotFoundError:
@@ -179,17 +179,17 @@ def histogram(_df, plot_meta):
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
 
-# for x_axis in ['vpd', 'rh']:
-#   for log in ['log', 'r_n', '']:
-#     plot_meta['label'] = 'full_ds' 
-#     plot_meta['folder_label'] = 'full_ds'
-#     plot_meta['x_axis'] = x_axis
-#     plot_meta['log'] = log
-#     # plot_wrapper(df, plot_meta)
-#     plot_meta['folder_label'] = 'pft'
-#     df.groupby('pft').apply(plot_wrapper, plot_meta)
-#     # plot_meta['folder_label'] = 'site'
-#     # df.groupby('site').apply(plot_wrapper, plot_meta)
+for x_axis in ['vpd', 'rh']:
+  for log in ['log', 'r_n', '']:
+    plot_meta['label'] = 'full_ds'
+    plot_meta['folder_label'] = 'full_ds'
+    plot_meta['x_axis'] = x_axis
+    plot_meta['log'] = log
+    plot_wrapper(df, plot_meta)
+    plot_meta['folder_label'] = 'pft'
+    df.groupby('pft').apply(plot_wrapper, plot_meta)
+    # plot_meta['folder_label'] = 'site'
+    # df.groupby('site').apply(plot_wrapper, plot_meta)
 
 # # os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
 # #           '%s/climate_et/false_rh_full.png'\
