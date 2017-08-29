@@ -147,7 +147,7 @@ for filename in filenames[:]:
     name = filename.split('/')[-1]
     plt.savefig('%s/climate_et/%s/garb_%s_explicit.png'\
                 % (os.environ['PLOTS'], suff,  name.split('.')[0]))
-    t1 = _df1.loc[np.absolute(_df1.et - _df1.et_obs) < 100., 'et'].copy()
+    t1 = _df1.loc[np.absolute(_df1.et - _df1.et_obs) < 1., 'et'].copy()
     print('for %s, explicit fraction good is %f'\
           % (name, float(t1.count())/float(_df1.et.count())))
 

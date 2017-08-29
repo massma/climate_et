@@ -35,7 +35,7 @@ def leaf_vpd(atmos, canopy, lai):
 
 def calc_derivative(atmos, canopy, data):
   """adds various derivative fields to data, given atmos and canopy"""
-  canopy['lai'] = atmos['gamma']*atmos['c_a']*pm.LV\
+  canopy['lai'] = - atmos['gamma']*atmos['c_a']*pm.LV\
                 *np.sqrt(atmos['vpd'])*atmos['p_a']\
                 /(atmos['r_a']\
                   *(data['et_obs']*(atmos['gamma']+atmos['delta'])\
