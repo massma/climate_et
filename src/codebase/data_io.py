@@ -84,10 +84,15 @@ def load_mat_data(filename):
   _data = _data.dropna()
   atmos = atmos.loc[_data.index, :]
   canopy = canopy.loc[_data.index, :]
-
-  pft = canopy.iloc[0, :].loc['pft']
+  print(canopy.shape)
+  print(_data.shape)
   try:
-    canopy['uwue'] = pm.WUE.loc[pft, :]
+    pft = canopy.iloc[0, :].loc['pft']
+  except IndexError:
+    print('file %s has no data' % filename)
+    pft = 'nan'
+  try:
+    canopy['uwue'] = pm.WUE.loc[pft, 'u_wue_yearly']
   except KeyError:
     print("file %s 's pft (%s) has no uWUE, setting to nan" % (filename, pft))
     canopy['uwue'] = np.nan

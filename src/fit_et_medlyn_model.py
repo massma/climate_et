@@ -45,6 +45,7 @@ def calc_coef():
   time_start = time.time()
   for filename in filenames[:]:
     print('working on %s' % filename)
+
     atmos, canopy, data = d_io.load_mat_data(filename)
     _et = data['et_obs']
     if _et.size == 0:
