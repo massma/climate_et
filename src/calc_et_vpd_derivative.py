@@ -27,7 +27,7 @@ SITELIST.index = SITELIST.Site
 
 def leaf_vpd(atmos, canopy, lai):
   """calculates the leaf term in dET/dVPD (see doc folder)"""
-  return atmos['gamma']*atmos['c_a']*pm.LV*atmos['p_a']/\
+  return -atmos['gamma']*atmos['c_a']*pm.LV*atmos['p_a']/\
     (lai*1.6*pm.R_STAR*(273.15+atmos['t_a'])*canopy['uwue'])\
     *(2.*canopy['g1'] + np.sqrt(atmos['vpd']))\
     /(2.*(canopy['g1'] + np.sqrt(atmos['vpd']))**2)

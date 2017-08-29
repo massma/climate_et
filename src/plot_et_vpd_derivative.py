@@ -96,7 +96,8 @@ def scatter_plot(_df, plot_meta):
   fig.set_figheight(fig.get_figheight()*nplots)
 
   ax1 = fig.add_subplot(nplots, 1, 1)
-  var = _df['et_all'] - _df['et']
+  # var = _df['et_all'] - _df['et']
+  var = _df['scaling']*(_df['vpd_atm'] - _df['vpd_leaf'])
   plot_meta['cmap'] = 'RdBu'
   plot_meta['delta'] = 'full'
   make_ax_plot(ax1, var, _df, plot_meta)
@@ -160,11 +161,8 @@ def histogram(_df, plot_meta):
   plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
   return
 
-# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-plt.close('all')
+concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
 df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-
-
 plot_meta = {}
 plot_meta['folder_label'] = 'site'
 plot_meta['folder'] = 'hist_plots'
@@ -173,8 +171,13 @@ print(df.shape)
 df = df.groupby('site').apply(site_clean)
 print(df.shape)
 df = clean_df(df)
+df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
 print(df.shape)
 df.groupby('site').apply(histogram, plot_meta)
+plt.close('all')
+
+df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+                    % os.environ['DATA'])
 
 # for x_axis in ['vpd', 'rh']:
 #   for log in ['log', 'r_n', '']:
