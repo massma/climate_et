@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import metcalcs as met
 import seaborn as sns
+from scipy.stats import spearmanr
+# import matplotlib as mpl
+# mpl.rcParams.update(mpl.rcParamsDefault)
+
 
 def split_df(_df):
   """
@@ -85,6 +89,44 @@ def make_ax_plot(_ax, var, _df, plot_meta):
   cbar = plt.colorbar(color)
   cbar.set_label(r'$\frac{\partial ET}{\partial VPD_{%s}}$'\
                  ' ($W m^{-2}$  $Pa^{-1}$)' % plot_meta['delta'])
+  return
+
+def soil_moisture_scatter(_df, plot_meta):
+  """
+  plots sam plots as scatter_plot, but going down is different
+  percentiels of soil moisture insetad of leaf VPD, etc.
+  """
+  fig = plt.figure()
+  percentiles = [ .25, .50, .75, 1.00]
+  nplots = len(percentiles)
+  _df['var'] = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
+  plot_meta['folder_label'] = '%s_%s' % (plot_meta['folder_label'], 'swc')
+  fig.set_figheight(fig.get_figheight()*nplots)
+  ax = []
+
+  for i, percentile in enumerate(percentiles):
+    ax.append(fig.add_subplot(nplots, i+1, 1))
+    var = _df['var'].loc[(_df['swc'] > _df.swc.quantile(q=percentile-0.25)) &\
+                         (_df['swc'] <= _df.swc.quantile(q=percentile))]
+    print(var.shape)
+    plot_meta['label'] = 'SWC %d-%d'\
+                         % (int((percentile-0.25)*100.), int(percentile*100.))
+    plot_meta['log'] = log
+    plot_meta['cmap'] = 'RdBu'
+    plot_meta['delta'] = 'full'
+    make_ax_plot(ax1, var, _df, plot_meta)
+
+  plt.tight_layout()
+  fname = '%s/climate_et/%s_%s_%s_plots/%s_%s.png'\
+          % (os.environ['PLOTS'], plot_meta['folder_label'],\
+             plot_meta['log'], plot_meta['x_axis'],
+             str(_df['pft'][0]), plot_meta['label'])
+  try:
+    plt.savefig(fname)
+  except FileNotFoundError:
+    os.system('mkdir %s' % '/'.join(fname.split('/')[:-1]))
+    plt.savefig(fname)
+  plt.show(block=False)
   return
 
 def scatter_plot(_df, plot_meta):
@@ -166,6 +208,22 @@ def histogram(_df, plot_meta):
   plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
   return
 
+def test_trend(_df, plot_meta):
+  """
+  plots the trend of the lai parameter
+  to make sure it is independent of vpd
+  """
+  plt.figure()
+  g = sns.jointplot(x=_df['vpd'], y=_df['lai'], kind="hex",\
+                    xlim=(0.,5000.), ylim=(0.1,2.), stat_func=spearmanr)
+  g.set_axis_labels('vpd','lai')
+  if plot_meta['full_ds']:
+    plt.savefig('%s/climate_et/lai_vpd.png' % os.environ['PLOTS'])
+  else:
+    plt.savefig('%s/climate_et/lai_vpd/%s.png'\
+                % (os.environ['PLOTS'], _df['pft'].iloc[0]))
+  return
+
 # concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
 # df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
 # plot_meta = {}
@@ -181,24 +239,28 @@ def histogram(_df, plot_meta):
 # # df.groupby('site').apply(histogram, plot_meta)
 
 
+
 plt.close('all')
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
-plot_meta = {}
-plot_meta['var'] = ''
-for x_axis in ['rh', 'vpd']:
-  for log in ['log', 'scaling', '']:
-    plot_meta['label'] = 'full_ds'
-    plot_meta['folder_label'] = 'full_ds'
-    plot_meta['x_axis'] = x_axis
-    plot_meta['log'] = log
-    # plot_meta['var'] = 'numeric'
-    # plot_wrapper(df, plot_meta)
-    plot_meta['folder_label'] = 'pft'
-    df.groupby('pft').apply(plot_wrapper, plot_meta)
-    # plot_meta['folder_label'] = 'site'
-    # df.groupby('site').apply(plot_wrapper, plot_meta)
+
+test_trend(df, {'full_ds' : True})
+df.groupby('pft').apply(test_trend, {'full_ds' : False})
+# plot_meta = {}
+# plot_meta['var'] = ''
+# for x_axis in ['rh', 'vpd']:
+#   for log in ['log', 'scaling', '']:
+#     plot_meta['label'] = 'full_ds'
+#     plot_meta['folder_label'] = 'full_ds'
+#     plot_meta['x_axis'] = x_axis
+#     plot_meta['log'] = log
+#     # plot_meta['var'] = 'numeric'
+#     # plot_wrapper(df, plot_meta)
+#     plot_meta['folder_label'] = 'pft'
+#     df.groupby('pft').apply(plot_wrapper, plot_meta)
+#     # plot_meta['folder_label'] = 'site'
+#     # df.groupby('site').apply(plot_wrapper, plot_meta)
 
 # # os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
 # #           '%s/climate_et/false_rh_full.png'\
