@@ -97,7 +97,12 @@ def scatter_plot(_df, plot_meta):
 
   ax1 = fig.add_subplot(nplots, 1, 1)
   # var = _df['et_all'] - _df['et']
-  var = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
+  if plot_meta['var'] == 'numeric':
+    print('NUMERIC!!!')
+    var = _df['et_all']-_df['et']
+  else:
+    var = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
+  plot_meta['log'] = log
   plot_meta['cmap'] = 'RdBu'
   plot_meta['delta'] = 'full'
   make_ax_plot(ax1, var, _df, plot_meta)
@@ -116,8 +121,8 @@ def scatter_plot(_df, plot_meta):
   plt.tight_layout()
   # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
   #             % (os.environ['PLOTS'], str(_df['pft'][0]), plot_meta['site'],))
-  fname = '%s/climate_et/%s_%s_%s_plots/%s_%s.png'\
-          % (os.environ['PLOTS'], plot_meta['folder_label'],\
+  fname = '%s/climate_et/%s%s_%s_%s_plots/%s_%s.png'\
+          % (os.environ['PLOTS'], plot_meta['var'], plot_meta['folder_label'],\
              plot_meta['log'], plot_meta['x_axis'],
              str(_df['pft'][0]), plot_meta['label'])
   try:
@@ -172,20 +177,24 @@ def histogram(_df, plot_meta):
 # print(df.shape)
 # df = clean_df(df)
 # df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-# print(df.shape)
-# df.groupby('site').apply(histogram, plot_meta)
-# plt.close('all')
+# # print(df.shape)
+# # df.groupby('site').apply(histogram, plot_meta)
+
+
+plt.close('all')
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
-
-for x_axis in ['vpd', 'rh']:
-  for log in ['log', 'r_n', '']:
+plot_meta = {}
+plot_meta['var'] = ''
+for x_axis in ['rh', 'vpd']:
+  for log in ['log', 'scaling', '']:
     plot_meta['label'] = 'full_ds'
     plot_meta['folder_label'] = 'full_ds'
     plot_meta['x_axis'] = x_axis
     plot_meta['log'] = log
-    plot_wrapper(df, plot_meta)
+    # plot_meta['var'] = 'numeric'
+    # plot_wrapper(df, plot_meta)
     plot_meta['folder_label'] = 'pft'
     df.groupby('pft').apply(plot_wrapper, plot_meta)
     # plot_meta['folder_label'] = 'site'

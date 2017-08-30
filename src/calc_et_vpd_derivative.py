@@ -47,6 +47,9 @@ def calc_derivative(atmos, canopy, data):
   data['scaling'] = 1./(atmos['r_a']*(atmos['delta'] + atmos['gamma']))
   data['vpd_atm'] = atmos['rho_a']*pm.CP
   data['vpd_leaf'] = leaf_vpd(atmos, canopy, canopy['lai'])
+  atmos['vpd'] = atmos['vpd'] + 1.0
+  data['et_all'] = pm.penman_monteith_uwue(atmos, canopy)
+  atmos['vpd'] = atmos['vpd'] - 1.0
   return data
 
 #def main():
