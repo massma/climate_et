@@ -62,19 +62,16 @@ def make_ax_plot(_ax, var, _df, plot_meta):
     vmax = 0.8 # *_df.et_obs.mean()
   nstd = 1.0
   print(_df['pft'][0])
-  print(var.std())
+  # print(var.std())
   print('mean', var.mean())
-  # var[var > (var.mean() + nstd*var.std())] = np.nan
-  # var[var < (var.mean() - nstd*var.std())] = np.nan
-  # vmax = 5.*var.mean() #var.mean() + nstd*var.std()
-
   vmin = -vmax
   if plot_meta['cmap'] == 'viridis':
     vmax = var.mean() + 0.8 # 5.*var.mean() #nstd*var.std()
     vmin = var.mean() - 0.8 # 5.*var.mean() #nstd*var.std()
 
   color = _ax.scatter(_df[plot_meta['x_axis']], _df['t_a'], c=var, alpha=0.5,\
-                      s=1, cmap=plot_meta['cmap'], vmin=vmin, vmax=vmax)
+                      s=plot_meta['size'], cmap=plot_meta['cmap'],\
+                      vmin=vmin, vmax=vmax)
   if (plot_meta['x_axis'] == 'vpd'):
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
     test = met.vapor_pres(t_a)*100.*(1. - 0.90)
@@ -93,28 +90,27 @@ def make_ax_plot(_ax, var, _df, plot_meta):
 
 def soil_moisture_scatter(_df, plot_meta):
   """
-  plots sam plots as scatter_plot, but going down is different
+  plots scatter_plots, but going down is different
   percentiels of soil moisture insetad of leaf VPD, etc.
   """
   fig = plt.figure()
+  plot_meta['size'] = 16
   percentiles = [ .25, .50, .75, 1.00]
   nplots = len(percentiles)
   _df['var'] = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
-  plot_meta['folder_label'] = '%s_%s' % (plot_meta['folder_label'], 'swc')
   fig.set_figheight(fig.get_figheight()*nplots)
   ax = []
 
   for i, percentile in enumerate(percentiles):
-    ax.append(fig.add_subplot(nplots, i+1, 1))
-    var = _df['var'].loc[(_df['swc'] > _df.swc.quantile(q=percentile-0.25)) &\
-                         (_df['swc'] <= _df.swc.quantile(q=percentile))]
-    print(var.shape)
+    ax.append(fig.add_subplot(nplots, 1, i+1))
+    _data = _df.loc[(_df['swc'] > _df.swc.quantile(q=percentile-0.25)) &\
+                  (_df['swc'] <= _df.swc.quantile(q=percentile)), :]
+    print(_data.shape)
     plot_meta['label'] = 'SWC %d-%d'\
                          % (int((percentile-0.25)*100.), int(percentile*100.))
-    plot_meta['log'] = log
     plot_meta['cmap'] = 'RdBu'
     plot_meta['delta'] = 'full'
-    make_ax_plot(ax1, var, _df, plot_meta)
+    make_ax_plot(ax[-1], _data['var'], _data, plot_meta)
 
   plt.tight_layout()
   fname = '%s/climate_et/%s_%s_%s_plots/%s_%s.png'\
@@ -136,7 +132,7 @@ def scatter_plot(_df, plot_meta):
   nplots = 3
   fig = plt.figure()
   fig.set_figheight(fig.get_figheight()*nplots)
-
+  plot_meta['size'] = 1
   ax1 = fig.add_subplot(nplots, 1, 1)
   # var = _df['et_all'] - _df['et']
   if plot_meta['var'] == 'numeric':
@@ -245,8 +241,16 @@ plt.close('all')
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
 
-test_trend(df, {'full_ds' : True})
-df.groupby('pft').apply(test_trend, {'full_ds' : False})
+#test_trend(df, {'full_ds' : True})
+#df.groupby('pft').apply(test_trend, {'full_ds' : False})
+plot_meta = {}
+plot_meta['x_axis'] = 'rh'
+plot_meta['log'] = ''
+# plot_meta['folder_label'] = 'full_ds_swc'
+# soil_moisture_scatter(df, plot_meta)
+plot_meta['folder_label'] = 'pft_swc'
+df.groupby('pft').apply(soil_moisture_scatter, plot_meta)
+
 # plot_meta = {}
 # plot_meta['var'] = ''
 # for x_axis in ['rh', 'vpd']:
@@ -262,13 +266,13 @@ df.groupby('pft').apply(test_trend, {'full_ds' : False})
 #     # plot_meta['folder_label'] = 'site'
 #     # df.groupby('site').apply(plot_wrapper, plot_meta)
 
-# # os.system('convert +append %s/climate_et/pft_plots/*false_rh.png '\
-# #           '%s/climate_et/false_rh_full.png'\
-# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
+          '%s/climate_et/rh.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# # os.system('convert +append %s/climate_et/pft_plots/*true_rh.png '\
-# #           '%s/climate_et/true_rh_full.png'\
-# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+os.system('convert +append %s/climate_et/pft_swc__rh_plots/*.png '\
+          '%s/climate_et/swc_rh.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
 
 # # os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
 # #           '%s/climate_et/true_vpd_full.png'\
