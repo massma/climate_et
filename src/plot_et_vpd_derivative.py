@@ -180,15 +180,15 @@ def plot_wrapper(_df, plot_meta):
   scatter_plot(_df, plot_meta)
   return
 
-def clean_df(_df):
+def clean_df(_df, var='lai'):
   """remove unphysical LAI values from a df"""
-  out = _df.loc[((_df['lai'] > 0.1) & (_df['lai'] < 100.)), :].copy()
+  out = _df.loc[((_df[var] > 0.1) & (_df[var] < 100.)), :].copy()
   return out
 
-def site_clean(_df):
+def site_clean(_df, var='lai'):
   """this will remove some percentile of data"""
-  out = _df.loc[((_df.lai < _df.lai.quantile(q=0.95)) & \
-                (_df.lai > _df.lai.quantile(q=0.05))), :].copy()
+  out = _df.loc[((_df[var] < _df[var].quantile(q=0.95)) & \
+                (_df[var] > _df[var].quantile(q=0.05))), :].copy()
   return out
 
 def histogram(_df, plot_meta):
@@ -198,9 +198,11 @@ def histogram(_df, plot_meta):
   sns.distplot(_df[plot_meta['var']], ax=ax)
   ax.set_xlabel(plot_meta['var'])
   if plot_meta['folder_label'] == 'site':
-    outname = '%s/%s.png' % (plot_meta['folder'], _df.site.iloc[0])
+    outname = '%s/%s_%s.png' %\
+              (plot_meta['folder'], _df.site.iloc[0], plot_meta['var'])
   elif plot_meta['folder_label'] == 'pft':
-    outname = '%s/%s.png' % (plot_meta['folder'], _df.pft.iloc[0])
+    outname = '%s/%s_%s.png' %\
+              (plot_meta['folder'], _df.pft.iloc[0], plot_meta['var'])
   plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
   return
 
@@ -220,64 +222,67 @@ def test_trend(_df, plot_meta):
                 % (os.environ['PLOTS'], _df['pft'].iloc[0]))
   return
 
-# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-# df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-# plot_meta = {}
-# plot_meta['folder_label'] = 'site'
-# plot_meta['folder'] = 'hist_plots'
-# plot_meta['var'] = 'lai'
-# print(df.shape)
-# df = df.groupby('site').apply(site_clean)
-# print(df.shape)
-# df = clean_df(df)
-# df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-# # print(df.shape)
-# # df.groupby('site').apply(histogram, plot_meta)
-
-
-
-plt.close('all')
-
-df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
-                    % os.environ['DATA'])
-
-#test_trend(df, {'full_ds' : True})
-#df.groupby('pft').apply(test_trend, {'full_ds' : False})
+concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
 plot_meta = {}
-plot_meta['x_axis'] = 'rh'
-plot_meta['log'] = ''
-# plot_meta['folder_label'] = 'full_ds_swc'
-# soil_moisture_scatter(df, plot_meta)
-plot_meta['folder_label'] = 'pft_swc'
-df.groupby('pft').apply(soil_moisture_scatter, plot_meta)
+plot_meta['folder_label'] = 'site'
+plot_meta['folder'] = 'hist_plots'
+plot_meta['var'] = 'lai_gpp'
+print(df.shape)
+df = df.groupby('site').apply(site_clean)
+print(df.shape)
+df = clean_df(df)
+# test = df.groupby('site').apply(site_clean, 'lai_gpp')
+# test = clean_df(test, var='lai_gpp')
+df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+print(df.shape)
+#df.groupby('site').apply(histogram, plot_meta)
 
+histogram(df, plot_meta)
+plot_meta['var'] = 'lai'
+histogram(df, plot_meta)
+# plt.close('all')
+
+# df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+#                     % os.environ['DATA'])
+
+# #test_trend(df, {'full_ds' : True})
+# #df.groupby('pft').apply(test_trend, {'full_ds' : False})
 # plot_meta = {}
-# plot_meta['var'] = ''
-# for x_axis in ['rh', 'vpd']:
-#   for log in ['log', 'scaling', '']:
-#     plot_meta['label'] = 'full_ds'
-#     plot_meta['folder_label'] = 'full_ds'
-#     plot_meta['x_axis'] = x_axis
-#     plot_meta['log'] = log
-#     # plot_meta['var'] = 'numeric'
-#     # plot_wrapper(df, plot_meta)
-#     plot_meta['folder_label'] = 'pft'
-#     df.groupby('pft').apply(plot_wrapper, plot_meta)
-#     # plot_meta['folder_label'] = 'site'
-#     # df.groupby('site').apply(plot_wrapper, plot_meta)
+# plot_meta['x_axis'] = 'rh'
+# plot_meta['log'] = ''
+# # plot_meta['folder_label'] = 'full_ds_swc'
+# # soil_moisture_scatter(df, plot_meta)
+# plot_meta['folder_label'] = 'pft_swc'
+# df.groupby('pft').apply(soil_moisture_scatter, plot_meta)
 
-os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
-          '%s/climate_et/rh.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
+# # plot_meta = {}
+# # plot_meta['var'] = ''
+# # for x_axis in ['rh', 'vpd']:
+# #   for log in ['log', 'scaling', '']:
+# #     plot_meta['label'] = 'full_ds'
+# #     plot_meta['folder_label'] = 'full_ds'
+# #     plot_meta['x_axis'] = x_axis
+# #     plot_meta['log'] = log
+# #     # plot_meta['var'] = 'numeric'
+# #     # plot_wrapper(df, plot_meta)
+# #     plot_meta['folder_label'] = 'pft'
+# #     df.groupby('pft').apply(plot_wrapper, plot_meta)
+# #     # plot_meta['folder_label'] = 'site'
+# #     # df.groupby('site').apply(plot_wrapper, plot_meta)
 
-os.system('convert +append %s/climate_et/pft_swc__rh_plots/*.png '\
-          '%s/climate_et/swc_rh.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
+# os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
+#           '%s/climate_et/rh.png'\
+#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# # os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
-# #           '%s/climate_et/true_vpd_full.png'\
-# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+# os.system('convert +append %s/climate_et/pft_swc__rh_plots/*.png '\
+#           '%s/climate_et/swc_rh.png'\
+#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# # os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
-# #           '%s/climate_et/false_vpd_full.png'\
-# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+# # # os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
+# # #           '%s/climate_et/true_vpd_full.png'\
+# # #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+# # # os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
+# # #           '%s/climate_et/false_vpd_full.png'\
+# # #           % (os.environ['PLOTS'], os.environ['PLOTS']))

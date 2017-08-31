@@ -51,16 +51,16 @@ def d_gpp_d_vpd(atmos, canopy):
           +1./atmos['r_a']*canopy['uwue']*atmos['rho_a']*pm.CP*atmos['vpd']\
           -canopy['g1']*atmos['gamma']*atmos['c_a']*pm.LV*atmos['p_a']\
           /(atmos['r_a']*canopy['lai']*pm.R_STAR*(273.15+atmos['t_a'])*1.6\
-            *(1.+canopy['g1']/np.sqrt(atmos['vpd']))**2)
-  return
+            *(1.+canopy['g1']/np.sqrt(atmos['vpd']))**2))
+  return out
 
 
 def calc_derivative(atmos, canopy, data):
   """adds various derivative fields to data, given atmos and canopy"""
   #calculate LAIs
-  canopy['lai'] = calc_lai(atmos, canopy, data, data['et_obs'])
+  canopy['lai'] = calc_lai(atmos, canopy, data['et_obs'])
   data['et_gpp'] = data['gpp_obs']*np.sqrt(atmos['vpd'])/canopy['uwue']
-  canopy['lai_gpp'] = calc_lai(atmos, canopy, data, data['et_gpp'])
+  canopy['lai_gpp'] = calc_lai(atmos, canopy, data['et_gpp'])
 
   # Now do ET terms
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
@@ -108,7 +108,7 @@ outdir = '%s/changjie/pandas_data_lai/' % os.environ['DATA']
 filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
 
 time_start = time.time()
-for filename in filenames[:1]:
+for filename in filenames[:]:
   print('working on %s' % filename)
   atmos, canopy, data = d_io.load_mat_data(filename)
   if (data.et_obs.count() > 0) & (canopy.dropna().uwue.count() > 0):
