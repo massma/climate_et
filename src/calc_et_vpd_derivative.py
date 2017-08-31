@@ -46,7 +46,7 @@ def et_to_gpp(atmos, canopy):
 
 def d_gpp_d_vpd(atmos, canopy):
   """calcualtes analytical derivative d gpp"""
-  out = 1./(2.*pm.LV*atmos['vpd']**1.5*(atmos['delta']*atmos['gamma']))\
+  out = 1./(2.*pm.LV*atmos['vpd']**1.5*(atmos['delta']+atmos['gamma']))\
         *(-canopy['uwue']*atmos['delta']*(atmos['r_n']-canopy['g_flux'])\
           +1./atmos['r_a']*canopy['uwue']*atmos['rho_a']*pm.CP*atmos['vpd']\
           -canopy['g1']*atmos['gamma']*atmos['c_a']*pm.LV*atmos['p_a']\

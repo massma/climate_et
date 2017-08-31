@@ -281,21 +281,21 @@ df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
 # meta['y_var'] = 'gpp'
 # scatter_wrapper(df, meta)
 
+# test = site_clean(df, var='wue')
+# test = site_clean(test, var='wue_obs')
+# meta['x_var'] = 'wue_obs'
+# meta['y_var'] = 'wue'
+# scatter_wrapper(test, meta)
+
 meta = {}
 meta['xlim'] = None
 meta['ylim'] = None
-test = site_clean(df, var='wue')
-test = site_clean(test, var='wue_obs')
-meta['x_var'] = 'wue_obs'
-meta['y_var'] = 'wue'
-scatter_wrapper(test, meta)
-
 df['d_gpp_numeric'] = df['gpp_all'] - df['gpp']
 test = site_clean(df, var='d_gpp')
 test = site_clean(test, var='d_gpp_numeric')
 meta['x_var'] = 'd_gpp'
 meta['y_var'] = 'd_gpp_numeric'
-scatter_wrapper(df, meta)
+scatter_wrapper(test, meta)
 
 
 # meta = {}
