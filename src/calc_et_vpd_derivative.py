@@ -73,8 +73,8 @@ def calc_derivative(atmos, canopy, data):
 
   #Calculate WUE terms
   data['wue_obs'] = data['gpp_obs']/(data['et_obs']/(pm.LV*H2O)*1.e6)
-  data['wue'] = canopy['uwue']/np.sqrt(atmos['vpd'])*pm.LV*H2O/1.e6
-  data['d_wue'] = -0.5*canopy['uwue']/atmos['vpd']**1.5*pm.LV*H2O/1.e6
+  data['wue'] = canopy['uwue']/np.sqrt(atmos['vpd'])*H2O/1.e6
+  data['d_wue'] = -0.5*canopy['uwue']/atmos['vpd']**1.5*H2O/1.e6
 
   # Now do ET terms
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)

@@ -10,10 +10,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 import metcalcs as met
 import seaborn as sns
+import resource
 from scipy.stats import spearmanr
 # import matplotlib as mpl
 # mpl.rcParams.update(mpl.rcParamsDefault)
 
+resource.setrlimit(resource.RLIMIT_AS, (4000e6, 4000e6))
+
+def test_savefig(fname):
+  """tries to save a figure and makes a folder if it doesn't exist"""
+  try:
+    plt.savefig(fname)
+  except FileNotFoundError:
+    os.system('mkdir %s' % '/'.join(fname.split('/')[:-1]))
+    plt.savefig(fname)
+  return
 
 def split_df(_df):
   """
@@ -50,12 +61,12 @@ def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
   return full_df
 
 
-def make_ax_plot(_ax, var, _df, plot_meta):
+def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
-  if plot_meta['log'] == 'log':
+  if meta['log'] == 'log':
     var = var/_df['et_obs']
     vmax = 0.8/175.
-  elif plot_meta['log'] == 'scaling':
+  elif meta['log'] == 'scaling':
     var = var/_df['scaling']
     vmax = 2000.
   else:
@@ -65,36 +76,36 @@ def make_ax_plot(_ax, var, _df, plot_meta):
   # print(var.std())
   print('mean', var.mean())
   vmin = -vmax
-  if plot_meta['cmap'] == 'viridis':
+  if meta['cmap'] == 'viridis':
     vmax = var.mean() + 0.8 # 5.*var.mean() #nstd*var.std()
     vmin = var.mean() - 0.8 # 5.*var.mean() #nstd*var.std()
 
-  color = _ax.scatter(_df[plot_meta['x_axis']], _df['t_a'], c=var, alpha=0.5,\
-                      s=plot_meta['size'], cmap=plot_meta['cmap'],\
+  color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.5,\
+                      s=meta['size'], cmap=meta['cmap'],\
                       vmin=vmin, vmax=vmax)
-  if (plot_meta['x_axis'] == 'vpd'):
+  if (meta['x_axis'] == 'vpd'):
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
     test = met.vapor_pres(t_a)*100.*(1. - 0.90)
     _ax.plot(test, t_a, 'k-')
     test = met.vapor_pres(t_a)*100.*(1. - 0.2)
     _ax.plot(test, t_a, 'k-')
-  _ax.set_xlabel(plot_meta['x_axis'])
+  _ax.set_xlabel(meta['x_axis'])
   _ax.set_ylabel('T')
   _ax.set_title('Analysis: %s,  PFT: %s; %s VPD Changing'\
-                % (plot_meta['label'], str(_df['pft'][0]),\
-                   plot_meta['delta']))
+                % (meta['label'], str(_df['pft'][0]),\
+                   meta['delta']))
   cbar = plt.colorbar(color)
   cbar.set_label(r'$\frac{\partial ET}{\partial VPD_{%s}}$'\
-                 ' ($W m^{-2}$  $Pa^{-1}$)' % plot_meta['delta'])
+                 ' ($W m^{-2}$  $Pa^{-1}$)' % meta['delta'])
   return
 
-def soil_moisture_scatter(_df, plot_meta):
+def soil_moisture_scatter(_df, meta):
   """
   plots scatter_plots, but going down is different
   percentiels of soil moisture insetad of leaf VPD, etc.
   """
   fig = plt.figure()
-  plot_meta['size'] = 16
+  meta['size'] = 16
   percentiles = [ .25, .50, .75, 1.00]
   nplots = len(percentiles)
   _df['var'] = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
@@ -106,63 +117,59 @@ def soil_moisture_scatter(_df, plot_meta):
     _data = _df.loc[(_df['swc'] > _df.swc.quantile(q=percentile-0.25)) &\
                   (_df['swc'] <= _df.swc.quantile(q=percentile)), :]
     print(_data.shape)
-    plot_meta['label'] = 'SWC %d-%d'\
+    meta['label'] = 'SWC %d-%d'\
                          % (int((percentile-0.25)*100.), int(percentile*100.))
-    plot_meta['cmap'] = 'RdBu'
-    plot_meta['delta'] = 'full'
-    make_ax_plot(ax[-1], _data['var'], _data, plot_meta)
+    meta['cmap'] = 'RdBu'
+    meta['delta'] = 'full'
+    make_ax_plot(ax[-1], _data['var'], _data, meta)
 
   plt.tight_layout()
   fname = '%s/climate_et/%s_%s_%s_plots/%s_%s.png'\
-          % (os.environ['PLOTS'], plot_meta['folder_label'],\
-             plot_meta['log'], plot_meta['x_axis'],
-             str(_df['pft'][0]), plot_meta['label'])
-  try:
-    plt.savefig(fname)
-  except FileNotFoundError:
-    os.system('mkdir %s' % '/'.join(fname.split('/')[:-1]))
-    plt.savefig(fname)
+          % (os.environ['PLOTS'], meta['folder_label'],\
+             meta['log'], meta['x_axis'],
+             str(_df['pft'][0]), meta['label'])
+  test_savefig(fname)
   plt.show(block=False)
   return
 
-def scatter_plot(_df, plot_meta):
+def scatter_plot(_df, meta):
   """
   creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
   """
   nplots = 3
   fig = plt.figure()
   fig.set_figheight(fig.get_figheight()*nplots)
-  plot_meta['size'] = 1
+  meta['size'] = 1
   ax1 = fig.add_subplot(nplots, 1, 1)
   # var = _df['et_all'] - _df['et']
-  if plot_meta['var'] == 'numeric':
+  if meta['var'] == 'numeric':
     print('NUMERIC!!!')
     var = _df['et_all']-_df['et']
   else:
     var = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
-  plot_meta['log'] = log
-  plot_meta['cmap'] = 'RdBu'
-  plot_meta['delta'] = 'full'
-  make_ax_plot(ax1, var, _df, plot_meta)
+  meta['log'] = log
+  meta['cmap'] = 'RdBu'
+  meta['delta'] = 'full'
+  make_ax_plot(ax1, var, _df, meta)
 
   ax2 = fig.add_subplot(nplots, 1, 2)
   var = _df['scaling']*(_df['vpd_leaf'])
-  plot_meta['cmap'] = 'RdBu'
-  plot_meta['delta'] = 'leaf'
-  make_ax_plot(ax2, var, _df, plot_meta)
+  meta['cmap'] = 'RdBu'
+  meta['delta'] = 'leaf'
+  make_ax_plot(ax2, var, _df, meta)
 
   ax3 = fig.add_subplot(nplots, 1, 3)
   var = _df['scaling']*(_df['vpd_atm'])
-  plot_meta['delta'] = 'atm'
-  make_ax_plot(ax3, var, _df, plot_meta)
+  meta['delta'] = 'atm'
+  make_ax_plot(ax3, var, _df, meta)
 
   plt.tight_layout()
   # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
-  #             % (os.environ['PLOTS'], str(_df['pft'][0]), plot_meta['site'],))
+  #             % (os.environ['PLOTS'], str(_df['pft'][0]), meta['site'],))
   fname = '%s/climate_et/%s%s_%s_%s_plots/%s_%s.png'\
-          % (os.environ['PLOTS'], plot_meta['var'], plot_meta['folder_label'],\
-             plot_meta['log'], plot_meta['x_axis'],
-             str(_df['pft'][0]), plot_meta['label'])
+          % (os.environ['PLOTS'], meta['var'], meta['folder_label'],\
+             meta['log'], meta['x_axis'],
+             str(_df['pft'][0]), meta['label'])
   try:
     plt.savefig(fname)
   except FileNotFoundError:
@@ -171,105 +178,148 @@ def scatter_plot(_df, plot_meta):
   plt.show(block=False)
   return
 
-def plot_wrapper(_df, plot_meta):
+def plot_wrapper(_df, meta):
   """takes a groupby _df and parses it to plot"""
   print(_df.shape)
-  plot_meta['label'] = 'pft'
-  if plot_meta['folder_label'] == 'site':
-    plot_meta['label'] = str(_df['site'][0])
-  scatter_plot(_df, plot_meta)
+  meta['label'] = 'pft'
+  if meta['folder_label'] == 'site':
+    meta['label'] = str(_df['site'][0])
+  scatter_plot(_df, meta)
   return
 
 def clean_df(_df, var='lai'):
   """remove unphysical LAI values from a df"""
-  out = _df.loc[((_df[var] > 0.1) & (_df[var] < 100.)), :].copy()
+  out = _df.loc[((_df[var] > 0.1) & (_df[var] < 100.)), :]
   return out
 
 def site_clean(_df, var='lai'):
   """this will remove some percentile of data"""
   out = _df.loc[((_df[var] < _df[var].quantile(q=0.95)) & \
-                (_df[var] > _df[var].quantile(q=0.05))), :].copy()
+                (_df[var] > _df[var].quantile(q=0.05))), :]
   return out
 
-def histogram(_df, plot_meta):
+def histogram(_df, meta):
   """takes a groupby _df and makes histogram plots"""
   fig = plt.figure()
   ax = fig.add_subplot(111)
-  sns.distplot(_df[plot_meta['var']], ax=ax)
-  ax.set_xlabel(plot_meta['var'])
-  if plot_meta['folder_label'] == 'site':
+  sns.distplot(_df[meta['var']], ax=ax)
+  ax.set_xlabel(meta['var'])
+  if meta['folder_label'] == 'site':
     outname = '%s/%s_%s.png' %\
-              (plot_meta['folder'], _df.site.iloc[0], plot_meta['var'])
-  elif plot_meta['folder_label'] == 'pft':
+              (meta['folder'], _df.site.iloc[0], meta['var'])
+  elif meta['folder_label'] == 'pft':
     outname = '%s/%s_%s.png' %\
-              (plot_meta['folder'], _df.pft.iloc[0], plot_meta['var'])
+              (meta['folder'], _df.pft.iloc[0], meta['var'])
   plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
   return
 
-def test_trend(_df, plot_meta):
+def test_trend(_df, meta):
   """
   plots the trend of the lai parameter
   to make sure it is independent of vpd
   """
   plt.figure()
-  g = sns.jointplot(x=_df['vpd'], y=_df['lai'], kind="hex",\
-                    xlim=(0.,5000.), ylim=(0.1,2.), stat_func=spearmanr)
-  g.set_axis_labels('vpd','lai')
-  if plot_meta['full_ds']:
-    plt.savefig('%s/climate_et/lai_vpd.png' % os.environ['PLOTS'])
+  g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
+                    xlim=meta['xlim'], ylim=meta['ylim'], stat_func=spearmanr)
+  g.set_axis_labels(meta['x_var'],meta['y_var'])
+  if meta['full_ds']:
+    test_savefig('%s/climate_et/scatters/%s_%s.png'\
+                % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
   else:
-    plt.savefig('%s/climate_et/lai_vpd/%s.png'\
-                % (os.environ['PLOTS'], _df['pft'].iloc[0]))
+    test_savefig('%s/climate_et/scatters/%s_%s/%s.png'\
+                % (os.environ['PLOTS'], meta['x_var'],\
+                   meta['y_var'],  _df['pft'].iloc[0]))
+  return
+plt.close('all')
+
+# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+# df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
+# meta = {}
+# meta['folder_label'] = 'site'
+# meta['folder'] = 'hist_plots'
+# meta['var'] = 'lai_gpp'
+# print(df.shape)
+# df = df.groupby('site').apply(site_clean)
+# print(df.shape)
+# df = clean_df(df)
+# df = clean_df(df, var='lai_gpp')
+# # test = df.groupby('site').apply(site_clean, 'lai_gpp')
+# # test = clean_df(test, var='lai_gpp')
+# df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+# print(df.shape)
+# #df.groupby('site').apply(histogram, meta)
+# # histogram(df, meta)
+# # meta['var'] = 'lai'
+# # histogram(df, meta)
+
+def scatter_wrapper(df, meta):
+  """just saves line space my wrapping the steps I always take"""
+  meta['full_ds'] = True
+  test_trend(df, meta)
+  meta['full_ds'] = False
+  df.groupby('pft').apply(test_trend, meta)
   return
 
-concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-plot_meta = {}
-plot_meta['folder_label'] = 'site'
-plot_meta['folder'] = 'hist_plots'
-plot_meta['var'] = 'lai_gpp'
-print(df.shape)
-df = df.groupby('site').apply(site_clean)
-print(df.shape)
-df = clean_df(df)
-# test = df.groupby('site').apply(site_clean, 'lai_gpp')
-# test = clean_df(test, var='lai_gpp')
-df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-print(df.shape)
-#df.groupby('site').apply(histogram, plot_meta)
+df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+                    % os.environ['DATA'])
 
-histogram(df, plot_meta)
-plot_meta['var'] = 'lai'
-histogram(df, plot_meta)
-# plt.close('all')
+# meta = {}
+# meta['x_var'] = 'vpd'
+# meta['y_var'] = 'lai'
+# meta['xlim'] = (0., 5000.)
+# meta['ylim'] = (0.1, 2.)
+# for meta['y_var'] in ['lai', 'lai_gpp']:
+#   print(meta['y_var'])
+#   scatter_wrapper(df, meta)
+# meta['xlim'] = None
+# meta['ylim'] = None
+# meta['x_var'] = 'lai'
+# meta['y_var'] = 'lai_gpp'
+# scatter_wrapper(df, meta)
 
-# df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
-#                     % os.environ['DATA'])
+# meta['x_var'] = 'gpp_obs'
+# meta['y_var'] = 'gpp'
+# scatter_wrapper(df, meta)
 
-# #test_trend(df, {'full_ds' : True})
-# #df.groupby('pft').apply(test_trend, {'full_ds' : False})
-# plot_meta = {}
-# plot_meta['x_axis'] = 'rh'
-# plot_meta['log'] = ''
-# # plot_meta['folder_label'] = 'full_ds_swc'
-# # soil_moisture_scatter(df, plot_meta)
-# plot_meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, plot_meta)
+meta = {}
+meta['xlim'] = None
+meta['ylim'] = None
+test = site_clean(df, var='wue')
+test = site_clean(test, var='wue_obs')
+meta['x_var'] = 'wue_obs'
+meta['y_var'] = 'wue'
+scatter_wrapper(test, meta)
 
-# # plot_meta = {}
-# # plot_meta['var'] = ''
+df['d_gpp_numeric'] = df['gpp_all'] - df['gpp']
+test = site_clean(df, var='d_gpp')
+test = site_clean(test, var='d_gpp_numeric')
+meta['x_var'] = 'd_gpp'
+meta['y_var'] = 'd_gpp_numeric'
+scatter_wrapper(df, meta)
+
+
+# meta = {}
+# meta['x_axis'] = 'rh'
+# meta['log'] = ''
+# # meta['folder_label'] = 'full_ds_swc'
+# # soil_moisture_scatter(df, meta)
+# meta['folder_label'] = 'pft_swc'
+# df.groupby('pft').apply(soil_moisture_scatter, meta)
+
+# # meta = {}
+# # meta['var'] = ''
 # # for x_axis in ['rh', 'vpd']:
 # #   for log in ['log', 'scaling', '']:
-# #     plot_meta['label'] = 'full_ds'
-# #     plot_meta['folder_label'] = 'full_ds'
-# #     plot_meta['x_axis'] = x_axis
-# #     plot_meta['log'] = log
-# #     # plot_meta['var'] = 'numeric'
-# #     # plot_wrapper(df, plot_meta)
-# #     plot_meta['folder_label'] = 'pft'
-# #     df.groupby('pft').apply(plot_wrapper, plot_meta)
-# #     # plot_meta['folder_label'] = 'site'
-# #     # df.groupby('site').apply(plot_wrapper, plot_meta)
+# #     meta['label'] = 'full_ds'
+# #     meta['folder_label'] = 'full_ds'
+# #     meta['x_axis'] = x_axis
+# #     meta['log'] = log
+# #     # meta['var'] = 'numeric'
+# #     # plot_wrapper(df, meta)
+# #     meta['folder_label'] = 'pft'
+# #     df.groupby('pft').apply(plot_wrapper, meta)
+# #     # meta['folder_label'] = 'site'
+# #     # df.groupby('site').apply(plot_wrapper, meta)
 
 # os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
 #           '%s/climate_et/rh.png'\
