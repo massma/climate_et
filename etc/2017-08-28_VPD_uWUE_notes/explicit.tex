@@ -53,19 +53,19 @@ Now also taking the derivative of ET w.r.t. $D_s$ we get:
 Now that we have ET, we can also use uWUE to get GPP:
 
 \begin{equation}
-  ET = \frac{\text{GPP} \cdot \sqrt{D_s}}{  \text{uWUE}}
+  \frac{ET}{L_v} = \frac{\text{GPP} \cdot \sqrt{D_s}}{  \text{uWUE}}
 \end{equation}
 
 Plugging this into Equation (4) gives:
 
 \begin{equation}
-  \text{GPP} = \frac{\text{uWUE}\; \Delta R + g_a \left( \text{uWUE}\; \rho_a c_p D_{s} - \frac{\gamma c_s \sqrt{D_s} L_v P }{\text{LAI } R \; T \; 1.6  (1 + \frac{g_1}{\sqrt{D_s}})} \right) }{ \sqrt{D_s} \left(\Delta + \gamma \right)}
+  \text{GPP} = \frac{\text{uWUE}\; \Delta R + g_a \left( \text{uWUE}\; \rho_a c_p D_{s} - \frac{\gamma c_s \sqrt{D_s} L_v P }{\text{LAI } R \; T \; 1.6  (1 + \frac{g_1}{\sqrt{D_s}})} \right) }{L_v \; \sqrt{D_s} \left(\Delta + \gamma \right)}
 \end{equation}
 
 Taking the derivative w.r.t $D_s$ gives:
 
 \begin{equation}
-  \frac{\partial GPP}{\partial D_s} = \frac{1}{2 D_s^{3/2} \left(\Delta + \gamma \right)} \left( -\text{uWUE}\; \Delta R + g_a \text{uWUE}\; \rho_a c_p  D_s - \frac{g_a g_1  \gamma c_s L_v P }{\text{LAI } R \; T \; 1.6 ( 1 + \frac{g_1}{\sqrt{D_s}})^2 } \right)
+  \frac{\partial GPP}{\partial D_s} = \frac{1}{2 L_v D_s^{3/2} \left(\Delta + \gamma \right)} \left( -\text{uWUE}\; \Delta R + g_a \text{uWUE}\; \rho_a c_p  D_s - \frac{g_a g_1  \gamma c_s L_v P }{\text{LAI } R \; T \; 1.6 ( 1 + \frac{g_1}{\sqrt{D_s}})^2 } \right)
 \end{equation}
 
 We can also solve for WUE, again using uWUE (just make sure units are correct: mol C/mol C.
