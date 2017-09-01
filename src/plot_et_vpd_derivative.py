@@ -63,14 +63,17 @@ def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
 
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
-  if meta['log'] == 'log':
-    var = var/_df['et_obs']
-    vmax = 0.8/175.
-  elif meta['log'] == 'scaling':
-    var = var/_df['scaling']
-    vmax = 2000.
+  if 'vmax' in meta:
+    vmax = meta['vmax']
   else:
-    vmax = 0.8 # *_df.et_obs.mean()
+    if meta['log'] == 'log':
+      var = var/_df['et_obs']
+      vmax = 0.8/175.
+    elif meta['log'] == 'scaling':
+      var = var/_df['scaling']
+      vmax = 2000.
+    else:
+      vmax = 0.8 # *_df.et_obs.mean()
   nstd = 1.0
   print(_df['pft'][0])
   # print(var.std())
@@ -108,7 +111,7 @@ def soil_moisture_scatter(_df, meta):
   meta['size'] = 16
   percentiles = [ .25, .50, .75, 1.00]
   nplots = len(percentiles)
-  _df['var'] = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
+
   fig.set_figheight(fig.get_figheight()*nplots)
   ax = []
 
@@ -121,12 +124,12 @@ def soil_moisture_scatter(_df, meta):
                          % (int((percentile-0.25)*100.), int(percentile*100.))
     meta['cmap'] = 'RdBu'
     meta['delta'] = 'full'
-    make_ax_plot(ax[-1], _data['var'], _data, meta)
+    make_ax_plot(ax[-1], _data[meta['var']], _data, meta)
 
   plt.tight_layout()
-  fname = '%s/climate_et/%s_%s_%s_plots/%s_%s.png'\
+  fname = '%s/climate_et/%s_%s_%s_%s_plots/%s_%s.png'\
           % (os.environ['PLOTS'], meta['folder_label'],\
-             meta['log'], meta['x_axis'],
+             meta['var'], meta['log'], meta['x_axis'],
              str(_df['pft'][0]), meta['label'])
   test_savefig(fname)
   plt.show(block=False)
@@ -287,16 +290,60 @@ df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
 # meta['y_var'] = 'wue'
 # scatter_wrapper(test, meta)
 
+# meta = {}
+# meta['xlim'] = None
+# meta['ylim'] = None
+# df['d_gpp_numeric'] = df['gpp_all'] - df['gpp']
+# test = site_clean(df, var='d_gpp')
+# test = site_clean(test, var='d_gpp_numeric')
+# meta['x_var'] = 'd_gpp'
+# meta['y_var'] = 'd_gpp_numeric'
+# scatter_wrapper(test, meta)
+
+
+# meta = {}
+# meta['x_axis'] = 'rh'
+# meta['log'] = ''
+# df['d_et'] = df['scaling']*(df['vpd_leaf'] + df['vpd_atm'])
+# meta['var'] = 'd_et'
+# meta['folder_label'] = 'full_ds_swc'
+# soil_moisture_scatter(df, meta)
+# meta['folder_label'] = 'pft_swc'
+# df.groupby('pft').apply(soil_moisture_scatter, meta)
+
 meta = {}
 meta['xlim'] = None
 meta['ylim'] = None
-df['d_gpp_numeric'] = df['gpp_all'] - df['gpp']
-test = site_clean(df, var='d_gpp')
-test = site_clean(test, var='d_gpp_numeric')
-meta['x_var'] = 'd_gpp'
-meta['y_var'] = 'd_gpp_numeric'
-scatter_wrapper(test, meta)
+meta['x_var'] = 'swc'
+meta['y_var'] = 'lai'
+scatter_wrapper(df, meta)
 
+meta = {}
+meta['xlim'] = None
+meta['ylim'] = None
+meta['x_var'] = 'swc'
+meta['y_var'] = 'lai_gpp'
+scatter_wrapper(df, meta)
+
+
+meta = {}
+meta['x_axis'] = 'rh'
+meta['log'] = ''
+meta['var'] = 'd_gpp'
+meta['folder_label'] = 'full_ds_swc'
+soil_moisture_scatter(df, meta)
+meta['folder_label'] = 'pft_swc'
+df.groupby('pft').apply(soil_moisture_scatter, meta)
+
+meta = {}
+meta['x_axis'] = 'rh'
+meta['log'] = ''
+meta['var'] = 'd_wue'
+meta['folder_label'] = 'full_ds_swc'
+meta['vmax'] = 5.e-5
+soil_moisture_scatter(df, meta)
+meta['folder_label'] = 'pft_swc'
+df.groupby('pft').apply(soil_moisture_scatter, meta)
 
 # meta = {}
 # meta['x_axis'] = 'rh'
@@ -306,33 +353,38 @@ scatter_wrapper(test, meta)
 # meta['folder_label'] = 'pft_swc'
 # df.groupby('pft').apply(soil_moisture_scatter, meta)
 
-# # meta = {}
-# # meta['var'] = ''
-# # for x_axis in ['rh', 'vpd']:
-# #   for log in ['log', 'scaling', '']:
-# #     meta['label'] = 'full_ds'
-# #     meta['folder_label'] = 'full_ds'
-# #     meta['x_axis'] = x_axis
-# #     meta['log'] = log
-# #     # meta['var'] = 'numeric'
-# #     # plot_wrapper(df, meta)
-# #     meta['folder_label'] = 'pft'
-# #     df.groupby('pft').apply(plot_wrapper, meta)
-# #     # meta['folder_label'] = 'site'
-# #     # df.groupby('site').apply(plot_wrapper, meta)
 
-# os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
-#           '%s/climate_et/rh.png'\
-#           % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# os.system('convert +append %s/climate_et/pft_swc__rh_plots/*.png '\
-#           '%s/climate_et/swc_rh.png'\
-#           % (os.environ['PLOTS'], os.environ['PLOTS']))
+# meta = {}
+# meta['var'] = ''
+# for x_axis in ['rh', 'vpd']:
+#   for log in ['log', 'scaling', '']:
+#     meta['label'] = 'full_ds'
+#     meta['folder_label'] = 'full_ds'
+#     meta['x_axis'] = x_axis
+#     meta['log'] = log
+#     # meta['var'] = 'numeric'
+#     # plot_wrapper(df, meta)
+#     meta['folder_label'] = 'pft'
+#     df.groupby('pft').apply(plot_wrapper, meta)
+#     # meta['folder_label'] = 'site'
+#     # df.groupby('site').apply(plot_wrapper, meta)
 
-# # # os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
-# # #           '%s/climate_et/true_vpd_full.png'\
-# # #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
+          '%s/climate_et/rh.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# # # os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
-# # #           '%s/climate_et/false_vpd_full.png'\
-# # #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+for var in ['d_et', 'd_gpp', 'd_wue']:
+  print('working on %s' % var)
+  os.system('convert +append %s/climate_et/pft_swc_%s__rh_plots/*.png '\
+            '%s/climate_et/swc_%s_rh.png'\
+            % (os.environ['PLOTS'], var, os.environ['PLOTS'], var))
+
+# # os.system('convert +append %s/climate_et/pft_plots/*true_vpd.png '\
+# #           '%s/climate_et/true_vpd_full.png'\
+# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+# # os.system('convert +append %s/climate_et/pft_plots/*false_vpd.png '\
+# #           '%s/climate_et/false_vpd_full.png'\
+# #           % (os.environ['PLOTS'], os.environ['PLOTS']))
+
