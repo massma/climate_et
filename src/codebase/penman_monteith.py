@@ -17,7 +17,7 @@ GAMMA = 66. # psychrometric constant
 LV = 2.5e6
 R_AIR = .0289645 # mean kg/mol dry air
 R_STAR = 8.3144598 #J /mol/K
-
+R_DRY = 287.058
 # From Changjie's oren model for stomatal resistance
 # see "Survey and synthesis of intra- and interspecific variation
 # in stomatal sensitivity to vapour pressure deficit" - Oren
@@ -282,10 +282,14 @@ def gamma(_atmos):
   """calculates gamma in Pa/C from pressure and T"""
   return 1.e-6*CP*_atmos['p_a']/(0.622*(2.501-0.00236*_atmos['t_a']))
 
+def r_moist(_atmos):
+  """calculates the gas constant of moist air"""
+  return R_DRY/(1.-(0.378*_atmos['e_s']\
+                    /_atmos['p_a']*_atmos['rh']/100.))
+
 def rho_air(_atmos):
   """returns rho in kg/m3"""
-  return (_atmos['p_a']/(287.05*(_atmos['t_a']+273.15)))\
-    *(1.-(0.378*_atmos['e_s']/_atmos['p_a']*_atmos['rh']/100.))
+  return _atmos['p_a']/(_atmos['r_moist']*(_atmos['t_a']+273.15))
 
 def penman_monteith_prep(_atmos, _canopy):
   """
@@ -297,6 +301,7 @@ def penman_monteith_prep(_atmos, _canopy):
   _atmos['e_s'] = met.vapor_pres(_atmos['t_a'])*VP_FACTOR
   _atmos['delta'] = delta(_atmos)
   _atmos['gamma'] = gamma(_atmos)
+  _atmos['r_moist'] = r_moist(_atmos)
   _atmos['rho_a'] = rho_air(_atmos)
 
   # below allows us to provide vpd

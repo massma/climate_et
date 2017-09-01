@@ -23,8 +23,8 @@ SITELIST.index = SITELIST.Site
 H2O = 18.01528e-3 #molecular mass kg/mol
 def leaf_vpd(atmos, canopy, lai):
   """calculates the leaf term in dET/dVPD (see doc folder)"""
-  return -atmos['gamma']*atmos['c_a']*pm.LV*atmos['p_a']/\
-    (lai*1.6*pm.R_STAR*(273.15+atmos['t_a'])*canopy['uwue'])\
+  return -atmos['gamma']*atmos['c_a']*pm.LV/\
+    (lai*1.6*pm.R_STAR*canopy['uwue'])\
     *(2.*canopy['g1'] + np.sqrt(atmos['vpd']))\
     /(2.*(canopy['g1'] + np.sqrt(atmos['vpd']))**2)
 
@@ -64,8 +64,9 @@ def calc_derivative(atmos, canopy, data):
 
   # Now do ET terms
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
-  data['scaling'] = 1./(atmos['r_a']*(atmos['delta'] + atmos['gamma']))
-  data['vpd_atm'] = atmos['rho_a']*pm.CP
+  data['scaling'] = atmos['p_a']/(atmos['r_a']*(273.15+atmos['t_a'])\
+                                  *(atmos['delta'] + atmos['gamma']))
+  data['vpd_atm'] = pm.CP/atmos['r_moist']
   data['vpd_leaf'] = leaf_vpd(atmos, canopy, canopy['lai'])
   atmos['vpd'] = atmos['vpd'] + 1.0
   data['et_all'] = pm.penman_monteith_uwue(atmos, canopy)
@@ -75,15 +76,6 @@ def calc_derivative(atmos, canopy, data):
   data['wue_obs'] = data['gpp_obs']/(data['et_obs']/(pm.LV*H2O)*1.e6)
   data['wue'] = canopy['uwue']/np.sqrt(atmos['vpd'])*H2O/1.e6
   data['d_wue'] = -0.5*canopy['uwue']/atmos['vpd']**1.5*H2O/1.e6
-
-  # Now do ET terms
-  data['et'] = pm.penman_monteith_uwue(atmos, canopy)
-  data['scaling'] = 1./(atmos['r_a']*(atmos['delta'] + atmos['gamma']))
-  data['vpd_atm'] = atmos['rho_a']*pm.CP
-  data['vpd_leaf'] = leaf_vpd(atmos, canopy, canopy['lai'])
-  atmos['vpd'] = atmos['vpd'] + 1.0
-  data['et_all'] = pm.penman_monteith_uwue(atmos, canopy)
-  atmos['vpd'] = atmos['vpd'] - 1.0
 
   # Now GPP terms
   lai_true = canopy['lai'].copy()
