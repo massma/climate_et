@@ -61,6 +61,7 @@ def calc_derivative(atmos, canopy, data):
   canopy['lai'] = calc_lai(atmos, canopy, data['et_obs'])
   data['et_gpp'] = data['gpp_obs']*np.sqrt(atmos['vpd'])/canopy['uwue']
   canopy['lai_gpp'] = calc_lai(atmos, canopy, data['et_gpp'])
+  data['corrected_r_a'] = pm.corrected_r_a(atmos, canopy)
 
   # Now do ET terms
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
