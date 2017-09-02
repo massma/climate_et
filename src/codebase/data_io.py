@@ -54,6 +54,7 @@ def load_mat_data(filename):
   _data['et_obs'] = np.squeeze(data['LE'])
   _data['swc'] = np.squeeze(data['SWC'])
   _data['gpp_obs'] = np.squeeze(data['GEP'])
+  _data['r_a_obs'] = np.squeeze(data['Ra']) # s/m
 
   atmos = atmos_dict(data)
   canopy = canopy_dict(data)
