@@ -221,10 +221,19 @@ def test_trend(_df, meta):
   plots the trend of the lai parameter
   to make sure it is independent of vpd
   """
-  plt.figure()
-  g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
-                    xlim=meta['xlim'], ylim=meta['ylim'], stat_func=spearmanr)
-  g.set_axis_labels(meta['x_var'],meta['y_var'])
+  fig = plt.figure()
+  if meta['plot_type'] == 'simple':
+    ax = fig.add_subplot(111)
+    ax.scatter(_df[meta['x_var']], _df[meta['y_var']], s=2)
+    ax.set_xlabel(meta['x_var'])
+    ax.set_ylabel(meta['y_var'])
+    ax.set_title('spearmanr = %f'\
+                 % spearmanr(_df[meta['x_var']],\
+                             _df[meta['y_var']]).correlation)
+  else:
+    g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
+                      xlim=meta['xlim'], ylim=meta['ylim'], stat_func=spearmanr)
+    g.set_axis_labels(meta['x_var'],meta['y_var'])
   if meta['full_ds']:
     test_savefig('%s/climate_et/scatters/%s_%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
@@ -261,6 +270,8 @@ def scatter_wrapper(df, meta):
   test_trend(df, meta)
   meta['full_ds'] = False
   df.groupby('pft').apply(test_trend, meta)
+  if 'plot_type' not in meta:
+    meta['plot_type'] = 'nan'
   return
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
@@ -268,10 +279,14 @@ df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
 meta = {}
 meta['xlim'] = None
 meta['ylim'] = None
+meta['plot_type'] = 'simple'
 meta['x_var'] = 'corrected_r_a'
 meta['y_var'] = 'r_a_cha'
 scatter_wrapper(df, meta)
 
+meta['y_var'] = 'corrected_r_a'
+meta['x_var'] = 'r_a_cha'
+scatter_wrapper(df, meta)
 # # meta['xlim'] = None
 # # meta['ylim'] = None
 # # meta['x_var'] = 'lai'
