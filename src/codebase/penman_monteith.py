@@ -211,10 +211,11 @@ def psim(ksi):
   """
   unstable_idx = (ksi < 0.)
   _psim = np.ones(ksi.shape)*np.nan
-  x =(1. - 16.*ksi[unstable_idx])**0.25
-  a = (1. + x)/2.
-  b = (1. + x**2)/2.
-  _psim[unstable_idx] = np.log(a**2*b)-2.*np.arctan(x)+np.arcsin(1.)
+  chik2 = np.sqrt(1. - 16.*ksi[unstable_idx])
+  chik  = np.sqrt(chik2)
+  _psim[unstable_idx] = 2.*np.log((1.+chik)*0.5) + np.log((1.+chik2)*0.5)\
+                        -2.*np.arctan(chik)+0.5*np.pi
+
   _ksi = ksi[~unstable_idx]
   _psim[~unstable_idx]  = -(0.7*_ksi+0.75*(_ksi-5./0.35)\
                             *np.exp(-0.35*_ksi)+3.75/0.35)
@@ -228,9 +229,8 @@ def psih(ksi):
   """
   unstable_idx = (ksi < 0.)
   _psih = np.ones(ksi.shape)*np.nan
-  x =(1. - 16.*ksi[unstable_idx])**0.25
-  a = (1. + x**2)/2.
-  _psih[unstable_idx] = 2.*np.log(a)
+  chik2x = np.sqrt(1. - 16.*ksi[unstable_idx])
+  _psih[unstable_idx] = 2.*np.log((1.+chik2)*0.5)
   _ksi = ksi[~unstable_idx]
   print(_ksi[~np.isnan(_ksi)].size)
   _psih[~unstable_idx]  = -((1.+(2.*_ksi)/3.)**1.5+0.667*(_ksi-5./0.35)\
