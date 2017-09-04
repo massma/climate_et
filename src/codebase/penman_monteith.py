@@ -256,10 +256,9 @@ def corrected_r_a(_atmos, _canopy):
   _atmos['L'] = -_atmos['ustar']**3*CP*_atmos['rho_a']*(_atmos['t_a']+273.15)\
                 /(0.41*9.7*_atmos['h'])
   _r_a = np.ones(_atmos['L'].shape)*np.nan
-  neutral_idx = (_atmos['L'] == 0.)
+  neutral_idx = (_atmos['L'] <= 1.e-4)
   if _r_a[neutral_idx].size > 0.:
-    print(_r_a[neutral_idx].size)
-    _r_a[neutral_idx] = r_a(_atmos, _canopy)[_atmos['L'] == 0.]
+    _r_a[neutral_idx] = _atmos.loc[neutral_idx, 'r_a_uncorrected']
   #for neutral no correction required
   # dimensionless stability param
   _atmos['ksi'] = (_canopy['zmeas']-_canopy['d'])/_atmos['L']
@@ -272,6 +271,7 @@ def corrected_r_a(_atmos, _canopy):
   _ = (_log_ksi0-_atmos['psih'])*(_log_ksi0-_atmos['psim'])\
                        /(K**2*_atmos['u_z'])
   _r_a[~neutral_idx] = _[~neutral_idx]
+
   return _r_a
 
 def delta(_atmos):
@@ -320,9 +320,11 @@ def penman_monteith_prep(_atmos, _canopy):
 
   if 'r_a' not in _atmos:
     if 'ustar' in _atmos:
-      # _atmos['r_a'] = corrected_r_a(_atmos, _canopy)
-      # _atmos['r_a_uncorrected'] = r_a(_atmos, _canopy)
-      _atmos['r_a'] = r_a(_atmos, _canopy)
+      # below is memory inefficient, but useful for debugging
+      _atmos['r_a_uncorrected'] = r_a(_atmos, _canopy)
+      _atmos['r_a_corrected'] = corrected_r_a(_atmos, _canopy)
+      _atmos['r_a'] = _atmos.loc[:, ['r_a_corrected',\
+                                     'r_a_uncorrected'].max(axis=1)
     else:
       _atmos['r_a'] = r_a(_atmos, _canopy)
 

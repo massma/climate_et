@@ -244,25 +244,25 @@ def test_trend(_df, meta):
   return
 plt.close('all')
 
-# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-# df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-# meta = {}
-# meta['folder_label'] = 'site'
-# meta['folder'] = 'hist_plots'
-# meta['var'] = 'lai_gpp'
-# print(df.shape)
-# df = df.groupby('site').apply(site_clean)
-# print(df.shape)
-# df = clean_df(df)
-# df = clean_df(df, var='lai_gpp')
-# # test = df.groupby('site').apply(site_clean, 'lai_gpp')
-# # test = clean_df(test, var='lai_gpp')
-# df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-# print(df.shape)
-# #df.groupby('site').apply(histogram, meta)
-# # histogram(df, meta)
-# # meta['var'] = 'lai'
-# # histogram(df, meta)
+concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
+meta = {}
+meta['folder_label'] = 'site'
+meta['folder'] = 'hist_plots'
+meta['var'] = 'lai_gpp'
+print(df.shape)
+df = df.groupby('site').apply(site_clean)
+print(df.shape)
+df = clean_df(df)
+df = clean_df(df, var='lai_gpp')
+# test = df.groupby('site').apply(site_clean, 'lai_gpp')
+# test = clean_df(test, var='lai_gpp')
+df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+print(df.shape)
+#df.groupby('site').apply(histogram, meta)
+# histogram(df, meta)
+# meta['var'] = 'lai'
+# histogram(df, meta)
 
 def scatter_wrapper(df, meta):
   """just saves line space my wrapping the steps I always take"""
