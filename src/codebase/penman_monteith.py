@@ -229,7 +229,7 @@ def psih(ksi):
   """
   unstable_idx = (ksi < 0.)
   _psih = np.ones(ksi.shape)*np.nan
-  chik2x = np.sqrt(1. - 16.*ksi[unstable_idx])
+  chik2 = np.sqrt(1. - 16.*ksi[unstable_idx])
   _psih[unstable_idx] = 2.*np.log((1.+chik2)*0.5)
   _ksi = ksi[~unstable_idx]
   print(_ksi[~np.isnan(_ksi)].size)

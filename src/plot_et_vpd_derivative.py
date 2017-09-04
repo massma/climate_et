@@ -284,7 +284,7 @@ meta['x_var'] = 'corrected_r_a'
 meta['y_var'] = 'r_a_cha'
 scatter_wrapper(df, meta)
 
-meta['y_var'] = 'corrected_r_a'
+meta['y_var'] = 'r_a'
 meta['x_var'] = 'r_a_cha'
 scatter_wrapper(df, meta)
 # # meta['xlim'] = None
