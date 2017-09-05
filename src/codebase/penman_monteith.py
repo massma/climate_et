@@ -18,6 +18,8 @@ LV = 2.5e6
 R_AIR = .0289645 # mean kg/mol dry air
 R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
+G = 9.81 #gravity constant, m/s2
+
 # From Changjie's oren model for stomatal resistance
 # see "Survey and synthesis of intra- and interspecific variation
 # in stomatal sensitivity to vapour pressure deficit" - Oren
@@ -253,25 +255,42 @@ def corrected_r_a(_atmos, _canopy):
   heat flux (h) in _atmos, which might not be actually available many
   of times. only gets called by penman_monteith if ustar is in _atmos
   """
+  ksit = 0.465 # point of continuity in the stability profiles for heat
+
+  # checked below from shuttleworth pg 292, should be good except t_a
+  # should be  virtual (as should flux).
   _atmos['L'] = -_atmos['ustar']**3*CP*_atmos['rho_a']*(_atmos['t_a']+273.15)\
-                /(0.41*9.7*_atmos['h'])
+                /(K*G*_atmos['h'])
   _r_a = np.ones(_atmos['L'].shape)*np.nan
   neutral_idx = (np.absolute(_atmos['L']) <= 1.e-4)
   if _r_a[neutral_idx].size > 0.:
     _r_a[neutral_idx] = _atmos.loc[neutral_idx, 'r_a_uncorrected']
-  #for neutral no correction required
-  # dimensionless stability param
   _atmos['ksi'] = (_canopy['zmeas']-_canopy['d'])/_atmos['L']
   _atmos['ksi'][neutral_idx] = np.nan
-  _atmos['psim'] = psim(_atmos['ksi'])
-  _atmos['psih'] = psih(_atmos['ksi'])
-  #use log profiles
-  _ksi0 = (_canopy['zmeas']-_canopy['d'])/_canopy['z0']
-  _log_ksi0 = np.log(_ksi0)
-  _ = (_log_ksi0-_atmos['psih'])*(_log_ksi0-_atmos['psim'])\
-                       /(K**2*_atmos['u_z'])
-  _r_a[~neutral_idx] = _[~neutral_idx]
-
+  #below could be way more efficient
+  _ = K/(np.log(-ksit*_atmos['L']/_canopy['z0'])
+                 - psih(-ksit*np.ones(_atmos['L'].shape))
+                 + psih(_canopy['z0']/_atmos['L'])
+                 + 0.8*((ksit)**(-0.333)-(-_atmos['ksi'])**(-0.333)))
+  ksit_idx = (_atmos['ksi'] < -ksit)
+  _r_a[ksit_idx & (~neutral_idx)] = _[ksit_idx & (~neutral_idx)]
+  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_atmos['z0'])
+                - psih(_atmos['ksi'],Glob)
+                + psih(_atmos['z0']/_atmos['L'],Glob))
+  zero_idx = (_atmos['ksi'] < 0.)
+  _r_a[zero_idx & (~ksit_idx) & (~neutral_idx)] = _[zero_idx & (~ksit_idx)\
+                                                    & (~neutral_idx)]
+  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_atmos['z0'])\
+           + 5.*_atmos['ksi']-5.*_atmos['z0']/_atmos['L'])
+  one_idx = (_atmos['ksi'] <= 1.)
+  _r_a[one_idx & (~zero_idx) & (~ksit_idx)\
+       & (~neutral_idx)] = _[one_idx & (~zero_idx) & (~ksit_idx)\
+                             & (~neutral_idx)]
+  _   = K/(np.log(_atmos['L']/_atmos['z0']) + 5. - 5.*_atmos['z0']/_atmos['L']
+                + (5.*log(_atmos['ksi'])+_atmos['ksi']-1.))
+  _r_a[(~one_idx) & (~zero_idx) & (~ksit_idx)\
+       & (~neutral_idx)] = _[(~one_idx) & (~zero_idx) & (~ksit_idx)\
+                             & (~neutral_idx)]
   return _r_a
 
 def delta(_atmos):
@@ -348,7 +367,6 @@ def penman_monteith_prep(_atmos, _canopy):
     _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
   return _atmos, _canopy
-  
 def penman_monteith(_atmos, _canopy):
   """
   returns ET in W/m2
