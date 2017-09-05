@@ -246,7 +246,7 @@ def r_a(_atmos, _canopy):
   implicit assumption that z0=z0h=z0m
   """
   return np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0'])**2\
-    /K**2/_atmos['u_z']
+    /(K**2*_atmos['u_z'])
 
 
 def corrected_r_a(_atmos, _canopy):
@@ -264,7 +264,7 @@ def corrected_r_a(_atmos, _canopy):
   _r_a = np.ones(_atmos['L'].shape)*np.nan
   neutral_idx = (np.absolute(_atmos['L']) <= 1.e-4)
   if _r_a[neutral_idx].size > 0.:
-    _r_a[neutral_idx] = _atmos.loc[neutral_idx, 'r_a_uncorrected']
+    _r_a[neutral_idx] = _atmos['r_a_uncorrected'][neutral_idx]
   _atmos['ksi'] = (_canopy['zmeas']-_canopy['d'])/_atmos['L']
   _atmos['ksi'][neutral_idx] = np.nan
   #below could be way more efficient
@@ -274,23 +274,25 @@ def corrected_r_a(_atmos, _canopy):
                  + 0.8*((ksit)**(-0.333)-(-_atmos['ksi'])**(-0.333)))
   ksit_idx = (_atmos['ksi'] < -ksit)
   _r_a[ksit_idx & (~neutral_idx)] = _[ksit_idx & (~neutral_idx)]
-  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_atmos['z0'])
-                - psih(_atmos['ksi'],Glob)
-                + psih(_atmos['z0']/_atmos['L'],Glob))
+  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0'])
+                - psih(_atmos['ksi'])
+                + psih(_canopy['z0']/_atmos['L']))
   zero_idx = (_atmos['ksi'] < 0.)
   _r_a[zero_idx & (~ksit_idx) & (~neutral_idx)] = _[zero_idx & (~ksit_idx)\
                                                     & (~neutral_idx)]
-  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_atmos['z0'])\
-           + 5.*_atmos['ksi']-5.*_atmos['z0']/_atmos['L'])
+  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0'])\
+           + 5.*_atmos['ksi']-5.*_canopy['z0']/_atmos['L'])
   one_idx = (_atmos['ksi'] <= 1.)
   _r_a[one_idx & (~zero_idx) & (~ksit_idx)\
        & (~neutral_idx)] = _[one_idx & (~zero_idx) & (~ksit_idx)\
                              & (~neutral_idx)]
-  _   = K/(np.log(_atmos['L']/_atmos['z0']) + 5. - 5.*_atmos['z0']/_atmos['L']
-                + (5.*log(_atmos['ksi'])+_atmos['ksi']-1.))
+  _   = K/(np.log(_atmos['L']/_canopy['z0']) + 5. - 5.*_canopy['z0']/_atmos['L']
+                + (5.*np.log(_atmos['ksi'])+_atmos['ksi']-1.))
   _r_a[(~one_idx) & (~zero_idx) & (~ksit_idx)\
        & (~neutral_idx)] = _[(~one_idx) & (~zero_idx) & (~ksit_idx)\
                              & (~neutral_idx)]
+  _r_a[_r_a < 1.e-3] = 1.e-3
+  _r_a = 1./(_r_a*_atmos['ustar'])
   return _r_a
 
 def delta(_atmos):
@@ -342,8 +344,8 @@ def penman_monteith_prep(_atmos, _canopy):
       # below is memory inefficient, but useful for debugging
       _atmos['r_a_uncorrected'] = r_a(_atmos, _canopy)
       _atmos['r_a_corrected'] = corrected_r_a(_atmos, _canopy)
-      _atmos['r_a'] = _atmos.loc[:, ['r_a_corrected',\
-                                     'r_a_uncorrected'].max(axis=1)
+      _atmos['r_a'] = np.nanmax(np.vstack([_atmos['r_a_corrected'],\
+                                           _atmos['r_a_uncorrected']]), axis=0)
     else:
       _atmos['r_a'] = r_a(_atmos, _canopy)
 

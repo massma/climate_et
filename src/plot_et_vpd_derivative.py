@@ -224,12 +224,14 @@ def test_trend(_df, meta):
   fig = plt.figure()
   if meta['plot_type'] == 'simple':
     ax = fig.add_subplot(111)
-    ax.scatter(_df[meta['x_var']], _df[meta['y_var']], s=2)
+    ax.scatter(_df[meta['x_var']], _df[meta['y_var']], s=8)
     ax.set_xlabel(meta['x_var'])
     ax.set_ylabel(meta['y_var'])
     ax.set_title('spearmanr = %f'\
                  % spearmanr(_df[meta['x_var']],\
                              _df[meta['y_var']]).correlation)
+    ax.set_xlim([0.,1.])
+    ax.set_ylim([0.,1.])
   else:
     g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
                       xlim=meta['xlim'], ylim=meta['ylim'], stat_func=spearmanr)
@@ -244,25 +246,25 @@ def test_trend(_df, meta):
   return
 plt.close('all')
 
-concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-meta = {}
-meta['folder_label'] = 'site'
-meta['folder'] = 'hist_plots'
-meta['var'] = 'lai_gpp'
-print(df.shape)
-df = df.groupby('site').apply(site_clean)
-print(df.shape)
-df = clean_df(df)
-df = clean_df(df, var='lai_gpp')
-# test = df.groupby('site').apply(site_clean, 'lai_gpp')
-# test = clean_df(test, var='lai_gpp')
-df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-print(df.shape)
-#df.groupby('site').apply(histogram, meta)
-# histogram(df, meta)
-# meta['var'] = 'lai'
-# histogram(df, meta)
+# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+# df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
+# meta = {}
+# meta['folder_label'] = 'site'
+# meta['folder'] = 'hist_plots'
+# meta['var'] = 'lai_gpp'
+# print(df.shape)
+# df = df.groupby('site').apply(site_clean)
+# print(df.shape)
+# df = clean_df(df)
+# df = clean_df(df, var='lai_gpp')
+# # test = df.groupby('site').apply(site_clean, 'lai_gpp')
+# # test = clean_df(test, var='lai_gpp')
+# df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+# print(df.shape)
+# #df.groupby('site').apply(histogram, meta)
+# # histogram(df, meta)
+# # meta['var'] = 'lai'
+# # histogram(df, meta)
 
 def scatter_wrapper(df, meta):
   """just saves line space my wrapping the steps I always take"""
@@ -280,7 +282,7 @@ df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
 def plot_height(_df):
   """plots up plant height to make sure it varies"""
   plt.figure()
-  plt.plot(np.linspace(0.,100., df.height.size), df.height)
+  plt.plot(np.linspace(0.,100., _df.height.size), _df.height)
   test_savefig('%s/climate_et/plant_height/%s.png'\
                % (os.environ['PLOTS'], _df.site.iloc[0]))
   return
@@ -290,13 +292,19 @@ meta = {}
 meta['xlim'] = None
 meta['ylim'] = None
 meta['plot_type'] = 'simple'
-meta['x_var'] = 'corrected_r_a'
-meta['y_var'] = 'r_a_cha'
+meta['x_var'] = 'r_a_uncorrected'
+meta['y_var'] = 'r_a'
 scatter_wrapper(df, meta)
 
-meta['y_var'] = 'r_a'
-meta['x_var'] = 'r_a_cha'
-scatter_wrapper(df, meta)
+print(np.max(np.absolute(df['r_a']-df['r_a_uncorrected'])))
+print(np.max(np.absolute(df['r_a']-df['r_a_corrected'])))
+print(np.max((df['r_a']-df['r_a_corrected'])))
+print(np.max((df['r_a_corrected']-df['r_a'])))
+
+# meta['y_var'] = 'r_a'
+# meta['x_var'] = 'r_a_cha'
+# scatter_wrapper(df, meta)
+
 # # meta['xlim'] = None
 # # meta['ylim'] = None
 # # meta['x_var'] = 'lai'
