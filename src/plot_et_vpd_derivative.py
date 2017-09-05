@@ -276,6 +276,16 @@ def scatter_wrapper(df, meta):
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
+
+def plot_height(_df):
+  """plots up plant height to make sure it varies"""
+  plt.figure()
+  plt.plot(np.linspace(0.,100., df.height.size), df.height)
+  test_savefig('%s/climate_et/plant_height/%s.png'\
+               % (os.environ['PLOTS'], _df.site.iloc[0]))
+  return
+
+df.groupby('site').apply(plot_height)
 meta = {}
 meta['xlim'] = None
 meta['ylim'] = None

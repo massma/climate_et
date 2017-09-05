@@ -256,7 +256,7 @@ def corrected_r_a(_atmos, _canopy):
   _atmos['L'] = -_atmos['ustar']**3*CP*_atmos['rho_a']*(_atmos['t_a']+273.15)\
                 /(0.41*9.7*_atmos['h'])
   _r_a = np.ones(_atmos['L'].shape)*np.nan
-  neutral_idx = (_atmos['L'] <= 1.e-4)
+  neutral_idx = (np.absolute(_atmos['L']) <= 1.e-4)
   if _r_a[neutral_idx].size > 0.:
     _r_a[neutral_idx] = _atmos.loc[neutral_idx, 'r_a_uncorrected']
   #for neutral no correction required
