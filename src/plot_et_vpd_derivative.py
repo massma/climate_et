@@ -63,9 +63,7 @@ def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
 
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
-  if 'vmax' in meta:
-    vmax = meta['vmax']
-  else:
+  if meta['vmax'] is None:
     if meta['log'] == 'log':
       var = var/_df['et_obs']
       vmax = 0.8/175.
@@ -74,6 +72,8 @@ def make_ax_plot(_ax, var, _df, meta):
       vmax = 5.
     else:
       vmax = 0.8 # *_df.et_obs.mean()
+  else:
+    vmax = meta['vmax']
   nstd = 1.0
   print(_df['pft'][0])
   # print(var.std())
@@ -246,25 +246,25 @@ def test_trend(_df, meta):
   return
 plt.close('all')
 
-concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-meta = {}
-meta['folder_label'] = 'site'
-meta['folder'] = 'hist_plots'
-meta['var'] = 'lai_gpp'
-print(df.shape)
-df = df.groupby('site').apply(site_clean)
-print(df.shape)
-df = clean_df(df)
-df = clean_df(df, var='lai_gpp')
-# test = df.groupby('site').apply(site_clean, 'lai_gpp')
-# test = clean_df(test, var='lai_gpp')
-df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-print(df.shape)
-#df.groupby('site').apply(histogram, meta)
-# histogram(df, meta)
-# meta['var'] = 'lai'
-# histogram(df, meta)
+# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+# df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
+# meta = {}
+# meta['folder_label'] = 'site'
+# meta['folder'] = 'hist_plots'
+# meta['var'] = 'lai_gpp'
+# print(df.shape)
+# df = df.groupby('site').apply(site_clean)
+# print(df.shape)
+# df = clean_df(df)
+# df = clean_df(df, var='lai_gpp')
+# # test = df.groupby('site').apply(site_clean, 'lai_gpp')
+# # test = clean_df(test, var='lai_gpp')
+# df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+# print(df.shape)
+# #df.groupby('site').apply(histogram, meta)
+# # histogram(df, meta)
+# # meta['var'] = 'lai'
+# # histogram(df, meta)
 
 def scatter_wrapper(df, meta):
   """just saves line space my wrapping the steps I always take"""
@@ -360,95 +360,8 @@ def plot_height(_df):
 # scatter_wrapper(df, meta)
 
 df['d_et'] = df['scaling']*(df['vpd_leaf'] + df['vpd_atm'])
-
-# soil moisture scatters
-# meta = {}
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'd_et'
-# meta['folder_label'] = 'full_ds_swc'
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-# meta = {}
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'd_gpp'
-# meta['folder_label'] = 'full_ds_swc'
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-# meta = {}
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'd_wue'
-# meta['folder_label'] = 'full_ds_swc'
-# meta['vmax'] = 5.e-5
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-# meta = {}
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# # meta['folder_label'] = 'full_ds_swc'
-# # soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-# meta = {}
-# df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'd_et_leaf'
-# meta['folder_label'] = 'full_ds_swc'
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-# meta = {}
-# df['d_et_atm'] = df['scaling']*df['vpd_atm']
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'd_et_atm'
-# meta['folder_label'] = 'full_ds_swc'
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-
-# meta = {}
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'vpd_leaf'
-# meta['folder_label'] = 'full_ds_swc'
-# meta['vmax'] = 10.
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-# meta = {}
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'vpd_atm'
-# meta['vmax'] = 10.
-# meta['folder_label'] = 'full_ds_swc'
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
-
-
-# meta = {}
-# meta['x_axis'] = 'rh'
-# meta['log'] = ''
-# meta['var'] = 'scaling'
-# meta['folder_label'] = 'full_ds_swc'
-# meta['vmax'] = 0.35
-# soil_moisture_scatter(df, meta)
-# meta['folder_label'] = 'pft_swc'
-# df.groupby('pft').apply(soil_moisture_scatter, meta)
+df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
+df['d_et_atm'] = df['scaling']*df['vpd_atm']
 
 meta = {}
 meta['var'] = ''
@@ -476,12 +389,12 @@ os.system('convert +append %s/climate_et/pft_scaling_rh_plots/*.png '\
 meta = {}
 meta['log'] = ''
 meta['x_axis'] = 'rh'
-
-var_lim = {'d_et' : None, 'd_gpp' : None, 'd_wue' : 5.e5,\
+var_lim = {'d_et' : None, 'd_gpp' : None, 'd_wue' : 5.e-5,\
            'd_et_leaf' : None, 'd_et_atm' : None,\
-            'vpd_leaf' : 10., 'vpd_atm' : 10., 'scaling' : 0.35}
+           'vpd_leaf' : 10., 'vpd_atm' : 10., 'scaling' : 0.35}
 for var in var_lim:
   meta['var'] = var
+  print(meta['var'])
   meta['vmax'] = var_lim[var]
   meta['folder_label'] = 'full_ds_swc'
   soil_moisture_scatter(df, meta)
