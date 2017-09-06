@@ -71,11 +71,14 @@ def calc_derivative(atmos, canopy, data):
   atmos['vpd'] = atmos['vpd'] + 1.0
   data['et_all'] = pm.penman_monteith_uwue(atmos, canopy)
   atmos['vpd'] = atmos['vpd'] - 1.0
+  data['d_et'] = data['scaling']*(data['vpd_leaf'] + data['vpd_atm'])
+  data['d_et_vpd_std'] = atmos.vpd.std()*data.d_et # units: W/m2
 
   #Calculate WUE terms
   data['wue_obs'] = data['gpp_obs']/(data['et_obs']/(pm.LV*H2O)*1.e6)
   data['wue'] = canopy['uwue']/np.sqrt(atmos['vpd'])*H2O/1.e6
   data['d_wue'] = -0.5*canopy['uwue']/atmos['vpd']**1.5*H2O/1.e6
+  data['d_wue_vpd_std'] = atmos.vpd.std()*data['d_wue']
 
   # Now GPP terms
   lai_true = canopy['lai'].copy()
@@ -85,6 +88,7 @@ def calc_derivative(atmos, canopy, data):
   data['gpp_all'] = et_to_gpp(atmos, canopy)
   atmos['vpd'] = atmos['vpd'] - 1.0
   data['d_gpp'] = d_gpp_d_vpd(atmos, canopy)
+  data['d_gpp_vpd_std'] = atmos.vpd.std()*data['d_gpp']
 
   #retun lai to that used for ET
   canopy['lai'] = lai_true

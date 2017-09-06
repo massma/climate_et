@@ -239,45 +239,28 @@ def test_trend(_df, meta):
   if meta['full_ds']:
     test_savefig('%s/climate_et/scatters/%s_%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
+  elif meta['group'] == 'site':
+    test_savefig('%s/climate_et/scatters/%s_%s_site/%s.png'\
+                 % (os.environ['PLOTS'], meta['x_var'],\
+                    meta['y_var'],  _df['site'].iloc[0]))
   else:
     test_savefig('%s/climate_et/scatters/%s_%s/%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'],\
                    meta['y_var'],  _df['pft'].iloc[0]))
   return
-plt.close('all')
-
-# concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-# df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-# meta = {}
-# meta['folder_label'] = 'site'
-# meta['folder'] = 'hist_plots'
-# meta['var'] = 'lai_gpp'
-# print(df.shape)
-# df = df.groupby('site').apply(site_clean)
-# print(df.shape)
-# df = clean_df(df)
-# df = clean_df(df, var='lai_gpp')
-# # test = df.groupby('site').apply(site_clean, 'lai_gpp')
-# # test = clean_df(test, var='lai_gpp')
-# df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-# print(df.shape)
-# #df.groupby('site').apply(histogram, meta)
-# # histogram(df, meta)
-# # meta['var'] = 'lai'
-# # histogram(df, meta)
 
 def scatter_wrapper(df, meta):
   """just saves line space my wrapping the steps I always take"""
+  if 'plot_type' not in meta:
+    meta['plot_type'] = 'nan'
+  if 'group' not in meta:
+    meta['group'] = ''
   meta['full_ds'] = True
   test_trend(df, meta)
   meta['full_ds'] = False
   df.groupby('pft').apply(test_trend, meta)
-  if 'plot_type' not in meta:
-    meta['plot_type'] = 'nan'
   return
 
-df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
-                    % os.environ['DATA'])
 
 def plot_height(_df):
   """plots up plant height to make sure it varies"""
@@ -287,29 +270,56 @@ def plot_height(_df):
                % (os.environ['PLOTS'], _df.site.iloc[0]))
   return
 
+plt.close('all')
+
+reload_data = False
+master_plot = False
+if reload_data:
+  concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
+  df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
+  meta = {}
+  meta['folder_label'] = 'site'
+  meta['folder'] = 'hist_plots'
+  meta['var'] = 'lai_gpp'
+  print(df.shape)
+  df = df.groupby('site').apply(site_clean)
+  print(df.shape)
+  df = clean_df(df)
+  df = clean_df(df, var='lai_gpp')
+  # test = df.groupby('site').apply(site_clean, 'lai_gpp')
+  # test = clean_df(test, var='lai_gpp')
+  df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+  print(df.shapnne)
+  #df.groupby('site').apply(histogram, meta)
+  # histogram(df, meta)
+  # meta['var'] = 'lai'
+  # histogram(df, meta)
+
+df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+                    % os.environ['DATA'])
+
+
 # df.groupby('site').apply(plot_height)
-# meta = {}
-# meta['xlim'] = None
-# meta['ylim'] = None
-# meta['plot_type'] = 'simple'
-# meta['x_var'] = 'r_a_uncorrected'
-# meta['y_var'] = 'r_a'
-# scatter_wrapper(df, meta)
+meta = {}
+meta['xlim'] = None
+meta['ylim'] = None
+meta['plot_type'] = '' #'simple'
+meta['x_var'] = 'swc'
+meta['y_var'] = 'vpd'
+scatter_wrapper(df, meta)
+meta['group'] = 'site'
+df.groupby('site').apply(test_trend, meta)
 
-# print(np.max(np.absolute(df['r_a']-df['r_a_uncorrected'])))
-# print(np.max(np.absolute(df['r_a']-df['r_a_corrected'])))
-# print(np.max((df['r_a']-df['r_a_corrected'])))
-# print(np.max((df['r_a_corrected']-df['r_a'])))
+meta = {}
+meta['xlim'] = None
+meta['ylim'] = None
+meta['plot_type'] = '' #'simple'
+meta['x_var'] = 'swc'
+meta['y_var'] = 'et_obs'
+scatter_wrapper(df, meta)
+meta['group'] = 'site'
+df.groupby('site').apply(test_trend, meta)
 
-# meta['y_var'] = 'r_a'
-# meta['x_var'] = 'r_a_cha'
-# scatter_wrapper(df, meta)
-
-# meta['xlim'] = None
-# meta['ylim'] = None
-# meta['x_var'] = 'lai'
-# meta['y_var'] = 'lai_gpp'
-# scatter_wrapper(df, meta)
 
 # meta = {}
 # meta['x_var'] = 'vpd'
@@ -324,85 +334,53 @@ def plot_height(_df):
 # meta['x_var'] = 'lai'
 # meta['y_var'] = 'lai_gpp'
 # scatter_wrapper(df, meta)
+if master_plot:
+  df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
+  df['d_et_atm'] = df['scaling']*df['vpd_atm']
 
-# meta['x_var'] = 'gpp_obs'
-# meta['y_var'] = 'gpp'
-# scatter_wrapper(df, meta)
+  meta = {}
+  meta['vmax'] = None
+  meta['var'] = ''
+  for meta['var'], meta['vmax'] in zip(['', 'd_et_vpd_std'], [None, 140.]):
+    for x_axis in ['rh']:#'vpd'
+      for log in ['scaling', '']:#'log'
+        meta['label'] = 'full_ds'
+        meta['folder_label'] = 'full_ds'
+        meta['x_axis'] = x_axis
+        meta['log'] = log
+        # meta['var'] = 'numeric'
+        # plot_wrapper(df, meta)
+        meta['folder_label'] = 'pft'
+        df.groupby('pft').apply(plot_wrapper, meta)
+        # meta['folder_label'] = 'site'
+        # df.groupby('site').apply(plot_wrapper, meta)
 
-# test = site_clean(df, var='wue')
-# test = site_clean(test, var='wue_obs')
-# meta['x_var'] = 'wue_obs'
-# meta['y_var'] = 'wue'
-# scatter_wrapper(test, meta)
+  os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
+            '%s/climate_et/rh.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# meta = {}
-# meta['xlim'] = None
-# meta['ylim'] = None
-# df['d_gpp_numeric'] = df['gpp_all'] - df['gpp']
-# test = site_clean(df, var='d_gpp')
-# test = site_clean(test, var='d_gpp_numeric')
-# meta['x_var'] = 'd_gpp'
-# meta['y_var'] = 'd_gpp_numeric'
-# scatter_wrapper(test, meta)
+  os.system('convert +append %s/climate_et/pft_scaling_rh_plots/*.png '\
+            '%s/climate_et/rh_scaling.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-# meta = {}
-# meta['xlim'] = None
-# meta['ylim'] = None
-# meta['x_var'] = 'swc'
-# meta['y_var'] = 'lai'
-# scatter_wrapper(df, meta)
-
-# meta = {}
-# meta['xlim'] = None
-# meta['ylim'] = None
-# meta['x_var'] = 'swc'
-# meta['y_var'] = 'lai_gpp'
-# scatter_wrapper(df, meta)
-
-df['d_et'] = df['scaling']*(df['vpd_leaf'] + df['vpd_atm'])
-df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
-df['d_et_atm'] = df['scaling']*df['vpd_atm']
-
-meta = {}
-meta['var'] = ''
-for x_axis in ['rh']:#'vpd'
-  for log in ['scaling']:#, '']:#'log'
-    meta['label'] = 'full_ds'
-    meta['folder_label'] = 'full_ds'
-    meta['x_axis'] = x_axis
-    meta['log'] = log
-    # meta['var'] = 'numeric'
-    # plot_wrapper(df, meta)
-    meta['folder_label'] = 'pft'
-    df.groupby('pft').apply(plot_wrapper, meta)
-    # meta['folder_label'] = 'site'
-    # df.groupby('site').apply(plot_wrapper, meta)
-
-os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
-          '%s/climate_et/rh.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
-
-os.system('convert +append %s/climate_et/pft_scaling_rh_plots/*.png '\
-          '%s/climate_et/rh_scaling.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
-
-meta = {}
-meta['log'] = ''
-meta['x_axis'] = 'rh'
-var_lim = {'d_et' : None, 'd_gpp' : None, 'd_wue' : 5.e-5,\
-           'd_et_leaf' : None, 'd_et_atm' : None,\
-           'vpd_leaf' : 10., 'vpd_atm' : 10., 'scaling' : 0.35}
-for var in var_lim:
-  meta['var'] = var
-  print(meta['var'])
-  meta['vmax'] = var_lim[var]
-  meta['folder_label'] = 'full_ds_swc'
-  soil_moisture_scatter(df, meta)
-  meta['folder_label'] = 'pft_swc'
-  df.groupby('pft').apply(soil_moisture_scatter, meta)
-  print('working on %s' % var)
-  os.system('convert +append %s/climate_et/pft_swc_%s__rh_plots/*.png '\
-            '%s/climate_et/swc_%s_rh.png'\
-            % (os.environ['PLOTS'], var, os.environ['PLOTS'], var))
+  meta = {}
+  meta['log'] = ''
+  meta['x_axis'] = 'rh'
+  var_lim = {'d_et' : None, 'd_gpp' : None, 'd_wue' : 5.e-5,\
+             'd_et_leaf' : None, 'd_et_atm' : None,\
+             'vpd_leaf' : 10., 'vpd_atm' : 10., 'scaling' : 0.35}
+  var_lim = {'d_gpp_vpd_std' : 170., 'd_wue_vpd_std' : 0.06}
+  for var in var_lim:
+    meta['var'] = var
+    print(meta['var'])
+    meta['vmax'] = var_lim[var]
+    meta['folder_label'] = 'full_ds_swc'
+    soil_moisture_scatter(df, meta)
+    meta['folder_label'] = 'pft_swc'
+    df.groupby('pft').apply(soil_moisture_scatter, meta)
+    print('working on %s' % var)
+    os.system('convert +append %s/climate_et/pft_swc_%s__rh_plots/*.png '\
+              '%s/climate_et/swc_%s_rh.png'\
+              % (os.environ['PLOTS'], var, os.environ['PLOTS'], var))
 
 
