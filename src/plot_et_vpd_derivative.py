@@ -273,7 +273,7 @@ def plot_height(_df):
 plt.close('all')
 
 reload_data = False
-master_plot = False
+master_plot = True
 if reload_data:
   concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
   df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
@@ -299,26 +299,26 @@ df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
 
 
-# df.groupby('site').apply(plot_height)
-meta = {}
-meta['xlim'] = None
-meta['ylim'] = None
-meta['plot_type'] = '' #'simple'
-meta['x_var'] = 'swc'
-meta['y_var'] = 'vpd'
-scatter_wrapper(df, meta)
-meta['group'] = 'site'
-df.groupby('site').apply(test_trend, meta)
+# # df.groupby('site').apply(plot_height)
+# meta = {}
+# meta['xlim'] = None
+# meta['ylim'] = None
+# meta['plot_type'] = '' #'simple'
+# meta['x_var'] = 'swc'
+# meta['y_var'] = 'vpd'
+# scatter_wrapper(df, meta)
+# meta['group'] = 'site'
+# df.groupby('site').apply(test_trend, meta)
 
-meta = {}
-meta['xlim'] = None
-meta['ylim'] = None
-meta['plot_type'] = '' #'simple'
-meta['x_var'] = 'swc'
-meta['y_var'] = 'et_obs'
-scatter_wrapper(df, meta)
-meta['group'] = 'site'
-df.groupby('site').apply(test_trend, meta)
+# meta = {}
+# meta['xlim'] = None
+# meta['ylim'] = None
+# meta['plot_type'] = '' #'simple'
+# meta['x_var'] = 'swc'
+# meta['y_var'] = 'et_obs'
+# scatter_wrapper(df, meta)
+# meta['group'] = 'site'
+# df.groupby('site').apply(test_trend, meta)
 
 
 # meta = {}
@@ -334,6 +334,7 @@ df.groupby('site').apply(test_trend, meta)
 # meta['x_var'] = 'lai'
 # meta['y_var'] = 'lai_gpp'
 # scatter_wrapper(df, meta)
+
 if master_plot:
   df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
   df['d_et_atm'] = df['scaling']*df['vpd_atm']
@@ -348,8 +349,7 @@ if master_plot:
         meta['folder_label'] = 'full_ds'
         meta['x_axis'] = x_axis
         meta['log'] = log
-        # meta['var'] = 'numeric'
-        # plot_wrapper(df, meta)
+        plot_wrapper(df, meta)
         meta['folder_label'] = 'pft'
         df.groupby('pft').apply(plot_wrapper, meta)
         # meta['folder_label'] = 'site'
@@ -369,7 +369,8 @@ if master_plot:
   var_lim = {'d_et' : None, 'd_gpp' : None, 'd_wue' : 5.e-5,\
              'd_et_leaf' : None, 'd_et_atm' : None,\
              'vpd_leaf' : 10., 'vpd_atm' : 10., 'scaling' : 0.35}
-  var_lim = {'d_gpp_vpd_std' : 170., 'd_wue_vpd_std' : 0.06}
+  var_lim = {'d_et_vpd_std' : 140.,\
+             'd_gpp_vpd_std' : 170., 'd_wue_vpd_std' : 0.06}
   for var in var_lim:
     meta['var'] = var
     print(meta['var'])
