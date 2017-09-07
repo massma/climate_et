@@ -32,9 +32,9 @@ def split_df(_df):
   by various functions on this project. Sometimes it's better or worse
   to have thema ll together.
   """
-  atmos = _df.iloc[:, :18].copy()
-  canopy = _df.iloc[:, 18:27].copy()
-  data = _df.iloc[:, 27:].copy()
+  atmos = _df.iloc[:, :18]# .copy()
+  canopy = _df.iloc[:, 18:27]# .copy()
+  data = _df.iloc[:, 27:]# .copy()
   return atmos, canopy, data
 
 def unpack_df(filename):
@@ -116,7 +116,10 @@ def soil_moisture_scatter(_df, meta):
   ax = []
 
   for i, percentile in enumerate(percentiles):
+    print('test')
     ax.append(fig.add_subplot(nplots, 1, i+1))
+    print(percentile-0.25)
+    print(percentile)
     _data = _df.loc[(_df['swc'] > _df.swc.quantile(q=percentile-0.25)) &\
                   (_df['swc'] <= _df.swc.quantile(q=percentile)), :]
     print(_data.shape)
@@ -159,7 +162,7 @@ def scatter_plot(_df, meta):
 
   ax2 = fig.add_subplot(nplots, 1, 2)
   if meta['var'] == 'd_et_vpd_std':
-    var = meta['std']*_df['scaling']*(_df['vpd_leaf'])
+    var = _df['d_et_vpd_std_leaf']
   else:
     var = _df['scaling']*(_df['vpd_leaf'])
   meta['cmap'] = 'RdBu'
@@ -168,7 +171,7 @@ def scatter_plot(_df, meta):
 
   ax3 = fig.add_subplot(nplots, 1, 3)
   if meta['var'] == 'd_et_vpd_std':
-    var = meta['std']*_df['scaling']*(_df['vpd_atm'])
+    var = _df['d_et_vpd_std_atm']
   else:
     var = _df['scaling']*(_df['vpd_atm'])
   meta['delta'] = 'atm'
@@ -224,12 +227,13 @@ def histogram(_df, meta):
   plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
   return
 
-def test_trend(_df, meta):
+def test_trend(_df, meta, fig=None):
   """
   plots the trend of the lai parameter
   to make sure it is independent of vpd
   """
-  fig = plt.figure()
+  if fig is None:
+    fig = plt.figure()
   if meta['plot_type'] == 'simple':
     ax = fig.add_subplot(111)
     ax.scatter(_df[meta['x_var']], _df[meta['y_var']], s=8)
@@ -288,7 +292,7 @@ if reload_data:
   meta = {}
   meta['folder_label'] = 'site'
   meta['folder'] = 'hist_plots'
-  meta['var'] = 'lai_gpp'
+  meta['var'] = 'lnai_gpp'
   print(df.shape)
   df = df.groupby('site').apply(site_clean)
   print(df.shape)
@@ -297,7 +301,7 @@ if reload_data:
   # test = df.groupby('site').apply(site_clean, 'lai_gpp')
   # test = clean_df(test, var='lai_gpp')
   df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-  print(df.shapnne)
+  print(df.shape)
   #df.groupby('site').apply(histogram, meta)
   # histogram(df, meta)
   # meta['var'] = 'lai'
@@ -305,9 +309,11 @@ if reload_data:
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
+df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
+df['d_et_atm'] = df['scaling']*df['vpd_atm']
 
 
-# # df.groupby('site').apply(plot_height)
+# df.groupby('site').apply(plot_height)
 # meta = {}
 # meta['xlim'] = None
 # meta['ylim'] = None
@@ -329,31 +335,31 @@ df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
 # df.groupby('site').apply(test_trend, meta)
 
 
-# meta = {}
-# meta['x_var'] = 'vpd'
-# meta['y_var'] = 'lai'
-# meta['xlim'] = (0., 5000.)
-# meta['ylim'] = (0.1, 2.)
-# for meta['y_var'] in ['lai', 'lai_gpp']:
-#   print(meta['y_var'])
-#   scatter_wrapper(df, meta)
-# meta['xlim'] = None
-# meta['ylim'] = None
-# meta['x_var'] = 'lai'
-# meta['y_var'] = 'lai_gpp'
-# scatter_wrapper(df, meta)
+# # meta = {}
+# # meta['x_var'] = 'vpd'
+# # meta['y_var'] = 'lai'
+# # meta['xlim'] = (0., 5000.)
+# # meta['ylim'] = (0.1, 2.)
+# # for meta['y_var'] in ['lai', 'lai_gpp']:
+# #   print(meta['y_var'])
+# #   scatter_wrapper(df, meta)
+# # meta['xlim'] = None
+# # meta['ylim'] = None
+# # meta['x_var'] = 'lai'
+# # meta['y_var'] = 'lai_gpp'
+# # scatter_wrapper(df, meta)
 
 if master_plot:
-  df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
-  df['d_et_atm'] = df['scaling']*df['vpd_atm']
-
+  et_scale = 400.
+  gpp_scale = 400. 
   meta = {}
   meta['vmax'] = None
   meta['var'] = ''
   meta['std'] = df['et_obs'].std()
-  for meta['var'], meta['vmax'] in zip(['', 'd_et_vpd_std'], [None, 140.]):
-    for x_axis in ['rh']:#'vpd'
+  for meta['var'], meta['vmax'] in zip(['', 'd_et_vpd_std'], [None, et_scale]):
+    for x_axis in ['rh', 'vpd']:
       for log in ['scaling', '']:#'log'
+        plt.close('all')
         meta['label'] = 'full_ds'
         meta['folder_label'] = 'full_ds'
         meta['x_axis'] = x_axis
@@ -374,7 +380,12 @@ if master_plot:
 
   os.system('convert +append %s/climate_et/'\
             'd_et_vpd_stdpft_scaling_rh_plots/*.png '\
-            '%s/climate_et/d_et_vpd_std_rh_scaling.png'\
+            '%s/climate_et/d_et_vpd_std_rh.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+  os.system('convert +append %s/climate_et/'\
+            'd_et_vpd_stdpft_scaling_vpd_plots/*.png '\
+            '%s/climate_et/d_et_vpd_std_vpd.png'\
             % (os.environ['PLOTS'], os.environ['PLOTS']))
 
   meta = {}
@@ -382,10 +393,11 @@ if master_plot:
   meta['x_axis'] = 'rh'
   var_lim = {'d_et' : None, 'd_gpp' : None, 'd_wue' : 5.e-5,\
              'd_et_leaf' : None, 'd_et_atm' : None,\
-             'vpd_leaf' : 10., 'vpd_atm' : 10., 'scaling' : 0.35}
-  var_lim = {'d_et_vpd_std' : 140.,\
-             'd_gpp_vpd_std' : 170., 'd_wue_vpd_std' : 0.06}
+             'vpd_leaf' : 10., 'vpd_atm' : 10., 'scaling' : 0.35,\
+             'd_et_vpd_std' : et_scale,\
+             'd_gpp_vpd_std' : gpp_scale, 'd_wue_vpd_std' : 0.06}
   for var in var_lim:
+    plt.close('all')
     meta['var'] = var
     print(meta['var'])
     meta['vmax'] = var_lim[var]
@@ -397,5 +409,3 @@ if master_plot:
     os.system('convert +append %s/climate_et/pft_swc_%s__rh_plots/*.png '\
               '%s/climate_et/swc_%s_rh.png'\
               % (os.environ['PLOTS'], var, os.environ['PLOTS'], var))
-
-

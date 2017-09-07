@@ -73,6 +73,8 @@ def calc_derivative(atmos, canopy, data):
   atmos['vpd'] = atmos['vpd'] - 1.0
   data['d_et'] = data['scaling']*(data['vpd_leaf'] + data['vpd_atm'])
   data['d_et_vpd_std'] = atmos.vpd.std()*data.d_et # units: W/m2
+  data['d_et_vpd_std_leaf'] = atmos.vpd.std()*data.vpd_leaf*data.scaling
+  data['d_et_vpd_std_atm'] = atmos.vpd.std()*data.vpd_atm*data.scaling
 
   #Calculate WUE terms
   data['wue_obs'] = data['gpp_obs']/(data['et_obs']/(pm.LV*H2O)*1.e6)
