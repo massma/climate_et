@@ -9,3 +9,7 @@ Also, looking at dET/dLW would be interesting as much of the change in radiation
 However, Pierre mentioned he thinks there is a LW-SW feedback. This makes sense: for example LW increases surface T, which decreases evaporative fraction, which decreases clouds, and increases SW and PAR. Looking at this could be an interesting futre project.
 
 Also, Pierre said to just use z0 = 0.1*h for surface roughness. The LAI term is negligable but would make the analytical formulation much more difficult.
+
+## Update 9-6 ##
+
+One way to disassociate the coupling between swc and vpd would be to look at times when swc and vpd have the opposite relationship we would expect.
