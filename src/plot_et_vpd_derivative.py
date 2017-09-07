@@ -148,6 +148,8 @@ def scatter_plot(_df, meta):
   if meta['var'] == 'numeric':
     print('NUMERIC!!!')
     var = _df['et_all']-_df['et']
+  elif meta['var'] == 'd_et_vpd_std':
+    var = _df['d_et_vpd_std']
   else:
     var = _df['scaling']*(_df['vpd_atm'] + _df['vpd_leaf'])
   meta['log'] = log
@@ -156,13 +158,19 @@ def scatter_plot(_df, meta):
   make_ax_plot(ax1, var, _df, meta)
 
   ax2 = fig.add_subplot(nplots, 1, 2)
-  var = _df['scaling']*(_df['vpd_leaf'])
+  if meta['var'] == 'd_et_vpd_std':
+    var = meta['std']*_df['scaling']*(_df['vpd_leaf'])
+  else:
+    var = _df['scaling']*(_df['vpd_leaf'])
   meta['cmap'] = 'RdBu'
   meta['delta'] = 'leaf'
   make_ax_plot(ax2, var, _df, meta)
 
   ax3 = fig.add_subplot(nplots, 1, 3)
-  var = _df['scaling']*(_df['vpd_atm'])
+  if meta['var'] == 'd_et_vpd_std':
+    var = meta['std']*_df['scaling']*(_df['vpd_atm'])
+  else:
+    var = _df['scaling']*(_df['vpd_atm'])
   meta['delta'] = 'atm'
   make_ax_plot(ax3, var, _df, meta)
 
@@ -342,6 +350,7 @@ if master_plot:
   meta = {}
   meta['vmax'] = None
   meta['var'] = ''
+  meta['std'] = df['et_obs'].std()
   for meta['var'], meta['vmax'] in zip(['', 'd_et_vpd_std'], [None, 140.]):
     for x_axis in ['rh']:#'vpd'
       for log in ['scaling', '']:#'log'
@@ -361,6 +370,11 @@ if master_plot:
 
   os.system('convert +append %s/climate_et/pft_scaling_rh_plots/*.png '\
             '%s/climate_et/rh_scaling.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
+
+  os.system('convert +append %s/climate_et/'\
+            'd_et_vpd_stdpft_scaling_rh_plots/*.png '\
+            '%s/climate_et/d_et_vpd_std_rh_scaling.png'\
             % (os.environ['PLOTS'], os.environ['PLOTS']))
 
   meta = {}
