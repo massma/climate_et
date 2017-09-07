@@ -13,3 +13,7 @@ Also, Pierre said to just use z0 = 0.1*h for surface roughness. The LAI term is 
 ## Update 9-6 ##
 
 One way to disassociate the coupling between swc and vpd would be to look at times when swc and vpd have the opposite relationship we would expect.
+
+## Update 9-7 ##
+
+Just a few more thoughts: in dET, most of the variability comes in the scaling term (delta, T, P and g_a). Inside, the atmospheric term is essentially constat, and the only variability in the plant term is 2g1 + sqrt(VPD)/(2 (g1 + sqrt(VPD))**2). Also, I should integrate at each site over time, to make sure that what the eye is telling us is true (so for exampel values would become J/m2-VPD.
