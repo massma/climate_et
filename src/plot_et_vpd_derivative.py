@@ -71,7 +71,7 @@ def make_ax_plot(_ax, var, _df, meta):
       var = var/_df['scaling']
       vmax = 5.
     else:
-      vmax = 0.8 # *_df.et_obs.mean()
+      vmax = 0.7 # *_df.et_obs.mean()
   else:
     vmax = meta['vmax']
   nstd = 1.0
@@ -289,16 +289,19 @@ def vpd_swc_dependence(_df, meta):
   fig.set_figheight(fig.get_figheight()*3)
   axes = [fig.add_subplot(3,1,i+1) for i in range(3)]
   for ax, var in zip(axes, [_df.et_obs, _df.vpd]):
-    g = sns.kdeplot(_df.swc, var, shade=True, ax=axes[0])
-    axes[0].set_title('Spearmanr: %f' % spearmanr(_df.swc, var).correlation)
+    g = sns.kdeplot(_df.swc, var, shade=True, ax=ax)
+    ax.set_title('Spearmanr: %f' % spearmanr(_df.swc, var).correlation)
   meta['log'] = ''
   meta['cmap'] = 'RdBu'
   meta['delta'] = 'full'
-  make_ax_plot(axes[2], df.d_et , _df, meta)
-  axes[2].set_title('%s' % _df.site.iloc[0])
+  make_ax_plot(axes[2], _df[meta['var']] , _df, meta)
+  axes[2].set_title('%s, pft: %s, avg: %f'\
+                    % (_df.site.iloc[0],  _df.pft.iloc[0],\
+                       _df[meta['var']].mean()))
   plt.tight_layout()
-  test_savefig('%s/climate_et/scatters/triple_site/%s.png'\
-               % (os.environ['PLOTS'], _df.site.iloc[0]))
+  test_savefig('%s/climate_et/scatters/triple_site_%s/%s_%s.png'\
+               % (os.environ['PLOTS'], meta['var'],\
+                  _df.pft.iloc[0], _df.site.iloc[0]))
   return
 
 plt.close('all')
@@ -311,7 +314,7 @@ if reload_data:
   meta = {}
   meta['folder_label'] = 'site'
   meta['folder'] = 'hist_plots'
-  meta['var'] = 'lnai_gpp'
+  meta['var'] = 'lai_gpp'
   print(df.shape)
   df = df.groupby('site').apply(site_clean)
   print(df.shape)
@@ -337,9 +340,12 @@ meta['var'] = ''
 meta['label'] = ''
 meta['x_axis'] = 'rh'
 meta['log'] = ''
-plot_wrapper(df, meta)
+meta['size'] = 8
 
-df.groupby('site').apply(vpd_swc_dependence, meta)
+# meta['folder_label'] = 'site'
+for meta['var'], meta['vmax'] in zip(['d_et', 'd_gpp'],\
+                                     [0.3, 0.1]):
+  df.groupby('site').apply(vpd_swc_dependence, meta)
 
 # # df.groupby('site').apply(plot_height)
 # meta = {}

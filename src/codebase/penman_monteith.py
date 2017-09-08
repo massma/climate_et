@@ -369,6 +369,7 @@ def penman_monteith_prep(_atmos, _canopy):
     _canopy['zmeas'] = 2.+_canopy['height'] # measurement height
 
   return _atmos, _canopy
+
 def penman_monteith(_atmos, _canopy):
   """
   returns ET in W/m2
