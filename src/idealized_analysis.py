@@ -35,7 +35,7 @@ def d_et(_df):
      (2.*_df['g1']+np.sqrt(_df['vpd']))\
      /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
 
-def partial_p(_df):
+def partial_p_a(_df):
   """calculates partial derivative of d-et/d_Ds w.r.t. P"""
   return _df['g_a']/\
     ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
@@ -113,47 +113,27 @@ def partial_vpd(_df):
      (3.*_df['g1']+np.sqrt(_df['vpd']))\
      /(4.*np.sqrt(_df['vpd'])*(_df['g1']+np.sqrt(_df['vpd']))**3))
 
+jacobians = {'p_a' : partial_p_a, 'g_a' : partial_g_a, 't_a' : partial_t_a,\
+             'delta': partial_delta, 'gamma' : partial_gamma,\
+             'r_moist' : partial_r_moist, 'c_a' : partial_c_a,\
+             'lai': partial_lai, 'vpd' : partial_vpd}
 
+def site_analysis(_df):
+  """caluclates jacobians for each site"""
+  out = {}
+  for key in jacobians:
+    out[key] = jacobians[key](_df)
+  out = pd.DataFrame(data=out, index=[_df.index])
+  return out
 
-# df['vpd_term'] = (2.*df['g1'] + np.sqrt(df['vpd']))/(\
-#                  2.*(df['g1'] + np.sqrt(df['vpd']))**2)
-# df['vpd_scale'] = df['gamma']*df['c_a']*pm.LV/\
-#                  (1.6*pm.R_STAR*df['uwue'])
-# df['lai_term'] = 1./df['lai']
-# df['air_term'] = pm.CP/df['r_moist']
-# df['scaling'] = df['g_a']*df['p_a']/\
-#                 ((df['t_a']+273.15)*(df['delta'] + df['gamma']))
-# df['d_et_2'] = df['scaling']*(df['air_term']\
-#                               -df['vpd_scale']*df['lai_term']*df['vpd_term'])
+mean = df.groupby('site').mean()
+std = df.groupby('site').std()
+jacobian = site_analysis(mean)
 
-# mean = df.groupby('pft').mean()
-# std = df.groupby('pft').std()
+_mean = mean.loc[:, jacobian.columns]
+_std = std.loc[:, jacobian.columns]
 
-# def variability(_df):
-#   """calcs variability in a comparable way"""
-#   out = {}
-#   _paren_mean = (_df['air_term']\
-#                  -_df['vpd_scale']*df['lai_term']*_df['vpd_term']).mean()
-#   _scale_mean = _df['scaling'].mean()
-#   out['scale_var'] = _df['scaling'].std()*_paren_mean
-#   out['air_var'] = _scale_mean*_df['air_term'].std()
-#   out['vpd_term_var'] = _scale_mean*\
-#                         (_df['vpd_scale']*df['lai_term']).mean()\
-#                         *_df['vpd_term'].std()
-#   out['vpd_scale_var'] = _scale_mean*\
-#                         _df['vpd_scale'].std()*df['lai_term'].mean()\
-#                         *_df['vpd_term'].mean()
-#   out['lai_term_var'] = _scale_mean*\
-#                         _df['vpd_scale'].mean()*df['lai_term'].std()\
-#                         *_df['vpd_term'].mean()
-#   out['vpd_var'] = _scale_mean*(_df['vpd_scale']\
-#                                 *df['lai_term']*_df['vpd_term']).std()
-#   out['pft'] = _df['pft'].iloc[0]
-#   out = pd.DataFrame(data=out, index=[_df.pft.iloc[0]])
-#   return out
+error = np.absolute(np.sqrt((jacobian**2*_std**2).sum(axis=1))-std['d_et'])
+rel_error = error/std['d_et']
+print(rel_error)
 
-# vari = df.groupby('site').apply(variability)
-# vari.index = vari.index.droplevel(1)
-# test = vari.groupby('pft').mean()
-
-# print(test)
