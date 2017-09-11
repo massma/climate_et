@@ -117,7 +117,7 @@ def partial_vpd(_df):
 # jacobians = {'p_a' : partial_p_a, 'g_a' : partial_g_a, 't_a' : partial_t_a,\
 #              'delta': partial_delta, 'gamma' : partial_gamma,\
 #              'r_moist' : partial_r_moist, 'c_a' : partial_c_a,\
-#              'lai': partial_lai, 'vpd' : partial_vpd}
+#              'lai': partial_lai, 'vpd' : partial_vpd
 
 jacobians = {'g_a' : partial_g_a,\
              'delta': partial_delta,\
@@ -152,13 +152,14 @@ var_vector['pft'] = pft
 def pft_plot(_df):
   """acts on df grouped by pft, plots partial derivatives of all vars"""
   pft = _df['pft'].iloc[0]
-  print('pft %s, has %d sites' % (pft, _df.t_a.count()))
+  print('pft %s, has %d sites' % (pft, _df.vpd.count()))
   # _df.drop('pft')
   fig = plt.figure()
   ax = fig.add_subplot(111)
   _df.boxplot(ax=ax)
   util.test_savefig('%s/climate_et/jacobian/%s.png'\
                     % (os.environ['PLOTS'], pft))
+  plt.close('all')
   return
 
 var_vector.groupby('pft').apply(pft_plot)
