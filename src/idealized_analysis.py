@@ -14,6 +14,7 @@ from scipy.stats import spearmanr
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import codebase.penman_monteith as pm
+import util
 mpl.rcParams.update(mpl.rcParamsDefault)
 
 names = ['r_a', 'p_a', 't_a', 'delta', 'gamma', 'r_moist', 'lai', 'c_a',\
@@ -137,3 +138,10 @@ error = np.absolute(np.sqrt((jacobian**2*_std**2).sum(axis=1))-std['d_et'])
 rel_error = error/std['d_et']
 print(rel_error)
 
+
+def pft_plot(_df):
+  """acts on df grouped by pft, plots partial derivatives of all vars"""
+  
+
+
+for 
