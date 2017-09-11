@@ -35,11 +35,83 @@ def d_et(_df):
      (2.*_df['g1']+np.sqrt(_df['vpd']))\
      /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
 
+def partial_p(_df):
+  """calculates partial derivative of d-et/d_Ds w.r.t. P"""
+  return _df['g_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
+    (pm.CP/_df['r_moist']-_df['gamma']*_df['c_a']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
 
+def partial_g_a(_df):
+  """w.r.t. g_a"""
+  return _df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
+    (pm.CP/_df['r_moist']-_df['gamma']*_df['c_a']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
 
-# def partial_p(df):
-#   """calculates partial derivative of d-et/d_Ds w.r.t. P"""
-#   out=
+def partial_t_a(_df):
+  """w.r.t. t_a"""
+  return -_df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)**2*(_df['gamma']+_df['delta']))*\
+    (pm.CP/_df['r_moist']-_df['gamma']*_df['c_a']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
+
+def partial_delta(_df):
+  """w.r.t. delta"""
+  return -_df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta'])**2)*\
+    (pm.CP/_df['r_moist']-_df['gamma']*_df['c_a']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
+
+def partial_gamma(_df):
+  """w.r.t. gamma"""
+  return -_df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta'])**2)*\
+    (pm.CP/_df['r_moist']+_df['delta']*_df['c_a']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
+
+def partial_r_moist(_df):
+  """w.r.t. r_moist"""
+  return -_df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
+    (pm.CP/_df['r_moist']**2)
+
+def partial_c_a(_df):
+  """w.r.t. c_a"""
+  return _df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
+    (-_df['gamma']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
+
+def partial_lai(_df):
+  """w.r.t. lai"""
+  return -_df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
+    (-_df['gamma']*_df['c_a']*pm.LV/\
+     (_df['lai']**2*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
+
+def partial_vpd(_df):
+  """w.r.t. vpd"""
+  return -_df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
+    (-_df['gamma']*_df['c_a']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (3.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(4.*np.sqrt(_df['vpd'])*(_df['g1']+np.sqrt(_df['vpd']))**3))
 
 
 
