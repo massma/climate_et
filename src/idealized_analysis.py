@@ -127,6 +127,10 @@ def site_analysis(_df):
   out = pd.DataFrame(data=out, index=[_df.index])
   return out
 
+def get_pft(_df):
+  return _df['pft'].iloc[0]
+
+pft = df.groupby('site').apply(get_pft)
 mean = df.groupby('site').mean()
 std = df.groupby('site').std()
 jacobian = site_analysis(mean)
@@ -136,12 +140,20 @@ _std = std.loc[:, jacobian.columns]
 
 error = np.absolute(np.sqrt((jacobian**2*_std**2).sum(axis=1))-std['d_et'])
 rel_error = error/std['d_et']
-print(rel_error)
 
+var_vector = np.absolute(jacobian*_std)
+var_vector['pft'] = pft
 
 def pft_plot(_df):
   """acts on df grouped by pft, plots partial derivatives of all vars"""
-  
+  pft = _df['pft'].iloc[0]
+  print('for pft: %s, shape is: ' % pft, _df.shape)
+  _df.drop('pft')
+  fig = plt.figure()
+  ax = fig.add_subplot(111)
+  _df.boxplot(ax=ax)
+  util.test_savefig('%s/climate_et/jacobial/%s.png'\
+                    % (os.environ['PLOTS'], pft))
+  return
 
-
-for 
+var_vector.groupby('pft').apply(pft_plot)
