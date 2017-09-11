@@ -127,7 +127,7 @@ def soil_moisture_scatter(_df, meta):
              meta['var'], meta['log'], meta['x_axis'],
              str(_df['pft'][0]), meta['label'])
   util.test_savefig(fname)
-  plt.show(block=False)
+n  plt.show(block=False)
   return
 
 def scatter_plot(_df, meta):
@@ -240,6 +240,7 @@ def test_trend(_df, meta, fig=None):
     g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
                       xlim=meta['xlim'], ylim=meta['ylim'], stat_func=spearmanr)
     g.set_axis_labels(meta['x_var'],meta['y_var'])
+  plt.title('pft: %s' % _df['pft'].iloc[0])
   if meta['full_ds']:
     util.test_savefig('%s/climate_et/scatters/%s_%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
@@ -298,28 +299,7 @@ def vpd_swc_dependence(_df, meta):
 
 plt.close('all')
 
-reload_data = False
 master_plot = False
-if reload_data:
-  concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-  df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
-  meta = {}
-  meta['folder_label'] = 'site'
-  meta['folder'] = 'hist_plots'
-  meta['var'] = 'lai_gpp'
-  print(df.shape)
-  df = df.groupby('site').apply(site_clean)
-  print(df.shape)
-  df = clean_df(df)
-  df = clean_df(df, var='lai_gpp')
-  # test = df.groupby('site').apply(site_clean, 'lai_gpp')
-  # test = clean_df(test, var='lai_gpp')
-  df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
-  print(df.shape)
-  #df.groupby('site').apply(histogram, meta)
-  # histogram(df, meta)
-  # meta['var'] = 'lai'
-  # histogram(df, meta)
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
@@ -334,21 +314,21 @@ meta['x_axis'] = 'rh'
 meta['log'] = ''
 meta['size'] = 8
 
-# meta['folder_label'] = 'site'
-for meta['var'], meta['vmax'] in zip(['d_et', 'd_gpp'],\
-                                     [0.3, 0.1]):
-  df.groupby('site').apply(vpd_swc_dependence, meta)
+# # meta['folder_label'] = 'site'
+# for meta['var'], meta['vmax'] in zip(['d_et', 'd_gpp'],\
+#                                      [0.3, 0.1]):
+#   df.groupby('site').apply(vpd_swc_dependence, meta)
 
 # # df.groupby('site').apply(plot_height)
-# meta = {}
-# meta['xlim'] = None
-# meta['ylim'] = None
-# meta['plot_type'] = '' #'simple'
-# meta['x_var'] = 'swc'
-# meta['y_var'] = 'vpd'
-# scatter_wrapper(df, meta)
-# meta['group'] = 'site'
-# df.groupby('site').apply(test_trend, meta)
+meta = {}
+meta['xlim'] = None
+meta['ylim'] = None
+meta['plot_type'] = '' #'simple'
+meta['x_var'] = 'swc'
+meta['y_var'] = 'lai'
+scatter_wrapper(df, meta)
+meta['group'] = 'site'
+df.groupby('site').apply(test_trend, meta)
 
 # meta = {}
 # meta['xlim'] = None

@@ -41,6 +41,15 @@ def canopy_dict(data):
   canopy['r_s'] = np.squeeze(data['Rs']) #s/m
   return canopy
 
+def gen_time(data):
+  """creates time, but not sure if start or end see Read_data.m"""
+  datestr = [np.datetime64('%d-%02d-%02dT%02d:00'\
+             % (int(year), int(month), int(day), int(hours)))\
+             for year, month, day, hours in \
+             zip(data['year'], data['month'], data['day'], data['hours'])]
+  #time = np.datetime64()
+  return datestr
+
 def load_mat_data(filename):
   """
   takes a filename (matlab file from changjie),
@@ -58,7 +67,8 @@ def load_mat_data(filename):
 
   atmos = atmos_dict(data)
   canopy = canopy_dict(data)
-
+  _data['time'] = gen_time(data)
+  
   atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
   atmos['vpd'][atmos['vpd'] <= 0.] = np.nan
   canopy.pop('r_s')
