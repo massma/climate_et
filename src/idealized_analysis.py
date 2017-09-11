@@ -114,9 +114,14 @@ def partial_vpd(_df):
      (3.*_df['g1']+np.sqrt(_df['vpd']))\
      /(4.*np.sqrt(_df['vpd'])*(_df['g1']+np.sqrt(_df['vpd']))**3))
 
-jacobians = {'p_a' : partial_p_a, 'g_a' : partial_g_a, 't_a' : partial_t_a,\
-             'delta': partial_delta, 'gamma' : partial_gamma,\
-             'r_moist' : partial_r_moist, 'c_a' : partial_c_a,\
+# jacobians = {'p_a' : partial_p_a, 'g_a' : partial_g_a, 't_a' : partial_t_a,\
+#              'delta': partial_delta, 'gamma' : partial_gamma,\
+#              'r_moist' : partial_r_moist, 'c_a' : partial_c_a,\
+#              'lai': partial_lai, 'vpd' : partial_vpd}
+
+jacobians = {'g_a' : partial_g_a,\
+             'delta': partial_delta,\
+             'c_a' : partial_c_a,\
              'lai': partial_lai, 'vpd' : partial_vpd}
 
 def site_analysis(_df):
@@ -147,12 +152,12 @@ var_vector['pft'] = pft
 def pft_plot(_df):
   """acts on df grouped by pft, plots partial derivatives of all vars"""
   pft = _df['pft'].iloc[0]
-  print('for pft: %s, shape is: ' % pft, _df.shape)
-  _df.drop('pft')
+  print('pft %s, has %d sites' % (pft, _df.t_a.count()))
+  # _df.drop('pft')
   fig = plt.figure()
   ax = fig.add_subplot(111)
   _df.boxplot(ax=ax)
-  util.test_savefig('%s/climate_et/jacobial/%s.png'\
+  util.test_savefig('%s/climate_et/jacobian/%s.png'\
                     % (os.environ['PLOTS'], pft))
   return
 
