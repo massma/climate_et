@@ -123,6 +123,34 @@ print('time was %f s' % ((time.time()-start)))
 
 # if str(__name__) == '__main__':
 #   main()
+# now concat and clean up LAI outliers
+def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
+  """
+  puts all the individual site data into one pdf, and adds a site column to df
+  """
+  dfs = []
+  filenames = glob.glob('%s/changjie/%s/*'\
+                        % (os.environ['DATA'], folder))
+  for filename in filenames[:]:
+    _df = pd.read_pickle(filename)
+    _df['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
+    dfs.append(_df)
+  full_df = pd.concat(dfs)
+  full_df.to_pickle('%s/changjie/%s.pkl'\
+                    % (os.environ['DATA'], fname))
+  return full_df
+
+def clean_df(_df, var='lai'):
+  """remove unphysical LAI values from a df"""
+  out = _df.loc[((_df[var] > 0.1) & (_df[var] < 100.)), :]
+  return out
+
+def site_clean(_df, var='lai'):
+  """this will remove some percentile of data"""
+  out = _df.loc[((_df[var] < _df[var].quantile(q=0.95)) & \
+                (_df[var] > _df[var].quantile(q=0.05))), :]
+  return out
+
 reload_data = True
 if reload_data:
   concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
