@@ -112,7 +112,7 @@ def soil_moisture_scatter(_df, meta):
              meta['var'], meta['log'], meta['x_axis'],
              str(_df['pft'][0]), meta['label'])
   util.test_savefig(fname)
-n  plt.show(block=False)
+  plt.show(block=False)
   return
 
 def scatter_plot(_df, meta):
@@ -227,7 +227,7 @@ def test_trend(_df, meta, fig=None):
     util.test_savefig('%s/climate_et/scatters/%s_%s/%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'],\
                    meta['y_var'],  _df['pft'].iloc[0]))
-  return
+  return spearmanr(_df[meta['x_var']], _df[meta['y_var']]).correlation
 
 def scatter_wrapper(df, meta):
   """just saves line space my wrapping the steps I always take"""
@@ -278,6 +278,7 @@ master_plot = False
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
+df['g_a'] = 1./df['r_a']
 df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
 df['d_et_atm'] = df['scaling']*df['vpd_atm']
 
@@ -295,15 +296,25 @@ meta['size'] = 8
 #   df.groupby('site').apply(vpd_swc_dependence, meta)
 
 # # df.groupby('site').apply(plot_height)
-meta = {}
-meta['xlim'] = None
-meta['ylim'] = None
-meta['plot_type'] = '' #'simple'
-meta['x_var'] = 'swc'
-meta['y_var'] = 'lai'
-scatter_wrapper(df, meta)
-meta['group'] = 'site'
-df.groupby('site').apply(test_trend, meta)
+
+names = ['c_a', 'delta', 'g_a', 'lai', 'vpd']
+output = {}
+for name in names:
+  meta = {}
+  meta['xlim'] = None
+  meta['ylim'] = None
+  meta['plot_type'] = '' #'simple'
+  meta['x_var'] = 'swc'
+  meta['y_var'] = name
+  scatter_wrapper(df, meta)
+  meta['group'] = 'site'
+  output[name] = df.groupby('site').apply(test_trend, meta)
+  plt.close('all')
+  
+for name in output:
+  print('for %s, mean r2 is: %f' % (name, output[name].mean()))
+for name in output:
+  print('for %s, std r2 is: %f' % (name, output[name].std()))
 
 # meta = {}
 # meta['xlim'] = None
