@@ -18,7 +18,7 @@ import util
 mpl.rcParams.update(mpl.rcParamsDefault)
 
 names = ['r_a', 'p_a', 't_a', 'delta', 'gamma', 'r_moist', 'lai', 'c_a',\
-         'uwue', 'g1', 'vpd', 'pft', 'site', 'd_et']
+         'uwue', 'g1', 'vpd', 'pft', 'site', 'd_et', 'swc']
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA']).loc[:, names]
 df['g_a'] = 1./df['r_a']
@@ -124,13 +124,16 @@ jacobians = {'g_a' : partial_g_a,\
              'c_a' : partial_c_a,\
              'lai': partial_lai, 'vpd' : partial_vpd}
 
-def site_analysis(_df):
+def site_analysis(_df, swc=True):
   """caluclates jacobians for each site"""
   out = {}
   for key in jacobians:
     out[key] = jacobians[key](_df)
+    if swc:
+      out['swc_%s' % key] = np.polyfit(_df['swc'], _df[key], deg=1)[0]*out[key]
   out = pd.DataFrame(data=out, index=[_df.index])
   return out
+
 
 def get_pft(_df):
   return _df['pft'].iloc[0]
@@ -140,26 +143,102 @@ mean = df.groupby('site').mean()
 std = df.groupby('site').std()
 jacobian = site_analysis(mean)
 
-_mean = mean.loc[:, jacobian.columns]
-_std = std.loc[:, jacobian.columns]
+columns = ['c_a', 'delta', 'g_a', 'lai', 'swc', 'vpd', 'd_et']
 
-error = np.absolute(np.sqrt((jacobian**2*_std**2).sum(axis=1))-std['d_et'])
-rel_error = error/std['d_et']
+def remove_mean(_df):
+  """strips mean of column"""
+  # print(_df.shape)
+  _mean = _df.mean()
+  # print(_df.mean().index)
+  for column in _mean.index:
+    _df[column] = _df[column]-_mean[column]
+  return _df
 
-var_vector = np.absolute(jacobian*_std)
-var_vector['pft'] = pft
+nonlinear = site_analysis(df, swc=False)
+deviation = df.loc[:, nonlinear.columns]
+deviation['site'] = df['site']
+deviation = deviation.groupby('site').apply(remove_mean)
+deviation.drop('site', axis=1, inplace=True)
 
-def pft_plot(_df):
+non_vector = np.absolute(nonlinear*deviation)
+non_vector['site'] = df['site']
+
+def debug(_df):
+  """figure out what the hell is going on"""
+  print(_df.shape)
+  print(np.mean(_df.loc[:, float_columns]))
+  return
+
+non_mean = non_vector.groupby('site').mean()
+non_mean['pft'] = pft
+non_vector.drop('site', axis=1, inplace=True)
+non_vector['pft'] = df['pft']
+non_mean_pft = non_vector.groupby('pft').mean()
+
+
+# std = std.loc[:, columns]
+
+def dot_variability(_jacobian, _std):
+  """for multiplying jacovian and std, handles swc columns"""
+  out = pd.DataFrame(index=_jacobian.index)
+  _garb = pd.DataFrame(index=_jacobian.index)
+  for name in _jacobian.columns:
+    if name[:3] == 'swc':
+      #the 2 below is just to make auto plot labels more concise
+      _garb['s_%s' % name[4:]] = _jacobian[name]**2*_std['swc']**2
+    else:
+      out[name] = _jacobian[name]*_std[name]
+  out['swc'] = np.sqrt(_garb.sum(axis=1))
+  return out
+
+# error = np.absolute(np.sqrt((dot_variability(jacobian**2, std**2))\
+#                             .sum(axis=1))-std['d_et'])
+# rel_error = error/std['d_et']
+# # print(error)
+# # print(rel_error)
+
+# var_vector = np.absolute(dot_variability(jacobian, std))
+# var_vector['pft'] = pft
+
+def pft_plot(_df, folder_label=''):
   """acts on df grouped by pft, plots partial derivatives of all vars"""
   pft = _df['pft'].iloc[0]
   print('pft %s, has %d sites' % (pft, _df.vpd.count()))
   # _df.drop('pft')
   fig = plt.figure()
+  fig.set_figwidth(fig.get_figwidth()*2)
   ax = fig.add_subplot(111)
   _df.boxplot(ax=ax)
-  util.test_savefig('%s/climate_et/jacobian/%s.png'\
-                    % (os.environ['PLOTS'], pft))
+  ax.set_title('pft: %s' % pft)
+  util.test_savefig('%s/climate_et/jacobian/%s/%s.png'\
+                    % (os.environ['PLOTS'], folder_label, pft))
   plt.close('all')
   return
 
-var_vector.groupby('pft').apply(pft_plot)
+# var_vector.groupby('pft').apply(pft_plot)
+non_mean.groupby('pft').apply(pft_plot, 'non_linear')
+
+def site_plot(_df, folder_label=''):
+  """acts on df grouped by pft, plots partial derivatives of all vars"""
+  try:
+    pft = str(_df['pft'])
+    _ds = pd.Series(_df.drop('pft'))
+  except KeyError:
+    print('key error')
+    pft = _df.name
+    _ds = pd.Series(_df)
+  site = _df.name
+
+  fig = plt.figure()
+  fig.set_figwidth(fig.get_figwidth()*2)
+  ax = fig.add_subplot(111)
+
+  _ds.plot(kind='bar',ax=ax)
+  ax.set_title('pft: %s' % pft)
+  util.test_savefig('%s/climate_et/jacobian/site/%s/%s_%s.png'\
+                    % (os.environ['PLOTS'], folder_label, pft, site))
+  plt.close('all')
+  return
+
+non_mean_pft.apply(site_plot, folder_label='mean', axis=1)
+# var_vector.apply(site_plot, axis=1)

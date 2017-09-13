@@ -299,6 +299,7 @@ meta['size'] = 8
 time = pd.DatetimeIndex(df.time)
 df['hour'] = time.hour
 df['jd'] = time.dayofyear
+
 # names = ['c_a', 'delta', 'g_a', 'lai', 'vpd', 'jd', 'hour']
 # names = ['jd', 'hour']
 # output = {}
@@ -319,7 +320,8 @@ df['jd'] = time.dayofyear
 # for name in output:
 #   print('for %s, std r2 is: %f' % (name, output[name].std()))
 
-names = ['jd', 'hour']
+# names = ['jd', 'hour']
+names = ['c_a', 'delta', 'g_a', 'swc', 'vpd', 'jd', 'hour']
 output = {}
 for name in names:
   meta = {}
