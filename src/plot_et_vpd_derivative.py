@@ -296,21 +296,44 @@ meta['size'] = 8
 #   df.groupby('site').apply(vpd_swc_dependence, meta)
 
 # # df.groupby('site').apply(plot_height)
+time = pd.DatetimeIndex(df.time)
+df['hour'] = time.hour
+df['jd'] = time.dayofyear
+# names = ['c_a', 'delta', 'g_a', 'lai', 'vpd', 'jd', 'hour']
+# names = ['jd', 'hour']
+# output = {}
+# for name in names:
+#   meta = {}
+#   meta['xlim'] = None
+#   meta['ylim'] = None
+#   meta['plot_type'] = '' #'simple'
+#   meta['x_var'] = 'swc'
+#   meta['y_var'] = name
+#   scatter_wrapper(df, meta)
+#   meta['group'] = 'site'
+#   output[name] = df.groupby('site').apply(test_trend, meta)
+#   plt.close('all')
 
-names = ['c_a', 'delta', 'g_a', 'lai', 'vpd']
+# for name in output:
+#   print('for %s, mean r2 is: %f' % (name, output[name].mean()))
+# for name in output:
+#   print('for %s, std r2 is: %f' % (name, output[name].std()))
+
+names = ['jd', 'hour']
 output = {}
 for name in names:
   meta = {}
   meta['xlim'] = None
   meta['ylim'] = None
   meta['plot_type'] = '' #'simple'
-  meta['x_var'] = 'swc'
-  meta['y_var'] = name
+  meta['x_var'] = name
+  meta['y_var'] = 'lai'
   scatter_wrapper(df, meta)
   meta['group'] = 'site'
   output[name] = df.groupby('site').apply(test_trend, meta)
   plt.close('all')
-  
+
+print('lai')
 for name in output:
   print('for %s, mean r2 is: %f' % (name, output[name].mean()))
 for name in output:
