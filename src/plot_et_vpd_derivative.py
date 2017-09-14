@@ -178,20 +178,30 @@ def plot_wrapper(_df, meta):
   scatter_plot(_df, meta)
   return
 
+def gaussian(x, mu, sigma):
+  """returns P(x | mu, sigma)"""
+  return 1./np.sqrt(2.*np.pi*sigma**2)\
+    *np.exp(-(x-mu)**2/(2.*np.sigma**2))
 
 def histogram(_df, meta):
   """takes a groupby _df and makes histogram plots"""
+  var = _df[meta['var']]
   fig = plt.figure()
   ax = fig.add_subplot(111)
-  sns.distplot(_df[meta['var']], ax=ax)
+  sns.distplot(var, ax=ax)
   ax.set_xlabel(meta['var'])
+  lims = ax.get_xlim()
+  x = np.linspace(lims[0],lims[1], 200)
+  ax.plot(x, var.mean(), var.std())
+  ax.set_title('pft: %s, site: %s' % (_df.pft.iloc[0], _df.site.iloc[0]))
   if meta['folder_label'] == 'site':
-    outname = '%s/%s_%s.png' %\
-              (meta['folder'], _df.site.iloc[0], meta['var'])
+    outname = '%s/%s_%s_%s.png' %\
+              (meta['folder'], _df.pft.iloc[0],  _df.site.iloc[0], meta['var'])
   elif meta['folder_label'] == 'pft':
     outname = '%s/%s_%s.png' %\
-             nn (meta['folder'], _df.pft.iloc[0], meta['var'])
-  plt.savefig('%s/climate_et/%s' % (os.environ['PLOTS'], outname))
+              (meta['folder'], _df.pft.iloc[0], meta['var'])
+  util.test_savefig('%s/climate_et/histogram/%s'\
+                    % (os.environ['PLOTS'], outname))
   return
 
 def test_trend(_df, meta, fig=None):
@@ -272,6 +282,8 @@ def vpd_swc_dependence(_df, meta):
                   _df.pft.iloc[0], _df.site.iloc[0]))
   return
 
+
+
 plt.close('all')
 
 master_plot = False
@@ -290,6 +302,12 @@ meta['x_axis'] = 'rh'
 meta['log'] = ''
 meta['size'] = 8
 
+meta = {}
+meta['var'] = 'lai'
+meta['folder'] = ''
+meta['folder_label'] = site
+df.groupby('site').apply(histogram, meta)
+
 # # meta['folder_label'] = 'site'
 # for meta['var'], meta['vmax'] in zip(['d_et', 'd_gpp'],\
 #                                      [0.3, 0.1]):
@@ -299,6 +317,9 @@ meta['size'] = 8
 time = pd.DatetimeIndex(df.time)
 df['hour'] = time.hour
 df['jd'] = time.dayofyear
+
+
+
 
 # names = ['c_a', 'delta', 'g_a', 'lai', 'vpd', 'jd', 'hour']
 # names = ['jd', 'hour']
@@ -320,26 +341,26 @@ df['jd'] = time.dayofyear
 # for name in output:
 #   print('for %s, std r2 is: %f' % (name, output[name].std()))
 
-# names = ['jd', 'hour']
-names = ['c_a', 'delta', 'g_a', 'swc', 'vpd', 'jd', 'hour']
-output = {}
-for name in names:
-  meta = {}
-  meta['xlim'] = None
-  meta['ylim'] = None
-  meta['plot_type'] = '' #'simple'
-  meta['x_var'] = name
-  meta['y_var'] = 'lai'
-  scatter_wrapper(df, meta)
-  meta['group'] = 'site'
-  output[name] = df.groupby('site').apply(test_trend, meta)
-  plt.close('all')
+# # names = ['jd', 'hour']
+# names = ['c_a', 'delta', 'g_a', 'swc', 'vpd', 'jd', 'hour']
+# output = {}
+# for name in names:
+#   meta = {}
+#   meta['xlim'] = None
+#   meta['ylim'] = None
+#   meta['plot_type'] = '' #'simple'
+#   meta['x_var'] = name
+#   meta['y_var'] = 'lai'
+#   scatter_wrapper(df, meta)
+#   meta['group'] = 'site'
+#   output[name] = df.groupby('site').apply(test_trend, meta)
+#   plt.close('all')
 
-print('lai')
-for name in output:
-  print('for %s, mean r2 is: %f' % (name, output[name].mean()))
-for name in output:
-  print('for %s, std r2 is: %f' % (name, output[name].std()))
+# print('lai')
+# for name in output:
+#   print('for %s, mean r2 is: %f' % (name, output[name].mean()))
+# for name in output:
+#   print('for %s, std r2 is: %f' % (name, output[name].std()))
 
 # meta = {}
 # meta['xlim'] = None
