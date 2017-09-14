@@ -181,7 +181,7 @@ def plot_wrapper(_df, meta):
 def gaussian(x, mu, sigma):
   """returns P(x | mu, sigma)"""
   return 1./np.sqrt(2.*np.pi*sigma**2)\
-    *np.exp(-(x-mu)**2/(2.*np.sigma**2))
+    *np.exp(-(x-mu)**2/(2.*sigma**2))
 
 def histogram(_df, meta):
   """takes a groupby _df and makes histogram plots"""
@@ -192,7 +192,7 @@ def histogram(_df, meta):
   ax.set_xlabel(meta['var'])
   lims = ax.get_xlim()
   x = np.linspace(lims[0],lims[1], 200)
-  ax.plot(x, var.mean(), var.std())
+  ax.plot(x, gaussian(x, var.mean(), var.std()), 'k-')
   ax.set_title('pft: %s, site: %s' % (_df.pft.iloc[0], _df.site.iloc[0]))
   if meta['folder_label'] == 'site':
     outname = '%s/%s_%s_%s.png' %\
@@ -305,9 +305,12 @@ meta['size'] = 8
 meta = {}
 meta['var'] = 'lai'
 meta['folder'] = ''
-meta['folder_label'] = site
+meta['folder_label'] = 'site'
 df.groupby('site').apply(histogram, meta)
-
+meta['var'] = 'lai_gpp'
+meta['folder'] = 'gpp'
+df.groupby('site').apply(histogram, meta)
+plt.close('all')
 # # meta['folder_label'] = 'site'
 # for meta['var'], meta['vmax'] in zip(['d_et', 'd_gpp'],\
 #                                      [0.3, 0.1]):
