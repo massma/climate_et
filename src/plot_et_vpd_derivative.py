@@ -311,6 +311,7 @@ meta['var'] = 'lai_gpp'
 meta['folder'] = 'gpp'
 df.groupby('site').apply(histogram, meta)
 plt.close('all')
+
 # # meta['folder_label'] = 'site'
 # for meta['var'], meta['vmax'] in zip(['d_et', 'd_gpp'],\
 #                                      [0.3, 0.1]):
@@ -320,9 +321,6 @@ plt.close('all')
 time = pd.DatetimeIndex(df.time)
 df['hour'] = time.hour
 df['jd'] = time.dayofyear
-
-
-
 
 # names = ['c_a', 'delta', 'g_a', 'lai', 'vpd', 'jd', 'hour']
 # names = ['jd', 'hour']

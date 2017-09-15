@@ -13,7 +13,7 @@
 This document is to analytically caluclate ET and $\frac{\partial ET} {\partial VPD}$.
 
 Penman montieth is given by:
-
+n
 \begin{equation}
   ET = \frac{\Delta R + g_a \rho_a c_p D_{s}}{\Delta + \gamma(1 + \frac{g_a}{g_s})}
 \end{equation}
@@ -78,6 +78,26 @@ And the derivative:
 
 \begin{equation}
   \frac{\partial \text{WUE}}{\partial D_s} = -\frac{\text{uWUE}}{2 D_s^{3/2}}
+\end{equation}
+
+We can also take the derivative with respect to $g_a$, $\Delta$, and $LAI$. First LAI:
+
+\begin{equation}
+  \frac{\partial \; ET}{\partial \; \text{LAI}} = \frac{ g_a\; P }{T \left( \Delta + \gamma \right)}  \frac{\gamma c_s \sqrt{D_s} L_v }{\text{LAI$^2$ } R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}
+\end{equation}
+
+Now w.r.t. $g_a$:
+
+
+\begin{equation}
+  \frac{\partial \; ET}{\partial \; g_a} = \frac{ P }{T \left( \Delta + \gamma \right)} \left(\frac{c_p D_s}{R_{air}} -  \frac{\gamma c_s \sqrt{D_s} L_v }{\text{LAI } R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}\right)
+\end{equation}
+
+Now w.r.t. $\Delta$:
+
+
+\begin{equation}
+\frac{\partial \;  ET}{\partial \Delta} = \frac{\gamma R - \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} - \frac{\gamma c_s \sqrt{D_s} L_v }{\text{LAI } R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})} \right) }{ (\Delta + \gamma)^2}
 \end{equation}
 
 
