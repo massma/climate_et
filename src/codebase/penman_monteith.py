@@ -348,7 +348,8 @@ def penman_monteith_prep(_atmos, _canopy):
                                            _atmos['r_a_uncorrected']]), axis=0)
     else:
       _atmos['r_a'] = r_a(_atmos, _canopy)
-
+  _atmos['g_a'] = 1./_atmos['r_a']
+  _atmos['t_a_k'] = _atmos['t_a'] + 273.15
   if 'c_a' not in _atmos:
     _atmos['c_a'] = 400. #ppm
 

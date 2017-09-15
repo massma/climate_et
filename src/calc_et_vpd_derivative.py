@@ -55,6 +55,30 @@ def d_gpp_d_vpd(atmos, canopy):
             *(1.+canopy['g1']/np.sqrt(atmos['vpd']))**2))
   return out
 
+def d_et_d_lai(atmos, canopy):
+  """calc derivative d et/ dlai"""
+  return atmos['g_a']*atmos['p_a']*atmos['gamma']*atmos['c_a']\
+    *np.sqrt(atmos['vpd'])*pm.LV\
+    /(atmos['t_a_k']*(atmos['delta']+atmos['gamma'])*canopy['lai']**2\
+      *pm.R_STAR*1.6*canopy['uwue']*(1. + canopy['g1']/np.sqrt(atmos['vpd'])))
+
+def d_et_d_g_a(atmos, canopy):
+  """calc derivative w.r.t. g_a"""
+  return atmos['p_a']/(atmos['t_a_k']*(atmos['delta'] + atmos['gamma']))\
+    *(pm.CP*atmos['vpd']/atmos['r_moist']\
+      -atmos['gamma']*atmos['c_a']*np.sqrt(atmos['vpd'])*pm.LV\
+      /(canopy['lai']*pm.R_STAR*1.6*canopy['uwue']\
+        *(1. + canopy['g1']/np.sqrt(atmos['vpd']))))
+
+def d_et_d_delta(atmos, canopy):
+  """calc derivative w.r.t. delta"""
+  return (atmos['gamma']*(atmos['r_n']-canopy['g_flux'])\
+          -atmos['g_a']*atmos['p_a']/atmos['t_a_k']\
+          *(pm.CP*atmos['vpd']/atmos['r_moist']\
+            -atmos['gamma']*atmos['c_a']*np.sqrt(atmos['vpd'])*pm.LV\
+            /(canopy['lai']*pm.R_STAR*1.6*canopy['uwue']\
+              *(1. + canopy['g1']/np.sqrt(atmos['vpd'])))))\
+              /(atmos['delta'] + atmos['gamma'])**2
 
 def calc_derivative(atmos, canopy, data):
   """adds various derivative fields to data, given atmos and canopy"""
@@ -76,6 +100,9 @@ def calc_derivative(atmos, canopy, data):
   data['d_et_vpd_std'] = atmos.vpd.std()*data.d_et # units: W/m2
   data['d_et_vpd_std_leaf'] = atmos.vpd.std()*data.vpd_leaf*data.scaling
   data['d_et_vpd_std_atm'] = atmos.vpd.std()*data.vpd_atm*data.scaling
+  data['d_et_d_lai'] = d_et_d_lai(atmos, canopy)
+  data['d_et_d_g_a'] = d_et_d_g_a(atmos, canopy)
+  data['d_et_d_delta'] = d_et_d_delta(atmos, canopy)
 
   #Calculate WUE terms
   data['wue_obs'] = data['gpp_obs']/(data['et_obs']/(pm.LV*H2O)*1.e6)

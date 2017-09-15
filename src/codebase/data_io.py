@@ -68,7 +68,7 @@ def load_mat_data(filename):
   atmos = atmos_dict(data)
   canopy = canopy_dict(data)
   _data['time'] = gen_time(data)
-  
+
   atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
   atmos['vpd'][atmos['vpd'] <= 0.] = np.nan
   canopy.pop('r_s')
