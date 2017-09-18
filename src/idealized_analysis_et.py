@@ -190,5 +190,6 @@ def site_plot(_df, folder_label=''):
   plt.close('all')
   return
 
-non_mean_pft.apply(site_plot, folder_label='mean', axis=1)
+non_mean_pft.apply(site_plot, folder_label='mean_non-linear', axis=1)
+non_mean.apply(site_plot, folder_label='non-linear', axis=1)
 var_vector.apply(site_plot, axis=1)
