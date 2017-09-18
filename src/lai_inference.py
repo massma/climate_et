@@ -200,3 +200,5 @@ def visualize(x_data, y_data, amp, phase, offset, n_samples=10, name=''):
 visualize(x_train, y_train, amp, phase, offset, name='prior')
 visualize(x_train, y_train, q_amp, q_phase, q_offset, name='posterior')
 
+print('bayesian residual std: %f' % tf.nn.softplus(q_noise.loc).eval())
+print('actual residual std: %f' % subset.residual.std())
