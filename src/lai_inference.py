@@ -97,76 +97,100 @@ df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
 
 # bestfit = df.loc[df.x0.argmax()]
 
-# well-fit subset to test with edward approach
+
 columns = ['lai', 'jd', 'year',\
-           'modelled_cycle', 'x0', 'x1', 'x2']
+           'modelled_cycle', 'x0', 'x1', 'x2', 'site', 'pft']
 subset = df.loc[(df.year == 2003) & (df.site == 'US-MMS'), columns]
-# plot_lai(subset, suff='_subset')
 
-def gen_data(_df):
-  """get testing and training data from _df"""
-  train, test = train_test_split(_df, test_size=0.2)
-  y_train = train.lai.values
-  y_test = test.lai.values
-  x_train = train.jd.values
-  x_test = test.jd.values
-  return x_train, x_test, y_train, y_test
+df['residual'] = df.lai-df.modelled_cycle
 
-x_train, x_test, y_train, y_test = gen_data(subset)
-
-N = y_train.size
-
-#initialize graph
-
-# remove default graph
-tf.reset_default_graph()
-amp = Normal(loc=tf.ones(1)*subset.lai.std(), scale=tf.ones(1))
-phase = Normal(loc=tf.ones(1)*np.pi, scale=tf.ones(1)*np.pi)
-offset = Normal(loc=tf.ones(1)*subset.lai.mean(), scale=tf.ones(1))
-x = tf.placeholder(tf.float32, [N])
-y = Normal(loc=amp*tf.sin(x/365.*2.*np.pi+phase) + offset, scale=tf.ones(N))
-
-q_amp = Normal(loc=tf.Variable(tf.random_normal([1])),
-                scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
-q_phase = Normal(loc=tf.Variable(tf.random_normal([1])),
-                 scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
-q_offset = Normal(loc=tf.Variable(tf.random_normal([1])),
-                  scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
-
-inference = ed.KLqp({amp: q_amp, phase: q_phase, offset : q_offset},\
-                    data={x: x_train, y: y_train})
-inference.run(n_samples=10, n_iter=1000)
-
-y_post = ed.copy(y, {amp: q_amp, phase: q_amp, offset: q_offset})
-
-print("Mean squared error on test data:")
-print(ed.evaluate('mean_squared_error', data={x: x_train, y_post: y_train}))
-
-print("Mean absolute error on test data:")
-print(ed.evaluate('mean_absolute_error', data={x: x_train, y_post: y_train}))
-
-def visualize(x_data, y_data, amp, phase, offset, n_samples=10, name=''):
-  amp_samples = amp.sample(n_samples).eval()
-  phase_samples = phase.sample(n_samples).eval()
-  offset_samples = offset.sample(n_samples).eval()
+def residual_plot(_df):
+  """plots residuals"""
   ax = FIG.add_subplot(111)
-  ax.scatter(x_data, y_data)
-  inputs = np.linspace(0., 365., num=400)
-  ax.plot(inputs, subset.x0.iloc[0]*np.sin(inputs/365.*2.*np.pi\
-                                           +subset.x1.iloc[0])\
-          +subset.x2.iloc[0], 'k-', label='least-sq')
-  ax.plot(subset.jd.values, subset.modelled_cycle.values,\
-          'ko', label='least-sq')
-  for ns in range(n_samples):
-    output = amp_samples[ns]*np.sin(inputs/365.*2.*np.pi+phase_samples[ns])\
-             + offset_samples[ns]
-    ax.plot(inputs, output)
-  plt.legend(loc='best')
-  util.test_savefig('%s/climate_et/lai_plots/bayesian/%s_%d.png'\
-                    % (os.environ['PLOTS'], name, int(time.time())))
+  _df['residual'].hist(ax=ax)
+  util.test_savefig('%s/climate_et/lai_plots/histogram/%s_%s_%d.png'\
+                    % (os.environ['PLOTS'], _df.pft.iloc[0],\
+                       _df.site.iloc[0], int(_df.year.iloc[0])))
   FIG.clf()
   return
 
-visualize(x_train, y_train, amp, phase, offset, name='prior')
-visualize(x_train, y_train, q_amp, q_phase, q_offset, name='posterior')
+def year_group(_df):
+  """takes site and groups by year"""
+  _df.groupby('year').apply(residual_plot)
+  return
+
+df.groupby('site').apply(year_group)
+# well-fit subset to test with edward approahc
+# plot_lai(subset, suff='_subset')
+
+# def gen_data(_df):
+#   """get testing and training data from _df"""
+#   train, test = train_test_split(_df, test_size=0.2)
+#   y_train = train.lai.values
+#   y_test = test.lai.values
+#   x_train = train.jd.values
+#   x_test = test.jd.values
+#   return x_train, x_test, y_train, y_test
+
+# x_train, x_test, y_train, y_test = gen_data(subset)
+
+# N = y_train.size
+
+# #initialize graph
+
+# # remove default graph
+# tf.reset_default_graph()
+
+# #model params
+# y_scale = subset.lai.std()
+# amp = Normal(loc=tf.ones(1)*subset.lai.std(), scale=tf.ones(1))
+# phase = Normal(loc=tf.ones(1)*np.pi, scale=tf.ones(1)*np.pi)
+# offset = Normal(loc=tf.ones(1)*subset.lai.mean(), scale=tf.ones(1))
+# x = tf.placeholder(tf.float32, [N])
+# y = Normal(loc=amp*tf.sin(x/365.*2.*np.pi+phase) + offset,\
+#            scale=tf.ones(N)*y_scale)
+
+# q_amp = Normal(loc=tf.Variable(tf.random_normal([1])),
+#                 scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
+# q_phase = Normal(loc=tf.Variable(tf.random_normal([1])),
+#                  scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
+# q_offset = Normal(loc=tf.Variable(tf.random_normal([1])),
+#                   scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
+
+# inference = ed.KLqp({amp: q_amp, phase: q_phase, offset : q_offset},\
+#                     data={x: x_train, y: y_train})
+# inference.run(n_samples=10, n_iter=1000)
+
+# y_post = ed.copy(y, {amp: q_amp, phase: q_amp, offset: q_offset})
+
+# print("Mean squared error on test data:")
+# print(ed.evaluate('mean_squared_error', data={x: x_train, y_post: y_train}))
+
+# print("Mean absolute error on test data:")
+# print(ed.evaluate('mean_absolute_error', data={x: x_train, y_post: y_train}))
+
+# def visualize(x_data, y_data, amp, phase, offset, n_samples=10, name=''):
+#   amp_samples = amp.sample(n_samples).eval()
+#   phase_samples = phase.sample(n_samples).eval()
+#   offset_samples = offset.sample(n_samples).eval()
+#   ax = FIG.add_subplot(111)
+#   ax.scatter(x_data, y_data)
+#   inputs = np.linspace(0., 365., num=400)
+#   ax.plot(inputs, subset.x0.iloc[0]*np.sin(inputs/365.*2.*np.pi\
+#                                            +subset.x1.iloc[0])\
+#           +subset.x2.iloc[0], 'k-', label='least-sq')
+#   ax.plot(subset.jd.values, subset.modelled_cycle.values,\
+#           'ko', label='least-sq')
+#   for ns in range(n_samples):
+#     output = amp_samples[ns]*np.sin(inputs/365.*2.*np.pi+phase_samples[ns])\
+#              + offset_samples[ns]
+#     ax.plot(inputs, output)
+#   plt.legend(loc='best')
+#   util.test_savefig('%s/climate_et/lai_plots/bayesian/%s_%d.png'\
+#                     % (os.environ['PLOTS'], name, int(time.time())))
+#   FIG.clf()
+#   return
+
+# visualize(x_train, y_train, amp, phase, offset, name='prior')
+# visualize(x_train, y_train, q_amp, q_phase, q_offset, name='posterior')
 
