@@ -11,7 +11,7 @@ import metcalcs as met
 import seaborn as sns
 import resource
 from scipy.stats import spearmanr
-from scipy.optimize import least_squares
+nfrom scipy.optimize import least_squares
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import codebase.penman_monteith as pm
