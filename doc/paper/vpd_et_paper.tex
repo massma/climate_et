@@ -189,7 +189,7 @@
 % \section{Conclusions}
 
 
-\section{Introduction}
+\section{Introduction}\explain{This section needs to be fleshed out, and I definately need to add more citations}
 
 Changes to vapor pressure deficit (VPD) alter the atmospheric demand for water from the land surface. However, plant stomata have evolved to optimally regulate the exchange of water and carbon between vegetation and the atmosphere \citep{Franks_2017}. Therfore, an increase (decrease) in VPD may not correspond to an increase (decrease) in evapotranspiration (ET) because stomatal closure (opening) can cancel the effects of shifts to atmospheric demand.
 
@@ -260,8 +260,7 @@ LAI  = - \frac{g_a \gamma c_s \sqrt{D_s} P }{ \left(\text{ ET } ( \Delta + \gamm
   \end{equation}
 \end{linenomath*}
 
-
-
+This ``pseudo-LAI'' is some part ``true'' LAI (a measure of leaf area), and some part model and observational error, including error involving our assumption of constant uWUE. By calculating a unique LAI for each observation we will progate any model and observational uncertainty forward into our expression for $\frac{\partial \; ET}{\partial D}$. 
 
 \begin{table}
 \caption{Definition of symbols and variables}
@@ -287,6 +286,32 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
 \multicolumn{2}{l}{$^{a}$Footnote text here.}
 \end{tabular}
 \end{table}
+
+
+\section{Data}
+
+We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table 2),  only 56 of the 77 sites were used. Figure 1 presents each site and its plant functional type.
+
+
+\begin{table}
+\caption{Plant functional types, their abbreviation, Medlyn coefficient \citep[from ][]{Lin_2015}, and uWUE \citep[from ][]{Zhou_2015}. Note that units are converted such that the quantities fit into Equations 1-8}
+\centering
+\begin{tabular}{l c c c}
+  \hline
+  Abbreviation & PFT & $g_1$ (Pa$^{0.5}$) & uWUE ($\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET])  \\
+  \hline
+  CRO & cropland & 183.1 & 3.80 \\
+  CSH & closed shrub & 148.6 & 2.18 \\
+  DBF & deciduous broadleaf forest & 140.7 & 3.12 \\
+  ENF & evergreen needleleaf forest & 74.3 & 3.30 \\
+  GRA & grassland (C3) & 166.0 & 2.68 \\
+\hline
+\multicolumn{2}{l}{$^{a}$Footnote text here.}
+\end{tabular}
+\end{table}
+
+
+
 
 %%n
  \begin{linenomath*}
@@ -449,7 +474,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
 
 
 \acknowledgments
- = enter acknowledgments here =
+This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices.
 
 
 %% ------------------------------------------------------------------------ %%
