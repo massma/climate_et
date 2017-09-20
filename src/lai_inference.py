@@ -11,7 +11,7 @@ import metcalcs as met
 import seaborn as sns
 import resource
 from scipy.stats import spearmanr
-nfrom scipy.optimize import least_squares
+from scipy.optimize import least_squares
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import codebase.penman_monteith as pm
@@ -64,7 +64,7 @@ def fit_curves(_df, ax):
   result = least_squares(seasonal_lai, x0, bounds=bounds)
   if result['success']:
     seasonal = seasonal_lai(result['x']) + lai
-    df_out = pd.DataFrame(data={'modelled_cycle': seasonal}, index=_df.index)
+    df_out = pd.DataFrame(data={'seasonal_lai': seasonal}, index=_df.index)
     for i, _x in enumerate(result['x']):
       df_out['x%d' % i] = _x
     ax.plot(_df.time.values, seasonal, 'k-')
@@ -89,6 +89,7 @@ def plot_lai(_df, fit_plot=False, suff=''):
 # # below is to generate datta
 # x = df.groupby('site').apply(plot_lai, fit_plot=True)
 # full_df = pd.concat([df, x], axis=1)
+# full_df['residual_lai'] = df['lai'] - df['seasonal_lai']
 # full_df.to_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
 #                   % os.environ['DATA'])
 
@@ -97,7 +98,7 @@ df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
 
 # bestfit = df.loc[df.x0.argmax()]
 
-# df['residual'] = df.lai-df.modelled_cycle
+# df['residual'] = df.lai-df.seasonal_lai
 
 # def residual_plot(_df):
 #   """plots residuals"""
@@ -118,10 +119,9 @@ df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
 
 
 columns = ['lai', 'jd', 'year',\
-           'modelled_cycle', 'x0', 'x1', 'x2', 'site', 'pft']
+           'seasonal_lai', 'x0', 'x1', 'x2', 'site', 'pft']
 subset = df.loc[(df.year == 2003) & (df.site == 'US-MMS'), columns]
 
-subset['residual'] = subset.lai-subset.modelled_cycle
 # well-fit subset to test with edward approahc
 # plot_lai(subset, suff='_subset')
 
@@ -139,7 +139,8 @@ x_train, x_test, y_train, y_test = gen_data(subset)
 N = y_train.size
 
 #initialize graph
-
+ed.set_seed(4096)
+sess = ed.get_session()
 # remove default graph
 tf.reset_default_graph()
 
@@ -161,11 +162,17 @@ q_offset = Normal(loc=tf.Variable(tf.random_normal([1])),
                   scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
 q_noise = Normal(loc=tf.Variable(tf.random_normal([1])),
                   scale=tf.nn.softplus(tf.Variable(tf.random_normal([1]))))
+y_place = tf.placeholder(tf.float32, [N])
 
 inference = ed.KLqp({amp: q_amp, phase: q_phase,\
                      offset : q_offset, noise: q_noise},\
-                    data={x: x_train, y: y_train})
-inference.run(n_samples=10, n_iter=1000)
+                    data={x: x_train, y: y_place})
+inference.initialize(n_samples=10, n_iter=1000, logdir='./log',\
+                     session=sess)
+
+sess.run(tf.global_variables_initializer())
+
+for iter in inferebnce
 
 y_post = ed.copy(y, {amp: q_amp, phase: q_amp, offset: q_offset})
 
@@ -185,7 +192,7 @@ def visualize(x_data, y_data, amp, phase, offset, n_samples=10, name=''):
   ax.plot(inputs, subset.x0.iloc[0]*np.sin(inputs/365.*2.*np.pi\
                                            +subset.x1.iloc[0])\
           +subset.x2.iloc[0], 'k-', label='least-sq')
-  ax.plot(subset.jd.values, subset.modelled_cycle.values,\
+  ax.plot(subset.jd.values, subset.seasonal_lai.values,\
           'ko', label='least-sq')
   for ns in range(n_samples):
     output = amp_samples[ns]*np.sin(inputs/365.*2.*np.pi+phase_samples[ns])\

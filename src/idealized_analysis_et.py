@@ -21,7 +21,7 @@ mpl.rcParams.update(mpl.rcParamsDefault)
 importlib.reload(util)
 
 
-df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
                     % os.environ['DATA'])
 df['g_a'] = 1./df['r_a']
 df['r_net'] = df['r_n'] - df['g_flux']
@@ -70,6 +70,8 @@ def d_et_d_delta(_df):
 
 jacobians = {'vpd' : d_et,\
              'lai' : d_et_d_lai,\
+             'seasonal_lai' : d_et_d_lai,\
+             'residual_lai' : d_et_d_lai,\
              'g_a' : d_et_d_g_a,\
              'delta' : d_et_d_delta,\
              'r_net' : d_et_d_r_net}
@@ -93,7 +95,8 @@ mean = df.groupby('site').mean()
 std = df.groupby('site').std()
 jacobian = site_analysis(mean)
 
-columns = ['delta', 'g_a', 'lai', 'vpd', 'd_et', 'r_net']
+columns = ['delta', 'g_a', 'seasonal_lai', 'residual_lai',\
+           'lai', 'vpd', 'd_et', 'r_net']
 
 def remove_mean(_df):
   """strips mean of column"""
@@ -131,14 +134,8 @@ non_mean_pft = non_vector.groupby('pft').mean()
 def dot_variability(_jacobian, _std):
   """for multiplying jacovian and std, handles swc columns"""
   out = pd.DataFrame(index=_jacobian.index)
-  _garb = pd.DataFrame(index=_jacobian.index)
   for name in _jacobian.columns:
-    if name[:3] == 'swc':
-      #the 2 below is just to make auto plot labels more concise
-      _garb['s_%s' % name[4:]] = _jacobian[name]**2*_std['swc']**2
-    else:
-      out[name] = _jacobian[name]*_std[name]
-  out['swc'] = np.sqrt(_garb.sum(axis=1))
+    out[name] = _jacobian[name]*_std[name]
   return out
 
 # error = np.absolute(np.sqrt((dot_variability(jacobian**2, std**2))\
