@@ -36,14 +36,24 @@ def make_map(_df):
   """makes a map given a _df with Lat, Lon, and Cover"""
   pfts = _df.Cover_type.drop_duplicates()
   fig = plt.figure()
-  ax = fig.add_subplot(111)
-  m = Basemap(projection='npaeqd',boundinglat=10,lon_0=270,resolution='l')
-  m.drawcoastlines()
-  for pft in pfts:
-    print(pft)
-    _ds = _df.loc[(_df.Cover_type==pft), ['Latitude', 'Longitude']]
-    x, y = m(_ds.Longitude.values, _ds.Latitude.values)
-    sc = ax.scatter(x, y, s=50, label=pft)
+  fig.set_figheight(fig.get_figheight()*3)
+  axs = [fig.add_subplot(3, 1, i+1) for i in range(3)]
+  xlims = [(-180., 180.), (-140., -50.), (-20., 40.)]
+  ylims = [(-90., 90.), (15., 60.), (30., 60.)]
+  for ax, xlim, ylim in zip(axs, xlims, ylims):
+    print(ylim)
+    print(xlim)
+    m = Basemap(projection='merc', llcrnrlat=ylim[0], urcrnrlat=ylim[1],\
+            llcrnrlon=xlim[0], urcrnrlon=xlim[1], lat_ts=np.mean(ylims),\
+                resolution='c', ax=ax)#res was l
+    m.drawcoastlines()
+    for pft in pfts:
+      print(pft)
+      _ds = _df.loc[(_df.Cover_type==pft), ['Latitude', 'Longitude']]
+      x, y = m(_ds.Longitude.values, _ds.Latitude.values)
+      sc = ax.scatter(x, y, s=8, label=pft)
+    # m.drawparallels(np.arange(-90.,120.,30.))
+    # m.drawmeridians(np.arange(0.,420.,60.))
   plt.legend(loc='best')
   util.test_savefig('../doc/paper/figs/fig01.png')
   return

@@ -20,7 +20,6 @@ mpl.rcParams.update(mpl.rcParamsDefault)
 
 importlib.reload(util)
 
-
 df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
                     % os.environ['DATA'])
 df['g_a'] = 1./df['r_a']
