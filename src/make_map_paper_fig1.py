@@ -7,11 +7,12 @@ import os
 import pandas as pd
 import numpy as np
 import metcalcs as met
+import matplotlib as mpl
+mpl.use('Pdf')
 import seaborn as sns
 import resource
 from scipy.stats import spearmanr
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 import codebase.penman_monteith as pm
 import util
 import importlib
@@ -55,7 +56,7 @@ def make_map(_df):
     # m.drawparallels(np.arange(-90.,120.,30.))
     # m.drawmeridians(np.arange(0.,420.,60.))
   plt.legend(loc='best')
-  util.test_savefig('../doc/paper/figs/fig01.png')
+  util.test_savefig('../doc/paper/fig01.pdf')
   return
 
 make_map(meta)

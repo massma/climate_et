@@ -290,7 +290,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
 
 \section{Data}
 
-We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table 2),  only 56 of the 77 sites were used. Figure 1 presents each site and its plant functional type.
+We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table 2),  only 56 of the 77 sites were used. Figure \ref{map} presents each site and its plant functional type.
 
 
 \begin{table}
@@ -309,6 +309,13 @@ We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uW
 \multicolumn{2}{l}{$^{a}$Footnote text here.}
 \end{tabular}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{./fig01.pdf}
+\caption{Plant functional type and location of sites used in analysis.}
+\label{map}
+ \end{figure}
 
 We restrict our analysis to the daytime (sensible heat > 5 W m$^{-1}$ and shortwave radiation > 50 W m$^{-2}$) when there is no precipitation and the plants are growing (GPP > 10\% of the 95th pecentile). Also, because some sites use half hourly data but some use hourly, we aggregate all data to hourly averages. Only times with good quality control flags are used.
 
