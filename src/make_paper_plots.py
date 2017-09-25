@@ -100,7 +100,7 @@ def make_quant_map(_df, meta):
     # m.drawmeridians(np.arange(0.,420.,60.))
   plt.colorbar(color)
   plt.tight_layout()
-  util.test_savefig('../doc/paper/fig03.pdf')
+  util.test_savefig('../doc/paper/fig03a.pdf')
   return
 
 
@@ -112,3 +112,9 @@ mean_site = df.groupby('site').mean()
 mean_site['lat'] = site_list.loc[mean_site.index, 'Latitude']
 mean_site['lon'] = site_list.loc[mean_site.index, 'Longitude']
 make_quant_map(mean_site, meta)
+
+plt.figure()
+x = np.linspace(0., 1., 10)
+plt.plot(x, x, 'k,')
+plt.scatter(x, x+0.1, s=1., c='k', edgecolor='')
+plt.savefig('%s/temp/test_pixel.png' % os.environ['PLOTS'])

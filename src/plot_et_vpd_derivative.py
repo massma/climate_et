@@ -19,11 +19,9 @@ import codebase.plot_tools as plot_tools
 
 resource.setrlimit(resource.RLIMIT_AS, (4000e6, 4000e6))
 
-
-
 plt.close('all')
 
-master_plot = False
+master_plot = True
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
@@ -131,43 +129,43 @@ df['jd'] = time.dayofyear
 # # # meta['y_var'] = 'lai_gpp'
 # # # scatter_wrapper(df, meta)
 
-# if master_plot:
-#   et_scale = 400.
-#   gpp_scale = 400.
-#   meta = {}
-#   meta['vmax'] = None
-#   meta['var'] = ''
-#   for meta['var'], meta['vmax'] in zip(['', 'd_et_vpd_std'], [None, et_scale]):
-#     for x_axis in ['rh', 'vpd']:
-#       for log in ['scaling', '']:#'log'
-#         plt.close('all')
-#         meta['label'] = 'full_ds'
-#         meta['folder_label'] = 'full_ds'
-#         meta['x_axis'] = x_axis
-#         meta['log'] = log
-#         plot_wrapper(df, meta)
-#         meta['folder_label'] = 'pft'
-#         df.groupby('pft').apply(plot_tools.plot_wrapper, meta)
-#         # meta['folder_label'] = 'site'
-#         # df.groupby('site').apply(plot_tools.plot_wrapper, meta)
+if master_plot:
+  et_scale = 400.
+  gpp_scale = 400.
+  meta = {}
+  meta['vmax'] = None
+  meta['var'] = ''
+  for meta['var'], meta['vmax'] in zip(['', 'd_et_vpd_std'], [None, et_scale]):
+    for x_axis in ['rh', 'vpd']:
+      for log in ['scaling', '']:#'log'
+        plt.close('all')
+        meta['label'] = 'full_ds'
+        meta['folder_label'] = 'full_ds'
+        meta['x_axis'] = x_axis
+        meta['log'] = log
+        plot_wrapper(df, meta)
+        meta['folder_label'] = 'pft'
+        df.groupby('pft').apply(plot_tools.plot_wrapper, meta)
+        # meta['folder_label'] = 'site'
+        # df.groupby('site').apply(plot_tools.plot_wrapper, meta)
 
-#   os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
-#             '%s/climate_et/rh.png'\
-#             % (os.environ['PLOTS'], os.environ['PLOTS']))
+  os.system('convert +append %s/climate_et/pft__rh_plots/*.png '\
+            '%s/climate_et/rh.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-#   os.system('convert +append %s/climate_et/pft_scaling_rh_plots/*.png '\
-#             '%s/climate_et/rh_scaling.png'\
-#             % (os.environ['PLOTS'], os.environ['PLOTS']))
+  os.system('convert +append %s/climate_et/pft_scaling_rh_plots/*.png '\
+            '%s/climate_et/rh_scaling.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-#   os.system('convert +append %s/climate_et/'\
-#             'd_et_vpd_stdpft_scaling_rh_plots/*.png '\
-#             '%s/climate_et/d_et_vpd_std_rh.png'\
-#             % (os.environ['PLOTS'], os.environ['PLOTS']))
+  os.system('convert +append %s/climate_et/'\
+            'd_et_vpd_stdpft_scaling_rh_plots/*.png '\
+            '%s/climate_et/d_et_vpd_std_rh.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
 
-#   os.system('convert +append %s/climate_et/'\
-#             'd_et_vpd_stdpft_scaling_vpd_plots/*.png '\
-#             '%s/climate_et/d_et_vpd_std_vpd.png'\
-#             % (os.environ['PLOTS'], os.environ['PLOTS']))
+  os.system('convert +append %s/climate_et/'\
+            'd_et_vpd_stdpft_scaling_vpd_plots/*.png '\
+            '%s/climate_et/d_et_vpd_std_vpd.png'\
+            % (os.environ['PLOTS'], os.environ['PLOTS']))
 
 #   meta = {}
 #   meta['log'] = ''
