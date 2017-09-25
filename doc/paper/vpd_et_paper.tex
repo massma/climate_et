@@ -249,14 +249,16 @@ We can then take the derivative with respect to $D$ to determine ecosystem repon
 
 \begin{linenomath*}
   \begin{equation}
-\frac{\partial \;  ET}{\partial \; D} = \frac{g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{\text{LAI }1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)
+    \frac{\partial \;  ET}{\partial \; D} = \frac{g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{\text{LAI }1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)
+    \label{d_et}
   \end{equation}
 \end{linenomath*}
 Note that given yearly uWUE from \cite{Zhou_2015}, $g_1$ from \cite{Lin_2015} \citep[as presented in ][]{Franks_2017}, and observations of R, T, P, D$_s$, and wind speed (WS), the only unknown is LAI. With flux tower observations of ET, LAI will then be uniquely determined for each observation through Equation 6:
 
 \begin{linenomath*}
   \begin{equation}
-LAI  = - \frac{g_a \gamma c_s \sqrt{D_s} P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p D_{s}\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}
+    LAI  = - \frac{g_a \gamma c_s \sqrt{D_s} P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p D_{s}\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}
+    \label{lai}
   \end{equation}
 \end{linenomath*}
 
@@ -290,7 +292,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
 
 \section{Data}
 
-We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table 2),  only 56 of the 77 sites were used. Figure \ref{map} presents each site and its plant functional type.
+We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table 2),  only 56 of the 77 sites were used. Figure \ref{map_fig} presents each site and its plant functional type.
 
 
 \begin{table}
@@ -314,12 +316,15 @@ We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uW
 \centering
 \includegraphics[width=20pc]{./fig01.pdf}
 \caption{Plant functional type and location of sites used in analysis.}
-\label{map}
+\label{map_fig}
  \end{figure}
 
 We restrict our analysis to the daytime (sensible heat > 5 W m$^{-1}$ and shortwave radiation > 50 W m$^{-2}$) when there is no precipitation and the plants are growing (GPP > 10\% of the 95th pecentile). Also, because some sites use half hourly data but some use hourly, we aggregate all data to hourly averages. Only times with good quality control flags are used.
 
 \section{Results}
+
+By construction, the variability in the LAI term (Equation \ref{lai}) contains all model and observational uncertities. LAI also has physical meaning corresponding to ``true'' leaf area, and we expect that it would be approximately $O(1)$. We can have some confidence in our framework, including the assumption of constant uWUE, if calculated LAIs are generally $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated LAIs with outliers (lowest and highest 5\% percent) and unphysical values (LAI $<$ 0.) removed. 
+
 
 
 

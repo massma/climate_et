@@ -192,14 +192,19 @@ def histogram(_df, meta):
   ax.set_xlabel(meta['var'])
   lims = ax.get_xlim()
   x = np.linspace(lims[0],lims[1], 200)
-  ax.plot(x, gaussian(x, var.mean(), var.std()), 'k-')
-  ax.set_title('pft: %s, site: %s' % (_df.pft.iloc[0], _df.site.iloc[0]))
+
   if meta['folder_label'] == 'site':
+    ax.plot(x, gaussian(x, var.mean(), var.std()), 'k-')
+    ax.set_title('pft: %s, site: %s' % (_df.pft.iloc[0], _df.site.iloc[0]))
     outname = '%s/%s_%s_%s.png' %\
               (meta['folder'], _df.pft.iloc[0],  _df.site.iloc[0], meta['var'])
   elif meta['folder_label'] == 'pft':
+    ax.set_title('pft: %s' % (_df.pft.iloc[0]))
     outname = '%s/%s_%s.png' %\
               (meta['folder'], _df.pft.iloc[0], meta['var'])
+  else:
+    ax.set_xlim([0.,2.5])
+    outname = 'full_%s.png' % meta['var']
   util.test_savefig('%s/climate_et/histogram/%s'\
                     % (os.environ['PLOTS'], outname))
   return
@@ -304,9 +309,15 @@ meta['size'] = 8
 
 meta = {}
 meta['var'] = 'lai'
-meta['folder'] = ''
+meta['folder'] = 'site_et'
 meta['folder_label'] = 'site'
 df.groupby('site').apply(histogram, meta)
+meta['folder'] = 'pft_et'
+meta['folder_label'] = 'pft'
+df.groupby('site').apply(histogram, meta)
+meta['folder'] = ''
+meta['folder_label'] = ''
+histogram(df, meta)
 meta['var'] = 'lai_gpp'
 meta['folder'] = 'gpp'
 df.groupby('site').apply(histogram, meta)
