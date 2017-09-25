@@ -39,7 +39,7 @@ def make_map(_df):
   fig.set_figheight(fig.get_figheight()*3)
   axs = [fig.add_subplot(3, 1, i+1) for i in range(3)]
   xlims = [(-180., 180.), (-140., -50.), (-20., 40.)]
-  ylims = [(-90., 90.), (15., 60.), (30., 60.)]
+  ylims = [(-50., 70.), (15., 60.), (30., 60.)]
   for ax, xlim, ylim in zip(axs, xlims, ylims):
     print(ylim)
     print(xlim)
@@ -51,7 +51,7 @@ def make_map(_df):
       print(pft)
       _ds = _df.loc[(_df.Cover_type==pft), ['Latitude', 'Longitude']]
       x, y = m(_ds.Longitude.values, _ds.Latitude.values)
-      sc = ax.scatter(x, y, s=8, label=pft)
+      sc = ax.scatter(x, y, s=16, label=pft)
     # m.drawparallels(np.arange(-90.,120.,30.))
     # m.drawmeridians(np.arange(0.,420.,60.))
   plt.legend(loc='best')
