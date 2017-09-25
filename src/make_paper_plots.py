@@ -1,6 +1,6 @@
 #! ~/edward/bin/python
 """
-This script makes a map of PFT for the paper, fig1.
+This script makes all figs for the paper
 """
 import os
 import importlib
@@ -31,29 +31,31 @@ def make_map(_df):
   """makes a map given a _df with Lat, Lon, and Cover"""
   pfts = _df.Cover_type.drop_duplicates()
   fig = plt.figure()
-  fig.set_figheight(fig.get_figheight()*3)
-  axs = [fig.add_subplot(3, 1, i+1) for i in range(3)]
-  xlims = [(-180., 180.), (-140., -50.), (-20., 40.)]
-  ylims = [(-50., 70.), (15., 60.), (30., 60.)]
-  for ax, xlim, ylim in zip(axs, xlims, ylims):
+  fig.set_figheight(fig.get_figheight()*4)
+  axs = [fig.add_subplot(4, 1, i+1) for i in range(4)]
+  xlims = [(-140., -50.), (-20., 40.), (10., 40), (110., 155.)]
+  ylims = [(15., 60.), (30., 70.), (-20., -10.), (-40., -10.)]
+  sizes = [24, 12, 40, 40]
+  for ax, xlim, ylim, size in zip(axs, xlims, ylims, sizes):
     print(ylim)
     print(xlim)
     m = Basemap(projection='merc', llcrnrlat=ylim[0], urcrnrlat=ylim[1],\
             llcrnrlon=xlim[0], urcrnrlon=xlim[1], lat_ts=np.mean(ylims),\
-                resolution='c', ax=ax)#res was l
+                resolution='l', ax=ax)#res was l
     m.drawcoastlines()
     for pft in pfts:
       print(pft)
       _ds = _df.loc[(_df.Cover_type == pft), ['Latitude', 'Longitude']]
       x, y = m(_ds.Longitude.values, _ds.Latitude.values)
-      ax.scatter(x, y, s=16, label=pft)
+      ax.scatter(x, y, s=size, label=pft)
     # m.drawparallels(np.arange(-90.,120.,30.))
     # m.drawmeridians(np.arange(0.,420.,60.))
   plt.legend(loc='best')
+  plt.tight_layout()
   util.test_savefig('../doc/paper/fig01.pdf')
   return
 
-#make a map
+#make a map fig 1
 make_map(meta)
 
 #for final npaper should make this .pdf, and probably
@@ -69,4 +71,4 @@ meta['folder'] = ''
 meta['folder_label'] = ''
 plot_tools.histogram(df, meta)
 os.system('cp %s/climate_et/histogram/full_lai.png '\
-          '../doc/paper/fig01.png' % (os.environ['PLOTS']))
+          '../doc/paper/fig02.png' % (os.environ['PLOTS']))
