@@ -2,26 +2,20 @@
 """
 This script makes a map of PFT for the paper, fig1.
 """
-import glob
 import os
+import importlib
 import pandas as pd
 import numpy as np
-import metcalcs as met
 import matplotlib as mpl
-mpl.use('Pdf')
-import seaborn as sns
-import resource
-from scipy.stats import spearmanr
 import matplotlib.pyplot as plt
-import codebase.penman_monteith as pm
-import util
-import importlib
 from mpl_toolkits.basemap import Basemap
-from matplotlib.patches import Polygon
+import codebase.plot_tools as plot_tools
+import util
+
+mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
-
 importlib.reload(util)
-
+importlib.reload(plot_tools)
 # grab sites actually used in analysis
 df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
                     % os.environ['DATA']).loc[:, 'site'].drop_duplicates()
@@ -50,15 +44,29 @@ def make_map(_df):
     m.drawcoastlines()
     for pft in pfts:
       print(pft)
-      _ds = _df.loc[(_df.Cover_type==pft), ['Latitude', 'Longitude']]
+      _ds = _df.loc[(_df.Cover_type == pft), ['Latitude', 'Longitude']]
       x, y = m(_ds.Longitude.values, _ds.Latitude.values)
-      sc = ax.scatter(x, y, s=16, label=pft)
+      ax.scatter(x, y, s=16, label=pft)
     # m.drawparallels(np.arange(-90.,120.,30.))
     # m.drawmeridians(np.arange(0.,420.,60.))
   plt.legend(loc='best')
   util.test_savefig('../doc/paper/fig01.pdf')
   return
 
+#make a map
 make_map(meta)
 
+#for final npaper should make this .pdf, and probably
+df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+                    % os.environ['DATA'])
+df['g_a'] = 1./df['r_a']
+df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
+df['d_et_atm'] = df['scaling']*df['vpd_atm']
 
+meta = {}
+meta['var'] = 'lai'
+meta['folder'] = ''
+meta['folder_label'] = ''
+plot_tools.histogram(df, meta)
+os.system('cp %s/climate_et/histogram/full_lai.png '\
+          '../doc/paper/fig01.png' % (os.environ['PLOTS']))
