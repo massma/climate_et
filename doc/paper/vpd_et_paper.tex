@@ -330,17 +330,23 @@ By construction, the variability in the LAI term (Equation \ref{lai}) contains a
 \includegraphics[width=20pc]{./fig02.png}
 \caption{Histogram of LAI values calculated for each site and time according to Equation \ref{lai}. The lowest and highest 5\% are removed as outliers, as well as any values below 0. The curve is normalized such that its area is 1.}
 \label{lai_fig}
- \end{figure}
+\end{figure}
+
+An additional concern is that the LAI term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig} plots the jount distrivution of LAI and VPD, and shows that LAI is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approxiamtion for ET response to $D$.
 
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{./fig03.png}
+\caption{The joint distribution of $D$ and LAI. LAI has only a weak dependence on $D$}
+\label{lai_vpd_fig}
+\end{figure}
+
+
+
+
+Before diving into calcualted values of $\frac{\partial \; ET}{\partial \; D}$, it is useful to consider the functional form of Equation \ref{d_et}. There are three terms: a scaling term for the full expression we will call Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$), a relatively constant offset we will call Term 2 ($\frac{c_p}{R_{air}}$), and a variable term we will call Term 3 ($- \frac{\gamma c_s }{\text{LAI }1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right)$). All variables are constant, so the relative magnitude between Term 2 and Term 3 will determine the sign of the derivative, while Term 1 will scale the expression larger or smaller.  
  
-
- 
-
-
-
-
-
 
 %%n
  \begin{linenomath*}

@@ -36,8 +36,6 @@ def unpack_df(filename):
   site = ''.join(filename.split('/')[-1].split('.')[:-1])
   return atmos, canopy, data, site
 
-
-
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
   if meta['vmax'] is None:

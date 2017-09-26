@@ -29,29 +29,29 @@ df['g_a'] = 1./df['r_a']
 df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
 df['d_et_atm'] = df['scaling']*df['vpd_atm']
 
-meta = {}
-meta['vmax'] = None
-meta['var'] = ''
-meta['label'] = ''
-meta['x_axis'] = 'rh'
-meta['log'] = ''
-meta['size'] = 8
+# meta = {}
+# meta['vmax'] = None
+# meta['var'] = ''
+# meta['label'] = ''
+# meta['x_axis'] = 'rh'
+# meta['log'] = ''
+# meta['size'] = 8
 
-meta = {}
-meta['var'] = 'lai'
-meta['folder'] = 'site_et'
-meta['folder_label'] = 'site'
-df.groupby('site').apply(plot_tools.histogram, meta)
-meta['folder'] = 'pft_et'
-meta['folder_label'] = 'pft'
-df.groupby('site').apply(plot_tools.histogram, meta)
-meta['folder'] = ''
-meta['folder_label'] = ''
-plot_tools.histogram(df, meta)
-meta['var'] = 'lai_gpp'
-meta['folder'] = 'gpp'
-df.groupby('site').apply(plot_tools.histogram, meta)
-plt.close('all')
+# meta = {}
+# meta['var'] = 'lai'
+# meta['folder'] = 'site_et'
+# meta['folder_label'] = 'site'
+# df.groupby('site').apply(plot_tools.histogram, meta)
+# meta['folder'] = 'pft_et'
+# meta['folder_label'] = 'pft'
+# df.groupby('site').apply(plot_tools.histogram, meta)
+# meta['folder'] = ''
+# meta['folder_label'] = ''
+# plot_tools.histogram(df, meta)
+# meta['var'] = 'lai_gpp'
+# meta['folder'] = 'gpp'
+# df.groupby('site').apply(plot_tools.histogram, meta)
+# plt.close('all')
 
 # # meta['folder_label'] = 'site'
 # for meta['var'], meta['vmax'] in zip(['d_et', 'd_gpp'],\
@@ -73,7 +73,7 @@ df['jd'] = time.dayofyear
 #   meta['plot_type'] = '' #'simple'
 #   meta['x_var'] = 'swc'
 #   meta['y_var'] = name
-#   scatter_wrapper(df, meta)
+#   plot_tools.scatter_wrapper(df, meta)
 #   meta['group'] = 'site'
 #   output[name] = df.groupby('site').apply(plot_tools.test_trend, meta)
 #   plt.close('all')
@@ -93,7 +93,7 @@ df['jd'] = time.dayofyear
 #   meta['plot_type'] = '' #'simple'
 #   meta['x_var'] = name
 #   meta['y_var'] = 'lai'
-#   scatter_wrapper(df, meta)
+#   plot_tools.scatter_wrapper(df, meta)
 #   meta['group'] = 'site'
 #   output[name] = df.groupby('site').apply(plot_tools.test_trend, meta)
 #   plt.close('all')
