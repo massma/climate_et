@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 import codebase.plot_tools as plot_tools
 import util
+import metcalcs as met
+import codebase.penman_monteith as pm
 
 mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
@@ -127,4 +129,49 @@ meta['x_var'] = 'vpd'
 meta['y_var'] = 'lai'
 plot_tools.scatter_wrapper(df, meta)
 os.system('cp %s/climate_et/scatters/vpd_lai.png ../doc/paper/fig03.png'\
+          % (os.environ['PLOTS']))
+
+### FIGURE 4 ###
+# scaling term as a function of t and g_a
+for key in ['gamma', 'delta', 'rho_a', 'g_a']:
+  print('%s var: %f, mean: %f, cf: %f'\
+        % (key, df[key].std(), df[key].mean(), df[key].std()/df[key].mean()))
+df['rho_like'] = df['p_a']/(273.15 + df['t_a'])
+
+def scaling(_df, t_a, g_a):
+  """
+  calculates the scaling term (Term 1 in paper) given _df, g_a (contant)
+  and t_a
+  """
+  _atmos = {'t_a' : t_a, 'e_s' : met.vapor_pres(t_a)*pm.VP_FACTOR}
+  delta = pm.delta(_atmos)
+  return g_a*_df['rho_like'].mean()/(pm.delta(_atmos) + df.gamma.mean())
+
+def plot_scaling(_df, pft=False):
+  """makes idealized plots of scaling as a function of g_a and vpd"""
+  t_a = np.linspace(_df.t_a.quantile(q=0.05), _df.t_a.quantile(q=0.95))
+  fig = plt.figure()
+  ax = fig.add_subplot(111)
+  ax.plot(t_a, np.ones(t_a.shape)*_df.scaling.mean(), 'k--',\
+          linewidth=0.5, label='Term 1 mean')
+  for percentile in [5., 25., 50., 75., 95.]:
+    g_a = _df.g_a.quantile(q=percentile/100.)
+    scale = scaling(_df, t_a, g_a)
+    ax.plot(t_a, scale, label='$g_a$ = %5.3f (%dth percentile)'\
+            % (g_a, int(percentile)))
+  ax.set_xlabel('T (C)')
+  ax.set_ylabel(r'Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
+  # ax.set_ylabel('Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
+  plt.legend(loc='best', fontsize=9)
+  if pft:
+   util.test_savefig('%s/climate_et/scaling/%s.pdf'\
+                % (os.environ['PLOTS'], _df.pft.iloc[0]))
+  else:
+    plt.savefig('../doc/paper/fig04.pdf')
+  return
+
+df.groupby('pft').apply(plot_scaling, True)
+plot_scaling(df)
+os.system('convert +append %s/climate_et/scaling/*.pdf '\
+          '../doc/paper/fig04.pdf'\
           % (os.environ['PLOTS']))
