@@ -13,6 +13,7 @@ import codebase.plot_tools as plot_tools
 import util
 import metcalcs as met
 import codebase.penman_monteith as pm
+import codebase.calc_tools as calc
 
 mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
@@ -148,11 +149,11 @@ def scaling(_df, t_a, g_a):
   return g_a*_df['rho_like'].mean()/(pm.delta(_atmos) + df.gamma.mean())
 
 def plot_scaling(_df, ax, savefig=False):
-  """makes idealized plots of scaling as a function of g_a and vpd"""
+  """makes idealized plots of scaling as a function of g_a and T"""
   t_a = np.linspace(_df.t_a.quantile(q=0.05), _df.t_a.quantile(q=0.95))
   ax.plot(t_a, np.ones(t_a.shape)*_df.scaling.mean(), 'k--',\
           linewidth=0.5, label='Term 1 mean')
-  for percentile in [5., 25., 50., 75., 95.]:
+  for percentile in [5., 25., 50., 75., 95.][::-1]:
     g_a = _df.g_a.quantile(q=percentile/100.)
     scale = scaling(_df, t_a, g_a)
     ax.plot(t_a, scale, label='$g_a$ = %5.3f (%dth percentile)'\
@@ -171,7 +172,7 @@ def scaled_mean(_df):
   return _df
 
 def plot_scaled_scaling(_df, ax):
-  """makes idealized plots of scaling as a function of g_a and vpd"""
+  """makes idealized plots of scaling as a function of g_a and T"""
   t_a = np.linspace(_df.t_a.quantile(q=0.05), _df.t_a.quantile(q=0.95))
   _df = _df.groupby('pft').apply(scaled_mean)
   for percentile in [5., 25., 50., 75., 95.]:
@@ -200,6 +201,9 @@ def plot_mean_pft(_df, ax, savefig=False):
     scale = scaling(_df, t_a, g_a)
     ax.plot(t_a, scale, label='PFT = %s, $\overline{g_a}$ = %5.3f'\
             % (pft, g_a))
+    ptiles = np.array([_df.t_a.loc[idx].quantile(q=_p/100.)\
+                       for _p in [25., 50., 75.]])
+    ax.plot(ptiles, scaling(_df, ptiles, g_a), 'k*')
   ax.set_xlabel('T (C)')
   ax.set_ylabel(r'Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
   plt.legend(loc='best', fontsize=8)
@@ -224,3 +228,53 @@ def scaling_wrapper(df):
 #           '../doc/paper/fig04.pdf'\
 #           % (os.environ['PLOTS']))
 scaling_wrapper(df)
+
+
+
+
+##### Figure 5 #####
+def term_2(_df, lai, vpd):
+  """calculates term 2"""
+  atmos = {'gamma' : _df.gamma.mean(), 'c_a' : _df.c_a.mean(),\
+           'vpd' : vpd}
+  if _df.uwue.std() > 1.e-8:
+    print('error, uWUE is variable: %f!!!!' % _df.uwue.std())
+  elif _df.g1.std() > 1.e-8:
+    print('error, g1 is variabile: %f!!!!!' % _df.g1.std())
+  canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
+  return pm.CP/_df.r_moist.mean() +calc.leaf_vpd(atmos, canopy, lai)
+
+def plot_leaf(_df, ax, savefig=False):
+  """makes idealized plots of plant term as a function of lai and vpd"""
+  vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
+  for percentile in [5., 25., 50., 75., 95.][::-1]:
+    lai = _df.lai.quantile(q=percentile/100.)
+    ax.plot(vpd, term_2(_df, lai, vpd), label='$LAI$ = %5.2f (%dth percentile)'\
+            % (lai, int(percentile)))
+  ax.set_xlabel('VPD (Pa)')
+  ax.set_ylabel(r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
+                r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
+                r'\left( \frac{2 g_1 + \sqrt{D}}'\
+                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$')
+  ax.set_title('PFT = %s' % _df.pft.iloc[0])
+  plt.legend(loc='best', fontsize=8)
+  if savefig:
+    plt.savefig('../doc/paper/fig05.pdf')
+  return
+
+def leaf_wrapper(df):
+  """wraps df"""
+  pfts = ['DBF', 'ENF', 'CSH', 'CRO', 'GRA']
+  nplots = len(pfts)
+  fig = plt.figure()
+  fig.set_figheight(fig.get_figheight()*nplots)
+  for i, pft in enumerate(pfts):
+    _df = df.loc[(df.pft == pft), :]
+    ax = fig.add_subplot(nplots, 1, i+1)
+    plot_leaf(_df, ax)
+  plt.tight_layout()
+  plt.savefig('../doc/paper/fig05.pdf')
+  return
+
+plt.close('all')
+leaf_wrapper(df)
