@@ -268,8 +268,12 @@ def leaf_wrapper(df):
   nplots = len(pfts)
   fig = plt.figure()
   fig.set_figheight(fig.get_figheight()*nplots)
+  print('\n')
   for i, pft in enumerate(pfts):
     _df = df.loc[(df.pft == pft), :]
+    print('for %s, g1: %f, uwue: %f, vpd: %f, lai: %f'\
+          % (pft, _df.g1.mean(), _df.uwue.mean()/pm.LV,\
+             _df.vpd.mean(), _df.lai.mean()))
     ax = fig.add_subplot(nplots, 1, i+1)
     plot_leaf(_df, ax)
   plt.tight_layout()
@@ -278,3 +282,63 @@ def leaf_wrapper(df):
 
 plt.close('all')
 leaf_wrapper(df)
+grouped = df.groupby('pft')
+print('mean lai: %5.2f' % grouped.lai.mean().mean())
+print('mean vpd: %5.2f' % grouped.vpd.mean().mean())
+df['uwue_norm'] = df.uwue/pm.LV
+for key in ['lai', 'vpd', 'g1', 'uwue_norm']:
+  print('cv %s: %5.2f' % (key,\
+                          grouped[key].mean().std()/grouped[key].mean().mean()))
+
+def get_pft(_df):
+  return _df['pft'].iloc[0]
+
+names = grouped.apply(get_pft)
+plt.figure()
+plt.plot(grouped.g1.mean(), grouped.uwue.mean(), 'k*')
+for name, x, y in zip(names, grouped.g1.mean(), grouped.uwue.mean()):
+  plt.annotate(name, xy=(x, y))
+plt.savefig('%s/temp/garb.png' % os.environ['PLOTS'])
+
+#now for figure 6 split product into two
+
+
+### FIGURE 6 ###
+# look at what controls variability between pfts
+def first_half(_df, lai):
+  """calcs first half of term 3"""
+  return _df.gamma.mean()*df.c_a.mean()/\
+(lai*1.6*pm.R_STAR*_df.uwue_norm.mean())
+
+def second_half(_df, vpd):
+  """calcs second half of term 3"""
+  _g1 = _df.g1.iloc[0]
+  return (2.*_g1 + np.sqrt(vpd))/\
+    (2.*(_g1 + np.sqrt(vpd))**2)
+
+def pft_leaf(_df, ax1, ax2):
+  """takes df and plots both halves of product in term 2"""
+  lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
+  ax1.plot(lai, first_half(_df, lai), label=str(_df.pft.iloc[0]))
+  ptiles = np.array([_df.lai.quantile(q=_p/100.)\
+                     for _p in [25., 50., 75.]])
+  ax1.plot(ptiles, first_half(_df, ptiles), 'k*')
+  # now second half
+  vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
+  ax2.plot(vpd, second_half(_df, vpd), label=str(_df.pft.iloc[0]))
+  ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
+                     for _p in [25., 50., 75.]])
+  return
+
+fig = plt.figure()
+fig.set_figheight(fig.get_figheight()*2)
+ax1 = fig.add_subplot(2, 1, 1)
+ax2 = fig.add_subplot(2, 1, 2)
+df.groupby('pft').apply(pft_leaf, ax1, ax2)
+ax1.set_xlabel('LAI')
+ax1.set_ylabel(r'$\frac{\gamma c_s }{LAI \; 1.6 \; R\;  uWUE }$')
+ax2.set_xlabel('VPD (Pa)')
+ax2.set_ylabel(r'$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
+plt.legend(loc='best')
+plt.tight_layout()
+plt.savefig('../doc/paper/fig06.pdf')
