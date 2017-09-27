@@ -147,11 +147,9 @@ def scaling(_df, t_a, g_a):
   delta = pm.delta(_atmos)
   return g_a*_df['rho_like'].mean()/(pm.delta(_atmos) + df.gamma.mean())
 
-def plot_scaling(_df, pft=False):
+def plot_scaling(_df, ax, savefig=False):
   """makes idealized plots of scaling as a function of g_a and vpd"""
   t_a = np.linspace(_df.t_a.quantile(q=0.05), _df.t_a.quantile(q=0.95))
-  fig = plt.figure()
-  ax = fig.add_subplot(111)
   ax.plot(t_a, np.ones(t_a.shape)*_df.scaling.mean(), 'k--',\
           linewidth=0.5, label='Term 1 mean')
   for percentile in [5., 25., 50., 75., 95.]:
@@ -161,17 +159,29 @@ def plot_scaling(_df, pft=False):
             % (g_a, int(percentile)))
   ax.set_xlabel('T (C)')
   ax.set_ylabel(r'Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
-  # ax.set_ylabel('Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
-  plt.legend(loc='best', fontsize=9)
-  if pft:
-   util.test_savefig('%s/climate_et/scaling/%s.pdf'\
-                % (os.environ['PLOTS'], _df.pft.iloc[0]))
-  else:
+  ax.set_title('PFT = %s' % _df.pft.iloc[0])
+  plt.legend(loc='best', fontsize=8)
+  if savefig:
     plt.savefig('../doc/paper/fig04.pdf')
   return
 
-df.groupby('pft').apply(plot_scaling, True)
-plot_scaling(df)
-os.system('convert +append %s/climate_et/scaling/*.pdf '\
-          '../doc/paper/fig04.pdf'\
-          % (os.environ['PLOTS']))
+def scaling_wrapper(df):
+  """wrapper that groups by pft and does scaling plot"""
+  pfts = ['GRA', 'ENF', 'CRO', 'DBF', 'CSH']
+  fig = plt.figure()
+  nplots = len(pfts)
+  fig.set_figheight(fig.get_figheight()*nplots)
+  for i, pft in enumerate(pfts):
+    ax = fig.add_subplot(nplots, 1, i+1)
+    _df = df.loc[(df.pft == pft), :]
+    print('for %s, CV = %f' % (pft, _df.scaling.std()/_df.scaling.mean()))
+    plot_scaling(_df, ax)
+  plt.tight_layout()
+  plt.savefig('../doc/paper/fig04.pdf')
+  return
+
+# plot_scaling(df)
+# os.system('convert -append %s/climate_et/scaling/*.pdf '\
+#           '../doc/paper/fig04.pdf'\
+#           % (os.environ['PLOTS']))
+scaling_wrapper(df)
