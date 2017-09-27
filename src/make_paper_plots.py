@@ -328,6 +328,7 @@ def pft_leaf(_df, ax1, ax2):
   ax2.plot(vpd, second_half(_df, vpd), label=str(_df.pft.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
+  ax2.plot(ptiles, second_half(_df, ptiles), 'k*')
   return
 
 fig = plt.figure()
