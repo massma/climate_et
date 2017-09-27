@@ -332,9 +332,9 @@ By construction, the variability in the LAI term (Equation \ref{lai}) contains a
 \label{lai_fig}
 \end{figure}
 
-An additional concern is that the LAI term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig} plots the jount distrivution of LAI and VPD, and shows that LAI is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approxiamtion for ET response to $D$.
+An additional concern is that the LAI term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig} plots the joint distrivution of LAI and VPD, and shows that LAI is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approxiamtion for ET response to $D$.
 
-
+ 
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig03.png}
@@ -343,12 +343,23 @@ An additional concern is that the LAI term may in fact be some function of $D$, 
 \end{figure}
 
 
+Before diving into calcualted values of $\frac{\partial \; ET}{\partial \; D}$, it is useful to consider the functional form of Equation \ref{d_et}. There are three terms: a scaling term for the full expression we will call Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$), a relatively constant offset we will call Term 2 ($\frac{c_p}{R_{air}}$), and a variable term we will call Term 3 ($- \frac{\gamma c_s }{\text{LAI }1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right)$). All variables are constant, so the relative magnitude between Term 2 and Term 3 will determine the sign of the derivative, while Term 1 will scale the expression larger or smaller.
+
+In Term 1, $\frac{P}{T} \propto \rho$, so this should vary little relative to $g_a$ and $\Delta$.  $\gamma$ should also be relatively constant, So the scaling term, Term 1, should be primarily a function of $g_a$ and temperature (though the function $\Delta$). Figure \ref{scale_vary} shows how the magnitude of the scaling varies with $T$ and $g_a$. 
 
 
-Before diving into calcualted values of $\frac{\partial \; ET}{\partial \; D}$, it is useful to consider the functional form of Equation \ref{d_et}. There are three terms: a scaling term for the full expression we will call Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$), a relatively constant offset we will call Term 2 ($\frac{c_p}{R_{air}}$), and a variable term we will call Term 3 ($- \frac{\gamma c_s }{\text{LAI }1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right)$). All variables are constant, so the relative magnitude between Term 2 and Term 3 will determine the sign of the derivative, while Term 1 will scale the expression larger or smaller.  
  
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{./fig04.pdf}
+\caption{Variability of Term 1 for each PFT. Each colored line correspondes to a different aerodynamic resistance.}
+\label{lai_vpd_fig}
+\end{figure}
 
-%%n
+
+
+
+%%
  \begin{linenomath*}
  \begin{equation}
  \end{equation}

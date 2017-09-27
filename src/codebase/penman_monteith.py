@@ -296,7 +296,7 @@ def corrected_r_a(_atmos, _canopy):
   return _r_a
 
 def delta(_atmos):
-  """calculates delta in Pa/C"""
+  """calculates delta in Pa/C, from shuttleworth equation 2.18"""
   return 4098.*_atmos['e_s']/((237.3+_atmos['t_a'])**2)
 
 def gamma(_atmos):
