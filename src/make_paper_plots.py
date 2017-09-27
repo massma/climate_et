@@ -165,20 +165,59 @@ def plot_scaling(_df, ax, savefig=False):
     plt.savefig('../doc/paper/fig04.pdf')
   return
 
+def scaled_mean(_df):
+  """just scales g_a by mean"""
+  _df['scaled_g_a'] = _df.g_a/df.g_a.mean()
+  return _df
+
+def plot_scaled_scaling(_df, ax):
+  """makes idealized plots of scaling as a function of g_a and vpd"""
+  t_a = np.linspace(_df.t_a.quantile(q=0.05), _df.t_a.quantile(q=0.95))
+  _df = _df.groupby('pft').apply(scaled_mean)
+  for percentile in [5., 25., 50., 75., 95.]:
+    g_a = _df.scaled_g_a.quantile(q=percentile/100.)
+    scale = scaling(_df, t_a, g_a)
+    ax.plot(t_a, scale,\
+            label=r'$\frac{g_a}{\overline{g_a}}$ = %5.3f (%dth percentile)'\
+            % (g_a, int(percentile)))
+  ax.set_xlabel('T (C)')
+  ax.set_ylabel(r'Normalized Term 1 '\
+                r'($\frac{g_a \; P}{\overline{g_a} \; T(\Delta + \gamma)}$)')
+  plt.legend(loc='best', fontsize=8)
+  return
+
+def plot_mean_pft(_df, ax, savefig=False):
+  """makes idealized plots of scaling as a function of pft"""
+
+  # pfts = ['GRA', 'ENF', 'CRO', 'DBF', 'CSH']
+  pfts = ['DBF', 'ENF', 'CSH', 'CRO', 'GRA']
+  for pft in pfts:
+
+    idx = (_df.pft == pft)
+    t_a = np.linspace(_df.t_a.loc[idx].quantile(q=0.05),\
+                      _df.t_a.loc[idx].quantile(q=0.95))
+    g_a = _df.g_a.loc[idx].mean()
+    scale = scaling(_df, t_a, g_a)
+    ax.plot(t_a, scale, label='PFT = %s, $\overline{g_a}$ = %5.3f'\
+            % (pft, g_a))
+  ax.set_xlabel('T (C)')
+  ax.set_ylabel(r'Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
+  plt.legend(loc='best', fontsize=8)
+  return
+
 def scaling_wrapper(df):
   """wrapper that groups by pft and does scaling plot"""
-  pfts = ['GRA', 'ENF', 'CRO', 'DBF', 'CSH']
+
   fig = plt.figure()
-  nplots = len(pfts)
-  fig.set_figheight(fig.get_figheight()*nplots)
-  for i, pft in enumerate(pfts):
-    ax = fig.add_subplot(nplots, 1, i+1)
-    _df = df.loc[(df.pft == pft), :]
-    print('for %s, CV = %f' % (pft, _df.scaling.std()/_df.scaling.mean()))
-    plot_scaling(_df, ax)
+  fig.set_figheight(fig.get_figheight()*2)
+  ax = fig.add_subplot(2, 1, 1)
+  plot_scaled_scaling(df, ax)
+  ax = fig.add_subplot(2, 1, 2)
+  plot_mean_pft(df, ax)
   plt.tight_layout()
   plt.savefig('../doc/paper/fig04.pdf')
   return
+
 
 # plot_scaling(df)
 # os.system('convert -append %s/climate_et/scaling/*.pdf '\
