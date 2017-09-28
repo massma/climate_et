@@ -244,7 +244,7 @@ def term_2(_df, lai, vpd):
   canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
   return pm.CP/_df.r_moist.mean() +calc.leaf_vpd(atmos, canopy, lai)
 
-def plot_leaf(_df, ax, savefig=False):
+def plot_leaf_vpd(_df, ax, savefig=False):
   """makes idealized plots of plant term as a function of lai and vpd"""
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   for percentile in [5., 25., 50., 75., 95.][::-1]:
@@ -256,11 +256,34 @@ def plot_leaf(_df, ax, savefig=False):
                 r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
                 r'\left( \frac{2 g_1 + \sqrt{D}}'\
                 r'{2 (g_1 + \sqrt{D})^2}\right)\right)$')
-  ax.set_title('PFT = %s' % _df.pft.iloc[0])
+  ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
+               % (_df.pft.iloc[0], df.g1.iloc[0], df.uwue.iloc[0]))
   plt.legend(loc='best', fontsize=8)
   if savefig:
     plt.savefig('../doc/paper/fig05.pdf')
   return
+
+
+def plot_leaf_lai(_df, ax, savefig=False):
+  """makes idealized plots of plant term as a function of lai and vpd"""
+  lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
+  for percentile in [5., 25., 50., 75., 95.][::-1]:
+    vpd = _df.vpd.quantile(q=percentile/100.)
+    ax.plot(lai, term_2(_df, lai, vpd), label='$VPD$ = %5.2f (%dth percentile)'\
+            % (vpd, int(percentile)))
+  ax.set_xlabel('LAI')
+  ax.set_ylabel(r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
+                r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
+                r'\left( \frac{2 g_1 + \sqrt{D}}'\
+                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$')
+  ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
+               % (_df.pft.iloc[0], df.g1.iloc[0], df.uwue.iloc[0]))
+  plt.legend(loc='best', fontsize=8)
+  if savefig:
+    plt.savefig('../doc/paper/fig05.pdf')
+  return
+
+
 
 def leaf_wrapper(df):
   """wraps df"""
@@ -268,14 +291,17 @@ def leaf_wrapper(df):
   nplots = len(pfts)
   fig = plt.figure()
   fig.set_figheight(fig.get_figheight()*nplots)
+  fig.set_figwidth(fig.get_figwidth()*2)
   print('\n')
   for i, pft in enumerate(pfts):
     _df = df.loc[(df.pft == pft), :]
     print('for %s, g1: %f, uwue: %f, vpd: %f, lai: %f'\
           % (pft, _df.g1.mean(), _df.uwue.mean()/pm.LV,\
              _df.vpd.mean(), _df.lai.mean()))
-    ax = fig.add_subplot(nplots, 1, i+1)
-    plot_leaf(_df, ax)
+    ax = fig.add_subplot(nplots, 2, i*2+1)
+    ax2 = fig.add_subplot(nplots, 2, i*2+2)
+    plot_leaf_vpd(_df, ax)
+    plot_leaf_lai(_df, ax2)
   plt.tight_layout()
   plt.savefig('../doc/paper/fig05.pdf')
   return
