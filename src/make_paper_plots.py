@@ -30,7 +30,11 @@ site_list = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
 site_list.index = site_list.Site
 site_list = site_list.loc[df.values]
 
-
+# below is the label 
+paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
+               r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
+               r'\left( \frac{2 g_1 + \sqrt{D}}'\
+               r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
 def make_map(_df):
   """makes a map given a _df with Lat, Lon, and Cover"""
   pfts = _df.Cover_type.drop_duplicates()
@@ -253,10 +257,7 @@ def plot_leaf_vpd(_df, ax, savefig=False):
     ax.plot(vpd, term_2(_df, lai, vpd), label='$LAI$ = %5.2f (%dth percentile)'\
             % (lai, int(percentile)))
   ax.set_xlabel('VPD (Pa)')
-  ax.set_ylabel(r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
-                r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
-                r'\left( \frac{2 g_1 + \sqrt{D}}'\
-                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$')
+  ax.set_ylabel(paren_string)
   ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
                % (_df.pft.iloc[0], _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
   ax.plot(ax.get_xlim(), [0., 0.], 'k-', linewidth=0.2)
@@ -275,10 +276,7 @@ def plot_leaf_lai(_df, ax, savefig=False):
             label='$VPD$ = %5.0f Pa (%dth percentile)'\
             % (vpd, int(percentile)))
   ax.set_xlabel('LAI')
-  ax.set_ylabel(r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
-                r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
-                r'\left( \frac{2 g_1 + \sqrt{D}}'\
-                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$')
+  ax.set_ylabel(paren_string)
   ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
                % (_df.pft.iloc[0], _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
   ax.plot(ax.get_xlim(), [0., 0.], 'k-', linewidth=0.2)
@@ -334,13 +332,13 @@ plt.savefig('%s/temp/garb.png' % os.environ['PLOTS'])
 # look at what controls variability between pfts
 def first_half(_df, lai):
   """calcs first half of term 3"""
-  return _df.gamma.mean()*df.c_a.mean()/\
+  return -_df.gamma.mean()*df.c_a.mean()/\
 (lai*1.6*pm.R_STAR*_df.uwue_norm.mean())
 
 def second_half(_df, vpd):
   """calcs second half of term 3"""
   _g1 = _df.g1.iloc[0]
-  return (2.*_g1 + np.sqrt(vpd))/\
+  return -(2.*_g1 + np.sqrt(vpd))/\
     (2.*(_g1 + np.sqrt(vpd))**2)
 
 def pft_leaf(_df, axs):
@@ -359,7 +357,7 @@ def pft_leaf(_df, axs):
   lai = _df.lai.mean()
   axs[2].plot(vpd, term_2(_df, lai, vpd),\
               label=r'%s, $\overbar{LAI}$ = %4.2f'\
-              % (_df.pft.iloc[0], LAI))
+              % (_df.pft.iloc[0], lai))
   axs[3].plot(vpd, second_half(_df, vpd), label=str(_df.pft.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
@@ -371,10 +369,14 @@ fig.set_figheight(fig.get_figheight()*2)
 fig.set_figwidth(fig.get_figwidth()*2)
 axs = [fig.add_subplot(2, 2, i+1) for i in range(4)]
 df.groupby('pft').apply(pft_leaf, axs)
+axs[0].set_xlabel('LAI')
 axs[1].set_xlabel('LAI')
-axs[1].set_ylabel(r'$\frac{\gamma c_s }{LAI \; 1.6 \; R\;  uWUE }$')
+axs[0].set_ylabel(paren_string)
+axs[1].set_ylabel(r'-$\frac{\gamma c_s }{LAI \; 1.6 \; R\;  uWUE }$')
+axs[2].set_xlabel('VPD (Pa)')
 axs[3].set_xlabel('VPD (Pa)')
-axs[3].set_ylabel(r'$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
+axs[2].set_ylabel(paren_string)
+axs[3].set_ylabel(r'-$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
 plt.legend(loc='best')
 plt.tight_layout()
 plt.savefig('../doc/paper/fig06.pdf')
