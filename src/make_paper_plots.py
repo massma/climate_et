@@ -346,9 +346,11 @@ def pft_leaf(_df, axs):
   lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
   vpd = _df.vpd.mean()
   axs[0].plot(lai, term_2(_df, lai, vpd),\
-              label=r'%s, $\overbar{VPD}$ = %4.0f Pa'\
+              label=r"%s, $\overline{VPD}$ = %4.0f Pa"\
               % (_df.pft.iloc[0], vpd))
-  axs[1].plot(lai, first_half(_df, lai), label=str(_df.pft.iloc[0]))
+  axs[1].plot(lai, first_half(_df, lai),\
+              label='%s, uWUE = %4.2f'\
+              % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
   ptiles = np.array([_df.lai.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
   axs[1].plot(ptiles, first_half(_df, ptiles), 'k*')
@@ -356,9 +358,10 @@ def pft_leaf(_df, axs):
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
   axs[2].plot(vpd, term_2(_df, lai, vpd),\
-              label=r'%s, $\overbar{LAI}$ = %4.2f'\
+              label=r"%s, $\overline{LAI}$ = %4.2f"\
               % (_df.pft.iloc[0], lai))
-  axs[3].plot(vpd, second_half(_df, vpd), label=str(_df.pft.iloc[0]))
+  axs[3].plot(vpd, second_half(_df, vpd),\
+              label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
   axs[3].plot(ptiles, second_half(_df, ptiles), 'k*')
@@ -377,6 +380,9 @@ axs[2].set_xlabel('VPD (Pa)')
 axs[3].set_xlabel('VPD (Pa)')
 axs[2].set_ylabel(paren_string)
 axs[3].set_ylabel(r'-$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
-plt.legend(loc='best')
+for ax in axs:
+  h, l = ax.get_legend_handles_labels()
+  ax.legend(h, l, loc='best')
+# plt.legend(loc='best')
 plt.tight_layout()
 plt.savefig('../doc/paper/fig06.pdf')
