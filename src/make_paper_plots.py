@@ -346,8 +346,9 @@ def pft_leaf(_df, axs):
   lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
   vpd = _df.vpd.mean()
   axs[0].plot(lai, term_2(_df, lai, vpd),\
-              label=r"%s, $\overline{VPD}$ = %4.0f Pa"\
-              % (_df.pft.iloc[0], vpd))
+              label=r"%s, $\overline{VPD}$*uWUE=%4.0f Pa, uWUE=%4.2f, g1=%4.1f"\
+              % (_df.pft.iloc[0], vpd*_df.uwue_norm.iloc[0],\
+                 _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
   axs[1].plot(lai, first_half(_df, lai),\
               label='%s, uWUE = %4.2f'\
               % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
@@ -358,8 +359,9 @@ def pft_leaf(_df, axs):
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
   axs[2].plot(vpd, term_2(_df, lai, vpd),\
-              label=r"%s, $\overline{LAI}$ = %4.2f"\
-              % (_df.pft.iloc[0], lai))
+              label=r"%s, $\overline{LAI}$*uWUE*g1=%4.2f, g1=%4.1f"\
+              % (_df.pft.iloc[0],\
+                 lai*_df.uwue_norm.iloc[0]*_df.g1.iloc[0], _df.g1.iloc[0]))
   axs[3].plot(vpd, second_half(_df, vpd),\
               label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
