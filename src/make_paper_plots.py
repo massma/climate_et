@@ -107,7 +107,7 @@ os.system('cp %s/climate_et/histogram/full_lai.png '\
 #     # m.drawparallels(np.arange(-90.,120.,30.))
 #     # m.drawmeridians(np.arange(0.,420.,60.))
 #   plt.colorbar(color)
-#   plt.tight_layout()
+#   plt.tight_layout()n
 #   util.test_savefig('../doc/paper/fig03a.pdf')
 #   return
 
@@ -392,40 +392,62 @@ plt.tight_layout()
 plt.savefig('../doc/paper/fig06.pdf')
 
 
-
+#################################
+#################################
+#################################
 #test figure, when is VPD = 0
-# def et_max_vpd(_df, lai):
+# def et_max_vpd1(_df):
 #   """calculates theoretical max vpd as functoin of -df and lai"""
 #   """note below is only valid for negative x, which we don't have"""
 #   c3 = pm.CP/_df.r_moist
-#   c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+#   c1 = _df.gamma*_df.c_a/(_df.lai*pm.R_STAR*1.6*_df.uwue_norm)
 #   c2 = _df.g1
 #   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
-def et_max_vpd(_df, lai):
+def et_max_vpd(_df):
   """calculates theoretical max vpd as functoin of -df and lai"""
   c3 = pm.CP/_df.r_moist
-  c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+  c1 = _df.gamma*_df.c_a/(_df.lai*pm.R_STAR*1.6*_df.uwue_norm)
   c2 = _df.g1
   return ((c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
 
 mean_df = df.groupby('pft').mean()
-vpd1 = et_max_vpd(mean_df, 1.)
+vpd1 = et_max_vpd(mean_df)#, 1.)
+vpd2 = vpd1
 
 plt.figure()
 vpd1.plot()
 plt.savefig('%s/temp/vpd1.png' % os.environ['PLOTS'])
 
 plt.figure()
-vpd1.plot()
+vpd2.plot()
 plt.savefig('%s/temp/vpd2.png' % os.environ['PLOTS'])
 
-_df = df.loc[df.pft == 'CSH', :]
+_df = df.loc[df.pft == 'DBF', :]
 
-vpd = np.linspace(0., 60000., 1000.)
-t2 = term_2(_df, 1., vpd)
+vpd = np.linspace(0., 5000., 1000.)
+t2 = term_2(_df, _df.lai.mean(), vpd)
 plt.figure()
-plt.semilogx(vpd, t2)
-plt.semilogx([vpd1['CSH'], vpd1['CSH']], [0., 0.], 'k*')
+plt.plot(vpd, t2)
+plt.plot([vpd1['DBF'], vpd1['DBF']], [0., 0.], 'k*')
 plt.savefig('%s/temp/vpd_function.png' % os.environ['PLOTS'])
+
+def penman_monteith_uwue(_df, vpd):
+  """taken from codebase, but should really alter codebase to just use _df"""
+  _et = (_df['delta']*\
+     (_df['r_n']-_df['g_flux'])+\
+         _df['g_a']*_df['p_a']/(273.15 + _df['t_a'])*
+       (pm.CP*vpd/_df['r_moist']\
+        - _df['gamma']*_df['c_a']*np.sqrt(vpd)\
+        /(_df['lai']*pm.R_STAR*1.6*_df['uwue_norm']*\
+          (1. + _df['g1']/np.sqrt(vpd)))))\
+       /(_df['delta']+_df['gamma'])
+  return _et
+
+et = penman_monteith_uwue(_df.iloc[0,:], vpd)
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.plot(vpd, et)
+ax.plot([vpd1['DBF'], vpd1['DBF']], ax.get_ylim(), 'k-')
+plt.savefig('%s/temp/et_function.png' % os.environ['PLOTS'])
