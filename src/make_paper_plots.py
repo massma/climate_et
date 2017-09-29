@@ -30,7 +30,7 @@ site_list = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
 site_list.index = site_list.Site
 site_list = site_list.loc[df.values]
 
-# below is the label 
+# below is the label
 paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
                r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
                r'\left( \frac{2 g_1 + \sqrt{D}}'\
@@ -346,26 +346,28 @@ def pft_leaf(_df, axs):
   lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
   vpd = _df.vpd.mean()
   axs[0].plot(lai, term_2(_df, lai, vpd),\
-              label=r"%s, $\overline{VPD}$*uWUE=%4.0f Pa, uWUE=%4.2f, g1=%4.1f"\
-              % (_df.pft.iloc[0], vpd*_df.uwue_norm.iloc[0],\
+              label=r"$\overline{VPD}$=%4.0f Pa, uWUE=%4.2f, g1=%4.1f"\
+              % (vpd,\
                  _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
   axs[1].plot(lai, first_half(_df, lai),\
               label='%s, uWUE = %4.2f'\
               % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
   ptiles = np.array([_df.lai.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
+  # axs[0].plot(ptiles, term_2(_df, ptiles, vpd), 'k*')
   axs[1].plot(ptiles, first_half(_df, ptiles), 'k*')
   # now second half
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
   axs[2].plot(vpd, term_2(_df, lai, vpd),\
-              label=r"%s, $\overline{LAI}$*uWUE*g1=%4.2f, g1=%4.1f"\
-              % (_df.pft.iloc[0],\
-                 lai*_df.uwue_norm.iloc[0]*_df.g1.iloc[0], _df.g1.iloc[0]))
+              label=r"$\overline{LAI}$=%4.2f, uWUE=%4.2f, g1=%4.1f"\
+              % (\
+                 lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
   axs[3].plot(vpd, second_half(_df, vpd),\
               label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
+  # axs[2].plot(ptiles, term_2(_df, lai, ptiles), 'k*')
   axs[3].plot(ptiles, second_half(_df, ptiles), 'k*')
   return
 
@@ -388,3 +390,42 @@ for ax in axs:
 # plt.legend(loc='best')
 plt.tight_layout()
 plt.savefig('../doc/paper/fig06.pdf')
+
+
+
+#test figure, when is VPD = 0
+# def et_max_vpd(_df, lai):
+#   """calculates theoretical max vpd as functoin of -df and lai"""
+#   """note below is only valid for negative x, which we don't have"""
+#   c3 = pm.CP/_df.r_moist
+#   c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+#   c2 = _df.g1
+#   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
+
+def et_max_vpd(_df, lai):
+  """calculates theoretical max vpd as functoin of -df and lai"""
+  c3 = pm.CP/_df.r_moist
+  c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+  c2 = _df.g1
+  return ((c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
+
+
+mean_df = df.groupby('pft').mean()
+vpd1 = et_max_vpd(mean_df, 1.)
+
+plt.figure()
+vpd1.plot()
+plt.savefig('%s/temp/vpd1.png' % os.environ['PLOTS'])
+
+plt.figure()
+vpd1.plot()
+plt.savefig('%s/temp/vpd2.png' % os.environ['PLOTS'])
+
+_df = df.loc[df.pft == 'CSH', :]
+
+vpd = np.linspace(0., 60000., 1000.)
+t2 = term_2(_df, 1., vpd)
+plt.figure()
+plt.semilogx(vpd, t2)
+plt.semilogx([vpd1['CSH'], vpd1['CSH']], [0., 0.], 'k*')
+plt.savefig('%s/temp/vpd_function.png' % os.environ['PLOTS'])
