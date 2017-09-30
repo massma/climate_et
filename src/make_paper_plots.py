@@ -53,6 +53,7 @@ def make_map(_df):
     m.drawcoastlines()
     for pft in pfts:
       print(pft)
+
       _ds = _df.loc[(_df.Cover_type == pft), ['Latitude', 'Longitude']]
       x, y = m(_ds.Longitude.values, _ds.Latitude.values)
       ax.scatter(x, y, s=size, label=pft, alpha=1.)
@@ -445,7 +446,7 @@ def penman_monteith_uwue(_df, vpd):
        /(_df['delta']+_df['gamma'])
   return _et
 
-et = penman_monteith_uwue(_df.iloc[0,:], vpd)
+et = penman_monteith_uwue(_df.mean(), vpd)
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.plot(vpd, et)
