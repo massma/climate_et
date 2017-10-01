@@ -350,21 +350,21 @@ def et_max_vpd(_df, lai):
   c2 = _df.g1
   return ((c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
-def et_max_vpd1(_df, lai):
-  """calculates theoretical max vpd as functoin of -df and lai"""
-  """note below is only valid for negative x, which we don't have"""
-  c3 = pm.CP/_df.r_moist
-  c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
-  c2 = _df.g1
-  return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
+# def et_max_vpd1(_df, lai):
+#   """calculates theoretical max vpd as functoin of -df and lai"""
+#   """note below is only valid for negative x, which we don't have"""
+#   c3 = pm.CP/_df.r_moist
+#   c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+#   c2 = _df.g1
+#   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
 def pft_leaf(_df, axs):
   """takes df and plots both halves of product in term 2"""
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
   axs[0].plot(vpd, term_2(_df, lai, vpd),\
-              label=r"$\overline{LAI}$=%4.2f, uWUE=%4.2f, g1=%4.1f"\
-              % (\
+              label=r"%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
+              % (_df.pft.iloc[0],\
                  lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
   # axs[3].plot(vpd, second_half(_df, vpd),\
   #             label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
@@ -380,7 +380,6 @@ def pft_leaf(_df, axs):
               label=r"PFT = %s, uWUE=%4.2f, g1=%4.1f"\
               % (_df.pft.iloc[0],\
                  _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
-  axs[1].plot(lai, et_max_vpd1(_mean_df, lai), linestyle='--')
   # axs[1].plot(lai, first_half(_df, lai),\
   #             label='%s, uWUE = %4.2f'\
   #             % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
@@ -399,16 +398,17 @@ axs = [fig.add_subplot(2, 1, i+1) for i in range(2)]
 df.groupby('pft').apply(pft_leaf, axs)
 axs[0].set_xlabel('VPD (Pa)')
 axs[1].set_xlabel('LAI')
-axs[0].set_ylabel(r'VPD$_{ETmin}')
-axs[1].set_ylabel(paren_string)
-axs[1].plot(axs[1].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
+axs[0].set_ylabel(paren_string)
+axs[1].set_ylabel(r'VPD$_{ETmin}$')
+axs[0].plot(axs[1].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
+axs[1].set_ylim([0., np.around(df.vpd.quantile(q=0.95), decimals=-2)])
 # axs[1].set_ylabel(r'-$\frac{\gamma c_s }{LAI \; 1.6 \; R\;  uWUE }$')
 # axs[2].set_xlabel('VPD (Pa)')
 # axs[3].set_xlabel('VPD (Pa)')
 # axs[2].set_ylabel(paren_string)
 # axs[3].set_ylabel(r'-$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
 
-for ax in axs:
+for ax in axs[:1]:
   h, l = ax.get_legend_handles_labels()
   ax.legend(h, l, loc='best')
 # plt.legend(loc='best')
