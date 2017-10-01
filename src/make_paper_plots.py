@@ -443,22 +443,30 @@ plt.figure()
 plt.plot(vpd, t2)
 plt.plot([vpd1['DBF'], vpd1['DBF']], [0., 0.], 'k*')
 plt.savefig('%s/temp/vpd_function.png' % os.environ['PLOTS'])
-
-def penman_monteith_uwue(_df, vpd):
+_df_mean = _df.mean()
+def penman_monteith_uwue(_df, vpd, lai):
   """taken from codebase, but should really alter codebase to just use _df"""
   _et = (_df['delta']*\
      (_df['r_n']-_df['g_flux'])+\
          _df['g_a']*_df['p_a']/(273.15 + _df['t_a'])*
        (pm.CP*vpd/_df['r_moist']\
         - _df['gamma']*_df['c_a']*np.sqrt(vpd)\
-        /(_df['lai']*pm.R_STAR*1.6*_df['uwue_norm']*\
+        /(lai*pm.R_STAR*1.6*_df['uwue_norm']*\
           (1. + _df['g1']/np.sqrt(vpd)))))\
        /(_df['delta']+_df['gamma'])
   return _et
 
-et = penman_monteith_uwue(_df.mean(), vpd)
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.plot(vpd, et)
-ax.plot([vpd1['DBF'], vpd1['DBF']], ax.get_ylim(), 'k-')
-plt.savefig('%s/temp/et_function.png' % os.environ['PLOTS'])
+def plot_et(_lai):
+  """justmakes a plto"""
+  et = penman_monteith_uwue(_df_mean, vpd, _lai)
+  fig = plt.figure()
+  ax = fig.add_subplot(111)
+  ax.plot(vpd, et)
+  crit = et_max_vpd(_df_mean, _lai)
+  ax.plot([crit, crit], ax.get_ylim(), 'k-')
+  plt.savefig('%s/temp/et_function_lai%d.png'\
+              % (os.environ['PLOTS'], int(_lai*10)))
+  return
+
+plot_et(0.7)
+plot_et(1.7)
