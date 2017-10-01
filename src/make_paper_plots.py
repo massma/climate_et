@@ -238,7 +238,7 @@ scaling_wrapper(df)
 
 
 
-##### Figure 5 #####
+# ##### Figure 5 #####
 def term_2(_df, lai, vpd):
   """calculates term 2"""
   atmos = {'gamma' : _df.gamma.mean(), 'c_a' : _df.c_a.mean(),\
@@ -250,65 +250,66 @@ def term_2(_df, lai, vpd):
   canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
   return pm.CP/_df.r_moist.mean() +calc.leaf_vpd(atmos, canopy, lai)
 
-def plot_leaf_vpd(_df, ax, savefig=False):
-  """makes idealized plots of plant term as a function of lai and vpd"""
-  vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
-  for percentile in [5., 25., 50., 75., 95.][::-1]:
-    lai = _df.lai.quantile(q=percentile/100.)
-    ax.plot(vpd, term_2(_df, lai, vpd), label='$LAI$ = %5.2f (%dth percentile)'\
-            % (lai, int(percentile)))
-  ax.set_xlabel('VPD (Pa)')
-  ax.set_ylabel(paren_string)
-  ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
-               % (_df.pft.iloc[0], _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
-  ax.plot(ax.get_xlim(), [0., 0.], 'k-', linewidth=0.2)
-  plt.legend(loc='best', fontsize=8)
-  if savefig:
-    plt.savefig('../doc/paper/fig05.pdf')
-  return
+# def plot_leaf_vpd(_df, ax, savefig=False):
+#   """makes idealized plots of plant term as a function of lai and vpd"""
+#   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
+#   for percentile in [5., 25., 50., 75., 95.][::-1]:
+#     lai = _df.lai.quantile(q=percentile/100.)
+#     ax.plot(vpd, term_2(_df, lai, vpd), label='$LAI$ = %5.2f (%dth percentile)'\
+#             % (lai, int(percentile)))
+#   ax.set_xlabel('VPD (Pa)')
+#   ax.set_ylabel(paren_string)
+#   ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
+#                % (_df.pft.iloc[0], _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
+#   ax.plot(ax.get_xlim(), [0., 0.], 'k-', linewidth=0.2)
+#   plt.legend(loc='best', fontsize=8)
+#   if savefig:
+#     plt.savefig('../doc/paper/fig05.pdf')
+#   return
 
 
-def plot_leaf_lai(_df, ax, savefig=False):
-  """makes idealized plots of plant term as a function of lai and vpd"""
-  lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
-  for percentile in [5., 25., 50., 75., 95.][::-1]:
-    vpd = _df.vpd.quantile(q=percentile/100.)
-    ax.plot(lai, term_2(_df, lai, vpd),\
-            label='$VPD$ = %5.0f Pa (%dth percentile)'\
-            % (vpd, int(percentile)))
-  ax.set_xlabel('LAI')
-  ax.set_ylabel(paren_string)
-  ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
-               % (_df.pft.iloc[0], _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
-  ax.plot(ax.get_xlim(), [0., 0.], 'k-', linewidth=0.2)
-  plt.legend(loc='best', fontsize=8)
-  if savefig:
-    plt.savefig('../doc/paper/fig05.pdf')
-  return
+# def plot_leaf_lai(_df, ax, savefig=False):
+#   """makes idealized plots of plant term as a function of lai and vpd"""
+#   lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
+#   for percentile in [5., 25., 50., 75., 95.][::-1]:
+#     vpd = _df.vpd.quantile(q=percentile/100.)
+#     ax.plot(lai, term_2(_df, lai, vpd),\
+#             label='$VPD$ = %5.0f Pa (%dth percentile)'\
+#             % (vpd, int(percentile)))
+#   ax.set_xlabel('LAI')
+#   ax.set_ylabel(paren_string)
+#   ax.set_title('PFT = %s, uWUE = %5.2f, g1 = %5.2f'\
+#                % (_df.pft.iloc[0], _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
+#   ax.plot(ax.get_xlim(), [0., 0.], 'k-', linewidth=0.2)
+#   plt.legend(loc='best', fontsize=8)
+#   if savefig:
+#     plt.savefig('../doc/paper/fig05.pdf')
+#   return
 
-def leaf_wrapper(df):
-  """wraps df"""
-  pfts = ['DBF', 'ENF', 'CSH', 'CRO', 'GRA']
-  nplots = len(pfts)
-  fig = plt.figure()
-  fig.set_figheight(fig.get_figheight()*nplots)
-  fig.set_figwidth(fig.get_figwidth()*2)
-  print('\n')
-  for i, pft in enumerate(pfts):
-    _df = df.loc[(df.pft == pft), :]
-    print('for %s, g1: %f, uwue: %f, vpd: %f, lai: %f'\
-          % (pft, _df.g1.mean(), _df.uwue.mean()/pm.LV,\
-             _df.vpd.mean(), _df.lai.mean()))
-    ax = fig.add_subplot(nplots, 2, i*2+1)
-    ax2 = fig.add_subplot(nplots, 2, i*2+2)
-    plot_leaf_vpd(_df, ax)
-    plot_leaf_lai(_df, ax2)
-  plt.tight_layout()
-  plt.savefig('../doc/paper/fig05.pdf')
-  return
+# def leaf_wrapper(df):
+#   """wraps df"""
+#   pfts = ['DBF', 'ENF', 'CSH', 'CRO', 'GRA']
+#   nplots = len(pfts)
+#   fig = plt.figure()
+#   fig.set_figheight(fig.get_figheight()*nplots)
+#   fig.set_figwidth(fig.get_figwidth()*2)
+#   print('\n')
+#   for i, pft in enumerate(pfts):
+#     _df = df.loc[(df.pft == pft), :]
+#     print('for %s, g1: %f, uwue: %f, vpd: %f, lai: %f'\
+#           % (pft, _df.g1.mean(), _df.uwue.mean()/pm.LV,\
+#              _df.vpd.mean(), _df.lai.mean()))
+#     ax = fig.add_subplot(nplots, 2, i*2+1)
+#     ax2 = fig.add_subplot(nplots, 2, i*2+2)
+#     plot_leaf_vpd(_df, ax)
+#     plot_leaf_lai(_df, ax2)
+#   plt.tight_layout()
+#   plt.savefig('../doc/paper/fig05.pdf')
+#   return
 
-plt.close('all')
-leaf_wrapper(df)
+# plt.close('all')
+# leaf_wrapper(df)
+
 grouped = df.groupby('pft')
 print('mean lai: %5.2f' % grouped.lai.mean().mean())
 print('mean vpd: %5.2f' % grouped.vpd.mean().mean())
@@ -349,73 +350,81 @@ def et_max_vpd(_df, lai):
   c2 = _df.g1
   return ((c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
+def et_max_vpd1(_df, lai):
+  """calculates theoretical max vpd as functoin of -df and lai"""
+  """note below is only valid for negative x, which we don't have"""
+  c3 = pm.CP/_df.r_moist
+  c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+  c2 = _df.g1
+  return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
+
 def pft_leaf(_df, axs):
   """takes df and plots both halves of product in term 2"""
-  lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
-  vpd = _df.vpd.mean()
-  axs[0].plot(lai, term_2(_df, lai, vpd),\
-              label=r"$\overline{VPD}$=%4.0f Pa, uWUE=%4.2f, g1=%4.1f"\
-              % (vpd,\
-                 _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
-  axs[1].plot(lai, first_half(_df, lai),\
-              label='%s, uWUE = %4.2f'\
-              % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
-  ptiles = np.array([_df.lai.quantile(q=_p/100.)\
-                     for _p in [25., 50., 75.]])
-  # axs[0].plot(ptiles, term_2(_df, ptiles, vpd), 'k*')
-  axs[1].plot(ptiles, first_half(_df, ptiles), 'k*')
-  # now second half
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
-  axs[2].plot(vpd, term_2(_df, lai, vpd),\
+  axs[0].plot(vpd, term_2(_df, lai, vpd),\
               label=r"$\overline{LAI}$=%4.2f, uWUE=%4.2f, g1=%4.1f"\
               % (\
                  lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
-  axs[3].plot(vpd, second_half(_df, vpd),\
-              label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
+  # axs[3].plot(vpd, second_half(_df, vpd),\
+  #             label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
-  # axs[2].plot(ptiles, term_2(_df, lai, ptiles), 'k*')
-  axs[3].plot(ptiles, second_half(_df, ptiles), 'k*')
+  # # axs[2].plot(ptiles, term_2(_df, lai, ptiles), 'k*')
+  # axs[3].plot(ptiles, second_half(_df, ptiles), 'k*')
+
+  lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
+  vpd = _df.vpd.mean()
+  _mean_df = _df.mean()
+  axs[1].plot(lai, et_max_vpd(_mean_df, lai),\
+              label=r"PFT = %s, uWUE=%4.2f, g1=%4.1f"\
+              % (_df.pft.iloc[0],\
+                 _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
+  axs[1].plot(lai, et_max_vpd1(_mean_df, lai), linestyle='--')
+  # axs[1].plot(lai, first_half(_df, lai),\
+  #             label='%s, uWUE = %4.2f'\
+  #             % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
+  # ptiles = np.array([_df.lai.quantile(q=_p/100.)\
+  #                    for _p in [25., 50., 75.]])
+  # # axs[0].plot(ptiles, term_2(_df, ptiles, vpd), 'k*')
+  # axs[1].plot(ptiles, first_half(_df, ptiles), 'k*')
+  # now second half
   return
 
 fig = plt.figure()
 fig.set_figheight(fig.get_figheight()*2)
-fig.set_figwidth(fig.get_figwidth()*2)
-axs = [fig.add_subplot(2, 2, i+1) for i in range(4)]
+#fig.set_figwidth(fig.get_figwidth()*2)
+#axs = [fig.add_subplot(2, 2, i+1) for i in range(4)]
+axs = [fig.add_subplot(2, 1, i+1) for i in range(2)]
 df.groupby('pft').apply(pft_leaf, axs)
-axs[0].set_xlabel('LAI')
+axs[0].set_xlabel('VPD (Pa)')
 axs[1].set_xlabel('LAI')
-axs[0].set_ylabel(paren_string)
-axs[1].set_ylabel(r'-$\frac{\gamma c_s }{LAI \; 1.6 \; R\;  uWUE }$')
-axs[2].set_xlabel('VPD (Pa)')
-axs[3].set_xlabel('VPD (Pa)')
-axs[2].set_ylabel(paren_string)
-axs[3].set_ylabel(r'-$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
+axs[0].set_ylabel(r'VPD$_{ETmin}')
+axs[1].set_ylabel(paren_string)
+axs[1].plot(axs[1].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
+# axs[1].set_ylabel(r'-$\frac{\gamma c_s }{LAI \; 1.6 \; R\;  uWUE }$')
+# axs[2].set_xlabel('VPD (Pa)')
+# axs[3].set_xlabel('VPD (Pa)')
+# axs[2].set_ylabel(paren_string)
+# axs[3].set_ylabel(r'-$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
+
 for ax in axs:
   h, l = ax.get_legend_handles_labels()
   ax.legend(h, l, loc='best')
 # plt.legend(loc='best')
 plt.tight_layout()
-plt.savefig('../doc/paper/fig06.pdf')
+plt.savefig('../doc/paper/fig05.pdf')
 
 
 #################################
 #################################
 #################################
 #test figure, when is VPD = 0
-# def et_max_vpd1(_df):
-#   """calculates theoretical max vpd as functoin of -df and lai"""
-#   """note below is only valid for negative x, which we don't have"""
-#   c3 = pm.CP/_df.r_moist
-#   c1 = _df.gamma*_df.c_a/(_df.lai*pm.R_STAR*1.6*_df.uwue_norm)
-#   c2 = _df.g1
-#   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
 
 
 mean_df = df.groupby('pft').mean()
-vpd1 = et_max_vpd(mean_df)#, 1.)
+vpd1 = et_max_vpd(mean_df, mean_df.lai)#, 1.)
 vpd2 = vpd1
 
 plt.figure()
