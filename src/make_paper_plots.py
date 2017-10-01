@@ -342,6 +342,13 @@ def second_half(_df, vpd):
   return -(2.*_g1 + np.sqrt(vpd))/\
     (2.*(_g1 + np.sqrt(vpd))**2)
 
+def et_max_vpd(_df, lai):
+  """calculates theoretical max vpd as functoin of -df and lai"""
+  c3 = pm.CP/_df.r_moist
+  c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+  c2 = _df.g1
+  return ((c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
+
 def pft_leaf(_df, axs):
   """takes df and plots both halves of product in term 2"""
   lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
@@ -405,12 +412,6 @@ plt.savefig('../doc/paper/fig06.pdf')
 #   c2 = _df.g1
 #   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
-def et_max_vpd(_df):
-  """calculates theoretical max vpd as functoin of -df and lai"""
-  c3 = pm.CP/_df.r_moist
-  c1 = _df.gamma*_df.c_a/(_df.lai*pm.R_STAR*1.6*_df.uwue_norm)
-  c2 = _df.g1
-  return ((c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
 
 mean_df = df.groupby('pft').mean()
