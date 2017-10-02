@@ -81,6 +81,16 @@ def d_et_d_delta(atmos, canopy):
               *(1. + canopy['g1']/np.sqrt(atmos['vpd'])))))\
               /(atmos['delta'] + atmos['gamma'])**2
 
+def d_et_d_r_net(_df):
+  """derivantve w.r.t net radiation"""
+  return _df['delta']/(_df['delta']+_df['gamma'])
+
+def scaling(atmos):
+  """calcualtes the scaling term"""
+  return atmos['p_a']/(atmos['r_a']*(273.15+atmos['t_a'])\
+                       *(atmos['delta'] + atmos['gamma']))
+
+
 def calc_derivative(atmos, canopy, data):
   """adds various derivative fields to data, given atmos and canopy"""
   #calculate LAIs
@@ -90,8 +100,7 @@ def calc_derivative(atmos, canopy, data):
 
   # Now do ET terms
   data['et'] = pm.penman_monteith_uwue(atmos, canopy)
-  data['scaling'] = atmos['p_a']/(atmos['r_a']*(273.15+atmos['t_a'])\
-                                  *(atmos['delta'] + atmos['gamma']))
+  data['scaling'] = scaling(atmos)
   data['vpd_atm'] = pm.CP/atmos['r_moist']
   data['vpd_leaf'] = leaf_vpd(atmos, canopy, canopy['lai'])
   atmos['vpd'] = atmos['vpd'] + 1.0

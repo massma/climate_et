@@ -385,13 +385,19 @@ def pft_leaf(_df, axs):
                      for _p in [25., 50., 75.]])
   axs[1].plot(vpd, np.ones(vpd.shape)*I)
   axs[1].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
+  axs[-1].plot(np.ones(vpd.shape)*I, vpd)
+  axs[-1].plot(np.ones(ptiles.shape)*I, ptiles, 'k*')
+
   # # axs[2].plot(ptiles, term_2(_df, lai, ptiles), 'k*')
   # axs[3].plot(ptiles, second_half(_df, ptiles), 'k*')
 
   lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
   vpd = _df.vpd.mean()
   _mean_df = _df.mean()
-  axs[2].plot(lai, et_min_vpd(_mean_df, lai),\
+  et_min = et_min_vpd(_mean_df, lai)
+  # et_min[et_min > _df.vpd.quantile(0.99)] = np.nan
+  # et_min[et_min > 4001.] = np.nan
+  axs[2].plot(lai, et_min,\
               label=r"PFT = %s, uWUE=%4.2f, g1=%4.1f"\
               % (_df.pft.iloc[0],\
                  _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
@@ -399,8 +405,6 @@ def pft_leaf(_df, axs):
                      for _p in [25., 50., 75.]])
   axs[3].plot(lai, np.ones(lai.shape)*I)
   axs[3].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
-  
-    
   # axs[1].plot(lai, first_half(_df, lai),\
   #             label='%s, uWUE = %4.2f'\
   #             % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
@@ -419,8 +423,10 @@ axs = []
 for _ax in _axs:
   divider = make_axes_locatable(_ax)
   axs.append(_ax)
-  axs.append(divider.append_axes("bottom", size="20%", pad=0.1, sharex=_ax))
+  axs.append(divider.append_axes("bottom", size="20%", pad=0.0, sharex=_ax))
+axs.append(divider.append_axes("left", size="20%", pad=0.0, sharey=axs[2]))
 I = 5
+
 for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
   _df = df.loc[df.pft == pft, :]
   pft_leaf(_df, axs)
@@ -429,13 +435,24 @@ for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
 axs[1].set_xlabel('VPD (Pa)')
 axs[3].set_xlabel('LAI')
 axs[0].set_ylabel(paren_string)
-axs[2].set_ylabel(r'VPD$_{ETmin}$')
+plt.setp(axs[2].get_yticklabels(), visible=False)
+axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
+axs[2].set_title('VPD where ET = Min(ET) '\
+                 r'($\frac{\partial \; ET}{\partial \; D} = 0$)')
 axs[0].plot(axs[2].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
-axs[2].set_ylim([0., np.around(df.vpd.quantile(q=0.95), decimals=-2)])
+# axs[2].set_ylim([0., np.around(df.vpd.quantile(q=0.95), decimals=-2)])
+axs[2].set_ylim([0., 4000.])
 axs[1].set_ylim([0.5,5.5])
 axs[3].set_ylim([0.5,5.5])
 axs[1].get_yaxis().set_visible(False)
 axs[3].get_yaxis().set_visible(False)
+axs[-1].set_xlim([0.5,5.5])
+axs[-1].get_xaxis().set_visible(False)
+
+axs[2].text(0.35, 250., r'$\frac{\partial \; ET}{\partial \; D} < 0$',\
+            fontsize=15)
+axs[2].text(1.4, 3500., r'$\frac{\partial \; ET}{\partial \; D} > 0$',\
+            fontsize=15)
 # axs[3].set_xlim(axs[2].get_xlim())
 # axs[1].set_xlim(axs[0].get_xlim())
 
@@ -452,3 +469,7 @@ for ax in axs[:1]:
 plt.tight_layout()
 plt.savefig('../doc/paper/fig05.pdf')
 
+
+###### table 5 ####
+mean_df = df.groupby('pft').mean()
+std_df = df.groupby('pft').std()
