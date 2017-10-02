@@ -35,6 +35,7 @@ paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
                r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
                r'\left( \frac{2 g_1 + \sqrt{D}}'\
                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
+
 def make_map(_df):
   """makes a map given a _df with Lat, Lon, and Cover"""
   pfts = _df.Cover_type.drop_duplicates()
@@ -348,7 +349,13 @@ def et_max_vpd(_df, lai):
   c3 = pm.CP/_df.r_moist
   c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
   c2 = _df.g1
-  return ((c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
+  sqrt_vpd = (c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3)
+  try:
+    sqrt_vpd[sqrt_vpd < 0.] = np.nan
+  except TypeError:
+    if sqrt_vpd < 0.:
+      sqrt_vpd = np.nan
+  return sqrt_vpd**2
 
 # def et_max_vpd1(_df, lai):
 #   """calculates theoretical max vpd as functoin of -df and lai"""
@@ -435,38 +442,41 @@ plt.figure()
 vpd2.plot()
 plt.savefig('%s/temp/vpd2.png' % os.environ['PLOTS'])
 
-_df = df.loc[df.pft == 'DBF', :]
+mins = {'CRO' : 0.6, 'GRA': 0.8, 'DBF' : 0.8, 'CSH': 1.3, 'ENF': 1.4}
+for key in mins:
+  _df = df.loc[df.pft == key, :]
 
-vpd = np.linspace(0., 5000., 1000.)
-t2 = term_2(_df, _df.lai.mean(), vpd)
-plt.figure()
-plt.plot(vpd, t2)
-plt.plot([vpd1['DBF'], vpd1['DBF']], [0., 0.], 'k*')
-plt.savefig('%s/temp/vpd_function.png' % os.environ['PLOTS'])
-_df_mean = _df.mean()
-def penman_monteith_uwue(_df, vpd, lai):
-  """taken from codebase, but should really alter codebase to just use _df"""
-  _et = (_df['delta']*\
-     (_df['r_n']-_df['g_flux'])+\
-         _df['g_a']*_df['p_a']/(273.15 + _df['t_a'])*
-       (pm.CP*vpd/_df['r_moist']\
-        - _df['gamma']*_df['c_a']*np.sqrt(vpd)\
-        /(lai*pm.R_STAR*1.6*_df['uwue_norm']*\
-          (1. + _df['g1']/np.sqrt(vpd)))))\
-       /(_df['delta']+_df['gamma'])
-  return _et
+  vpd = np.linspace(0., 5000., 1000.)
+  t2 = term_2(_df, _df.lai.mean(), vpd)
+  plt.figure()
+  plt.plot(vpd, t2)
+  plt.plot([vpd1[key], vpd1[key]], [0., 0.], 'k*')
+  plt.savefig('%s/temp/vpd_function.png' % os.environ['PLOTS'])
+  _df_mean = _df.mean()
+  def penman_monteith_uwue(_df, vpd, lai):
+    """taken from codebase, but should really alter codebase to just use _df"""
+    _et = (_df['delta']*\
+       (_df['r_n']-_df['g_flux'])+\
+           _df['g_a']*_df['p_a']/(273.15 + _df['t_a'])*
+         (pm.CP*vpd/_df['r_moist']\
+          - _df['gamma']*_df['c_a']*np.sqrt(vpd)\
+          /(lai*pm.R_STAR*1.6*_df['uwue_norm']*\
+            (1. + _df['g1']/np.sqrt(vpd)))))\
+         /(_df['delta']+_df['gamma'])
+    return _et
 
-def plot_et(_lai):
-  """justmakes a plto"""
-  et = penman_monteith_uwue(_df_mean, vpd, _lai)
-  fig = plt.figure()
-  ax = fig.add_subplot(111)
-  ax.plot(vpd, et)
-  crit = et_max_vpd(_df_mean, _lai)
-  ax.plot([crit, crit], ax.get_ylim(), 'k-')
-  plt.savefig('%s/temp/et_function_lai%d.png'\
-              % (os.environ['PLOTS'], int(_lai*10)))
-  return
+  def plot_et(_lai):
+    """justmakes a plto"""
+    et = penman_monteith_uwue(_df_mean, vpd, _lai)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(vpd, et)
+    crit = et_max_vpd(_df_mean, _lai)
+    ax.plot([crit, crit], ax.get_ylim(), 'k-')
+    ax.set_title('LAI: %f' % _lai)
+    plt.savefig('%s/temp/et_function_%s_lai%d.png'\
+                % (os.environ['PLOTS'], key, int(_lai*10)))
+    return
 
-plot_et(0.7)
-plot_et(1.7)
+  plot_et(mins[key])
+  plot_et(mins[key] + 0.6)
