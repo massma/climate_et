@@ -368,7 +368,7 @@ def et_min_vpd(_df, lai):
 #   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
 
-I = 1
+I = 5
 def pft_leaf(_df, axs):
   """takes df and plots both halves of product in term 2"""
   global I
@@ -407,7 +407,7 @@ def pft_leaf(_df, axs):
   # # axs[0].plot(ptiles, term_2(_df, ptiles, vpd), 'k*')
   # axs[1].plot(ptiles, first_half(_df, ptiles), 'k*')
   # now second half
-  I += 1
+  I -= 1
   return
 
 fig = plt.figure()
@@ -420,10 +420,14 @@ for _ax in _axs:
   divider = make_axes_locatable(_ax)
   axs.append(_ax)
   axs.append(divider.append_axes("bottom", size="20%", pad=0.1, sharex=_ax))
-I = 1
-df.groupby('pft').apply(pft_leaf, axs)
-axs[0].set_xlabel('VPD (Pa)')
-axs[2].set_xlabel('LAI')
+I = 5
+for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
+  _df = df.loc[df.pft == pft, :]
+  pft_leaf(_df, axs)
+
+# df.groupby('pft').apply(pft_leaf, axs)
+axs[1].set_xlabel('VPD (Pa)')
+axs[3].set_xlabel('LAI')
 axs[0].set_ylabel(paren_string)
 axs[2].set_ylabel(r'VPD$_{ETmin}$')
 axs[0].plot(axs[2].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
