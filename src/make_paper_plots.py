@@ -9,11 +9,13 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import codebase.plot_tools as plot_tools
 import util
 import metcalcs as met
 import codebase.penman_monteith as pm
 import codebase.calc_tools as calc
+
 
 mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
@@ -344,7 +346,7 @@ def second_half(_df, vpd):
   return -(2.*_g1 + np.sqrt(vpd))/\
     (2.*(_g1 + np.sqrt(vpd))**2)
 
-def et_max_vpd(_df, lai):
+def et_min_vpd(_df, lai):
   """calculates theoretical max vpd as functoin of -df and lai"""
   c3 = pm.CP/_df.r_moist
   c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
@@ -357,7 +359,7 @@ def et_max_vpd(_df, lai):
       sqrt_vpd = np.nan
   return sqrt_vpd**2
 
-# def et_max_vpd1(_df, lai):
+# def et_min_vpd1(_df, lai):
 #   """calculates theoretical max vpd as functoin of -df and lai"""
 #   """note below is only valid for negative x, which we don't have"""
 #   c3 = pm.CP/_df.r_moist
@@ -365,50 +367,74 @@ def et_max_vpd(_df, lai):
 #   c2 = _df.g1
 #   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
+
+I = 1
 def pft_leaf(_df, axs):
   """takes df and plots both halves of product in term 2"""
+  global I
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
   axs[0].plot(vpd, term_2(_df, lai, vpd),\
-              label=r"%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
+              label="%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
               % (_df.pft.iloc[0],\
                  lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+
   # axs[3].plot(vpd, second_half(_df, vpd),\
   #             label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
+  axs[1].plot(vpd, np.ones(vpd.shape)*I)
+  axs[1].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
   # # axs[2].plot(ptiles, term_2(_df, lai, ptiles), 'k*')
   # axs[3].plot(ptiles, second_half(_df, ptiles), 'k*')
 
   lai = np.linspace(_df.lai.quantile(q=0.05), _df.lai.quantile(q=0.95))
   vpd = _df.vpd.mean()
   _mean_df = _df.mean()
-  axs[1].plot(lai, et_max_vpd(_mean_df, lai),\
+  axs[2].plot(lai, et_min_vpd(_mean_df, lai),\
               label=r"PFT = %s, uWUE=%4.2f, g1=%4.1f"\
               % (_df.pft.iloc[0],\
                  _df.uwue_norm.iloc[0], _df.g1.iloc[0]))
+  ptiles = np.array([_df.lai.quantile(q=_p/100.)\
+                     for _p in [25., 50., 75.]])
+  axs[3].plot(lai, np.ones(lai.shape)*I)
+  axs[3].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
+  
+    
   # axs[1].plot(lai, first_half(_df, lai),\
   #             label='%s, uWUE = %4.2f'\
   #             % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
-  # ptiles = np.array([_df.lai.quantile(q=_p/100.)\
-  #                    for _p in [25., 50., 75.]])
   # # axs[0].plot(ptiles, term_2(_df, ptiles, vpd), 'k*')
   # axs[1].plot(ptiles, first_half(_df, ptiles), 'k*')
   # now second half
+  I += 1
   return
 
 fig = plt.figure()
-fig.set_figheight(fig.get_figheight()*2)
+fig.set_figheight(fig.get_figheight()*2.5)
 #fig.set_figwidth(fig.get_figwidth()*2)
 #axs = [fig.add_subplot(2, 2, i+1) for i in range(4)]
-axs = [fig.add_subplot(2, 1, i+1) for i in range(2)]
+_axs = [fig.add_subplot(2, 1, i+1) for i in range(2)]
+axs = []
+for _ax in _axs:
+  divider = make_axes_locatable(_ax)
+  axs.append(_ax)
+  axs.append(divider.append_axes("bottom", size="20%", pad=0.1, sharex=_ax))
+I = 1
 df.groupby('pft').apply(pft_leaf, axs)
 axs[0].set_xlabel('VPD (Pa)')
-axs[1].set_xlabel('LAI')
+axs[2].set_xlabel('LAI')
 axs[0].set_ylabel(paren_string)
-axs[1].set_ylabel(r'VPD$_{ETmin}$')
-axs[0].plot(axs[1].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
-axs[1].set_ylim([0., np.around(df.vpd.quantile(q=0.95), decimals=-2)])
+axs[2].set_ylabel(r'VPD$_{ETmin}$')
+axs[0].plot(axs[2].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
+axs[2].set_ylim([0., np.around(df.vpd.quantile(q=0.95), decimals=-2)])
+axs[1].set_ylim([0.5,5.5])
+axs[3].set_ylim([0.5,5.5])
+axs[1].get_yaxis().set_visible(False)
+axs[3].get_yaxis().set_visible(False)
+# axs[3].set_xlim(axs[2].get_xlim())
+# axs[1].set_xlim(axs[0].get_xlim())
+
 # axs[1].set_ylabel(r'-$\frac{\gamma c_s }{LAI \; 1.6 \; R\;  uWUE }$')
 # axs[2].set_xlabel('VPD (Pa)')
 # axs[3].set_xlabel('VPD (Pa)')
@@ -417,66 +443,8 @@ axs[1].set_ylim([0., np.around(df.vpd.quantile(q=0.95), decimals=-2)])
 
 for ax in axs[:1]:
   h, l = ax.get_legend_handles_labels()
-  ax.legend(h, l, loc='best')
+  ax.legend(h, l, loc='best', fontsize=9)
 # plt.legend(loc='best')
 plt.tight_layout()
 plt.savefig('../doc/paper/fig05.pdf')
 
-
-#################################
-#################################
-#################################
-#test figure, when is VPD = 0
-
-
-
-mean_df = df.groupby('pft').mean()
-vpd1 = et_max_vpd(mean_df, mean_df.lai)#, 1.)
-vpd2 = vpd1
-
-plt.figure()
-vpd1.plot()
-plt.savefig('%s/temp/vpd1.png' % os.environ['PLOTS'])
-
-plt.figure()
-vpd2.plot()
-plt.savefig('%s/temp/vpd2.png' % os.environ['PLOTS'])
-
-mins = {'CRO' : 0.6, 'GRA': 0.8, 'DBF' : 0.8, 'CSH': 1.3, 'ENF': 1.4}
-for key in mins:
-  _df = df.loc[df.pft == key, :]
-
-  vpd = np.linspace(0., 5000., 1000.)
-  t2 = term_2(_df, _df.lai.mean(), vpd)
-  plt.figure()
-  plt.plot(vpd, t2)
-  plt.plot([vpd1[key], vpd1[key]], [0., 0.], 'k*')
-  plt.savefig('%s/temp/vpd_function.png' % os.environ['PLOTS'])
-  _df_mean = _df.mean()
-  def penman_monteith_uwue(_df, vpd, lai):
-    """taken from codebase, but should really alter codebase to just use _df"""
-    _et = (_df['delta']*\
-       (_df['r_n']-_df['g_flux'])+\
-           _df['g_a']*_df['p_a']/(273.15 + _df['t_a'])*
-         (pm.CP*vpd/_df['r_moist']\
-          - _df['gamma']*_df['c_a']*np.sqrt(vpd)\
-          /(lai*pm.R_STAR*1.6*_df['uwue_norm']*\
-            (1. + _df['g1']/np.sqrt(vpd)))))\
-         /(_df['delta']+_df['gamma'])
-    return _et
-
-  def plot_et(_lai):
-    """justmakes a plto"""
-    et = penman_monteith_uwue(_df_mean, vpd, _lai)
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.plot(vpd, et)
-    crit = et_max_vpd(_df_mean, _lai)
-    ax.plot([crit, crit], ax.get_ylim(), 'k-')
-    ax.set_title('LAI: %f' % _lai)
-    plt.savefig('%s/temp/et_function_%s_lai%d.png'\
-                % (os.environ['PLOTS'], key, int(_lai*10)))
-    return
-
-  plot_et(mins[key])
-  plot_et(mins[key] + 0.6)
