@@ -362,27 +362,22 @@ While the relative variability of Term 1 is similiar across PFT, the absolute va
 
 ``just say that vpd effect is approximately linear (except at low VPD), and then say so we are most concerned about when d et/dvpd is zero, as this is the minima. then you can just look at this treshold as a function of LAI, uWUE, and g1.''
 
-Term 2 minus Term 3 determines the sign and magnitude that the scaling Term 1 is multiplied. If we assume that $c_s$ variability is relatively less than LAI and $D$ variability, then variability within PFT will be soley detmined by LAI and $D$. Figure \ref{term3_within} shows how (Term 2 - Term 3) varies within PFT. Each row is a different PFT, and the first column depects $D$ on the x-axis, evaluated at 5th, 25th, 50th, 75th, and 95th percentiles. The second column has LAI on the x-axis, evaluated at 5th, 25th, 50th, and 95th percentiles of VPD. Within each PFT LAI variability is generally of greater importance to (Term 2 - Term 3)'s variaibility than VPD variaibility. Low VPD and LAI increase the probability of a negative ET response to VPD, and the dependence of the response increases as VPD and LAI get smaller.
+Term 2 minus Term 3 determines the sign and magnitude that the scaling Term 1 is multiplied by. If we assume that $c_s$ variability is relatively less than LAI and $D$ variability, then variability within PFT will be soley detmined by LAI and $D$. Figure \ref{term3} shows how (Term 2 - Term 3) varies with $D$ and LAI, as a function of PFT. In Figure \ref{term3}a lower uWUE and LAI shift the disrtribution of (Term 2 - Term 3) towards negative values. Additionally, the smaller $g1$, the greater the relative $D$ dependence of of (Term 2 - Term 3). This is observed most strongly for the ENF PFT, which has the smallest $g1$ (74.31). 
 
-Generally, functional forms within each PFT are similiar between each PFT. However, as uWUE increases Term 3 decreases, causing (Term 2 - Term 3) to shift towards positive values. Additionally, the smaller g1 the more important VPD is for the magnitude of Term 3. Fo example, ENF has the smallest g1 (74.31), and the VPD-induced variaibility is of similiar magnitude to the LAI-induced variability. 
-% introduce quantitiy uWUE*\overline{LAI}?
+
  
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig05.pdf}
 \caption{}
-\label{term3_within}
+\label{term3}
 \end{figure}
 
-Figure \ref{term3_between} more clearly illustrates differences between PFT. Term 3 can be broken into a scaling (Figure \ref{term3_between}b), and a $D$ term (Figure \ref{term3_between}d). PFTs with smaller uWUE will have larger magnitude scaling, and PFTs with a smaller g1 will have a greater VPD dependence and a larger magnitude $D$ term. When combined into Term 2 - Term 3 (Figure \ref{term3_between}a,c) the consequences are that CRO is the most likely to have a postive $D$ response, and CSH is most likely to have a negative $D$ response. DBF, ENF, and GRA have similiar liklihoods of positive and negative responses, depnding on LAI and VPD. ENF has by far the strongest VPD dependence of response, as observen in Figure \ref{term3_within}.
 
-  
-\begin{figure}[h]
-\centering
-\includegraphics[width=20pc]{./fig06.pdf}
-\caption{}
-\label{term3_between}
-\end{figure}
+
+Figure \ref{term3}b shows the location of the minima of ET, as a function of LAI and $D$. For any LAI or VPD less (more) than these curves, Term 2 - Term 3 will be negative (positive). It is clear that the portion of VPD observations below these curves will be a strong function of $LAI$. However, we can see some general trends. For CSH, $\frac{\partial \; ET}{\partial \; D}$ should be negative for the vast majority of observed LAI and VPD. The split appears to be more even among ENF, GRA, and DBF, and we might expect a greater frequency of positive $\frac{\partial \; ET}{\partial \; D}$ for CRO. 
+
+I would say add a table of det dd bar, also evaluated at mean values of each pft, also normalized by std of vpd, and finally 
 
 Now time for full plot as a function of t and rh, then break up into single scaling (g, T), and pft-specific plots of (T, RH), or try 3d maps?
 

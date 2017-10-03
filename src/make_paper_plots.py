@@ -471,5 +471,26 @@ plt.savefig('../doc/paper/fig05.pdf')
 
 
 ###### table 5 ####
-mean_df = df.groupby('pft').mean()
-std_df = df.groupby('pft').std()
+def frequency(_df):
+  """return fraction fos amples d_et < 0"""
+  return _df.d_et[_df.d_et < 0.].count() / _df.d_et.count()
+
+importlib.reload(calc)
+df['net_rad'] = df.r_n - df.g_flux
+pft_grouped = df.groupby('pft')
+mean_df = pft_grouped.mean()
+std_df = pft_grouped.std()
+counts = pft_grouped.apply(frequency)
+
+mean_df['d_et_bar'] = calc.scaling(mean_df)\
+                      *(pm.CP/mean_df.r_moist +\
+                        calc.leaf_vpd(mean_df, mean_df, mean_df.lai))
+mean_df['d_rn_bar'] = calc.d_et_d_r_net(mean_df)
+
+print('\n mean d_et\n', mean_df.d_et)
+print('\n d_et(mean)\n', mean_df.d_et_bar)
+print('\n mean d_et *std vpd\n', mean_df.d_et*std_df.vpd)
+print('\n mean d_et / rad\n', \
+      mean_df.d_et_bar*std_df.vpd/(mean_df.d_rn_bar*std_df.net_rad))
+print('\n portion d_et < 0 \n',\
+      counts)
