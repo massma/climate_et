@@ -264,6 +264,7 @@ Note that given yearly uWUE from \cite{Zhou_2015}, $g_1$ from \cite{Lin_2015} \c
 
 This ``pseudo-LAI'' is some part ``true'' LAI (a measure of leaf area), and some part model and observational error, including error involving our assumption of constant uWUE. By calculating a unique LAI for each observation we will progate any model and observational uncertainty forward into our expression for $\frac{\partial \; ET}{\partial D}$. 
 
+
 \begin{table}
 \caption{Definition of symbols and variables}
 \centering
@@ -283,7 +284,8 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
   $g_s$  & stomatal conductance & m s$^{-1}$  \\
   $g_{l-s}$  & leaf-scale stomatal conductance & mol m$^{-2}$ s$^{-1}$  \\
   $R*$ & universal gas constant & J mol$^{-1}$ K$^{-1}$ \\
-  $LAI$ & leaf area idex & -\\
+  $LAI$ & leaf area index & -\\
+  $c_s$ & CO$_2$ concentration & $\mu$ mol CO$_2$ mol$^{-1}$ air\\
 \hline
 \multicolumn{2}{l}{$^{a}$Footnote text here.}
 \end{tabular}
@@ -317,7 +319,7 @@ We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uW
 \includegraphics[width=20pc]{./fig01.pdf}
 \caption{Plant functional type and location of sites used in analysis. Note should probably just split this into 4 continents (US, Europe, Africa, Australia).}
 \label{map_fig}
- \end{figure}
+ \end{figure}p
 
 We restrict our analysis to the daytime (sensible heat > 5 W m$^{-1}$ and shortwave radiation > 50 W m$^{-2}$) when there is no precipitation and the plants are growing (GPP > 10\% of the 95th pecentile). Also, because some sites use half hourly data but some use hourly, we aggregate all data to hourly averages. Only times with good quality control flags are used.
 
@@ -381,6 +383,26 @@ I would say add a table of det dd bar, also evaluated at mean values of each pft
 
 Now time for full plot as a function of t and rh, then break up into single scaling (g, T), and pft-specific plots of (T, RH), or try 3d maps?
 
+
+
+\begin{table}
+\caption{Statistics of $\frac{\partial \; ET}{\partial \; D}$ as a function of PFT.}
+\centering
+\begin{tabular}{l c c c c c}
+  \hline
+PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & $\frac{\partial \; ET}{\partial \; D}\left(\overline{T, \ldots , D}\right)$ & $\frac{\partial \; ET}{\partial \; D}\left(\overline{T, \ldots , D}\right)*\text{std}(D)$ & $\frac{\frac{\partial \; ET}{\partial \; D}\left(\overline{T, \ldots , D}\right)*\text{std}(D)}{ \frac{\partial \; ET}{\partial \; R}\left(\overline{T, \ldots , D}\right)*\text{std}(R)}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+  \hline
+CRO & 0.000853 & 0.026241 & 18.523659 & 0.203022 & 0.473311\\
+CSH & -0.108234 & -0.091526 & 50.861613 & 0.439379 & 0.931660\\
+DBF & -0.012727 & 0.013794 & 19.734435 & 0.164241 & 0.461674\\
+ENF & -0.034087 & 0.000706 & 16.611852 & 0.148548 & 0.534425\\
+GRA & -0.019637 & -0.000921 & 16.798083 & 0.173552 & 0.631735\\
+\hline
+\multicolumn{2}{l}{$^{a}$Footnote text here.}  
+
+  
+\end{tabular}
+\end{table}
 
 
 

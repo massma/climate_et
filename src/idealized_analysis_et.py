@@ -16,6 +16,7 @@ import matplotlib as mpl
 import codebase.penman_monteith as pm
 import util
 import importlib
+import calc_tools as calc
 mpl.rcParams.update(mpl.rcParamsDefault)
 
 importlib.reload(util)
@@ -25,55 +26,15 @@ df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
 df['g_a'] = 1./df['r_a']
 df['r_net'] = df['r_n'] - df['g_flux']
 
-def get_uwue(_df):
-  """lazy way to get uwue"""
-  return _df.loc[:, ['uwue']].iloc[0]
 
-def d_et(_df):
-  """calcs the full d ET/d Ds, confirmed correct vs df"""
-  return _df['g_a']*_df['p_a']/\
-    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
-    (pm.CP/_df['r_moist']-_df['gamma']*_df['c_a']*pm.LV/\
-     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
-     (2.*_df['g1']+np.sqrt(_df['vpd']))\
-     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
-
-def d_et_d_r_net(_df):
-  """derivantve w.r.t net radiation"""
-  return _df['delta']/(_df['delta']+_df['gamma'])
-
-def d_et_d_lai(_df):
-  """calc derivative d et/ dlai"""
-  return _df['g_a']*_df['p_a']*_df['gamma']*_df['c_a']\
-    *np.sqrt(_df['vpd'])*pm.LV\
-    /(_df['t_a_k']*(_df['delta']+_df['gamma'])*_df['lai']**2\
-      *pm.R_STAR*1.6*_df['uwue']*(1. + _df['g1']/np.sqrt(_df['vpd'])))
-
-def d_et_d_g_a(_df):
-  """calc derivative w.r.t. g_a"""
-  return _df['p_a']/(_df['t_a_k']*(_df['delta'] + _df['gamma']))\
-    *(pm.CP*_df['vpd']/_df['r_moist']\
-      -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
-      /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
-        *(1. + _df['g1']/np.sqrt(_df['vpd']))))
-
-def d_et_d_delta(_df):
-  """calc derivative w.r.t. delta"""
-  return (_df['gamma']*(_df['r_n']-_df['g_flux'])\
-          -_df['g_a']*_df['p_a']/_df['t_a_k']\
-          *(pm.CP*_df['vpd']/_df['r_moist']\
-            -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
-            /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
-              *(1. + _df['g1']/np.sqrt(_df['vpd'])))))\
-              /(_df['delta'] + _df['gamma'])**2
-
-jacobians = {'vpd' : d_et,\
-             'lai' : d_et_d_lai,\
-             'seasonal_lai' : d_et_d_lai,\
-             'residual_lai' : d_et_d_lai,\
-             'g_a' : d_et_d_g_a,\
-             'delta' : d_et_d_delta,\
-             'r_net' : d_et_d_r_net}
+# see propagation of uncertainty wiki
+jacobians = {'vpd' : calc.d_et,\
+             'lai' : calc.d_et_d_lai,\
+             'seasonal_lai' : calc.d_et_d_lai,\
+             'residual_lai' : calc.d_et_d_lai,\
+             'g_a' : calc.d_et_d_g_a,\
+             'delta' : calc.d_et_d_delta,\
+             'r_net' : calc.d_et_d_r_net}
 
 def site_analysis(_df, swc=False):
   """caluclates jacobians for each site"""
@@ -82,7 +43,6 @@ def site_analysis(_df, swc=False):
     out[key] = jacobians[key](_df)
     if swc:
       out['swc_%s' % key] = np.polyfit(_df['swc'], _df[key], deg=1)[0]*out[key]
-
   out = pd.DataFrame(data=out, index=[_df.index])
   return out
 

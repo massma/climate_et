@@ -79,6 +79,14 @@ df['g_a'] = 1./df['r_a']
 df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
 df['d_et_atm'] = df['scaling']*df['vpd_atm']
 df['uwue_norm'] = df.uwue/pm.LV
+df['r_net'] = df['r_n'] - df['g_flux']
+jacobians = {'vpd' : calc.d_et,\
+             'lai' : calc.d_et_d_lai,\
+             'seasonal_lai' : calc.d_et_d_lai,\
+             'residual_lai' : calc.d_et_d_lai,\
+             'g_a' : calc.d_et_d_g_a,\
+             'delta' : calc.d_et_d_delta,\
+             'r_net' : calc.d_et_d_r_net}
 
 meta = {}
 meta['var'] = 'lai'
@@ -471,26 +479,30 @@ plt.savefig('../doc/paper/fig05.pdf')
 
 
 ###### table 5 ####
+importlib.reload(calc)
 def frequency(_df):
   """return fraction fos amples d_et < 0"""
   return _df.d_et[_df.d_et < 0.].count() / _df.d_et.count()
 
-importlib.reload(calc)
-df['net_rad'] = df.r_n - df.g_flux
-pft_grouped = df.groupby('pft')
-mean_df = pft_grouped.mean()
-std_df = pft_grouped.std()
-counts = pft_grouped.apply(frequency)
 
-mean_df['d_et_bar'] = calc.scaling(mean_df)\
-                      *(pm.CP/mean_df.r_moist +\
-                        calc.leaf_vpd(mean_df, mean_df, mean_df.lai))
-mean_df['d_rn_bar'] = calc.d_et_d_r_net(mean_df)
+pft = df.groupby('site').apply(get_pft)
+mean = df.groupby('site').mean()
+mean['pft'] = pft
+std = df.groupby('site').std()
+#jacobian = site_analysis(mean)
+mean['d_et_bar'] = calc.d_et(mean)
+mean['d_et_bar_std'] = np.absolute(calc.d_et(mean))*std['vpd']
+mean['d_rn_bar'] = np.absolute(calc.d_et_d_r_net(mean))*std['r_net']
+mean['d_et_bar_norm_rn'] = mean['d_et_bar_std']\
+                           /mean['d_rn_bar']
+
+mean_df = mean.groupby('pft').mean()
+counts = df.groupby('pft').apply(frequency)
 
 print('\n mean d_et\n', mean_df.d_et)
 print('\n d_et(mean)\n', mean_df.d_et_bar)
-print('\n mean d_et *std vpd\n', mean_df.d_et*std_df.vpd)
-print('\n mean d_et / rad\n', \
-      mean_df.d_et_bar*std_df.vpd/(mean_df.d_rn_bar*std_df.net_rad))
+print('\n mean d_et *std vpd\n',\
+      mean['d_et_bar_std'])
+print('\n mean d_et / rad\n', mean['d_et_bar_norm_rn'])
 print('\n portion d_et < 0 \n',\
       counts)

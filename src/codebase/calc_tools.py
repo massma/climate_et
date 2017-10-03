@@ -81,9 +81,6 @@ def d_et_d_delta(atmos, canopy):
               *(1. + canopy['g1']/np.sqrt(atmos['vpd'])))))\
               /(atmos['delta'] + atmos['gamma'])**2
 
-def d_et_d_r_net(_df):
-  """derivantve w.r.t net radiation"""
-  return _df['delta']/(_df['delta']+_df['gamma'])
 
 def scaling(atmos):
   """calcualtes the scaling term"""
@@ -133,3 +130,46 @@ def calc_derivative(atmos, canopy, data):
   #retun lai to that used for ET
   canopy['lai'] = lai_true
   return atmos, canopy, data
+
+#### below fucntions added from jacobian/varaibility plot
+def get_uwue(_df):
+  """lazy way to get uwue"""
+  return _df.loc[:, ['uwue']].iloc[0]
+
+def d_et(_df):
+  """calcs the full d ET/d Ds, confirmed correct vs df"""
+  return _df['g_a']*_df['p_a']/\
+    ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
+    (pm.CP/_df['r_moist']-_df['gamma']*_df['c_a']*pm.LV/\
+     (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
+     (2.*_df['g1']+np.sqrt(_df['vpd']))\
+     /(2.*(_df['g1']+np.sqrt(_df['vpd']))**2))
+
+def d_et_d_r_net(_df):
+  """derivantve w.r.t net radiation"""
+  return _df['delta']/(_df['delta']+_df['gamma'])
+
+def d_et_d_lai(_df):
+  """calc derivative d et/ dlai"""
+  return _df['g_a']*_df['p_a']*_df['gamma']*_df['c_a']\
+    *np.sqrt(_df['vpd'])*pm.LV\
+    /(_df['t_a_k']*(_df['delta']+_df['gamma'])*_df['lai']**2\
+      *pm.R_STAR*1.6*_df['uwue']*(1. + _df['g1']/np.sqrt(_df['vpd'])))
+
+def d_et_d_g_a(_df):
+  """calc derivative w.r.t. g_a"""
+  return _df['p_a']/(_df['t_a_k']*(_df['delta'] + _df['gamma']))\
+    *(pm.CP*_df['vpd']/_df['r_moist']\
+      -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
+      /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
+        *(1. + _df['g1']/np.sqrt(_df['vpd']))))
+
+def d_et_d_delta(_df):
+  """calc derivative w.r.t. delta"""
+  return (_df['gamma']*(_df['r_n']-_df['g_flux'])\
+          -_df['g_a']*_df['p_a']/_df['t_a_k']\
+          *(pm.CP*_df['vpd']/_df['r_moist']\
+            -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
+            /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
+              *(1. + _df['g1']/np.sqrt(_df['vpd'])))))\
+              /(_df['delta'] + _df['gamma'])**2
