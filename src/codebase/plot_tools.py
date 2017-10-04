@@ -167,6 +167,53 @@ def scatter_plot(_df, meta):
   plt.show(block=False)
   return
 
+def scatter_plot_paper(_df, meta):
+  """
+  creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
+  """
+  nplots = 4
+  fig = plt.figure()
+  fig.set_figwidth(fig.get_figwidth()*nplots)
+  meta['size'] = 1
+  ax1 = fig.add_subplot(1, nplots, 1)
+  var = _df['d_et']
+  meta['log'] = log
+  meta['cmap'] = 'RdBu'
+  meta['delta'] = 'full'
+  make_ax_plot(ax1, var, _df, meta)
+
+  ax2 = fig.add_subplot(nplots, 1, 2)
+  if meta['var'] == 'd_et_vpd_std':
+    var = _df['d_et_vpd_std_leaf']
+  else:
+    var = _df['scaling']*(_df['vpd_leaf'])
+  meta['cmap'] = 'RdBu'
+  meta['delta'] = 'leaf'
+  make_ax_plot(ax2, var, _df, meta)
+
+  ax3 = fig.add_subplot(nplots, 1, 3)
+  if meta['var'] == 'd_et_vpd_std':
+    var = _df['d_et_vpd_std_atm']
+  else:
+    var = _df['scaling']*(_df['vpd_atm'])
+  meta['delta'] = 'atm'
+  make_ax_plot(ax3, var, _df, meta)
+
+  plt.tight_layout()
+  # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
+  #             % (os.environ['PLOTS'], str(_df['pft'][0]), meta['site'],))
+  fname = '%s/climate_et/%s%s_%s_%s_plots/%s_%s.png'\
+          % (os.environ['PLOTS'], meta['var'], meta['folder_label'],\
+             meta['log'], meta['x_axis'],
+             str(_df['pft'][0]), meta['label'])
+  try:
+    plt.savefig(fname)
+  except FileNotFoundError:
+    os.system('mkdir %s' % '/'.join(fname.split('/')[:-1]))
+    plt.savefig(fname)
+  plt.show(block=False)
+  return
+
 def plot_wrapper(_df, meta):
   """takes a groupby _df and parses it to plot"""
   print(_df.shape)

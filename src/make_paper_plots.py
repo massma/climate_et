@@ -512,3 +512,98 @@ test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
                        'd_et_bar_norm_rn', 'counts']]
 
 print(test)
+
+### Figure 6 ###
+# note below really takes a long time t
+def d_et_lai_fixed(_df):
+  """returns d_et calced with mean lai"""
+  temp_df = _df.copy()
+  temp_df['lai'] = _df.lai.mean()
+  print(temp_df['lai'])
+  _df['d_et_lai_fixed'] = calc.d_et(temp_df)
+  return _df
+
+df = df.groupby('pft').apply(d_et_lai_fixed)
+
+
+
+def make_ax_plot(_ax, var, _df, meta):
+  """makes an axis plot"""
+  # divider = make_axes_locatable(_ax)
+  # axs.append(_ax)
+  # _ax2 = divider.append_axes("right", size="20%", pad=0.0)
+
+  vmax = meta['vmax']
+  vmin = -vmax
+  color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.5,\
+                      s=meta['size'], cmap=meta['cmap'],\
+                      vmin=vmin, vmax=vmax)
+  if (meta['x_axis'] == 'vpd'):
+    t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
+    test = met.vapor_pres(t_a)*100.*(1. - 0.90)
+    _ax.plot(test, t_a, 'k-')
+    test = met.vapor_pres(t_a)*100.*(1. - 0.2)
+    _ax.plot(test, t_a, 'k-')
+  _ax.set_xlabel(meta['x_axis'])
+  _ax.set_ylabel('T (C)')
+  _ax.set_title('PFT: %s; %s VPD Changing'\
+                % (str(_df['pft'][0]),\
+                   meta['title']))
+  cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
+  cbar.set_label(meta['title'])
+  return
+
+def scatter_plot_paper(_df):
+  """
+  creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
+  """
+
+  #meta['x_axis'] = 'vpd'
+  nplots = 4
+  meta['size'] = 1
+  meta['cmap'] = 'RdBu'
+
+  fig = plt.figure()
+  fig.set_figwidth(fig.get_figwidth()*nplots)
+
+  titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
+            r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
+            r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
+            r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$']
+  _vars = [_df['d_et'],\
+           _df['d_et']/_df['g_a'],\
+           _df['d_et_lai_fixed'],\
+           _df['d_et_lai_fixed']/_df['g_a']]
+  axs = [fig.add_subplot(1, nplots, i+1) for i in range(nplots)]
+
+  for ax, var, meta['title'] in zip(axs, _vars, titles):
+    meta['vmax'] = np.nanmax(np.absolute([var.mean() +  2.*var.std(),\
+                                          var.mean() - 2.*var.std()]))
+    make_ax_plot(ax, var, _df, meta)
+
+  plt.tight_layout()
+
+  fname = '%s/climate_et/paper_plots/scatter/%s_%s.png'\
+          % (os.environ['PLOTS'], _df.pft.iloc[0], meta['x_axis'])
+
+  try:
+    plt.savefig(fname)
+  except FileNotFoundError:
+    os.system('mkdir -p %s' % '/'.join(fname.split('/')[:-1]))
+    plt.savefig(fname)
+  plt.show(block=False)
+  return
+plt.close('all')
+meta = {}
+meta['x_axis'] = 'vpd'
+df.groupby('pft').apply(scatter_plot_paper)
+os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
+          '../doc/paper/fig06.png'\
+          % (os.environ['PLOTS'], meta['x_axis']))
+
+meta = {}
+meta['x_axis'] = 'rh'
+df.groupby('pft').apply(scatter_plot_paper)
+os.system('convert -append %s/climate_et/paper_plots/scatter/*.png '\
+          '../doc/paper/fig06b.png'\
+          % (os.environ['PLOTS'], os.environ['PLOTS']))
