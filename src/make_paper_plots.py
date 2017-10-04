@@ -592,7 +592,7 @@ def scatter_plot_paper(_df, meta):
              _df['d_et']/_df['g_a'],\
              _df['d_et_lai_fixed'],\
              _df['d_et_lai_fixed']/_df['g_a'],\
-             _df['d_et_lai_r_moist_fixed']/_df['g_a']]
+             _df['d_et_lai_gamma_fixed']/_df['g_a']]
   else:
     titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
               r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
@@ -606,7 +606,7 @@ def scatter_plot_paper(_df, meta):
              _df['d_et']/_df['g_a'],\
              _df['d_et_lai_fixed'],\
              _df['d_et_lai_fixed']/_df['g_a'],\
-             _df['d_et_lai_r_moist_fixed']/_df['g_a'],\
+             _df['d_et_lai_gamma_fixed']/_df['g_a'],\
              _df['d_et_lai_c_a_fixed']/_df['g_a'],\
              _df['d_et_lai_all_fixed']/_df['g_a']]
 
@@ -632,7 +632,7 @@ def scatter_plot_paper(_df, meta):
 
 plt.close('all')
 meta = {}
-meta['nplots'] = 7 # 5 4
+meta['nplots'] = 4 # 5 4
 meta['x_axis'] = 'vpd'
 df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
