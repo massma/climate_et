@@ -523,12 +523,12 @@ def d_et_lai_fixed(_df):
   _df['d_et_lai_fixed'] = calc.d_et(temp_df)
   temp_df['c_a'] = _df.c_a.mean()
   _df['d_et_lai_c_a_fixed'] = calc.d_et(temp_df)
-  temp_df['r_moist'] = _df.r_moist.mean()
-  _df['d_et_lai_c_a_r_moist_fixed'] = calc.d_et(temp_df)
   temp_df['gamma'] = _df.gamma.mean()
   _df['d_et_lai_all_fixed'] = calc.d_et(temp_df)
+  # temp_df['gamma'] = _df.gamma.mean()
+  # _df['d_et_lai_all_fixed'] = calc.d_et(temp_df)
   temp_df['c_a'] = _df.c_a
-  _df['d_et_lai_r_moist_fixed'] = calc.d_et(temp_df)
+  _df['d_et_lai_gamma_fixed'] = calc.d_et(temp_df)
   return _df
 
 df = df.groupby('pft').apply(d_et_lai_fixed)
@@ -552,40 +552,64 @@ def make_ax_plot(_ax, var, _df, meta):
     _ax.plot(test, t_a, 'k-')
   _ax.set_xlabel(meta['x_axis'])
   _ax.set_ylabel('T (C)')
-  _ax.set_title('PFT: %s; %s VPD Changing'\
+  _ax.set_title('PFT: %s; %s'\
                 % (str(_df['pft'][0]),\
                    meta['title']))
   cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
   cbar.set_label(meta['title'])
   return
 
-def scatter_plot_paper(_df):
+def scatter_plot_paper(_df, meta):
   """
   creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
   """
 
   #meta['x_axis'] = 'vpd'
-  nplots = 7
+  nplots = meta['nplots'] #5
   meta['size'] = 1
   meta['cmap'] = 'RdBu'
 
   fig = plt.figure()
   fig.set_figwidth(fig.get_figwidth()*nplots)
 
-  titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
-            r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
-            r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
-            r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$',\
-            'c_a_fixed',\
-            'r_moist_fixed',\
-            'c_a and r_moist fixed']
-  _vars = [_df['d_et'],\
-           _df['d_et']/_df['g_a'],\
-           _df['d_et_lai_fixed'],\
-           _df['d_et_lai_fixed']/_df['g_a'],\
-           _df['d_et_lai_c_a_fixed']/_df['g_a'],\
-           _df['d_et_lai_r_moist_fixed']/_df['g_a'],\
-           _df['d_et_lai_all_fixed']/_df['g_a']]
+  if nplots == 4:
+    titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
+              r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$']
+    _vars = [_df['d_et'],\
+             _df['d_et']/_df['g_a'],\
+             _df['d_et_lai_fixed'],\
+             _df['d_et_lai_fixed']/_df['g_a']]# ,\
+  elif nplots == 5:
+    titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
+              r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$',\
+              r'$\frac{\partial \; ET}'\
+              r'{g_a \partial \; D}(\overline{LAI, \gamma})$']
+    _vars = [_df['d_et'],\
+             _df['d_et']/_df['g_a'],\
+             _df['d_et_lai_fixed'],\
+             _df['d_et_lai_fixed']/_df['g_a'],\
+             _df['d_et_lai_r_moist_fixed']/_df['g_a']]
+  else:
+    titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
+              r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$',\
+              r'$\frac{\partial \; ET}'\
+              r'{g_a \partial \; D}(\overline{LAI, \gamma})$',\
+              'c_a_fixed',\
+              'c_a and gamma fixed']
+    _vars = [_df['d_et'],\
+             _df['d_et']/_df['g_a'],\
+             _df['d_et_lai_fixed'],\
+             _df['d_et_lai_fixed']/_df['g_a'],\
+             _df['d_et_lai_r_moist_fixed']/_df['g_a'],\
+             _df['d_et_lai_c_a_fixed']/_df['g_a'],\
+             _df['d_et_lai_all_fixed']/_df['g_a']]
+
   axs = [fig.add_subplot(1, nplots, i+1) for i in range(nplots)]
 
   for ax, var, meta['title'] in zip(axs, _vars, titles):
@@ -605,17 +629,19 @@ def scatter_plot_paper(_df):
     plt.savefig(fname)
   plt.show(block=False)
   return
+
 plt.close('all')
 meta = {}
+meta['nplots'] = 7 # 5 4
 meta['x_axis'] = 'vpd'
-df.groupby('pft').apply(scatter_plot_paper)
+df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
           '../doc/paper/fig06.png'\
           % (os.environ['PLOTS'], meta['x_axis']))
 
-meta = {}
+
 meta['x_axis'] = 'rh'
-df.groupby('pft').apply(scatter_plot_paper)
+df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
           '../doc/paper/fig06b.png'\
           % (os.environ['PLOTS'], meta['x_axis']))
