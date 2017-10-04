@@ -499,10 +499,16 @@ mean['d_et_bar_norm_rn'] = mean['d_et_bar_std']\
 mean_df = mean.groupby('pft').mean()
 counts = df.groupby('pft').apply(frequency)
 
+
+
 print('\n mean d_et\n', mean_df.d_et)
 print('\n d_et(mean)\n', mean_df.d_et_bar)
-print('\n mean d_et *std vpd\n',\
-      mean['d_et_bar_std'])
-print('\n mean d_et / rad\n', mean['d_et_bar_norm_rn'])
+print('\n mean d_et *std vpd\n', mean_df['d_et_bar_std'])
+print('\n mean d_et / rad\n', mean_df['d_et_bar_norm_rn'])
 print('\n portion d_et < 0 \n',\
       counts)
+mean_df['counts'] = counts
+test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
+                       'd_et_bar_norm_rn', 'counts']]
+
+print(test)
