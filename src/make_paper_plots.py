@@ -519,13 +519,19 @@ def d_et_lai_fixed(_df):
   """returns d_et calced with mean lai"""
   temp_df = _df.copy()
   temp_df['lai'] = _df.lai.mean()
-  print(temp_df['lai'])
+  # print(temp_df['lai'])
   _df['d_et_lai_fixed'] = calc.d_et(temp_df)
+  temp_df['c_a'] = _df.c_a.mean()
+  _df['d_et_lai_c_a_fixed'] = calc.d_et(temp_df)
+  temp_df['r_moist'] = _df.r_moist.mean()
+  _df['d_et_lai_c_a_r_moist_fixed'] = calc.d_et(temp_df)
+  temp_df['gamma'] = _df.gamma.mean()
+  _df['d_et_lai_all_fixed'] = calc.d_et(temp_df)
+  temp_df['c_a'] = _df.c_a
+  _df['d_et_lai_r_moist_fixed'] = calc.d_et(temp_df)
   return _df
 
 df = df.groupby('pft').apply(d_et_lai_fixed)
-
-
 
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
@@ -535,7 +541,7 @@ def make_ax_plot(_ax, var, _df, meta):
 
   vmax = meta['vmax']
   vmin = -vmax
-  color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.5,\
+  color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.1,\
                       s=meta['size'], cmap=meta['cmap'],\
                       vmin=vmin, vmax=vmax)
   if (meta['x_axis'] == 'vpd'):
@@ -559,7 +565,7 @@ def scatter_plot_paper(_df):
   """
 
   #meta['x_axis'] = 'vpd'
-  nplots = 4
+  nplots = 7
   meta['size'] = 1
   meta['cmap'] = 'RdBu'
 
@@ -569,11 +575,17 @@ def scatter_plot_paper(_df):
   titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
             r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
             r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
-            r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$']
+            r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$',\
+            'c_a_fixed',\
+            'r_moist_fixed',\
+            'c_a and r_moist fixed']
   _vars = [_df['d_et'],\
            _df['d_et']/_df['g_a'],\
            _df['d_et_lai_fixed'],\
-           _df['d_et_lai_fixed']/_df['g_a']]
+           _df['d_et_lai_fixed']/_df['g_a'],\
+           _df['d_et_lai_c_a_fixed']/_df['g_a'],\
+           _df['d_et_lai_r_moist_fixed']/_df['g_a'],\
+           _df['d_et_lai_all_fixed']/_df['g_a']]
   axs = [fig.add_subplot(1, nplots, i+1) for i in range(nplots)]
 
   for ax, var, meta['title'] in zip(axs, _vars, titles):
@@ -604,6 +616,8 @@ os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
 meta = {}
 meta['x_axis'] = 'rh'
 df.groupby('pft').apply(scatter_plot_paper)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*.png '\
+os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
           '../doc/paper/fig06b.png'\
-          % (os.environ['PLOTS'], os.environ['PLOTS']))
+          % (os.environ['PLOTS'], meta['x_axis']))
+
+
