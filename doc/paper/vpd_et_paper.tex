@@ -379,13 +379,13 @@ Term 2 minus Term 3 determines the sign and magnitude that the scaling Term 1 is
 
 Figure \ref{term3}b shows the location of the minima of ET, as a function of LAI and $D$. For any LAI or VPD less (more) than these curves, Term 2 - Term 3 will be negative (positive). It is clear that the portion of VPD observations below these curves will be a strong function of $LAI$. However, we can see some general trends. For CSH, $\frac{\partial \; ET}{\partial \; D}$ should be negative for the vast majority of observed LAI and VPD. The split appears to be more even among ENF, GRA, and DBF, and we might expect a greater frequency of positive $\frac{\partial \; ET}{\partial \; D}$ for CRO. 
 
-I would say add a table of det dd bar, also evaluated at mean values of each pft, also normalized by std of vpd, and finally 
+Table 3 confirms these expectations for PFT behaviour of $\frac{\partial \; ET}{\partial \; D}$. For all PFTs except for CRO, average $\frac{\partial \; ET}{\partial \; D}$ is less than zero. However, $\frac{\partial \; ET}{\partial \; D}$ evaluated at the average of all variables (e.g. LAI, $T$, $c_s$, $D$) is only negative for CSH and GRA. And, DBF in addition to CRO experiences $\frac{\partial \; ET}{\partial \; D}$ < 0 less than half the time. These observations highlight the effect of the nonlinear function in Figure \ref{term3}: $\frac{\partial \; ET}{\partial \; D}$ has a much steeper slope when the function is negative, and is thus more likely to be large magnitude.
 
-Now time for full plot as a function of t and rh, then break up into single scaling (g, T), and pft-specific plots of (T, RH), or try 3d maps?
+The units of $\frac{\partial \; ET}{\partial \; D}$ make it difficult to interpret if $D$ is even a meaningful contributor to ET's variability. To understand $D$'s contribution better, we use a linear approximation and present $\frac{\partial \; ET}{\partial \; D}$ multiplied by $D$'s standard deviation. The range of $D$'s contribution to ET's variability ranges between 16 - 20 W m$^{-2}$ for all PFTs except for CSH, which is about 51 W m$^{-2}$. Another meaningful comparison is to $\frac{\partial \; ET}{\partial \; R} * std(R)$, as net radiation generally the driver of ET (cite joe berry here). For all PFTs except for CSH $D$ contributes between 14.5 - 20.5 \% of $R$'s contribution to variability. For CSH the portion is much larger, about 44 \%. However it is important to note that a linear approximation about a mean base state is probably not a very good approximation across the range of variabilility, so these values are just estimates of $D$'s contribution to ET's variability. 
 
+So far, idealized plots and statistics have illuminated the form of $\frac{\partial \; ET}{\partial \; D}$ and how it varies with PFT. Large mean LAI and uWUE shifts CRO and DBF towards positive $\frac{\partial \; ET}{\partial \; D}$. However, the strongly nonlinear funtion of $\frac{\partial \; ET}{\partial \; D}$ at $\frac{\partial \; ET}{\partial \; D} < 0$ pushes $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative for DBF (it does not do this for CRO because of CRO's high $g1$). ENF's low $g1$ value increases the dependence of $\frac{\partial \; ET}{\partial \; D}$ on $D$, and makes the function more strongly nonlinear. This has the side effect of pushing $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative futher than other PFTs for a given fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and magntiude $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$. GRA shows the opposite behavior; a relatively high $g1$  makes the function more linear, decreasing the magnitude of $\overline{\frac{\partial \; ET}{\partial \; D}}$ for a given fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and magntiude $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$ (although $g_a$ and Term 1 also probably have a role in this). Finally, low $uWUE$ of CSH pushes to toward by far the lowest values $\frac{\partial \; ET}{\partial \; D}$ (Figure \ref{term3}). Variability in $D$ accounts for the largest about of $ET$ variability for CSH. For the other PFTs, $D$ contributes less to $ET$ variaibiliyt, but still represents about 15-20 \% of $R$'s contributions to ET variability.
 
-
-\begin{table}
+\Begin{table}
 \caption{Statistics of $\frac{\partial \; ET}{\partial \; D}$ as a function of PFT.}
 \centering
 \begin{tabular}{l c c c c c}
@@ -403,6 +403,11 @@ GRA & -0.019637 & -0.000921 & 16.798083 & 0.173552 & 0.631735\\
   
 \end{tabular}
 \end{table}
+
+
+\subsection{Direct observations of $\frac{\partial \; ET}{\partial \; D}$}
+
+Now that we have an intuitive understanding of $\frac{\partial \; ET}{\partial \; D}$'s behavior, we are equipped to intepret fully realistic plots of $\frac{\partial \; ET}{\partial \; D}$ for each PFT. Figure \ref{fig} presents calculated $\frac{\partial \; ET}{\partial \; D}$ where, unless otherwise noted, all variables in Equation \ref{d_et} are allowed to vary. 
 
 
 
