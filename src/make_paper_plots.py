@@ -533,6 +533,16 @@ def d_et_lai_fixed(_df):
 
 df = df.groupby('pft').apply(d_et_lai_fixed)
 
+def rh_d_et_min(_df):
+  """returns rh where ET is minimized, as a function of T and LAI"""
+  mean_df = _df.loc[:, ['r_moist', 'gamma', 'c_a',\
+                        'lai', 'uwue_norm', 'g1']].mean()
+  vpd = et_min_vpd(mean_df, mean_df.lai)
+  t = np.linspace(_df.t_a.min(), _df.t_a.max())
+  esat = met.vapor_pres(t)*100.
+  rh = (esat-vpd)/esat
+  return t, rh
+
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
   # divider = make_axes_locatable(_ax)
@@ -544,6 +554,8 @@ def make_ax_plot(_ax, var, _df, meta):
   color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.1,\
                       s=meta['size'], cmap=meta['cmap'],\
                       vmin=vmin, vmax=vmax)
+  t, rh = rh_d_et_min(_df)
+  _ax.plot(t, rh, 'k-')
   if (meta['x_axis'] == 'vpd'):
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
     test = met.vapor_pres(t_a)*100.*(1. - 0.90)
