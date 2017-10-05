@@ -540,7 +540,10 @@ def rh_d_et_min(_df):
   vpd = et_min_vpd(mean_df, mean_df.lai)
   t = np.linspace(_df.t_a.min(), _df.t_a.max())
   esat = met.vapor_pres(t)*100.
-  rh = (esat-vpd)/esat
+  print('mean esat', esat.mean())
+  print('mean vpd', vpd)
+  rh = (1. - vpd/esat)*100.
+  rh[rh < 0.] = np.nan
   return t, rh
 
 def make_ax_plot(_ax, var, _df, meta):
@@ -555,7 +558,7 @@ def make_ax_plot(_ax, var, _df, meta):
                       s=meta['size'], cmap=meta['cmap'],\
                       vmin=vmin, vmax=vmax)
   t, rh = rh_d_et_min(_df)
-  _ax.plot(t, rh, 'k-')
+  _ax.plot(rh, t, 'k-')
   if (meta['x_axis'] == 'vpd'):
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
     test = met.vapor_pres(t_a)*100.*(1. - 0.90)
