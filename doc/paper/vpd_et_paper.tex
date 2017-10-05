@@ -61,8 +61,7 @@
 %
 %
 
-\journalname{Water Resource Research}
-
+\journalname{Agricultural and Forest Meteorology}
 
 \begin{document}
 
@@ -208,7 +207,7 @@ The Penman-Monteith equation (hereafter PM) estimates ET as a function of atmosp
   \end{equation}
 \end{linenomath*}
 
- where variable definitions are given in Table 1. \cite{MEDLYN_2011} developed a model for $g_s$ by combining optimal photosynthesis theory with empirical approaches. The result for leaf-scale stomatal resistance was:
+ where variable definitions are given in Table 1. \citet{MEDLYN_2011} developed a model for $g_s$ by combining optimal photosynthesis theory with empirical approaches. The result for leaf-scale stomatal resistance was:
 
 \begin{linenomath*}
   \begin{equation}
@@ -223,14 +222,14 @@ This can be adapted to an ecosystem-scale stomatal resistance by multiplying by 
   \end{equation}
 \end{linenomath*}
 
-While Equation 3 can be used in PM, it will make analytical work with the function intractable because $A$ is a relatively strong function of ET. To remove dependence of ET on $A$ we can use the semi-empirical results of \cite{Zhou_2015}. \cite{Zhou_2015} showed that:
+While Equation 3 can be used in PM, it will make analytical work with the function intractable because $A$ is a relatively strong function of ET. To remove dependence of ET on $A$ we can use the semi-empirical results of \citet{Zhou_2015}. \citet{Zhou_2015} showed that:
 
 \begin{linenomath*}
   \begin{equation}
 uWUE = \frac{GPP \cdot \sqrt{D}}{ET}
   \end{equation}
 \end{linenomath*}
-is relatively constant across time and space (within plant functional type). If, following \cite{Lin_2015}, we approximate $g_0$ as $0$, we can use uWUE to remove $A$ from $g_s$ in a way that makes PM analytically tractable:
+is relatively constant across time and space (within plant functional type). If, following \citet{Lin_2015}, we approximate $g_0$ as $0$, we can use uWUE to remove $A$ from $g_s$ in a way that makes PM analytically tractable:
 
 \begin{linenomath*}
   \begin{equation}
@@ -254,7 +253,7 @@ We can then take the derivative with respect to $D$ to determine ecosystem respo
     \label{d_et}
   \end{equation}
 \end{linenomath*}
-Note that given yearly uWUE from \cite{Zhou_2015}, $g_1$ from \cite{Lin_2015} \citep[as presented in ][]{Franks_2017}, and observations of R, T, P, D$_s$, and wind speed (WS), the only unknown is LAI. With flux tower observations of ET, LAI will then be uniquely determined for each observation through Equation 6:
+Note that given yearly uWUE from \citet{Zhou_2015}, $g_1$ from \citet{Lin_2015} \citep[as presented in ][]{Franks_2017}, and observations of R, T, P, D$_s$, and wind speed (WS), the only unknown is LAI. With flux tower observations of ET, LAI will then be uniquely determined for each observation through Equation 6:
 
 \begin{linenomath*}
   \begin{equation}
@@ -295,7 +294,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
 
 \section{Data}
 
-We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table 2),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be fleshed out} presents each site and its plant functional type.
+We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table 2),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
 
 
 \begin{table}
@@ -318,42 +317,43 @@ We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uW
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig01.pdf}
-\caption{Plant functional type and location of sites used in analysis. Note should probably just split this into 4 continents (US, Europe, Africa, Australia).}
+\caption{Plant functional type and location of sites used in analysis. ***This is just a placeholder for now and needs to be improved i.e. with lat lon, better placement of continents, etc.)***}
 \label{map_fig}
- \end{figure}p
+ \end{figure}
 
-We restrict our analysis to the daytime (sensible heat > 5 W m$^{-1}$ and shortwave radiation > 50 W m$^{-2}$) when there is no precipitation and the plants are growing (GPP > 10\% of the 95th percentile). Also, because some sites use half hourly data but some use hourly, we aggregate all data to hourly averages. Only times with good quality control flags are used.
+We restrict our analysis to the daytime (sensible heat > 5 W m$^{-1}$ and shortwave radiation > 50 W m$^{-2}$) when there is no precipitation and the plants are growing (GPP > 10\% of the 95th percentile) \explain{This GPP thresholding was used by Changjie, do you know if there is a citation for it? Otherwise it seems like something a reviewer would have issue with as it is arbitray}. Also, because some sites use half hourly data but some use hourly, we aggregate all data to hourly averages. Only times with good quality control flags are used.
 
 \section{Results}
 \label{results}
 
-By construction, the variability in the LAI term (Equation \ref{lai}) contains all model and observational uncertainties. LAI also has physical meaning corresponding to ``true'' leaf area, and we expect that it would be approximately $O(1)$. We can have some confidence in our framework, including the assumption of constant uWUE, if calculated LAIs are generally $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated LAIs with outliers (lowest and highest 5\% percent) and nonphysical values (LAI $<$ 0.) removed. All remaining LAI values are $O(1)$ which provides confidence in model framework.
+By construction, the variability in the LAI term (Equation \ref{lai}) contains all model and observational uncertainties. LAI also has physical meaning corresponding to ``true'' leaf area, and we expect that it would be approximately $O(1)$, especially because uWUE is fit in \citet{Zhou_2015} at the ecosystem-level. We can have some confidence in our framework, including the assumption of constant uWUE, if calculated LAIs are generally $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated LAIs with outliers (lowest and highest 5\% percent) and nonphysical values (LAI $<$ 0.) removed. All remaining LAI values are $O(1)$ which provides confidence in model framework.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig02.png}
-\caption{Histogram of LAI values calculated for each site and time according to Equation \ref{lai}. The lowest and highest 5\% are removed as outliers, as well as any values below 0. The curve is normalized such that its area is 1.}
+\caption{Histogram of LAI values calculated for each site and time according to Equation \ref{lai}. The lowest and highest 5\% are removed as outliers, as well as any values below 0. The curve is normalized such that its area is 1. }
 \label{lai_fig}
 \end{figure}
 
-An additional concern is that the LAI term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig} plots the joint distribution of LAI and VPD, and shows that LAI is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $D$.
+An additional concern is that the LAI term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig}\explain{Figs 2 and 3 can probably be combined - the histogram of LAI is shown in Fig 3}. plots the joint distribution of LAI and VPD, and shows that LAI is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $D$.
 
 % below show histogram of site specific spearmannr? think would be useful 
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig03.png}
-\caption{The joint distribution of $D$ and LAI. LAI has only a weak dependence on $D$}
+\caption{The joint distribution of $D$ and LAI. LAI has only a weak dependence on $D$. ***This plot could proabably benefit from a box plot of site specific correlations, because some sites do have stronger depednence than others. Note also Figs 3 and 2 can probably be combined because this figure shoes LAI's histogram.***}
 \label{lai_vpd_fig}
 \end{figure}
 
 
 Before diving into calculated values of $\frac{\partial \; ET}{\partial \; D}$, it is useful to consider the functional form of Equation \ref{d_et}. There are three terms: a scaling term for the full expression we will call Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$), a relatively constant offset we will call Term 2 ($\frac{c_p}{R_{air}}$), and a variable term we will call Term 3 ($\frac{\gamma c_s }{\text{LAI }1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right)$). All variables are positive, so the relative magnitude between Term 2 and Term 3 will determine the sign of the derivative, while Term 1 will scale the expression larger or smaller.
 
-In Term 1, $\frac{P}{T} \propto \rho$, so this should vary little relative to $g_a$ and $\Delta$.  $\gamma$ should also be relatively constant, So the scaling term, Term 1, should be primarily a function of $g_a$ and temperature (through the function $\Delta$). While temperature range may vary for PFT, the functional form of $\Delta$ will be the same. $g_a$ will vary strongly with PFT due to the importance of surface roughness. However, the coefficient of variability for $g_a$ is relatively constant across PFT. So, the influence of $g_a$ on the relative (to the mean) variability of Term 1 is approximately similar across PFT.
+In Term 1, $\frac{P}{T} \propto \rho$, so this should vary little relative to $g_a$ and $\Delta$.  $\gamma$ should also be relatively constant, So the scaling term, Term 1, should be primarily a function of $g_a$ and temperature (through the function $\Delta$). While temperature range may vary for PFT, the functional form of $\Delta$ will be the same. $g_a$ will vary strongly with PFT due to the importance of surface roughness. However, the coefficient of variability for both $g_a$ and Term 1 is relatively constant across PFT, suggesting that the influence of $g_a$ on the relative (to the mean) variability of Term 1 is approximately similar across PFT.
 
-Figure \ref{scale_vary}A shows Term 1 normalized by mean $g_a$ (calculated for each plant functional type), and confirms that much of the relative variability of Term 1 is contained in the $g_a$ term's relative variability. Additionally, the impact of $T$ on the relative variability increases with increasing $g_a$. % plot every PFT and show they collapse onto the same vurve?
+Figure \ref{scale_vary}A shows Term 1 normalized by mean $g_a$ (calculated for each plant functional type), and confirms that much of the relative variability of Term 1 is contained in the $g_a$ term's relative variability. Generally, $T$ has less of a role. Additionally, the impact of $T$ on the relative variability increases with increasing $g_a$. % plot every PFT and show they collapse onto the same vurve?
 
-While the relative variability of Term 1 is similar across PFT, the absolute value of Term 1 varies strongly across PFT. Figure \ref{scale_vary}B shows Term 1 evaluated with the mean $g_a$ for each PFT, and at the range of observed temperatures for each PFT. As expected, for the tree PFTs (DBF, ENF) Term 1 is much larger and the temperature dependence is much stronger. Systematic differences in observed temperatures also cause differences in the average magnitude of Term 1. For example, ENF experiences on average colder temperatures and is thus more likely to have a larger scaling term. Additionally, because std$(g_a) \propto \overline{g_a}$, the spread of Term 1 due to $g_a$ variability will be larger, although this is not shown for simplicity. To summarize, the variability of Term 1 will look like Figure \ref{scale_vary}A for each PFT, but the scale of the x and y-axis will increase or decrease according to Figure \ref{scale_vary}B.
+
+While the relative variability of Term 1 is similar across PFT, the absolute value of Term 1 varies strongly across PFT. Figure \ref{scale_vary}B shows Term 1 evaluated with the mean $g_a$ for each PFT, and at the range of observed temperatures for each PFT. As expected, for the tree PFTs (DBF, ENF) Term 1 is much larger and the temperature dependence is much stronger. Systematic differences in observed temperatures also cause differences in the average magnitude of Term 1. For example, ENF experiences on average colder temperatures and is thus more likely to have a larger scaling term. Additionally, because std$(g_a) \propto \overline{g_a}$, the spread of Term 1 due to $g_a$ variability will be larger for the tree PFTs, although this is not shown for simplicity. To summarize, the variability of Term 1 within each PFT will look like Figure \ref{scale_vary}A for each PFT, but the scale of the x and y-axis will increase or decrease according to mean $g_a$ oberved in Figure \ref{scale_vary}B.
  
 \begin{figure}[h]
 \centering
@@ -364,8 +364,6 @@ While the relative variability of Term 1 is similar across PFT, the absolute val
 
 %%%%% replace below with idea:
 
-``just say that vpd effect is approximately linear (except at low VPD), and then say so we are most concerned about when d et/dvpd is zero, as this is the minima. then you can just look at this treshold as a function of LAI, uWUE, and g1.''
-
 Term 2 minus Term 3 determines the sign and magnitude that the scaling Term 1 is multiplied by. If we assume that $c_s$ variability is relatively less than LAI and $D$ variability, then variability within PFT will be solely determined by LAI and $D$. Figure \ref{term3} shows how (Term 2 - Term 3) varies with $D$ and LAI, as a function of PFT. In Figure \ref{term3}a lower uWUE and LAI shift the distribution of (Term 2 - Term 3) towards negative values. Additionally, the smaller $g1$, the greater the relative $D$ dependence of of (Term 2 - Term 3). This is observed most strongly for the ENF PFT, which has the smallest $g1$ (74.31). 
 
 
@@ -375,19 +373,18 @@ Term 2 minus Term 3 determines the sign and magnitude that the scaling Term 1 is
 \includegraphics[width=20pc]{./fig05.pdf}
 \caption{Sources of variability for Term 2 - Term 3. Top: Term 2 - Term 3 as a function of VPD, with LAI held fixed at PFT averages. The observed range of VPD for each PFT is also shown below the x-axis. Line extent corresponds to 5th and 95th percentiles, while stars denote the location of the 25th, 50th, and 75th percentiles.
 
-Bottom: The location of the minima of ET, as a function of VPD and LAI. Lines and stars denote the distribution of VPD and LAI next to axis, following the same percentiles as above.}
+Bottom: The location of the minima of ET, as a function of VPD and LAI. Lines and stars denote the distribution of VPD and LAI next to each axis, following the same percentiles as above.}
 \label{term3}
 \end{figure}
 
 
-
-Figure \ref{term3}b shows the location of the minima of ET, as a function of LAI and $D$. For any LAI or VPD less (more) than these curves, Term 2 - Term 3 will be negative (positive). It is clear that the portion of VPD observations below these curves will be a strong function of $LAI$. However, we can see some general trends. For CSH, $\frac{\partial \; ET}{\partial \; D}$ should be negative for the vast majority of observed LAI and VPD. The split appears to be more even among ENF, GRA, and DBF, and we might expect a greater frequency of positive $\frac{\partial \; ET}{\partial \; D}$ for CRO. 
+Figure \ref{term3}b shows the location of the minima of ET, as a function of LAI and $D$. For any LAI or VPD less (more) than these curves, Term 2 - Term 3 will be negative (positive). It is clear that the portion of VPD observations below/above these curves will be a strong function of $LAI$. However, we can see some general trends. For CSH, $\frac{\partial \; ET}{\partial \; D}$ should be negative for the vast majority of observed LAI and VPD. The split appears to be more even among ENF, GRA, and DBF, and we might expect a greater frequency of positive $\frac{\partial \; ET}{\partial \; D}$ for CRO. 
 
 Table 3 confirms these expectations for PFT behavior of $\frac{\partial \; ET}{\partial \; D}$. For all PFTs except for CRO, average $\frac{\partial \; ET}{\partial \; D}$ is less than zero. However, $\frac{\partial \; ET}{\partial \; D}$ evaluated at the average of all variables (e.g. LAI, $T$, $c_s$, $D$) is only negative for CSH and GRA. And, DBF in addition to CRO experiences $\frac{\partial \; ET}{\partial \; D}$ < 0 less than half the time. These observations highlight the effect of the nonlinear function in Figure \ref{term3}: $\frac{\partial \; ET}{\partial \; D}$ has a much steeper slope when the function is negative, and is thus more likely to be large magnitude.
-n
-The units of $\frac{\partial \; ET}{\partial \; D}$ make it difficult to interpret if $D$ is even a meaningful contributor to ET's variability. To understand $D$'s contribution better, we use a linear approximation and present $\frac{\partial \; ET}{\partial \; D}$ multiplied by $D$'s standard deviation. The range of $D$'s contribution to ET's variability ranges between 16 - 20 W m$^{-2}$ for all PFTs except for CSH, which is about 51 W m$^{-2}$. Another meaningful comparison is to $\frac{\partial \; ET}{\partial \; R} * std(R)$, as net radiation generally the driver of ET (cite joe berry here). For all PFTs except for CSH $D$ contributes between 14.5 - 20.5 \% of $R$'s contribution to variability. For CSH the portion is much larger, about 44 \%. However it is important to note that a linear approximation about a mean base state is probably not a very good approximation across the range of variability, so these values are just estimates of $D$'s contribution to ET's variability. 
 
-So far, idealized plots and statistics have illuminated the form of $\frac{\partial \; ET}{\partial \; D}$ and how it varies with PFT. Large mean LAI and uWUE shifts CRO and DBF towards positive $\frac{\partial \; ET}{\partial \; D}$. However, the strongly nonlinear function of $\frac{\partial \; ET}{\partial \; D}$ at $\frac{\partial \; ET}{\partial \; D} < 0$ pushes $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative for DBF (it does not do this for CRO because of CRO's high $g1$). ENF's low $g1$ value increases the dependence of $\frac{\partial \; ET}{\partial \; D}$ on $D$, and makes the function more strongly nonlinear. This has the side effect of pushing $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative further than other PFTs for a given fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and magnitude $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$. GRA shows the opposite behavior; a relatively high $g1$  makes the function more linear, decreasing the magnitude of $\overline{\frac{\partial \; ET}{\partial \; D}}$ for a given fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and magnitude $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$ (although $g_a$ and Term 1 also probably have a role in this). Finally, low $uWUE$ of CSH pushes to toward by far the lowest values $\frac{\partial \; ET}{\partial \; D}$ (Figure \ref{term3}). Variability in $D$ accounts for the largest about of $ET$ variability for CSH. For the other PFTs, $D$ contributes less to $ET$ variability, but still represents about 15-20 \% of $R$'s contributions to ET variability.
+The units of $\frac{\partial \; ET}{\partial \; D}$ make it difficult to interpret if $D$ is even a meaningful contributor to ET's variability. To understand $D$'s contribution better, we use a linear approximation and present $\frac{\partial \; ET}{\partial \; D}$ multiplied by $D$'s standard deviation. The $D$'s contribution to ET's variability ranges between 16 - 20 W m$^{-2}$ for all PFTs except for CSH, which is about 51 W m$^{-2}$. Another meaningful comparison is to $\frac{\partial \; ET}{\partial \; R} * std(R)$, as net radiation generally the driver of ET (cite joe berry here). For all PFTs except for CSH $D$ contributes between 14.5 - 20.5 \% of $R$'s contribution to variability. For CSH the portion is much larger, about 44 \%. However it is important to note that a linear approximation about a mean base state is probably not a very good approximation across the range of variability, so these values are just estimates of $D$'s contribution to ET's variability. Regardless, $D$'s variability is certiantly a non-negligable contributor to $ET$'s variability.
+
+So far, idealized plots and statistics have illuminated the form of $\frac{\partial \; ET}{\partial \; D}$ and how it varies with PFT. Large mean LAI and uWUE shifts CRO and DBF towards positive $\frac{\partial \; ET}{\partial \; D}$. However, the strongly nonlinear function of $\frac{\partial \; ET}{\partial \; D}$ at $\frac{\partial \; ET}{\partial \; D} < 0$ pushes $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative for DBF (it does not do this for CRO because of CRO's high $g1$). ENF's low $g1$ value increases the dependence of $\frac{\partial \; ET}{\partial \; D}$ on $D$, and makes the function more strongly nonlinear. This has the side effect of pushing $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative further than other PFTs for a given fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and magnitude $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$. GRA shows the opposite behavior; a relatively high $g1$  makes the function more linear, decreasing the magnitude of $-\overline{\frac{\partial \; ET}{\partial \; D}}$ for a given  [large] fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and negative $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$ (although $g_a$ and Term 1 also probably have a role in this). Finally, low $uWUE$ of CSH pushes to toward by far the lowest values $\frac{\partial \; ET}{\partial \; D}$ (Figure \ref{term3}). Variability in $D$ accounts for the largest about of $ET$ variability for CSH. For the other PFTs, $D$ contributes less to $ET$ variability, but still represents about 15-20 \% of $R$'s contributions to ET variability.
 
 \begin{table}
 \caption{Statistics of $\frac{\partial \; ET}{\partial \; D}$ as a function of PFT.}
@@ -413,15 +410,15 @@ GRA & -0.019637 & -0.000921 & 16.798083 & 0.173552 & 0.631735\\
 
 Now that we have an intuitive understanding of $\frac{\partial \; ET}{\partial \; D}$'s behavior, we are equipped to interpret fully realistic plots of $\frac{\partial \; ET}{\partial \; D}$ for each PFT. Figure \ref{real} presents calculated $\frac{\partial \; ET}{\partial \; D}$ where, unless otherwise noted, all variables in Equation \ref{d_et} are allowed to vary. Each column is a different quantity related to $\frac{\partial \; ET}{\partial \; D}$, and each row is a different PFT.
 
-The full observations generally confirm expectations from Section \ref{results}. CRO has the most positive values of $\frac{\partial \; ET}{\partial \; D}$, $\frac{\partial \; ET}{\partial \; D}$ is almost always negative for CSH, and response depends more with the environmental conditions for the other PFTs (especially ENF). Through the columns of Figure \ref{real} we can see the impact of LAI and $g_a$ on the variability of $\frac{\partial \; ET}{\partial \; D}$. $g_a$'s (columns 1 and 3) scaling alters the magnitude considerably. $LAI$ (columns 2 and 3) variability adds a lot of additional noise to the signal of $\frac{\partial \; ET}{\partial \; D}$, which is slightly undesirable given LAI's role in representing model and observational uncertainty. However, the general story with the noise appears to match the cleaner signal when $LAI$ is help constant and $D_{ETmin}$ is clearly visible \explain{I really need to make these plots better - way too much overlapping of points that hurts the story}. One exception is possibly with GRA, for which uncertainty is high and causes the full complexity plots (Columns 1 and 2) to not match well with LAI held fixed (Columns 3 and 4).
+The full observations generally confirm expectations from Section \ref{results}. CRO has the most positive values of $\frac{\partial \; ET}{\partial \; D}$, $\frac{\partial \; ET}{\partial \; D}$ is almost always negative for CSH, and response depends more with the environmental conditions for the other PFTs (especially ENF). Through the columns of Figure \ref{real} we can see the impact of LAI and $g_a$ on the variability of $\frac{\partial \; ET}{\partial \; D}$. $g_a$'s scaling (included in columns 1 and 3) alters the magnitude considerably. $LAI$ variability (included in columns 1 and 2) adds a lot of additional noise to the signal of $\frac{\partial \; ET}{\partial \; D}$, which is slightly undesirable given LAI's role in representing model and observational uncertainty. However, the general story with the noise appears to match the cleaner signal when $LAI$ is help constant and $D_{ETmin}$ is clearly visible \explain{I really need to make these plots better - way too much overlapping of points that hurts the story}. One exception is possibly with GRA, for which uncertainty represented in LAI is high and causes the full complexity plots (Columns 1 and 2) to not match well with LAI held fixed (Columns 3 and 4).
 
-For ENF and GRA $D_{ETmin}$ does not appear to be only a function of LAI. It turns out that the site to site variability in $\gamma$ causes $D_{ETmin}$ to vary, which is not discussed in the previous section. The impact is observable in both ENF and GRA, but especially for ENF which has a larger $\frac{\partial^2 \; ET}{\partial^2 \; D}$ than the other PFTs. 
+For ENF and GRA $D_{ETmin}$ does not appear to be only a function of LAI (most observable in Column 4). It turns out that the site to site variability in $\gamma$ causes $D_{ETmin}$ to vary, which is not discussed in the previous section. The impact is observable in both ENF and GRA, but especially for ENF which has a larger $\frac{\partial^2 \; ET}{\partial^2 \; D}$ than the other PFTs. 
 
-In general the full complexity plots of $\frac{\partial \; ET}{\partial \; D}$ match our expectations, even with the large sensitivity to LAI measures of uncertainty observed in Figure \ref{term3}. Our LAI-based method of uncertainty propagation blurs the idealized expectations the most for GRA, and also has a considerable effect for CRO. We therefor have the most confidence in our conclusion based on Equation \ref{d_et} for PFTS CSH, DBF, and ENF, as the full complexity plots with uncertainty included closely match the story when LAI is held fixed. **see somewhat preferred alternate figure \ref{real2} \explain{I think I like this more as thinking in terms of T and RH is easier. However, I used the other plot because Fig 5 does not discuss things in terms of temperature, as this would make things more complicated (adding another dimension). I could just include both versions of figure 6 though (using figure 6a as a bridge to figure 6b)}.
+In general the full complexity plots of $\frac{\partial \; ET}{\partial \; D}$ match our expectations, even with the large sensitivity to LAI measures of uncertainty observed in Figure \ref{term3}. Our LAI-based method of uncertainty propagation blurs the idealized expectations the most for GRA, and also has a considerable effect for CRO. We therefor have the most confidence in our conclusion based on Equation \ref{d_et} for PFTS CSH, DBF, and ENF, as the full complexity plots with uncertainty included closely match the story when LAI is held fixed. **see somewhat preferred alternate figure \ref{real2} \explain{I think I like the alternate plot much  more as thinking in terms of T and RH is easier, and it makes the story easier to see at relatively low temperatures. However, I used the other plot because Fig 5 does not discuss things in terms of temperature, as this would make things more complicated (adding another dimension). I could just include both versions of figure 6 though (using figure 6a as a bridge to figure 6b)}.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{./fig06.png}
-\caption{Scatter plots of $\frac{\partial \; ET}{\partial \; D}$. Each row is a different PFT, and each column is a different quantity related to $\frac{\partial \; ET}{\partial \; D}$, as labeled: Column 1 - $\frac{\partial \; ET}{\partial \; D}$; Column 2 - $\frac{\partial \; ET}{\partial \; D}$ normalized by $g_a$; Column 3 - $\frac{\partial \; ET}{\partial \; D}$ with LAI held fixed at PFT average; and Column 4 - $\frac{\partial \; ET}{\partial \; D}$ normalized by $g_a$ and with LAI held fixed. For reference, lines corresponding to RH = 20\% and RH = 90 \% are drawn. Please note differences in the colorbar scale.}
+\caption{Scatter plots of $\frac{\partial \; ET}{\partial \; D}$. Each row is a different PFT, and each column is a different quantity related to $\frac{\partial \; ET}{\partial \; D}$, as labeled: Column 1 - $\frac{\partial \; ET}{\partial \; D}$; Column 2 - $\frac{\partial \; ET}{\partial \; D}$ normalized by $g_a$; Column 3 - $\frac{\partial \; ET}{\partial \; D}$ with LAI held fixed at PFT average; and Column 4 - $\frac{\partial \; ET}{\partial \; D}$ normalized by $g_a$ and with LAI held fixed. For reference, lines corresponding to RH = 20\% and RH = 90 \% are drawn. Please note differences in the colorbar scale. ***see alternate (or additional) plot below.***}
 \label{real}
 \end{figure}
 
@@ -440,7 +437,8 @@ The idealized representation of ET used here is successful in developing intuiti
 The idealized framework leads to the following general conclusions:
 \begin{itemize}
   \item Aerodynamic resistance plays an important role of scaling $\frac{\partial \; ET}{\partial \; D}$. This is a leading order effect for observing higher magnitude responses in DBF and ENF.
-\item In general, CSH has the most negative (i.e. ET reduced) response to increases in $D$ (atmospheric drying). So CSH plants will almost always try and conserve water, effectively reducing ET with dry atmospheric perturbation.
+  \item In general, CSH has the most negative (i.e. ET reduced) response to increases in $D$ (atmospheric drying). So CSH plants will almost always try and conserve water, effectively reducing ET with dry atmospheric perturbation.
+    \item Additionally for CSH, $D$ variability contributes the most to $ET$ variability.
 \item CRO has the most positive response (i.e. ET increased) in response to increases in $D$. This is consistent with CROs that may be evolved or bred to thrive in non-water-limited environments.
 \item The response is more a function of the environment for DBF, ENF, and GRA. Because as VPD increases the response is more likely to be positive, if RH is fixed then the response will be more likely to be positive at warmer T, or if T is fixed the response is more likely to be positive with decreasing RH.
 \item ENF has the strongest dependence on environmental conditions due to its small $g1$.
@@ -659,6 +657,10 @@ This work used eddy covariance data acquired and shared by the FLUXNET community
 % 4. Run LaTeX on your new file which will produce the citations.
 %
 % AGU does not want a .bib or a .bbl file. Please copy in the contents of your .bbl file here.
+
+
+\input{vpd_et_paper.bbl}
+%\bibliography{references.bib}
 
 
 %% After you run BibTeX, Copy in the contents of the .bbl file here:
