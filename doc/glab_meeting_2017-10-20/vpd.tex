@@ -1,0 +1,54 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+ % \usepackage[utf8x]{inputenc}
+\usepackage[style=authoryear]{biblatex}
+\addbibresource{references.bib}
+
+\title[Your Short Title]{Bayesian Neural  Networks and Probalistic Programming}
+\author{Adam Massmann and Laureline Josset}
+\institute{Water Center NN Meetings}
+\date{Week 5: Oct. 17th, 2017}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{References}
+\begin{frame}{References}
+  \AtNextBibliography{\small}
+  \printbibliography
+\end{frame}
+
+% \begin{figure}
+%   \includegraphics[width=3in]{ranganath.png}
+%   \caption{Reproduced from \cite{ranganath2014}.}
+% \end{figure}
+
+% \begin{table}
+% \centering
+% \begin{tabular}{l|r}
+% Item & Quantity \\\hline
+% Widgets & 42 \\
+% Gadgets & 13
+% \end{tabular}
+% \caption{\label{tab:widgets}An example table.}
+% \end{table}
+
+\end{document}
