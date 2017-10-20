@@ -35,7 +35,7 @@
 \begin{frame}{When does VPD drive or reduce ET?}
   \begin{itemize}
   \item \textbf{Hydrometeorologists} would say that an increase in VPD (increase in \textbf{atmospheric demand}) would drive an \textbf{increase in ET}.
-  \item However, \textbf{plant physioligists} know that plants have evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
+  \item However, \textbf{plant physiologists} know that plants have evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
   \end{itemize}
 \end{frame}
 
@@ -44,7 +44,7 @@
   \item It should be a function of plant type and the environment:
     \begin{itemize}
     \item Plants that are evolved to conserve water will tend to reduce ET with increases in VPD.
-    \item However the environment can overwhelm plant response: at some threshold (i.e. very high VPD) the atmospheric demand should dominate and plants will not be able to consernve water, no matter how much they have evolved to do so.
+    \item However the environment can overwhelm plant response: at some threshold (i.e. very high VPD) the atmospheric demand should dominate and plants will not be able to conserve water, no matter how much they have evolved to do so.
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -53,7 +53,7 @@
 \begin{frame}{We will try an analytical approach to this question:}
   We can use Penman-Monteith (PM) to estimate ET:
   \[ET = \frac{\Delta R + g_a \rho_a c_p D}{\Delta + \gamma(1 + \frac{g_a}{g_s})},\]
-  But in:
+  But in (\cite{MEDLYN_2011}):
   \[  g_{s} = g_0 + 1.6 \left(1 + \frac{g_1}{\sqrt{D}}\right) \frac{A}{c_s}\]
   $A$ is a function of $ET$. So $ET$ in PM is really an implicit function of itself.
 \end{frame}
@@ -64,7 +64,7 @@
   is conserved across space and time (within PFT).\\
   \medskip
   So we can use uWUE to remove dependence of $g_s$ on $A$:
-  \[g_s = \frac{\text{LAI }}{\text{LAI$_{ref}$}} \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{uWUE \; ET}{c_s \; \sqrt{D}}\]
+  \[g_s =  \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{uWUE \; ET}{c_s \; \sqrt{D}}\]
 \end{frame}
 
 \begin{frame}{Derive new form of PM}
@@ -235,9 +235,9 @@
 \section{Conclusions}
 \begin{frame}{Summary}
   \begin{itemize}
-  \item Theory suggests that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.  Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ (and more negative ET response) than plants evolved (or bred) to use water and prioritize GPP (CRO).
-  \item On average, ecosystem response to VPD follows roughly what we might expect: CRO (prioritize GPP) has postive ET response to VPD, while all others have a negative response. Ordering by increasing magnitude of negative reponse gives: DBF, GRA, ENF, CSH; which might seem to correspond to expectations for increasing water conservation as a function of PFT..
-  \item Uncertainty is high, expecially for CRO and GRA. However, inclusion of uncertainty does not change the story for ENF or CSH.
+  \item Theory finds that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.  Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ (and more negative ET response) than plants evolved (or bred) to use water and prioritize GPP (CRO).
+  \item On average, ecosystem response to VPD follows roughly what we might expect: CRO (prioritize GPP) has positive ET response to VPD, while all others have a negative response. Ordering by increasing magnitude of negative response gives: DBF, GRA, ENF, CSH; which roughly correspond to expectations for increasing water conservation as a function of PFT.
+  \item Uncertainty is high, especially for CRO and GRA. However, inclusion of uncertainty does not change the story for ENF or CSH.
   \end{itemize}
 \end{frame}
   
