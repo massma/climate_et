@@ -18,6 +18,7 @@
  % \usepackage[utf8x]{inputenc}
 \usepackage[style=authoryear]{biblatex}
 \addbibresource{references.bib}
+\usepackage{tikz}
 
 \title[Your Short Title]{When does VPD drive or reduce ET?}
 \author{Adam (with Pierre and Changjie)}
@@ -73,7 +74,7 @@
   \[\frac{\partial \;  ET}{\partial \; D} = \frac{g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
 \end{frame}
 
-\section{Results}
+\section{Results - theory}
 \begin{frame}{Scaling Term}
   \[\frac{\partial \;  ET}{\partial \; D} = \mathbf{ \frac{g_a \; P}{T(\Delta + \gamma)} }   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
 \begin{figure}
@@ -100,6 +101,147 @@
   \item Aerodynamic conductance scales the response, so plants with large surface roughness will be more likely to have a larger response as there is less resistance between the surface and the atmosphere.
   \end{itemize}
 \end{frame}
+
+\section{Results - reality}
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - CRO}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{cro_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - CRO}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{cro.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - CSH}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{csh_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - CSH}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{csh.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - DBF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{dbf_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - DBF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{dbf.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+   }
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - ENF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{enf_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - ENF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{enf.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+   }
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - GRA}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{gra_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - GRA}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{gra.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+   }
+
+   \begin{frame}{Summary statistics}
+     \begin{table}
+       \caption{Statistics of $\frac{\partial \; ET}{\partial \; D}$ as a function of PFT.}
+       \centering
+       \begin{tabular}{l c c}
+         \hline
+         PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+         \hline
+         CRO & 0.000853  & 0.473311\\
+         CSH & -0.108234 & 0.931660\\
+         DBF & -0.012727 & 0.461674\\
+         ENF & -0.034087 & 0.534425\\
+         GRA & -0.019637 & 0.631735\\
+         \hline
+         \multicolumn{2}{l}{}  
+       \end{tabular}
+     \end{table}
+   \end{frame}
+     
+\section{Conclusions}
+\begin{frame}{Summary}
+  \begin{itemize}
+  \item Theory suggests that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.  Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ (and more negative ET response) than plants evolved (or bred) to use water and prioritize GPP (CRO).
+  \item On average, ecosystem response to VPD follows roughly what we might expect: CRO (prioritize GPP) has postive ET response to VPD, while all others have a negative response. Ordering by increasing magnitude of negative reponse gives: DBF, GRA, ENF, CSH; which might seem to correspond to expectations for increasing water conservation as a function of PFT..
+  \item Uncertainty is high, expecially for CRO and GRA. However, inclusion of uncertainty does not change the story for ENF or CSH.
+  \end{itemize}
+\end{frame}
+  
+
 
 \section{References}
 \begin{frame}{References}
