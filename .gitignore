@@ -6,3 +6,17 @@ _*_.*
 *.log
 *.prv*
 *eee_abstract.pdf
+*.bbl
+*.bcf
+*.blg
+*.nav
+*.out
+*.run.xml
+*.snm
+*.toc
+*Monteith65.pdf
+*agufull08.bst
+*agujournal.cls
+*fig05a.pdf
+*fig06a.pdf
+*vpd_et_paper.blg
