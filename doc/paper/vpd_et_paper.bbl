@@ -1,9 +1,21 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{8}
 \providecommand{\natexlab}[1]{#1}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
   \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
   \urlstyle{rm}\Url}\fi
+
+\bibitem[{200(2002)}]{2002}
+ (2002), A review of twentieth-century drought indices used in the united
+  states, \textit{Bulletin of the American Meteorological Society},
+  \textit{83}(8), 1149--1165,
+  \doi{10.1175/1520-0477(2002)083<1149:arotdi>2.3.co;2}.
+
+\bibitem[{\textit{Alley}(1984)}]{Alley_1984}
+Alley, W.~M. (1984), The palmer drought severity index: Limitations and
+  assumptions, \textit{Journal of Climate and Applied Meteorology},
+  \textit{23}(7), 1100--1109,
+  \doi{10.1175/1520-0450(1984)023<1100:tpdsil>2.0.co;2}.
 
 \bibitem[{\textit{Ball et~al.}(1987)\textit{Ball, Woodrow, and
   Berry}}]{Ball_1987}

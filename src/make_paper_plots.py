@@ -700,3 +700,10 @@ os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
           % (os.environ['PLOTS'], meta['x_axis']))
 
 
+##### Table 5  #####
+columns = []
+for i in range(1, 5):
+  columns.append('term_%d' % i)
+  mean_df[columns[-1]] = 1./(mean_df.lai*mean_df.uwue_norm*mean_df.g1**i)
+
+print(mean_df.loc[:, columns])
