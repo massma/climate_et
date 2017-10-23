@@ -15,7 +15,17 @@ import util
 import metcalcs as met
 import codebase.penman_monteith as pm
 import codebase.calc_tools as calc
+from sympy import Symbol, sqrt, series, latex, limit
 
+
+#try some analytis with sympy
+g1 = Symbol('g_1')
+# x = Symbol('\frac{\sqrt{D}}{g_1}')
+# func = g1*(2 + x)/(2*g1**2*(1 + x)**2)
+# print(latex(series(func, x, x0=0., dir='+')))
+x = Symbol('\sqrt{D}')
+func  = (2*g1 + x)/(2*(g1 + x)**2)
+print(latex(series(func, x, x0=0., dir='+')))
 
 mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
@@ -261,6 +271,25 @@ def term_2(_df, lai, vpd):
   canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
   return pm.CP/_df.r_moist.mean() +calc.leaf_vpd(atmos, canopy, lai)
 
+
+def term_2_approx(_df, lai, vpd):
+  """calculates term 2"""
+  atmos = {'gamma' : _df.gamma.mean(), 'c_a' : _df.c_a.mean(),\
+           'vpd' : vpd}
+  if _df.uwue.std() > 1.e-8:
+    print('error, uWUE is variable: %f!!!!' % _df.uwue.std())
+  elif _df.g1.std() > 1.e-8:
+    print('error, g1 is variabile: %f!!!!!' % _df.g1.std())
+  canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
+  return pm.CP/_df.r_moist.mean() \
+    -atmos['gamma']*atmos['c_a']*pm.LV/\
+    (lai*1.6*pm.R_STAR*canopy['uwue'])\
+    *(1./canopy['g1'] - 3.*np.sqrt(atmos['vpd'])/(2.*canopy['g1']**2)
+      + 2.*atmos['vpd']/canopy['g1']**3\
+      - 5.*np.sqrt(atmos['vpd'])**3/(2.*canopy['g1']**4))
+
+
+
 # def plot_leaf_vpd(_df, ax, savefig=False):
 #   """makes idealized plots of plant term as a function of lai and vpd"""
 #   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
@@ -382,11 +411,13 @@ def pft_leaf(_df, axs):
   global I
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
-  axs[0].plot(vpd, term_2(_df, lai, vpd),\
-              label="%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
-              % (_df.pft.iloc[0],\
-                 lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
-
+  p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
+                  label="%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
+                  % (_df.pft.iloc[0],\
+                     lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+  axs[0].plot(vpd, term_2_approx(_df, lai, vpd), linestyle='dashed',\
+              color=p[0].get_color())
+  #print('axlim: ',axs[0].get_ylim())
   # axs[3].plot(vpd, second_half(_df, vpd),\
   #             label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
@@ -469,7 +500,7 @@ axs[2].text(1.4, 3500., r'$\frac{\partial \; ET}{\partial \; D} > 0$',\
 # axs[3].set_xlabel('VPD (Pa)')
 # axs[2].set_ylabel(paren_string)
 # axs[3].set_ylabel(r'-$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
-
+axs[0].set_ylim((-1.8058955891452384, 0.87408219563044132))
 for ax in axs[:1]:
   h, l = ax.get_legend_handles_labels()
   ax.legend(h, l, loc='best', fontsize=9)
