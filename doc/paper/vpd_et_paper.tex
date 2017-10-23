@@ -192,11 +192,13 @@
 \section{Introduction}\explain{This section needs to be fleshed out, and I definitely need to add more citations}
 
 
-Changes to vapor pressure deficit (VPD) alter the atmospheric demand for water from the land surface. Traditionally, atmospheric scientists and hydrometeorologists generally think that an increase in atmospheric demand induces an increases in evapotranspiration (ET) (citations?). This possible misconception developed in part due to the proliferation of studies examing potential ET rather than estimates of ET itself (citations?).  In contrast, plant physiologists know that stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase (decrease) in VPD may not correspond to an increase (decrease) in ET because stomatal closure (opening) can cancel the effects of shifts to atmospheric demand. 
+Changes to vapor pressure deficit (VPD) alter the atmospheric demand for water from the land surface. Traditionally, atmospheric scientists and hydrometeorologists generally think that an increase in atmospheric demand induces an increases in evapotranspiration (ET) (citations?). This possible misconception developed in part due to the proliferation of studies examing potential ET (PET) rather than estimates of ET itself (citations?).  In contrast, plant physiologists know that stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase (decrease) in VPD may not correspond to an increase (decrease) in ET because stomatal closure (opening) can cancel the effects of shifts to atmospheric demand.
 
 Quantifying the plant response to a perturbation to atmospheric VPD increases our understanding of land surface response to shifts in atmospheric conditions. If plant response reduces ET in response to atmospheric drying then soil moisture will be conserved. An increase in ET in reponse to atmospheric drying will reduce soil moisture, but contribute increased moisenting to the atmosperhere. Clearly, the sign and magnitude of land-surface responsedrives the co-evolution of the atmosphere and land-surface at many timescales, from diurna to interdecadal.
 
-In order to quantify plant response to perturbations to atmospheric demand for water, we apply a Penman-Monteith framework to eddy-covariance observation spanning various biomes and climates. Section 2 describes the data used, Section 3 derives the framework, Section 4 presents results, and Section 5 discusses conclusions. The goal of this paper is to use reasonable approximations as a tool to increase intuition for plant response to atmospheric drying. This intuition will aid interpretation of observations and full complexity climate models.
+We hypothesize that for most plant types a common resonse to increase in VPD will actually be a decrease in ET. The excpetion would be plants such as crops that are evolved (or bred) to prioritize gross primary production (GPP) over water conservation. However, for all otehr plants types, our hypothesis calls into question the validity of PET-based drought metrics deceloped by hydrometeorologists and used extensively in operations \citep[e.g. PDSI, P-PET,][]{2002, Alley_1984} \explain{more citations needed, including recent PET climate studies like Jack Scheff}. These metrics ignore the role of plants as gatekeepers for surface water loss to the atmosphere and have limited physical meaning for drought of vegetated land types. Additionally, plants evolved in arid climates should prioritize water conservation and we would expect a very negative ET response to increase in VPD. Therefore, vegetated locations most likely to experience droughts should show the strongest deviation between reality and a PET-based approximation. 
+
+In order to quantify plant response to perturbations to atmospheric demand for water, we apply a Penman-Monteith framework to eddy-covariance observation spanning various biomes and climates. Section 2 describes the data used, Section 3 derives the framework, Section 4 presents results, and Section 5 discusses conclusions. The goal of this paper is to use reasonable approximations as a tool to increase intuition for plant response to atmospheric drying. This intuition will aid interpretation of observations and full complexity climate models. 
 
 \section{Methods}
 
@@ -241,17 +243,20 @@ is relatively constant across time and space (within plant functional type). If,
   \end{equation}
 \end{linenomath*}
 
-Note that $uWUE$ is fit on the ecosystem scale in \citet{Zhou_2015} so GPP in \ref{uwue} is really $A\cdot \text{LAI}$. We also recognize that our use of $uWUE$ introudces considerable uncertainty, so we added an uncertainty parameter $\sigma = f(t, \text{site})$ modifying $uWUE$. This will be elaborated on below.
+Note that $uWUE$ is fit on the ecosystem scale in \citet{Zhou_2015} so GPP in \ref{uwue} is really $A\cdot \text{LAI}$. This leads to the cancelation of LAI in additoin to uWUE in Equation \ref{medlyn}. We also recognize that our use of $uWUE$ introudces considerable uncertainty, so we added an uncertainty parameter $\sigma = f(t, \text{site})$ modifying $uWUE$. The meaning of this parameter will be elaborated on after the derivation of $\frac{\partial \; ET}{\partial \; D}$.
 
 Next, plugging Equation 5 into Equation 1 and rearranging gives:
 
 \begin{linenomath*}
   \begin{equation}
-  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} -  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6\; \sigma\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right) }{ \Delta + \gamma}
+    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} -  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6\; \sigma\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right) }{ \Delta + \gamma}
+    \label{et}
   \end{equation}
 \end{linenomath*}
 
-We can then take the derivative with respect to $D$ to analytically determine ecosystem response to atmospheric demand perturbations:
+Note that if we set the uncertaitny parameter $\sigma$ to 1, and approximage $c_s$ at a global mean CO$_2$ concentration, then Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This then begs the question, why use PET at all for drought metrics in vegetated areas? A much more physically realistic estimate of ET can be had with the same information reqiured to calculate PET. 
+
+We can now take the derivative with respect to $D$ to analytically determine ecosystem response to atmospheric demand perturbations:
 
 \begin{linenomath*}
   \begin{equation}
@@ -279,8 +284,7 @@ Note that given yearly uWUE from \citet{Zhou_2015}, $g_1$ from \citet{Lin_2015} 
   \end{equation}
 \end{linenomath*}
 
-%% see registers!!!!!! - help for emacs productivity
-This $\sigma$ will be some part uncertainty associated with assumptions about constant $g1$ and $uWUE$, including differences between the data used here and in the fits in \cite{Zhou_2016} and \cite{Lin_2015}, but also some general PM model and FLUXNET observationsal uncertainty. By calculating a unique $\sigma$ for each observation we will propagate any model and observational uncertainty forward into our expression for $\frac{\partial \; ET}{\partial D}$. 
+This $\sigma$ will be some part uncertainty associated with assumptions about constant $g1$ and $uWUE$, including differences between the data used here and in the fits in \citet{Zhou_2015} and \citet{Lin_2015}, but also some part general PM model and FLUXNET observationsal uncertainty. By calculating a unique $\sigma$ for each observation we will propagate any model and observational uncertainty forward into our expression for $\frac{\partial \; ET}{\partial D}$. 
 
 
 \begin{table}
@@ -346,7 +350,7 @@ We restrict our analysis to the daytime (sensible heat > 5 W m$^{-1}$ and shortw
 \section{Results}
 \label{results}
 
-By construction, the variability in the $\sigma$ term (Equation \ref{lai}) contains all model and observational uncertainties. We expect LAI to be cloase to LAI$_{ref}$, so $\sigma$ should be $O(1)$. We can have some confidence in our framework, including the assumption of constant uWUE, if calculated $\sigma$s are generally $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated $\sigma$s with outliers (lowest and highest 5\% percent) and nonphysical values ($\sigma$ $<$ 0.) removed. All remaining $\sigma$ values are $O(1)$ which provides confidence in model framework.
+By construction, the variability in the $\sigma$ term (Equation \ref{lai}) contains all model and observational uncertainties. For an observation that perfectly matches our model and assumptions $\sigma$ will be one. Therefore, if for our assumptions and framework to be reasonable $\sigma$ should be $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated $\sigma$s with outliers (lowest and highest 5\% percent) and nonphysical values ($\sigma$ $<$ 0.) removed. All remaining $\sigma$ values are $O(1)$ which provides confidence in model framework.
 
 \begin{figure}[h]
 \centering
@@ -355,7 +359,7 @@ By construction, the variability in the $\sigma$ term (Equation \ref{lai}) conta
 \label{lai_fig}
 \end{figure}
 
-An additional concern is that the $\sigma$ term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig}\explain{Figs 2 and 3 can probably be combined - the histogram of $\sigma$ is shown in Fig 3}. plots the joint distribution of $\sigma$ and VPD, and shows that $\sigma$ is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $D$.
+An additional concern is that the $\sigma$ term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig}\expplain{Figs 2 and 3 can probably be combined - the histogram of $\sigma$ is shown in Fig 3.} plots the joint distribution of $\sigma$ and VPD, and shows that $\sigma$ is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $D$.
 
 % below show histogram of site specific spearmannr? think would be useful 
 \begin{figure}[h]
@@ -366,11 +370,11 @@ An additional concern is that the $\sigma$ term may in fact be some function of 
 \end{figure}
 
 
-Before calculating the sensitivity of ET to VPDn, it is useful to consider the functional form of Equation \ref{d_et}. There are three terms: a scaling term for the full expression we will call Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$), a relatively constant offset we will call Term 2 ($\frac{c_p}{R_{air}}$), and a variable term we will call Term 3 ($\frac{\gamma c_s }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right)$). All variables are positive, so the relative magnitude between Term 2 and Term 3 will determine the sign of the derivative, while Term 1 will scale the expression larger or smaller.
+Before calculating the sensitivity of ET to VPD, it is useful to consider the functional form of Equation \ref{d_et}. There are three terms: a scaling term for the full expression we will call Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$), a relatively constant offset we will call Term 2 ($\frac{c_p}{R_{air}}$), and a variable term we will call Term 3 ($\frac{\gamma c_s }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right)$). All variables are positive, so the relative magnitude between Term 2 and Term 3 will determine the sign of the derivative, while Term 1 will scale the expression larger or smaller.
 
 In Term 1, $\frac{P}{T} \propto \rho$, so this should vary little relative to $g_a$ and $\Delta$.  $\gamma$ should also be relatively constant, So the scaling term, Term 1, should be primarily a function of $g_a$ and temperature (through the function $\Delta$). While temperature range may vary for PFT, the functional form of $\Delta$ will be the same. $g_a$ will vary strongly with PFT due to the importance of surface roughness. However, the coefficient of variability for both $g_a$ and Term 1 is relatively constant across PFT, suggesting that the influence of $g_a$ on the relative (to the mean) variability of Term 1 is approximately similar across PFT.
 
-Figure \ref{scale_vary}A shows Term 1 normalized by mean $g_a$ (calculated for each plant functional type), and confirms that much of the relative variability of Term 1 is contained in the $g_a$ term's relative variability. Generally, $T$ has less of a role. Additionally, the impact of $T$ on the relative variability increases with increasing $g_a$. % plot every PFT and show they collapse onto the same vurve?
+Figure \ref{scale_vary}A shows Term 1 normalized by mean $g_a$ (calculated for each plant functional type), and confirms that much of the relative variability of Term 1 is contained in the $g_a$ term's relative variability. Generally, $T$ has less of a role. Additionally, the impact of $T$ on the relative variability increases with increasing $g_a$. \explain{plot every PFT and show they collapse onto the same curve? - might just be too messy though}.
 
 
 While the relative variability of Term 1 is similar across PFT, the absolute value of Term 1 varies strongly across PFT. Figure \ref{scale_vary}B shows Term 1 evaluated with the mean $g_a$ for each PFT, and at the range of observed temperatures for each PFT. As expected, for the tree PFTs (DBF, ENF) Term 1 is much larger and the temperature dependence is much stronger. Systematic differences in observed temperatures also cause differences in the average magnitude of Term 1. For example, ENF experiences on average colder temperatures and is thus more likely to have a larger scaling term. Additionally, because std$(g_a) \propto \overline{g_a}$, the spread of Term 1 due to $g_a$ variability will be larger for the tree PFTs, although this is not shown for simplicity. To summarize, the variability of Term 1 within each PFT will look like Figure \ref{scale_vary}A for each PFT, but the scale of the x and y-axis will increase or decrease according to mean $g_a$ oberved in Figure \ref{scale_vary}B.
@@ -384,7 +388,7 @@ While the relative variability of Term 1 is similar across PFT, the absolute val
 
 %%%%% replace below with idea:
 
-Term 2 minus Term 3 determines the sign of the sensitivty of ET to VPD and is thus crucial. $c_s$ variability is relatively less than $\sigma$ and $D$ variability, then variability within PFT will be solely determined by $\sigma$ and $D$ at the different fluxnet sites. Figure \ref{term3} shows how (Term 2 - Term 3) varies with $D$ and $\sigma$, as a function of PFT. In Figure \ref{term3}a lower uWUE and $\sigma$ shift the distribution of (Term 2 - Term 3) towards negative values. Additionally, the smaller $g1$, the greater the relative $D$ dependence of of (Term 2 - Term 3). This is observed most strongly for the ENF PFT, which has the smallest $g1$ (74.31). 
+Term 2 minus Term 3 determines the sign of the sensitivty of ET to VPD and is thus crucial. $c_s$ variability is relatively less than $\sigma$ and $D$ variability, so variability within PFT will be solely determined by $\sigma$ and $D$ at the different fluxnet sites. Figure \ref{term3} shows how (Term 2 - Term 3) varies with $D$ and $\sigma$, as a function of PFT. Equation \ref{d_et_approx} aids interpretation of Figure \ref{term3}. Larger $uWUE$, $\overline{\sigma}$, and $g1$ shift the leading-order constant term (\frac{1}{g_1}) towards smaller values, and (Term 2 - Term 3) towards positive values. $uWUE$ and $g1$ are both water-use effiency type constants. Higher values corresponde to plants that are more willing to spend water on primary production and less evolved to conserve water. Figure \ref{term3} confirms our physical intuition: CROs are the least water conservative so have the smallest constant portion of Term 3, while CSH are the most water conservative and have the largest constant portion of Term 3. For the VPD-dependent terms in Equation \ref{d_et_approx}, differences in $g1$ between PFTs exerts a greater influence than difference $uWUE$, as the power of $g1$ increases. Increasing $uWUE$ and $g1$ decreases the VPD-dependence, but $g1$ has the bigger effect due to its increasing powers. ENF ($g1 = 74.31$) has by far the VPD dependence of response, while CRO ($g1 = 183.1$) has the smallest VPD dependence.  
 
 
  
@@ -466,7 +470,8 @@ The idealized framework leads to the following general conclusions:
 \item However, inclusion of uncertainty doesn't alter conclusions about DBF, ENF, and CSH.
 \end{itemize}
 
-The intuition developed using this framework can be used to understand how the land surface will respond and contribute to changes in the environment. 
+The intuition developed using this framework can be used to understand how the land surface will respond and contribute to changes in the environment. Additionally, Equation \ref{et} gives provides an estimate of ET that requires no additional information beyond that required to calculate PET. Given that for all PFTs, with the exception of CRO, we found a high frequency and magnitude of negative $\frac{\partial \; ET}{\partial \; D}$, PET is a physically unrealisitic representation of ET for vegetated surfaces and PET-based drought metrics are not usefull. We advocate for drought metrics using Equation \ref{et} instead of PET. 
+
 
   
 
@@ -677,10 +682,10 @@ This work used eddy covariance data acquired and shared by the FLUXNET community
 % 4. Run LaTeX on your new file which will produce the citations.
 %
 % AGU does not want a .bib or a .bbl file. Please copy in the contents of your .bbl file here.
-
-
+\bibliography{references.bib}
 \input{vpd_et_paper.bbl}
-%\bibliography{references.bib}
+
+
 
 
 %% After you run BibTeX, Copy in the contents of the .bbl file here:

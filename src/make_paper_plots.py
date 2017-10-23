@@ -20,12 +20,12 @@ from sympy import Symbol, sqrt, series, latex, limit
 
 #try some analytis with sympy
 g1 = Symbol('g_1')
-# x = Symbol('\frac{\sqrt{D}}{g_1}')
-# func = g1*(2 + x)/(2*g1**2*(1 + x)**2)
+x = Symbol('\frac{\sqrt{D}}{g_1}')
+func = g1*(2 + x)/(2*g1**2*(1 + x)**2)
+print(latex(series(func, x, x0=0., dir='+', n=4)))
+# x = Symbol('\sqrt{D}')
+# func  = (2*g1 + x)/(2*(g1 + x)**2)
 # print(latex(series(func, x, x0=0., dir='+')))
-x = Symbol('\sqrt{D}')
-func  = (2*g1 + x)/(2*(g1 + x)**2)
-print(latex(series(func, x, x0=0., dir='+')))
 
 mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
@@ -272,7 +272,7 @@ def term_2(_df, lai, vpd):
   return pm.CP/_df.r_moist.mean() +calc.leaf_vpd(atmos, canopy, lai)
 
 
-def term_2_approx(_df, lai, vpd):
+def term_2_approx(_df, lai, vpd, order=4):
   """calculates term 2"""
   atmos = {'gamma' : _df.gamma.mean(), 'c_a' : _df.c_a.mean(),\
            'vpd' : vpd}
@@ -281,14 +281,21 @@ def term_2_approx(_df, lai, vpd):
   elif _df.g1.std() > 1.e-8:
     print('error, g1 is variabile: %f!!!!!' % _df.g1.std())
   canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
-  return pm.CP/_df.r_moist.mean() \
-    -atmos['gamma']*atmos['c_a']*pm.LV/\
-    (lai*1.6*pm.R_STAR*canopy['uwue'])\
-    *(1./canopy['g1'] - 3.*np.sqrt(atmos['vpd'])/(2.*canopy['g1']**2)
-      + 2.*atmos['vpd']/canopy['g1']**3\
-      - 5.*np.sqrt(atmos['vpd'])**3/(2.*canopy['g1']**4))
-
-
+  if order == 4:
+    return pm.CP/_df.r_moist.mean() \
+      -atmos['gamma']*atmos['c_a']*pm.LV/\
+      (lai*1.6*pm.R_STAR*canopy['uwue'])\
+      *(1./canopy['g1'] - 3.*np.sqrt(atmos['vpd'])/(2.*canopy['g1']**2)
+        + 2.*atmos['vpd']/canopy['g1']**3\
+        - 5.*np.sqrt(atmos['vpd'])**3/(2.*canopy['g1']**4))
+  elif order == 2:
+    return pm.CP/_df.r_moist.mean() \
+      -atmos['gamma']*atmos['c_a']*pm.LV/\
+      (lai*1.6*pm.R_STAR*canopy['uwue'])\
+      *(1./canopy['g1'] - 3.*np.sqrt(atmos['vpd'])/(2.*canopy['g1']**2))
+  else:
+    print('error uncoded order number %d' % order)
+    return
 
 # def plot_leaf_vpd(_df, ax, savefig=False):
 #   """makes idealized plots of plant term as a function of lai and vpd"""
@@ -415,7 +422,7 @@ def pft_leaf(_df, axs):
                   label="%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
                   % (_df.pft.iloc[0],\
                      lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
-  axs[0].plot(vpd, term_2_approx(_df, lai, vpd), linestyle='dashed',\
+  axs[0].plot(vpd, term_2_approx(_df, lai, vpd, order=4), linestyle='dashed',\
               color=p[0].get_color())
   #print('axlim: ',axs[0].get_ylim())
   # axs[3].plot(vpd, second_half(_df, vpd),\

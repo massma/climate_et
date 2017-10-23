@@ -1,9 +1,17 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{6}
 \providecommand{\natexlab}[1]{#1}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
   \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
   \urlstyle{rm}\Url}\fi
+
+\bibitem[{\textit{Ball et~al.}(1987)\textit{Ball, Woodrow, and
+  Berry}}]{Ball_1987}
+Ball, J.~T., I.~E. Woodrow, and J.~A. Berry (1987), A model predicting stomatal
+  conductance and its contribution to the control of photosynthesis under
+  different environmental conditions, in \textit{Progress in Photosynthesis
+  Research}, pp. 221--224, Springer Netherlands,
+  \doi{10.1007/978-94-017-0519-6\_48}.
 
 \bibitem[{\textit{Franks et~al.}(2017)\textit{Franks, Berry, Lombardozzi, and
   Bonan}}]{Franks_2017}
@@ -11,6 +19,11 @@ Franks, P.~J., J.~A. Berry, D.~L. Lombardozzi, and G.~B. Bonan (2017), Stomatal
   function across temporal and spatial scales: Deep-time trends,
   land-atmosphere coupling and global models, \textit{Plant Physiology},
   \textit{174}(2), 583--602, \doi{10.1104/pp.17.00287}.
+
+\bibitem[{\textit{Leuning}(1990)}]{Leuning_1990}
+Leuning, R. (1990), Modelling stomatal behaviour and and photosynthesis
+  {ofEucalyptus} grandis, \textit{Australian Journal of Plant Physiology},
+  \textit{17}(2), 159, \doi{10.1071/pp9900159}.
 
 \bibitem[{\textit{Lin et~al.}(2015)\textit{Lin, Medlyn, Duursma, Prentice,
   Wang, Baig, Eamus, de~Dios, Mitchell, Ellsworth, de~Beeck, Wallin, Uddling,
