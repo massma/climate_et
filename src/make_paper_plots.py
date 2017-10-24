@@ -32,6 +32,7 @@ mpl.rcParams.update(mpl.rcParamsDefault)
 importlib.reload(util)
 importlib.reload(plot_tools)
 # grab sites actually used in analysis
+
 df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
                     % os.environ['DATA']).loc[:, 'site'].drop_duplicates()
 
@@ -537,8 +538,6 @@ mean['d_et_bar_norm_rn'] = mean['d_et_bar_std']\
 mean_df = mean.groupby('pft').mean()
 counts = df.groupby('pft').apply(frequency)
 
-
-
 print('\n mean d_et\n', mean_df.d_et)
 print('\n d_et(mean)\n', mean_df.d_et_bar)
 print('\n mean d_et *std vpd\n', mean_df['d_et_bar_std'])
@@ -584,6 +583,14 @@ def rh_d_et_min(_df):
   rh[rh < 0.] = np.nan
   return t, rh
 
+def meshgrid_apply(_df, meta, column='var'):
+  """calculates a mean on column if size > 1"""
+  if _df.size > 1:
+    return _df.loc[:, column].mean(axis=0)
+  else:
+    print('ERROR size less than 1!!!!!!!')
+    return np.nan
+
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
   # divider = make_axes_locatable(_ax)
@@ -592,9 +599,27 @@ def make_ax_plot(_ax, var, _df, meta):
 
   vmax = meta['vmax']
   vmin = -vmax
-  color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.1,\
-                      s=meta['size'], cmap=meta['cmap'],\
-                      vmin=vmin, vmax=vmax)
+  # color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.1,\
+  #                     s=meta['size'], cmap=meta['cmap'],\
+  #                     vmin=vmin, vmax=vmax)
+  #below is a hack, should have done by name to begin with
+  _df['var'] = var
+  _df = _df.assign(x_cut=pd.qcut(_df[meta['x_axis']], 10),\
+                   t_a_cut=pd.qcut(_df['t_a'], 10))
+  grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply, meta)
+  print('groupedend', grouped)
+  grouped = grouped.reset_index()
+  grouped.columns = ['x_cut', 't_a_cut', 'var']
+  print(grouped)
+  grouped = grouped.pivot('x_cut', 't_a_cut')
+  print(grouped)
+  _y = grouped.columns.levels[1].values
+  _x = grouped.index.values
+  # add some x, y modifies here to just grab the appropriate edge
+  _x, _y = np.meshgrid(_x, _y)
+  grouped[np.isnan(grouped)] = 0.
+  color = _ax.pcolormesh(_x, _y, grouped.values, cmap=meta['cmap'],\
+                         vmin=vmin, vmax=vmax)
   t, rh = rh_d_et_min(_df)
   # _ax.plot(rh, t, 'k-')
   if (meta['x_axis'] == 'vpd'):
