@@ -585,11 +585,8 @@ def rh_d_et_min(_df):
 
 def meshgrid_apply(_df, meta, column='var'):
   """calculates a mean on column if size > 1"""
-  if _df.size > 1:
-    return _df.loc[:, column].mean(axis=0)
-  else:
-    print('ERROR size less than 1!!!!!!!')
-    return np.nan
+  #if _df.size > 1:
+  return _df.loc[:, column].mean(axis=0)
 
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
@@ -616,6 +613,10 @@ def make_ax_plot(_ax, var, _df, meta):
   _y = grouped.columns.levels[1].values
   _x = grouped.index.values
   # add some x, y modifies here to just grab the appropriate edge
+  _x = np.array([float(s[1:-1].split(', ')[0]) for s in _x])
+  _y = np.array([float(s[1:-1].split(', ')[0]) for s in _y])
+  print('x', _x)
+  print('y', _y)
   _x, _y = np.meshgrid(_x, _y)
   grouped[np.isnan(grouped)] = 0.
   color = _ax.pcolormesh(_x, _y, grouped.values, cmap=meta['cmap'],\
