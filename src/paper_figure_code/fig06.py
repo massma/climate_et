@@ -41,7 +41,8 @@ def meshgrid_apply(_df, column='var', sample=False):
   """calculates a mean on column if size > 1"""
   #if _df.size > 1:
   if sample:
-    return _df.loc[:, column].sample(n=1)
+    # print('sampled!')
+    return float(_df.loc[:, column].sample(n=1))
   else:
     return _df.loc[:, column].mean(axis=0)
 
@@ -60,7 +61,12 @@ def make_ax_plot(_ax, var, _df, meta):
   _df['var'] = var
   _df = _df.assign(x_cut=pd.cut(_df[meta['x_axis']], 1000),\
                    t_a_cut=pd.cut(_df['t_a'], 1000))
-  grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply)
+  if meta['sample'] == 'sampled':
+    grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply,\
+                                                      sample=True)
+    print(grouped)
+  else:
+    grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply)
   grouped = grouped.reset_index()
   grouped.columns = ['x_cut', 't_a_cut', 'var']
   grouped = grouped.pivot('x_cut', 't_a_cut').transpose()
@@ -90,7 +96,7 @@ def make_ax_plot(_ax, var, _df, meta):
   color = _ax.pcolormesh(_x, _y, z, cmap=meta['cmap'],\
                          vmin=vmin, vmax=vmax)
   t, rh = rh_d_et_min(_df)
-  # _ax.plot(rh, t, 'k-')
+  # _ax.plot(rh, t, 'k-')n
   if (meta['x_axis'] == 'vpd'):
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
     test = met.vapor_pres(t_a)*100.*(1. - 0.90)
@@ -181,15 +187,17 @@ plt.close('all')
 meta = {}
 meta['nplots'] = 4 # 5 4
 meta['x_axis'] = 'rh'
+meta['sample'] = 'sampled'
+# meta['sample'] = ''
 df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
-          '../../doc/paper/fig06b.png'\
-          % (os.environ['PLOTS'], meta['x_axis']))
+          '../../doc/paper/fig06b%s.png'\
+          % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
 
 
 meta['x_axis'] = 'vpd'
 df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
           '../../doc/paper/fig06.png'\
-          % (os.environ['PLOTS'], meta['x_axis']))
+          % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
 
