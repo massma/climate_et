@@ -138,6 +138,13 @@ meta['ylim'] = None
 plot_tools.scatter_wrapper(df, meta)
 
 meta = {}
+meta['x_var'] = 'e_s'
+meta['y_var'] = 'rh'
+meta['xlim'] = None
+meta['ylim'] = None
+plot_tools.scatter_wrapper(df, meta)
+
+meta = {}
 meta['x_var'] = 'rh'
 meta['y_var'] = 'delta'
 meta['xlim'] = None

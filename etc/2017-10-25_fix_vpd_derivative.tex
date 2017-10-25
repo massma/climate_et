@@ -1,0 +1,33 @@
+\input{def}
+%\usepackage{amsmath}
+\usepackage{graphics, graphicx}
+\graphicspath{ {./} } %directory for figures 
+%\pagestyle{empty}
+
+\begin{document}
+\begin{center}
+\large{Including the effects T (through Delta) on VPD}\end{center}
+
+\bigskip
+
+See src/analytical\_work.py for initial algebra using sympy. Raw output:
+
+\begin{multline}
+  - \frac{2 g_{a} \rho}{R* R_{air} \sigma uWUE \left(\sqrt{D_{s}} + g_{1}\right)^{2} \left(\Delta + \gamma\right)}\cdots \\
+  \left(- R* c_{p} \sigma uWUE \left(\sqrt{D_{s}} + g_{1}\right)^{2} + 0.3125 R_{air} c_{s} g_{1} \gamma + 0.3125 R_{air} c_{s} \gamma \left(\sqrt{D_{s}} + g_{1}\right)\right)
+\end{multline}
+
+Simplify:
+
+\begin{equation}
+\frac{ 2 g_{a} \rho}{\left(\Delta + \gamma\right)}  \left(\frac{c_{p}}{R_{air}} - \frac{ c_{s} \gamma  \left(\sqrt{D_{s}} + 2 g_{1}\right)}{R* \, 1.6 \, \sigma \, uWUE \, 2 \, \left(\sqrt{D_{s}} + g_{1}\right)^{2}}\right)
+\end{equation}
+
+Also note that $\rho$ was just pseudo-density ($=P/T$):
+
+\begin{equation}
+\frac{ 2 g_{a} P }{ T \left(\Delta + \gamma\right)}  \left(\frac{c_{p}}{R_{air}} - \frac{ c_{s} \gamma  \left(\sqrt{D_{s}} + 2 g_{1}\right)}{R* \, 1.6 \, \sigma \, uWUE \, 2 \, \left(\sqrt{D_{s}} + g_{1}\right)^{2}}\right)
+\end{equation}
+
+
+\end{document}

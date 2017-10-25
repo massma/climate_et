@@ -1,0 +1,273 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+ % \usepackage[utf8x]{inputenc}
+\usepackage[style=authoryear]{biblatex}
+\addbibresource{references.bib}
+\usepackage{tikz}
+
+\title[Your Short Title]{When does VPD drive or reduce ET?}
+\author{Adam Massmann,  Pierre Gentine and Changjie Lin}
+\institute{EEE Graduate Student Symposium}
+\date{October 27th, 2017}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \[\frac{g_{a} \rho}{R* R_{air} \sigma uWUE \left(g_{1} + 1.0 \sqrt{- e_{s} \left(RH - 1.0\right)}\right)^{2} \left(\gamma + \frac{d}{d T} e_{s}\right)} \left(RH - 1.0\right) \left(- R* c_{p} \sigma uWUE \left(g_{1} + 1.0 \sqrt{- e_{s} \left(RH - 1.0\right)}\right)^{2} + 0.3125 R_{air} c_{s} g_{1} \gamma + 0.3125 R_{air} c_{s} \gamma \left(g_{1} + 1.0 \sqrt{- e_{s} \left(RH - 1.0\right)}\right)\right)\]
+\end{frame}
+
+\section{Introduction}
+\begin{frame}{When does vapor pressure deficit (VPD) drive or reduce evapotranspiration (ET)?}
+  \[VPD = (1-RH)\cdot e_s (T)\]
+\begin{figure}
+  \includegraphics[width=0.25in]{stomata.png}
+ \caption{from evolution.berkeley.edu}
+\end{figure}
+
+  \begin{itemize}
+  \item \textbf{Hydrometeorologists} would say that an increase in VPD (increase in \textbf{atmospheric demand}) would drive an \textbf{increase in ET}.
+  \item However, \textbf{plant physiologists} know that plants have evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The question is, which effect dominates with an increase in VPD: plant response (decrease in ET) or atmospheric demand (increase in ET)?}
+  \begin{itemize}
+  \item It should be a function of plant type and the environment:
+    \begin{itemize}
+    \item Plants that are evolved to conserve water will tend to reduce ET with increases in VPD.
+    \item However the environment can overwhelm plant response: at some threshold (i.e. very high VPD) the atmospheric demand should dominate and plants will not be able to conserve water, no matter how much they have evolved to do so.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Method}
+\begin{frame}{We will try an analytical approach to this question:}
+  We can use Penman-Monteith (PM) to estimate ET:
+  \[ET = \frac{\Delta R + g_a \rho_a c_p D}{\Delta + \gamma(1 + \frac{g_a}{g_s})},\]
+  But in (\cite{MEDLYN_2011}):
+  \[  g_{s} = g_0 + 1.6 \left(1 + \frac{g_1}{\sqrt{D}}\right) \frac{A}{c_s}\]
+  $A$ is a function of $ET$. So $ET$ in PM is really an implicit function of itself.
+\end{frame}
+
+\begin{frame}{Remove dependence of $ET$ on $A$}
+  \cite{Zhou_2016} shows that uWUE:
+  \[uWUE = \frac{GPP \cdot \sqrt{D}}{ET}\]
+  is conserved across space and time (within PFT).\\
+  \medskip
+  So we can use uWUE to remove dependence of $g_s$ on $A$:
+p  \[g_s =  \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{uWUE \; ET}{c_s \; \sqrt{D}}\]
+\end{frame}
+
+\begin{frame}{Derive new form of PM}
+  If we plug in our new expression for $g_s$ we can solve for ET to get a new form of PM:
+  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}}  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right)\footnote{note that all terms are known, except for $\frac{\text{LAI$_{ref}$}}{\text{LAI}}$} }{ \Delta + \gamma}\]
+  Now, we can take derivatives, and:
+  \[\frac{\partial \;  ET}{\partial \; D} = \frac{g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+\end{frame}
+
+\section{Results - theory}
+\begin{frame}{Scaling Term}
+  \[\frac{\partial \;  ET}{\partial \; D} = \mathbf{ \frac{g_a \; P}{T(\Delta + \gamma)} }   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+\begin{figure}
+  \includegraphics[width=3.5in]{scaling.png}
+  % \caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}{``Sign'' Term}
+  \begin{figure}
+    \includegraphics[width=3.5in]{sign.png}
+    % \caption{}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Summary of theory}
+  \begin{itemize}
+  \item We use \cite{Zhou_2016}'s uWUE to derive a new analytically tractable form of PM.
+  \item This new analysis suggests that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.
+    \begin{itemize}
+    \item For each PFT there will be a VPD$_{crit}$ above which atmospheric demand will dominate and ET will increase with VPD.
+    \end{itemize}
+  \item Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ than plants evolved (or bred) to use water and prioritize GPP (CRO). Trees and grasslands are somewhere between these two extremes.
+  \item Aerodynamic conductance scales the response, so plants with large surface roughness will be more likely to have a larger response as there is less resistance between the surface and the atmosphere.
+  \end{itemize}
+\end{frame}
+
+\section{Results - reality}
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - CRO}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{cro_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - CRO}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{cro.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - CSH}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{csh_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - CSH}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{csh.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - DBF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{dbf_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - DBF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{dbf.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+   }
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - ENF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{enf_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - ENF}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{enf.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+   }
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Idealized results - GRA}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{gra_ideal.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+}
+
+{ % all template changes are local to this group.
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain]{Results with uncertainty - GRA}
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=\paperwidth]{gra.png}
+            };
+        \end{tikzpicture}
+     \end{frame}
+   }
+
+   \begin{frame}{Summary statistics}
+     \begin{table}
+       \caption{Statistics of $\frac{\partial \; ET}{\partial \; D}$ as a function of PFT.}
+       \centering
+       \begin{tabular}{l c c}
+         \hline
+         PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+         \hline
+         CRO & 0.000853  & 0.473311\\
+         CSH & -0.108234 & 0.931660\\
+         DBF & -0.012727 & 0.461674\\
+         ENF & -0.034087 & 0.534425\\
+         GRA & -0.019637 & 0.631735\\
+         \hline
+         \multicolumn{2}{l}{}  
+       \end{tabular}
+     \end{table}
+   \end{frame}
+     
+\section{Conclusions}
+\begin{frame}{Summary}
+  \begin{itemize}
+  \item Theory finds that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.  Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ (and more negative ET response) than plants evolved (or bred) to use water and prioritize GPP (CRO).
+  \item On average, ecosystem response to VPD follows roughly what we might expect: CRO (prioritize GPP) has positive ET response to VPD, while all others have a negative response. Ordering by increasing magnitude of negative response gives: DBF, GRA, ENF, CSH; which roughly correspond to expectations for increasing water conservation as a function of PFT.
+  \item Uncertainty is high, especially for CRO and GRA. However, inclusion of uncertainty does not change the story for ENF or CSH.
+  \end{itemize}
+\end{frame}
+  
+
+
+\section{References}
+\begin{frame}{References}
+  \AtNextBibliography{\small}
+  \printbibliography
+\end{frame}
+
+
+% \begin{table}
+% \centering
+% \begin{tabular}{l|r}
+% Item & Quantity \\\hline
+% Widgets & 42 \\
+% Gadgets & 13
+% \end{tabular}
+% \caption{\label{tab:widgets}An example table.}
+% \end{table}
+
+\end{document}

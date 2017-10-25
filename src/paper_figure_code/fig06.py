@@ -3,6 +3,7 @@
 This script makes fig 6
 """
 from shared_functions import *
+import time
 
 ### Figure 6 ###
 # note below really takes a long time t
@@ -41,8 +42,8 @@ def vpd_d_et_min(_df):
   """returns rh where ET is minimized, as a function of T and LAI"""
   mean_df = _df.loc[:, ['r_moist', 'gamma', 'c_a',\
                         'lai', 'uwue_norm', 'g1']].mean()
-  vpd = et_min_vpd(mean_df, mean_df.lai)
   t = np.linspace(_df.t_a.min(), _df.t_a.max())
+  vpd = np.ones(t.shape)*et_min_vpd(mean_df, mean_df.lai)
   return t, vpd
 
 def meshgrid_apply(_df, column='var', sample=False):
@@ -67,8 +68,8 @@ def make_ax_plot(_ax, var, _df, meta):
   #                     vmin=vmin, vmax=vmax)
   #below is a hack, should have done by name to begin with
   _df['var'] = var
-  _df = _df.assign(x_cut=pd.cut(_df[meta['x_axis']], 1000),\
-                   t_a_cut=pd.cut(_df['t_a'], 1000))
+  _df = _df.assign(x_cut=pd.cut(_df[meta['x_axis']], 100),\
+                   t_a_cut=pd.cut(_df['t_a'], 100))
   if meta['sample'] == 'sampled':
     grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply,\
                                                       sample=True)
@@ -181,7 +182,7 @@ def scatter_plot_paper(_df, meta):
 
   plt.tight_layout()
 
-  fname = '%s/climate_et/paper_plots/scatter/%s_%s.png'\
+  fname = '%s/climate_et/paper_plots/scatter/%s_%s.pdf'\
           % (os.environ['PLOTS'], _df.pft.iloc[0], meta['x_axis'])
 
   try:
@@ -192,21 +193,25 @@ def scatter_plot_paper(_df, meta):
   plt.show(block=False)
   return
 
+start = time.time()
+
 plt.close('all')
 meta = {}
 meta['nplots'] = 4 # 5 4
-meta['x_axis'] = 'rh'
 # meta['sample'] = 'sampled'
 meta['sample'] = ''
-df.groupby('pft').apply(scatter_plot_paper, meta)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
-          '../../doc/paper/fig06b%s.png'\
-          % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
-
-
 meta['x_axis'] = 'vpd'
 df.groupby('pft').apply(scatter_plot_paper, meta)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
-          '../../doc/paper/fig06%s.png'\
+os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.pdf '\
+          '../../doc/paper/fig06%s.pdf'\
           % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
+print('done with vpd, time was %f min' % ((time.time()-start)/60.))
+
+meta['x_axis'] = 'rh'
+df.groupby('pft').apply(scatter_plot_paper, meta)
+os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.pdf '\
+          '../../doc/paper/fig06b%s.pdf'\
+          % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
+print('done with rh, time was %f min' % ((time.time()-start)/60.))
+
 
