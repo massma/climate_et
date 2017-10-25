@@ -64,7 +64,6 @@ def make_ax_plot(_ax, var, _df, meta):
   if meta['sample'] == 'sampled':
     grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply,\
                                                       sample=True)
-    print(grouped)
   else:
     grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply)
   grouped = grouped.reset_index()
@@ -198,6 +197,6 @@ os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
 meta['x_axis'] = 'vpd'
 df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
-          '../../doc/paper/fig06.png'\
+          '../../doc/paper/fig06%s.png'\
           % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
 
