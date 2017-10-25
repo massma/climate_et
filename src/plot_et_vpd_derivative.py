@@ -21,7 +21,7 @@ resource.setrlimit(resource.RLIMIT_AS, (4000e6, 4000e6))
 
 plt.close('all')
 
-master_plot = True
+master_plot = False
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
@@ -110,24 +110,39 @@ df['jd'] = time.dayofyear
 # meta['plot_type'] = '' #'simple'
 # meta['x_var'] = 'swc'
 # meta['y_var'] = 'et_obs'
-# scatter_wrapper(df, meta)
+#plot_tools.scatter_wrapper(df, meta)
 # meta['group'] = 'site'
 # df.groupby('site').apply(plot_tools.test_trend, meta)
 
 
-# # # meta = {}
-# # # meta['x_var'] = 'vpd'
-# # # meta['y_var'] = 'lai'
-# # # meta['xlim'] = (0., 5000.)
-# # # meta['ylim'] = (0.1, 2.)
-# # # for meta['y_var'] in ['lai', 'lai_gpp']:
-# # #   print(meta['y_var'])
-# # #   scatter_wrapper(df, meta)
-# # # meta['xlim'] = None
-# # # meta['ylim'] = None
-# # # meta['x_var'] = 'lai'
-# # # meta['y_var'] = 'lai_gpp'
-# # # scatter_wrapper(df, meta)
+# meta = {}
+# meta['x_var'] = 'vpd'
+# meta['y_var'] = 'lai'
+# meta['xlim'] = (0., 5000.)
+# meta['ylim'] = (0.1, 2.)
+# for meta['y_var'] in ['lai', 'lai_gpp']:
+#   print(meta['y_var'])
+#  plot_tools.scatter_wrapper(df, meta)
+# meta['xlim'] = None
+# meta['ylim'] = None
+# meta['x_var'] = 'lai'
+# meta['y_var'] = 'lai_gpp'
+#plot_tools.scatter_wrapper(df, meta)
+
+
+meta = {}
+meta['x_var'] = 'vpd'
+meta['y_var'] = 'delta'
+meta['xlim'] = None
+meta['ylim'] = None
+plot_tools.scatter_wrapper(df, meta)
+
+meta = {}
+meta['x_var'] = 'rh'
+meta['y_var'] = 'delta'
+meta['xlim'] = None
+meta['ylim'] = None
+plot_tools.scatter_wrapper(df, meta)
 
 if master_plot:
   et_scale = 400.
@@ -188,3 +203,4 @@ if master_plot:
 #     os.system('convert +append %s/climate_et/pft_swc_%s__rh_plots/*.png '\
 #               '%s/climate_et/swc_%s_rh.png'\
 #               % (os.environ['PLOTS'], var, os.environ['PLOTS'], var))
+

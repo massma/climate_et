@@ -37,6 +37,14 @@ def rh_d_et_min(_df):
   rh[rh < 0.] = np.nan
   return t, rh
 
+def vpd_d_et_min(_df):
+  """returns rh where ET is minimized, as a function of T and LAI"""
+  mean_df = _df.loc[:, ['r_moist', 'gamma', 'c_a',\
+                        'lai', 'uwue_norm', 'g1']].mean()
+  vpd = et_min_vpd(mean_df, mean_df.lai)
+  t = np.linspace(_df.t_a.min(), _df.t_a.max())
+  return t, vpd
+
 def meshgrid_apply(_df, column='var', sample=False):
   """calculates a mean on column if size > 1"""
   #if _df.size > 1:
@@ -94,9 +102,11 @@ def make_ax_plot(_ax, var, _df, meta):
   z = np.ma.masked_array(grouped.values, mask=np.isnan(grouped.values))
   color = _ax.pcolormesh(_x, _y, z, cmap=meta['cmap'],\
                          vmin=vmin, vmax=vmax)
-  t, rh = rh_d_et_min(_df)
-  # _ax.plot(rh, t, 'k-')n
+  # t, rh = rh_d_et_min(_df)
+  # _ax.plot(rh, t, 'k-')
   if (meta['x_axis'] == 'vpd'):
+    t, vpd = vpd_d_et_min(_df)
+    _ax.plot(vpd, t, 'k-')
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
     test = met.vapor_pres(t_a)*100.*(1. - 0.90)
     _ax.plot(test, t_a, 'k-')
@@ -186,8 +196,8 @@ plt.close('all')
 meta = {}
 meta['nplots'] = 4 # 5 4
 meta['x_axis'] = 'rh'
-meta['sample'] = 'sampled'
-# meta['sample'] = ''
+# meta['sample'] = 'sampled'
+meta['sample'] = ''
 df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
           '../../doc/paper/fig06b%s.png'\
