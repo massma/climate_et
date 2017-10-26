@@ -20,7 +20,11 @@
 \addbibresource{references.bib}
 \usepackage{tikz}
 \graphicspath{{figures/}}
-\title[Your Short Title]{When does VPD drive or reduce ET?}
+
+\usepackage{caption}
+\captionsetup{font=scriptsize, labelfont=scriptsize}
+
+\title[Your Short Title]{When does atmospheric dryness drive or reduce evapotranspiration?}
 \author{Adam Massmann,  Pierre Gentine and Changjie Lin}
 \institute{EEE Graduate Student Symposium}
 \date{October 27th, 2017}
@@ -33,18 +37,25 @@
 
 
 \section{Introduction}
-\begin{frame}{When does vapor pressure deficit (VPD) drive or reduce evapotranspiration (ET)?}
+\begin{frame}{When does atmospheric dryness (VPD) drive or reduce evapotranspiration (ET)?}
+  \begin{Huge}
   \[VPD = (1-RH)\cdot e_s (T)\]
-\begin{figure}
-  \includegraphics[width=0.25in]{stomata.png}
- \caption{from evolution.berkeley.edu}
-\end{figure}
-
+\end{Huge}
   \begin{itemize}
   \item \textbf{Hydrometeorologists} would say that an increase in VPD (increase in \textbf{atmospheric demand}) would drive an \textbf{increase in ET}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}%{When does atmospheric dryness (VPD) drive or reduce evapotranspiration (ET)?}
+  \begin{figure}
+  \includegraphics[width=2.70in]{stomata.png}% was O(1.5in)
+  \caption{from evolution.berkeley.edu}
+\end{figure}
+  \begin{itemize}
   \item However, \textbf{plant physiologists} know that plants have evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
   \end{itemize}
 \end{frame}
+
 
 \begin{frame}{The question is, which effect dominates with an increase in VPD: plant response (decrease in ET) or atmospheric demand (increase in ET)?}
   \begin{itemize}
@@ -55,23 +66,29 @@
     \end{itemize}
   \end{itemize}
 \end{frame}
-
+% develop theory, present vpd figure (add in vpd = 0 locations on line plot below), then test theory with data. add vertical line on vpd plots
 \section{Method}
-\begin{frame}{We will try an analytical approach to this question:}
+\begin{frame}{Use physically reasonable assumptions to develop a theory.}
   We can use Penman-Monteith (PM) to estimate ET:
   \[ET = \frac{\Delta R + g_a \rho_a c_p D}{\Delta + \gamma(1 + \frac{g_a}{g_s})},\]
-  But in (\cite{MEDLYN_2011}):
-  \[  g_{s} = g_0 + 1.6 \left(1 + \frac{g_1}{\sqrt{D}}\right) \frac{A}{c_s}\]
-  $A$ is a function of $ET$. So $ET$ in PM is really an implicit function of itself.
+\textbf{Problem}: $g_s$ (stomatal conductance) is a function of photosythesis, which is a function of ET itself.  So ET in PM is really an implicit function of itself and we cannot take derivatives!
 \end{frame}
 
-\begin{frame}{Remove dependence of $ET$ on $A$}
+\begin{frame}{Use physically reasonable assumptions to develop a theory.}
+Apply a constant uWUE assumption (conserved within plant type; see \cite{Zhou_2016}):
+\[uWUE = \frac{GPP \cdot \sqrt{D}}{ET},\]
+To derive a new form of Penman-Monteith without implicit ET depedence:
+  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}}  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right)\footnote{note that all terms are known }}{ \Delta + \gamma}\]
+\end{frame}
+
+
+\begin{frame}{Recent result (\cite{Zhou_2016}) allows }
   \cite{Zhou_2016} shows that uWUE:
   \[uWUE = \frac{GPP \cdot \sqrt{D}}{ET}\]
-  is conserved across space and time (within PFT).\\
+  is conserved across space and time (within a plant type).\\
   \medskip
   So we can use uWUE to remove dependence of $g_s$ on $A$:
-p  \[g_s =  \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{uWUE \; ET}{c_s \; \sqrt{D}}\]
+  \[g_s =  \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{uWUE \; ET}{c_s \; \sqrt{D}}\]
 \end{frame}
 
 \begin{frame}{Derive new form of PM}
