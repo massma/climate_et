@@ -36,6 +36,7 @@ importlib.reload(plot_tools)
 df = pd.read_pickle('%s/changjie/full_pandas_seasonal_fit.pkl'\
                     % os.environ['DATA']).loc[:, 'site'].drop_duplicates()
 
+
 # get metadata
 site_list = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                    'Site_list_(canopy_height).csv' % (os.environ['DATA']))
@@ -49,12 +50,28 @@ paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
                r'\left( \frac{2 g_1 + \sqrt{D}}'\
                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
 
+# below commented df should (and is - I checked) equicalent to fix_scaling_clean
+# df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+#                     % os.environ['DATA'])
+# # adjustments due to errors found on 10/25
+# df['scaling'] *= 2.
+# df['d_et'] *= 2.
+# df['d_et_vpd_std_leaf'] *= 2.
+# df['d_et_vpd_std'] *= 2.
+# df['d_et_vpd_std_atm'] *= 2.
+# df2 = pd.read_pickle('%s/changjie/full_pandas_fix_scaling_clean.pkl'\
+#                      % os.environ['DATA'])
+# print('old df shape:', df.shape)
+# print('new df shape:', df2.shape)
+# _df = df.apply(pd.to_numeric, errors='coerce')
+# _df2 = df2.apply(pd.to_numeric, errors='coerce')
+# difference = np.nanmax(np.absolute(_df-_df2), axis=0)
+# print(difference.shape)
+# for column1, column2,  _diff in zip(_df.columns, _df2.columns, difference):
+#   print(column1, column2, _diff)
 
-df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
+df = pd.read_pickle('%s/changjie/full_pandas_fix_scaling_clean.pkl'\
                     % os.environ['DATA'])
-# adjustments due to errors found on 10/25
-df['scaling'] *= 2.
-df['d_et'] *= 2.
 
 df['g_a'] = 1./df['r_a']
 df['d_et_leaf'] = df['scaling']*df['vpd_leaf']

@@ -4,6 +4,8 @@ This script makes fig 5
 """
 from shared_functions import *
 
+
+PLOT_SERIES = False
 # ##### Figure 5 #####
 def term_2(_df, lai, vpd):
   """calculates term 2"""
@@ -108,8 +110,9 @@ def pft_leaf(_df, axs):
                   label="%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
                   % (_df.pft.iloc[0],\
                      lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
-  axs[0].plot(vpd, term_2_approx(_df, lai, vpd, order=4), linestyle='dashed',\
-              color=p[0].get_color())
+  if PLOT_SERIES:
+    axs[0].plot(vpd, term_2_approx(_df, lai, vpd, order=4), linestyle='dashed',\
+                color=p[0].get_color())
   #print('axlim: ',axs[0].get_ylim())
   # axs[3].plot(vpd, second_half(_df, vpd),\
   #             label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))

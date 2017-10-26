@@ -68,8 +68,8 @@ def make_ax_plot(_ax, var, _df, meta):
   #                     vmin=vmin, vmax=vmax)
   #below is a hack, should have done by name to begin with
   _df['var'] = var
-  _df = _df.assign(x_cut=pd.cut(_df[meta['x_axis']], 100),\
-                   t_a_cut=pd.cut(_df['t_a'], 100))
+  _df = _df.assign(x_cut=pd.cut(_df[meta['x_axis']], 1000),\
+                   t_a_cut=pd.cut(_df['t_a'], 1000))
   if meta['sample'] == 'sampled':
     grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply,\
                                                       sample=True)
@@ -91,7 +91,7 @@ def make_ax_plot(_ax, var, _df, meta):
   grouped = grouped.sort_index(axis=1)
   # print('grouped sortex axis 1', grouped)
   grouped = grouped.sort_index(axis=0)
-  # print('grouped sort axis 2', grouped)
+  # print('grouped sort axis 2', grouped)n
   _x = grouped.columns.values
   _y = grouped.index.values
   _x = np.append(_x, _xmax)
@@ -109,10 +109,10 @@ def make_ax_plot(_ax, var, _df, meta):
     t, vpd = vpd_d_et_min(_df)
     _ax.plot(vpd, t, 'k-')
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
-    test = met.vapor_pres(t_a)*100.*(1. - 0.90)
-    _ax.plot(test, t_a, 'k-')
-    test = met.vapor_pres(t_a)*100.*(1. - 0.2)
-    _ax.plot(test, t_a, 'k-')
+    # test = met.vapor_pres(t_a)*100.*(1. - 0.90)
+    # _ax.plot(test, t_a, 'k-')
+    # test = met.vapor_pres(t_a)*100.*(1. - 0.2)
+    # _ax.plot(test, t_a, 'k-')
   _ax.set_xlabel(meta['x_axis'])
   _ax.set_ylabel('T (C)')
   _ax.set_title('PFT: %s; %s'\
@@ -182,7 +182,7 @@ def scatter_plot_paper(_df, meta):
 
   plt.tight_layout()
 
-  fname = '%s/climate_et/paper_plots/scatter/%s_%s.pdf'\
+  fname = '%s/climate_et/paper_plots/scatter/%s_%s.png'\
           % (os.environ['PLOTS'], _df.pft.iloc[0], meta['x_axis'])
 
   try:
@@ -198,19 +198,21 @@ start = time.time()
 plt.close('all')
 meta = {}
 meta['nplots'] = 4 # 5 4
+# if meta['saple'] == sapmpld, then will take a sample over
+# bins instead of average
 # meta['sample'] = 'sampled'
 meta['sample'] = ''
 meta['x_axis'] = 'vpd'
 df.groupby('pft').apply(scatter_plot_paper, meta)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.pdf '\
-          '../../doc/paper/fig06%s.pdf'\
+os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
+          '../../doc/paper/fig06%s.png'\
           % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
 print('done with vpd, time was %f min' % ((time.time()-start)/60.))
 
 meta['x_axis'] = 'rh'
 df.groupby('pft').apply(scatter_plot_paper, meta)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.pdf '\
-          '../../doc/paper/fig06b%s.pdf'\
+os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
+          '../../doc/paper/fig06b%s.png'\
           % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
 print('done with rh, time was %f min' % ((time.time()-start)/60.))
 

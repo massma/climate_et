@@ -2,26 +2,10 @@
 """
 This script makes all figs for the paper
 """
-import os
-import importlib
-import pandas as pd
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import ../codebase.plot_tools as plot_tools
-import util
-import metcalcs as met
-import ../codebase.penman_monteith as pm
-import ../codebase.calc_tools as calc
-from sympy import Symbol, sqrt, series, latex, limit
 
 from shared_functions import *
 
-
 ###### table 5 ####
-importlib.reload(calc)
 def frequency(_df):
   """return fraction fos amples d_et < 0"""
   return _df.d_et[_df.d_et < 0.].count() / _df.d_et.count()

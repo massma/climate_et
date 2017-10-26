@@ -56,30 +56,25 @@ def d_gpp_d_vpd(atmos, canopy):
             *(1.+canopy['g1']/np.sqrt(atmos['vpd']))**2))
   return out
 
-def d_et_d_lai(atmos, canopy):
-  """calc derivative d et/ dlai"""
-  return atmos['g_a']*atmos['p_a']*atmos['gamma']*atmos['c_a']\
-    *np.sqrt(atmos['vpd'])*pm.LV\
-    /(atmos['t_a_k']*(atmos['delta']+atmos['gamma'])*canopy['lai']**2\
-      *pm.R_STAR*1.6*canopy['uwue']*(1. + canopy['g1']/np.sqrt(atmos['vpd'])))
 
-def d_et_d_g_a(atmos, canopy):
+
+def d_et_d_g_a(_df):
   """calc derivative w.r.t. g_a"""
-  return atmos['p_a']/(atmos['t_a_k']*(atmos['delta'] + atmos['gamma']))\
-    *(pm.CP*atmos['vpd']/atmos['r_moist']\
-      -atmos['gamma']*atmos['c_a']*np.sqrt(atmos['vpd'])*pm.LV\
-      /(canopy['lai']*pm.R_STAR*1.6*canopy['uwue']\
-        *(1. + canopy['g1']/np.sqrt(atmos['vpd']))))
+  return _df['p_a']/(_df['t_a_k']*(_df['delta'] + _df['gamma']))\
+    *(pm.CP*_df['vpd']/_df['r_moist']\
+      -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
+      /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
+        *(1. + _df['g1']/np.sqrt(_df['vpd']))))
 
-def d_et_d_delta(atmos, canopy):
+def d_et_d_delta(_df):
   """calc derivative w.r.t. delta"""
-  return (atmos['gamma']*(atmos['r_n']-canopy['g_flux'])\
-          -atmos['g_a']*atmos['p_a']/atmos['t_a_k']\
-          *(pm.CP*atmos['vpd']/atmos['r_moist']\
-            -atmos['gamma']*atmos['c_a']*np.sqrt(atmos['vpd'])*pm.LV\
-            /(canopy['lai']*pm.R_STAR*1.6*canopy['uwue']\
-              *(1. + canopy['g1']/np.sqrt(atmos['vpd'])))))\
-              /(atmos['delta'] + atmos['gamma'])**2
+  return (_df['gamma']*(_df['r_n']-_df['g_flux'])\
+          -_df['g_a']*_df['p_a']/_df['t_a_k']\
+          *(pm.CP*_df['vpd']/_df['r_moist']\
+            -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
+            /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
+              *(1. + _df['g1']/np.sqrt(_df['vpd'])))))\
+              /(_df['delta'] + _df['gamma'])**2
 
 
 def scaling(atmos):
@@ -87,6 +82,13 @@ def scaling(atmos):
   return 2.*atmos['p_a']/(atmos['r_a']*(273.15+atmos['t_a'])\
                        *(atmos['delta'] + atmos['gamma']))
 
+
+def d_et_d_lai(_df):
+  """calc derivative d et/ dlai"""
+  return _df['g_a']*_df['p_a']*_df['gamma']*_df['c_a']\
+    *np.sqrt(_df['vpd'])*pm.LV\
+    /(_df['t_a_k']*(_df['delta']+_df['gamma'])*_df['lai']**2\
+      *pm.R_STAR*1.6*_df['uwue']*(1. + _df['g1']/np.sqrt(_df['vpd'])))
 
 def calc_derivative(atmos, canopy, data):
   """adds various derivative fields to data, given atmos and canopy"""
@@ -107,9 +109,10 @@ def calc_derivative(atmos, canopy, data):
   data['d_et_vpd_std'] = atmos.vpd.std()*data.d_et # units: W/m2
   data['d_et_vpd_std_leaf'] = atmos.vpd.std()*data.vpd_leaf*data.scaling
   data['d_et_vpd_std_atm'] = atmos.vpd.std()*data.vpd_atm*data.scaling
-  data['d_et_d_lai'] = d_et_d_lai(atmos, canopy)
-  data['d_et_d_g_a'] = d_et_d_g_a(atmos, canopy)
-  data['d_et_d_delta'] = d_et_d_delta(atmos, canopy)
+  concatted = pd.concat([atmos, canopy], axis=1)
+  data['d_et_d_lai'] = d_et_d_lai(concatted)
+  data['d_et_d_g_a'] = d_et_d_g_a(concatted)
+  data['d_et_d_delta'] = d_et_d_delta(concatted)
 
   #Calculate WUE terms
   data['wue_obs'] = data['gpp_obs']/(data['et_obs']/(pm.LV*H2O)*1.e6)
@@ -149,27 +152,3 @@ def d_et_d_r_net(_df):
   """derivantve w.r.t net radiation"""
   return _df['delta']/(_df['delta']+_df['gamma'])
 
-def d_et_d_lai(_df):
-  """calc derivative d et/ dlai"""
-  return _df['g_a']*_df['p_a']*_df['gamma']*_df['c_a']\
-    *np.sqrt(_df['vpd'])*pm.LV\
-    /(_df['t_a_k']*(_df['delta']+_df['gamma'])*_df['lai']**2\
-      *pm.R_STAR*1.6*_df['uwue']*(1. + _df['g1']/np.sqrt(_df['vpd'])))
-
-def d_et_d_g_a(_df):
-  """calc derivative w.r.t. g_a"""
-  return _df['p_a']/(_df['t_a_k']*(_df['delta'] + _df['gamma']))\
-    *(pm.CP*_df['vpd']/_df['r_moist']\
-      -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
-      /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
-        *(1. + _df['g1']/np.sqrt(_df['vpd']))))
-
-def d_et_d_delta(_df):
-  """calc derivative w.r.t. delta"""
-  return (_df['gamma']*(_df['r_n']-_df['g_flux'])\
-          -_df['g_a']*_df['p_a']/_df['t_a_k']\
-          *(pm.CP*_df['vpd']/_df['r_moist']\
-            -_df['gamma']*_df['c_a']*np.sqrt(_df['vpd'])*pm.LV\
-            /(_df['lai']*pm.R_STAR*1.6*_df['uwue']\
-              *(1. + _df['g1']/np.sqrt(_df['vpd'])))))\
-              /(_df['delta'] + _df['gamma'])**2
