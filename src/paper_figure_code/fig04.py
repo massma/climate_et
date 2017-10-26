@@ -18,7 +18,7 @@ def scaling(_df, t_a, g_a):
   """
   _atmos = {'t_a' : t_a, 'e_s' : met.vapor_pres(t_a)*pm.VP_FACTOR}
   delta = pm.delta(_atmos)
-  return g_a*_df['rho_like'].mean()/(pm.delta(_atmos) + df.gamma.mean())
+  return 2.*g_a*_df['rho_like'].mean()/(pm.delta(_atmos) + df.gamma.mean())
 
 def plot_scaling(_df, ax, savefig=False):
   """makes idealized plots of scaling as a function of g_a and T"""

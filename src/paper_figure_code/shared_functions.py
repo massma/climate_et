@@ -52,6 +52,10 @@ paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
 
 df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
                     % os.environ['DATA'])
+# adjustments due to errors found on 10/25
+df['scaling'] *= 2.
+df['d_et'] *= 2.
+
 df['g_a'] = 1./df['r_a']
 df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
 df['d_et_atm'] = df['scaling']*df['vpd_atm']

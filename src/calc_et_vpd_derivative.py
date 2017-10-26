@@ -29,7 +29,7 @@ H2O = 18.01528e-3 #molecular mass kg/mol
 
 
 start = time.time()
-outdir = '%s/changjie/pandas_data_lai/' % os.environ['DATA']
+outdir = '%s/changjie/pandas_data_lai_fix_scaling/' % os.environ['DATA']
 
 filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
 
@@ -81,8 +81,10 @@ def site_clean(_df, var='lai'):
 
 reload_data = True
 if reload_data:
-  concat_dfs(folder='pandas_data_lai', fname='full_pandas_lai')
-  df = pd.read_pickle('%s/changjie/full_pandas_lai.pkl' % os.environ['DATA'])
+  concat_dfs(folder='pandas_data_lai_fix_scaling',\
+             fname='full_pandas_fix_scaling')
+  df = pd.read_pickle('%s/changjie/full_pandas_fix_scaling.pkl'\
+                      % os.environ['DATA'])
   meta = {}
   meta['folder_label'] = 'site'
   meta['folder'] = 'hist_plots'
@@ -94,7 +96,8 @@ if reload_data:
   df = clean_df(df, var='lai_gpp')
   # test = df.groupby('site').apply(site_clean, 'lai_gpp')
   # test = clean_df(test, var='lai_gpp')
-  df.to_pickle('%s/changjie/full_pandas_lai_clean.pkl' % os.environ['DATA'])
+  df.to_pickle('%s/changjie/full_pandas_fix_scaling_clean.pkl'\
+               % os.environ['DATA'])
   print(df.shape)
   #df.groupby('site').apply(histogram, meta)
   # histogram(df, meta)

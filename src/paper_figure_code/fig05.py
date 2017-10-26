@@ -199,4 +199,4 @@ for ax in axs[:1]:
   ax.legend(h, l, loc='best', fontsize=9)
 # plt.legend(loc='best')
 plt.tight_layout()
-plt.savefig('../doc/paper/fig05.pdf')
+plt.savefig('../../doc/paper/fig05.pdf')

@@ -1,76 +1,8 @@
-\begin{thebibliography}{8}
+\begin{thebibliography}{0}
 \providecommand{\natexlab}[1]{#1}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
   \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
   \urlstyle{rm}\Url}\fi
-
-\bibitem[{200(2002)}]{2002}
- (2002), A review of twentieth-century drought indices used in the united
-  states, \textit{Bulletin of the American Meteorological Society},
-  \textit{83}(8), 1149--1165,
-  \doi{10.1175/1520-0477(2002)083<1149:arotdi>2.3.co;2}.
-
-\bibitem[{\textit{Alley}(1984)}]{Alley_1984}
-Alley, W.~M. (1984), The palmer drought severity index: Limitations and
-  assumptions, \textit{Journal of Climate and Applied Meteorology},
-  \textit{23}(7), 1100--1109,
-  \doi{10.1175/1520-0450(1984)023<1100:tpdsil>2.0.co;2}.
-
-\bibitem[{\textit{Ball et~al.}(1987)\textit{Ball, Woodrow, and
-  Berry}}]{Ball_1987}
-Ball, J.~T., I.~E. Woodrow, and J.~A. Berry (1987), A model predicting stomatal
-  conductance and its contribution to the control of photosynthesis under
-  different environmental conditions, in \textit{Progress in Photosynthesis
-  Research}, pp. 221--224, Springer Netherlands,
-  \doi{10.1007/978-94-017-0519-6_48}.
-
-\bibitem[{\textit{Franks et~al.}(2017)\textit{Franks, Berry, Lombardozzi, and
-  Bonan}}]{Franks_2017}
-Franks, P.~J., J.~A. Berry, D.~L. Lombardozzi, and G.~B. Bonan (2017), Stomatal
-  function across temporal and spatial scales: Deep-time trends,
-  land-atmosphere coupling and global models, \textit{Plant Physiology},
-  \textit{174}(2), 583--602, \doi{10.1104/pp.17.00287}.
-
-\bibitem[{\textit{Leuning}(1990)}]{Leuning_1990}
-Leuning, R. (1990), Modelling stomatal behaviour and and photosynthesis
-  {ofEucalyptus} grandis, \textit{Australian Journal of Plant Physiology},
-  \textit{17}(2), 159, \doi{10.1071/pp9900159}.
-
-\bibitem[{\textit{Lin et~al.}(2015)\textit{Lin, Medlyn, Duursma, Prentice,
-  Wang, Baig, Eamus, de~Dios, Mitchell, Ellsworth, de~Beeck, Wallin, Uddling,
-  Tarvainen, Linderson, Cernusak, Nippert, Ocheltree, Tissue, Martin-StPaul,
-  Rogers, Warren, Angelis, Hikosaka, Han, Onoda, Gimeno, Barton, Bennie, Bonal,
-  Bosc, Löw, Macinins-Ng, Rey, Rowland, Setterfield, Tausz-Posch,
-  Zaragoza-Castells, Broadmeadow, Drake, Freeman, Ghannoum, Hutley, Kelly,
-  Kikuzawa, Kolari, Koyama, Limousin, Meir, da~Costa, Mikkelsen, Salinas, Sun,
-  and Wingate}}]{Lin_2015}
-Lin, Y.-S., B.~E. Medlyn, R.~A. Duursma, I.~C. Prentice, H.~Wang, S.~Baig,
-  D.~Eamus, V.~R. de~Dios, P.~Mitchell, D.~S. Ellsworth, M.~O. de~Beeck,
-  G.~Wallin, J.~Uddling, L.~Tarvainen, M.-L. Linderson, L.~A. Cernusak, J.~B.
-  Nippert, T.~W. Ocheltree, D.~T. Tissue, N.~K. Martin-StPaul, A.~Rogers, J.~M.
-  Warren, P.~D. Angelis, K.~Hikosaka, Q.~Han, Y.~Onoda, T.~E. Gimeno, C.~V.~M.
-  Barton, J.~Bennie, D.~Bonal, A.~Bosc, M.~Löw, C.~Macinins-Ng, A.~Rey,
-  L.~Rowland, S.~A. Setterfield, S.~Tausz-Posch, J.~Zaragoza-Castells, M.~S.~J.
-  Broadmeadow, J.~E. Drake, M.~Freeman, O.~Ghannoum, L.~B. Hutley, J.~W. Kelly,
-  K.~Kikuzawa, P.~Kolari, K.~Koyama, J.-M. Limousin, P.~Meir, A.~C.~L.
-  da~Costa, T.~N. Mikkelsen, N.~Salinas, W.~Sun, and L.~Wingate (2015), Optimal
-  stomatal behaviour around the world, \textit{Nature Climate Change},
-  \textit{5}(5), 459--464, \doi{10.1038/nclimate2550}.
-
-\bibitem[{\textit{MEDLYN et~al.}(2011)\textit{MEDLYN, DUURSMA, EAMUS,
-  ELLSWORTH, PRENTICE, BARTON, CROUS, ANGELIS, FREEMAN, and
-  WINGATE}}]{MEDLYN_2011}
-MEDLYN, B.~E., R.~A. DUURSMA, D.~EAMUS, D.~S. ELLSWORTH, I.~C. PRENTICE,
-  C.~V.~M. BARTON, K.~Y. CROUS, P.~D. ANGELIS, M.~FREEMAN, and L.~WINGATE
-  (2011), Reconciling the optimal and empirical approaches to modelling
-  stomatal conductance, \textit{Global Change Biology}, \textit{17}(6),
-  2134--2144, \doi{10.1111/j.1365-2486.2010.02375.x}.
-
-\bibitem[{\textit{Zhou et~al.}(2015)\textit{Zhou, Yu, Huang, and
-  Wang}}]{Zhou_2015}
-Zhou, S., B.~Yu, Y.~Huang, and G.~Wang (2015), Daily underlying water use
-  efficiency for {AmeriFlux} sites, \textit{Journal of Geophysical Research:
-  Biogeosciences}, \textit{120}(5), 887--902, \doi{10.1002/2015jg002947}.
 
 \end{thebibliography}

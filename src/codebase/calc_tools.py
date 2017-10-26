@@ -84,7 +84,7 @@ def d_et_d_delta(atmos, canopy):
 
 def scaling(atmos):
   """calcualtes the scaling term"""
-  return atmos['p_a']/(atmos['r_a']*(273.15+atmos['t_a'])\
+  return 2.*atmos['p_a']/(atmos['r_a']*(273.15+atmos['t_a'])\
                        *(atmos['delta'] + atmos['gamma']))
 
 
@@ -138,7 +138,7 @@ def get_uwue(_df):
 
 def d_et(_df):
   """calcs the full d ET/d Ds, confirmed correct vs df"""
-  return _df['g_a']*_df['p_a']/\
+  return 2.*_df['g_a']*_df['p_a']/\
     ((_df['t_a']+ 273.15)*(_df['gamma']+_df['delta']))*\
     (pm.CP/_df['r_moist']-_df['gamma']*_df['c_a']*pm.LV/\
      (_df['lai']*1.6*pm.R_STAR*_df['uwue'])*\
