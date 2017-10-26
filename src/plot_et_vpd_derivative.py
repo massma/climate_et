@@ -151,6 +151,35 @@ meta['xlim'] = None
 meta['ylim'] = None
 plot_tools.scatter_wrapper(df, meta)
 
+df['p_over_t'] = df['p_a']/(273.15+df['t_a'])
+meta = {}
+meta['x_var'] = 'rh'
+meta['y_var'] = 'p_over_t'
+meta['xlim'] = None
+meta['ylim'] = None
+plot_tools.scatter_wrapper(df, meta)
+
+meta = {}
+meta['x_var'] = 'e_s'
+meta['y_var'] = 'p_over_t'
+meta['xlim'] = None
+meta['ylim'] = None
+plot_tools.scatter_wrapper(df, meta)
+
+meta = {}
+meta['x_var'] = 'rh'
+meta['y_var'] = 'lai'
+meta['xlim'] = None
+meta['ylim'] = None
+plot_tools.scatter_wrapper(df, meta)
+
+meta = {}
+meta['x_var'] = 'e_s'
+meta['y_var'] = 'lai'
+meta['xlim'] = None
+meta['ylim'] = None
+plot_tools.scatter_wrapper(df, meta)
+
 if master_plot:
   et_scale = 400.
   gpp_scale = 400.

@@ -27,7 +27,7 @@ t_a = Symbol('T')
 rh = Symbol('RH')
 
 e_s = Symbol('e_s')# 610.8*exp((17.27*t_a)/(237.3 + t_a))
-e_s = Function('e_s')
+e_s = Function('e_s')(t_a)
 
 vpd = Symbol('D_s')
 # vpd = (1. - rh)*e_s
@@ -57,6 +57,8 @@ subbed_3 = simplify(subbed_2)
 subbed_3
 print('latex:\n', latex(subbed_3))
 
+e_s = Function('e_s')(t_a)
+delta_es = Derivative(e_s, t_a)
 term1 = g_a*rho/(gamma + delta_es)
 test2 = Derivative(term1, e_s)
 
