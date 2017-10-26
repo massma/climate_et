@@ -20,6 +20,7 @@
 \addbibresource{references.bib}
 \usepackage{tikz}
 \graphicspath{{figures/}}
+\DeclareMathOperator{\sign}{sign}
 
 \usepackage{caption}
 \captionsetup{font=scriptsize, labelfont=scriptsize}
@@ -78,34 +79,41 @@
 Apply a constant uWUE assumption (conserved within plant type; see \cite{Zhou_2016}):
 \[uWUE = \frac{GPP \cdot \sqrt{D}}{ET},\]
 To derive a new form of Penman-Monteith without implicit ET depedence:
-  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}}  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right)\footnote{note that all terms are known }}{ \Delta + \gamma}\]
+  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} -  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right)\footnote{note that all terms are known }}{ \Delta + \gamma}\]
 \end{frame}
 
+\begin{frame}{Use physically reasonable assumptions to develop a theory.}
+  With our new form of Penman-Monteith we can now take derivatives, giving:
+  \[\frac{\partial \;  ET}{\partial \; D} = \frac{2 g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+  In the interest of time, we will just focus in the ``sign'' term:
+  \[\sign \left[\frac{\partial \;  ET}{\partial \; D}\right] = \sign \left[  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right) \right] \]
 
-\begin{frame}{Recent result (\cite{Zhou_2016}) allows }
-  \cite{Zhou_2016} shows that uWUE:
-  \[uWUE = \frac{GPP \cdot \sqrt{D}}{ET}\]
-  is conserved across space and time (within a plant type).\\
-  \medskip
-  So we can use uWUE to remove dependence of $g_s$ on $A$:
-  \[g_s =  \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{uWUE \; ET}{c_s \; \sqrt{D}}\]
-\end{frame}
-
-\begin{frame}{Derive new form of PM}
-  If we plug in our new expression for $g_s$ we can solve for ET to get a new form of PM:
-  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}}  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right)\footnote{note that all terms are known, except for $\frac{\text{LAI$_{ref}$}}{\text{LAI}}$} }{ \Delta + \gamma}\]
-  Now, we can take derivatives, and:
-  \[\frac{\partial \;  ET}{\partial \; D} = \frac{g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
 \end{frame}
 
 \section{Results - theory}
-\begin{frame}{Scaling Term}
-  \[\frac{\partial \;  ET}{\partial \; D} = \mathbf{ \frac{g_a \; P}{T(\Delta + \gamma)} }   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
-\begin{figure}
-  \includegraphics[width=3.5in]{scaling.png}
-  % \caption{}
-\end{figure}
+\begin{frame}{Consequences of theory - ``sign'' term}
+  \[ \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+  \begin{itemize}
+  \item $c_p$ and $R*$ are constants
+  \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{D}$)
+  \item uWUE and g_1 are constants within plant type (i.e. grass, grops, deciduous forest, evergreen needleleaf forest, shrub)
+  \item Which leaves D = VPD
+  \end{itemize}
+  So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
 \end{frame}
+
+\begin{frame}{Consequences of theory - ``sign'' term}
+  shoe expression for when d et dvpd < 0
+  \begin{itemize}
+  \item $c_p$ and $R*$ are constants
+  \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{D}$)
+  \item uWUE and g_1 are constants within plant type (i.e. grass, grops, deciduous forest, evergreen needleleaf forest, shrub)
+  \item Which leaves D = VPD
+  \end{itemize}
+  So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
+\end{frame}
+
+  
 
 \begin{frame}{``Sign'' Term}
   \begin{figure}
