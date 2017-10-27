@@ -5,7 +5,24 @@ This script makes fig 5
 from shared_functions import *
 
 
+
+# below is whether to plot taylor series approximation
 PLOT_SERIES = False
+#below is to make slight changes for the talk
+PLOT_TALK = True
+
+if PLOT_TALK:
+  paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
+                 r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
+                 r'\left( \frac{2 g_1 + \sqrt{D}}'\
+                 r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
+else:
+  paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
+               r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
+               r'\left( \frac{2 g_1 + \sqrt{D}}'\
+               r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
+
+
 # ##### Figure 5 #####
 def term_2(_df, lai, vpd):
   """calculates term 2"""
@@ -106,10 +123,17 @@ def pft_leaf(_df, axs):
   global I
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
-  p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
-                  label="%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
-                  % (_df.pft.iloc[0],\
-                     lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+  if PLOT_TALK:
+    p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
+                    label="%s: uWUE=%4.2f, g1=%4.1f"\
+                    % (_df.pft.iloc[0],\
+                       _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+  else:
+    p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
+                 label="%s: $\overline{LAI}$=%4.2f, \n uWUE=%4.2f, g1=%4.1f"\
+                    % (_df.pft.iloc[0],\
+                       lai, _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+
   if PLOT_SERIES:
     axs[0].plot(vpd, term_2_approx(_df, lai, vpd, order=4), linestyle='dashed',\
                 color=p[0].get_color())
@@ -120,6 +144,8 @@ def pft_leaf(_df, axs):
                      for _p in [25., 50., 75.]])
   axs[1].plot(vpd, np.ones(vpd.shape)*I)
   axs[1].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
+  vpd_crit = et_min_vpd(_df.mean(), lai)
+  axs[1].plot([vpd_crit], [I], 'k|', markersize=15)
   axs[-1].plot(np.ones(vpd.shape)*I, vpd)
   axs[-1].plot(np.ones(ptiles.shape)*I, ptiles, 'k*')
 

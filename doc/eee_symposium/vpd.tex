@@ -15,6 +15,7 @@
 } 
 
 \usepackage[english]{babel}
+\usepackage[export]{adjustbox}
  % \usepackage[utf8x]{inputenc}
 \usepackage[style=authoryear]{biblatex}
 \addbibresource{references.bib}
@@ -71,31 +72,31 @@
 \section{Method}
 \begin{frame}{Use physically reasonable assumptions to develop a theory.}
   We can use Penman-Monteith (PM) to estimate ET:
-  \[ET = \frac{\Delta R + g_a \rho_a c_p D}{\Delta + \gamma(1 + \frac{g_a}{g_s})},\]
+  \[ET = \frac{\Delta R + g_a \rho_a c_p \, VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},\]
 \textbf{Problem}: $g_s$ (stomatal conductance) is a function of photosythesis, which is a function of ET itself.  So ET in PM is really an implicit function of itself and we cannot take derivatives!
 \end{frame}
 
 \begin{frame}{Use physically reasonable assumptions to develop a theory.}
 Apply a constant uWUE assumption (conserved within plant type; see \cite{Zhou_2016}):
-\[uWUE = \frac{GPP \cdot \sqrt{D}}{ET},\]
+\[uWUE = \frac{GPP \cdot \sqrt{VPD}}{ET},\]
 To derive a new form of Penman-Monteith without implicit ET depedence:
-  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} -  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right)\footnote{note that all terms are known }}{ \Delta + \gamma}\]
+  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p \, VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right)\footnote{note that all terms are known }}{ \Delta + \gamma}\]
 \end{frame}
 
 \begin{frame}{Use physically reasonable assumptions to develop a theory.}
   With our new form of Penman-Monteith we can now take derivatives, giving:
-  \[\frac{\partial \;  ET}{\partial \; D} = \frac{2 g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+  \[\frac{\partial \;  ET}{\partial \, VPD} = \frac{2 g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
   In the interest of time, we will just focus in the ``sign'' term:
-  \[\sign \left[\frac{\partial \;  ET}{\partial \; D}\right] = \sign \left[  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right) \right] \]
+  \[\sign \left[\frac{\partial \;  ET}{\partial \, VPD}\right] = \sign \left[  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right) \right] \]
 
 \end{frame}
 
 \section{Results - theory}
 \begin{frame}{Consequences of theory - ``sign'' term}
-  \[ \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+  \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
   \begin{itemize}
   \item $c_p$ and $R*$ are constants
-  \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{D}$)
+  \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{VPD}$)
   \item uWUE and $g_1$ are constants within plant type (i.e. grass, grops, deciduous forest, evergreen needleleaf forest, shrub)
   \item Which leaves D = VPD
   \end{itemize}
@@ -103,39 +104,32 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
 \end{frame}
 
 \begin{frame}{Consequences of theory - ``sign'' term}
-  \scriptsize
-  \[ VPD_{et_min} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
-\scriptsize
-\end{frame}
+Below is a little opaque (at least to me):
+\[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+so do expansion about $g_1 >> \sqrt{VPD}$:
+\footnotesize
+\[ \frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{1}{g_1} - \frac{3\sqrt{VPD}}{2 g_1^2} +  \mathcal{O}\left(\frac{\sqrt{VPD}}{g_1}\right)^{2} \right) \right)\]
+\large
+and:
+  \[ \sqrt{VPD} \Big|_{\frac{\partial ET}{\partial VPD} = 0} \approx  \frac{2 g_1}{3}  \left( -\frac{ c_p \, g_1\,  1.6  \; R*\; \text{ uWUE }}{R_{air} \gamma c_s } + 1  \right) \]
 
-  
+  % \[ VPD \Big|_{\frac{\partial ET}{\partial VPD} = 0} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
+\end{frame}
 
 \begin{frame}{``Sign'' Term}
   \begin{figure}
-    \includegraphics[width=3.5in]{sign.pdf}
-    % \caption{}
+    \adjincludegraphics[width=3.5in, trim={0 {0.51\height} 0 0}, clip]{fig05.pdf}
   \end{figure}
 \end{frame}
 
-\begin{frame}{Summary of theory}
-  \begin{itemize}
-  \item We use \cite{Zhou_2016}'s uWUE to derive a new analytically tractable form of PM.
-  \item This new analysis suggests that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.
-    \begin{itemize}
-    \item For each PFT there will be a VPD$_{crit}$ above which atmospheric demand will dominate and ET will increase with VPD.
-    \end{itemize}
-  \item Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ than plants evolved (or bred) to use water and prioritize GPP (CRO). Trees and grasslands are somewhere between these two extremes.
-  \item Aerodynamic conductance scales the response, so plants with large surface roughness will be more likely to have a larger response as there is less resistance between the surface and the atmosphere.
-  \end{itemize}
-\end{frame}
 
-\section{Results -n reality}
+\section{Test Theory}
 { % all template changes are local to this group.
     \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Idealized results - CRO}
+    \begin{frame}[plain]{Test theory with FLUXNET data - CSH}
         \begin{tikzpicture}[remember picture,overlay]
             \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{cro_ideal.png}
+                \includegraphics[width=\paperwidth]{csh_eee.png}
             };
         \end{tikzpicture}
      \end{frame}
@@ -143,10 +137,10 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
 
 { % all template changes are local to this group.
     \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Results with uncertainty - CRO}
+    \begin{frame}[plain]{Test theory with FLUXNET data - ENF}
         \begin{tikzpicture}[remember picture,overlay]
             \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{cro.png}
+                \includegraphics[width=\paperwidth]{enf_eee.png}
             };
         \end{tikzpicture}
      \end{frame}
@@ -154,10 +148,10 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
 
 { % all template changes are local to this group.
     \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Idealized results - CSH}
+    \begin{frame}[plain]{Test theory with FLUXNET data - DBF}
         \begin{tikzpicture}[remember picture,overlay]
             \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{csh_ideal.png}
+                \includegraphics[width=\paperwidth]{dbf_eee.png}
             };
         \end{tikzpicture}
      \end{frame}
@@ -165,10 +159,10 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
 
 { % all template changes are local to this group.
     \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Results with uncertainty - CSH}
+    \begin{frame}[plain]{Test theory with FLUXNET data - CRO}
         \begin{tikzpicture}[remember picture,overlay]
             \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{csh.png}
+                \includegraphics[width=\paperwidth]{cro_eee.png}
             };
         \end{tikzpicture}
      \end{frame}
@@ -176,98 +170,69 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
 
 { % all template changes are local to this group.
     \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Idealized results - DBF}
+    \begin{frame}[plain]{Test theory with FLUXNET data - GRA}
         \begin{tikzpicture}[remember picture,overlay]
             \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{dbf_ideal.png}
+                \includegraphics[width=\paperwidth]{gra_eee.png}
             };
         \end{tikzpicture}
      \end{frame}
 }
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Results with uncertainty - DBF}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{dbf.png}
-            };
-        \end{tikzpicture}
-     \end{frame}
-   }
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Idealized results - ENF}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{enf_ideal.png}
-            };
-        \end{tikzpicture}
-     \end{frame}
-}
+% \begin{frame}{Summary of theory}
+%   \begin{itemize}
+%   \item We use \cite{Zhou_2016}'s uWUE to derive a new analytically tractable form of PM.
+%   \item This new analysis suggests that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.
+%     \begin{itemize}
+%     \item For each PFT there will be a VPD$_{crit}$ above which atmospheric demand will dominate and ET will increase with VPD.
+%     \end{itemize}
+%   \item Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ than plants evolved (or bred) to use water and prioritize GPP (CRO). Trees and grasslands are somewhere between these two extremes.
+%   \item Aerodynamic conductance scales the response, so plants with large surface roughness will be more likely to have a larger response as there is less resistance between the surface and the atmosphere.
+%   \end{itemize}
+% \end{frame}
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Results with uncertainty - ENF}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{enf.png}
-            };
-        \end{tikzpicture}
-     \end{frame}
-   }
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Idealized results - GRA}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{gra_ideal.png}
-            };
-        \end{tikzpicture}
-     \end{frame}
-}
-
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Results with uncertainty - GRA}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{gra.png}
-            };
-        \end{tikzpicture}
-     \end{frame}
-   }
-
-   \begin{frame}{Summary statistics}
-     \begin{table}
-       \caption{Statistics of $\frac{\partial \; ET}{\partial \; D}$ as a function of PFT.}
-       \centering
-       \begin{tabular}{l c c}
-         \hline
-         PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
-         \hline
-         CRO & 0.000853  & 0.473311\\
-         CSH & -0.108234 & 0.931660\\
-         DBF & -0.012727 & 0.461674\\
-         ENF & -0.034087 & 0.534425\\
-         GRA & -0.019637 & 0.631735\\
-         \hline
-         \multicolumn{2}{l}{}  
-       \end{tabular}
-     \end{table}
-   \end{frame}
-     
 \section{Conclusions}
+% \begin{frame}{Summary}
+%   \begin{itemize}
+%   \item Theory finds that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.  Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ (and more negative ET response) than plants evolved (or bred) to use water and prioritize GPP (CRO).
+%   \item On average, ecosystem response to VPD follows roughly what we might expect: CRO (prioritize GPP) has positive ET response to VPD, while all others have a negative response. Ordering by increasing magnitude of negative response gives: DBF, GRA, ENF, CSH; which roughly correspond to expectations for increasing water conservation as a function of PFT.
+%   \item Uncertainty is high, especially for CRO and GRA. However, inclusion of uncertainty does not change the story for ENF or CSH.
+%   \end{itemize}
+% \end{frame}
+
+
 \begin{frame}{Summary}
   \begin{itemize}
-  \item Theory finds that the ``tipping'' point for which atmospheric demand overwhelms plant response will be almost exclusively a function of VPD.  Plant types evolved to conserve water (CSH) have a higher VPD$_{crit}$ (and more negative ET response) than plants evolved (or bred) to use water and prioritize GPP (CRO).
-  \item On average, ecosystem response to VPD follows roughly what we might expect: CRO (prioritize GPP) has positive ET response to VPD, while all others have a negative response. Ordering by increasing magnitude of negative response gives: DBF, GRA, ENF, CSH; which roughly correspond to expectations for increasing water conservation as a function of PFT.
-  \item Uncertainty is high, especially for CRO and GRA. However, inclusion of uncertainty does not change the story for ENF or CSH.
+  \item Derived a new form of Penman-Monteith that explicitly calculates ET given published constants.
+  \item Developed a theory for when atmospheric dryness will increase ET (atmospheric demand dominates) vs. decrease ET (plant response dominates). Theory tests well using real data from FLUXNET2015 on plant types CSH, ENF, and DBF. Applicability to CRO and GRA is more uncertain.
+  \item For plants evolved to prioritize production over water conservation (high uWUE and $g_1$), atmospheric demand is more likely to dominate.
+  \item But, for all plant types except for crops decreases in ET (plant response dominates) with increases in VPD are common (plant response dominates). Therefor, the hydrometeorlogists perspective is often wrong, and drought indices built upon assumptions about atmospepheric demand are unrealistic for vegetated surfaces.
+  \item Our form of Penman-Monteith is capable of estimating ET more realistically and could be used as a replacement for PET in drought indices.
   \end{itemize}
 \end{frame}
   
+
+% \begin{frame}{Summary statistics - extra sl}
+%      \begin{table}
+%        \caption{Statistics of $\frac{\partial \; ET}{\partial \, VPD}$ as a function of PFT.}
+%        \centering
+%        \begin{tabular}{l c c}
+%          \hline
+%          PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+%          \hline
+%          CRO & 0.000853  & 0.473311\\
+%          CSH & -0.108234 & 0.931660\\
+%          DBF & -0.012727 & 0.461674\\
+%          ENF & -0.034087 & 0.534425\\
+%          GRA & -0.019637 & 0.631735\\
+%          \hline
+%          \multicolumn{2}{l}{}  
+%        \end{tabular}
+%      \end{table}
+%    \end{frame}
+     
 
 
 \section{References}

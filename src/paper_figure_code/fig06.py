@@ -91,7 +91,7 @@ def make_ax_plot(_ax, var, _df, meta):
   grouped = grouped.sort_index(axis=1)
   # print('grouped sortex axis 1', grouped)
   grouped = grouped.sort_index(axis=0)
-  # print('grouped sort axis 2', grouped)n
+  # print('grouped sort axis 2', grouped)
   _x = grouped.columns.values
   _y = grouped.index.values
   _x = np.append(_x, _xmax)
@@ -113,7 +113,7 @@ def make_ax_plot(_ax, var, _df, meta):
     # _ax.plot(test, t_a, 'k-')
     # test = met.vapor_pres(t_a)*100.*(1. - 0.2)
     # _ax.plot(test, t_a, 'k-')
-  _ax.set_xlabel(meta['x_axis'])
+  _ax.set_xlabel('%s (Pa)' % meta['x_axis'].upper())
   _ax.set_ylabel('T (C)')
   _ax.set_title('PFT: %s; %s'\
                 % (str(_df['pft'][0]),\
