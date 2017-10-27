@@ -96,28 +96,23 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
   \begin{itemize}
   \item $c_p$ and $R*$ are constants
   \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{D}$)
-  \item uWUE and g_1 are constants within plant type (i.e. grass, grops, deciduous forest, evergreen needleleaf forest, shrub)
+  \item uWUE and $g_1$ are constants within plant type (i.e. grass, grops, deciduous forest, evergreen needleleaf forest, shrub)
   \item Which leaves D = VPD
   \end{itemize}
   So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
 \end{frame}
 
 \begin{frame}{Consequences of theory - ``sign'' term}
-  shoe expression for when d et dvpd < 0
-  \begin{itemize}
-  \item $c_p$ and $R*$ are constants
-  \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{D}$)
-  \item uWUE and g_1 are constants within plant type (i.e. grass, grops, deciduous forest, evergreen needleleaf forest, shrub)
-  \item Which leaves D = VPD
-  \end{itemize}
-  So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
+  \scriptsize
+  \[ VPD_{et_min} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
+\scriptsize
 \end{frame}
 
   
 
 \begin{frame}{``Sign'' Term}
   \begin{figure}
-    \includegraphics[width=3.5in]{sign.png}
+    \includegraphics[width=3.5in]{sign.pdf}
     % \caption{}
   \end{figure}
 \end{frame}
@@ -134,7 +129,7 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
   \end{itemize}
 \end{frame}
 
-\section{Results - reality}
+\section{Results -n reality}
 { % all template changes are local to this group.
     \setbeamertemplate{navigation symbols}{}
     \begin{frame}[plain]{Idealized results - CRO}

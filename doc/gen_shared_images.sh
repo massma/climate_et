@@ -1,6 +1,9 @@
 rm -rf ./shared_figs/*.png
 convert ./paper/fig04.pdf -gravity South -crop 100x50%+0+0 ./shared_figs/scaling.png
-convert ./paper/fig05.pdf -crop 100x50%+0+0 ./shared_figs/sign.png
+convert ./paper/fig05.pdf -crop 100x48%+0+0 ./shared_figs/sign.png
+pdfjam --keepinfo --trim "0mm 160mm 0mm 0mm" --clip true --suffix "cropped" ./paper/fig05.pdf
+mv ./fig05-cropped.pdf ./shared_figs/sign.pdf
+pdfcrop --margins '5 5 5 10' ./shared_figs/sign.pdf ./shared_figs/sign.pdf
 convert ./paper/fig06.png -gravity NorthEast -crop 25x20%+0+0 ./shared_figs/temp_1.png
 convert ./paper/fig06b.png -gravity NorthEast -crop 25x20%+0+0 ./shared_figs/temp_2.png
 convert +append ./shared_figs/temp*.png ./shared_figs/cro_ideal.png
