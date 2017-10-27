@@ -96,11 +96,11 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
   \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
   \begin{itemize}
   \item $c_p$ and $R*$ are constants
-  \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{VPD}$)
+  \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
   \item uWUE and $g_1$ are constants within plant type (i.e. grass, crops, deciduous forest, evergreen needleleaf forest, shrub)
   \item Which just leaves VPD
   \end{itemize}
-  So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
+  So within each plant type, whether the atmospheric demand or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
 \end{frame}
 
 \begin{frame}{Consequences of theory - ``sign'' term}
@@ -113,7 +113,7 @@ so do expansion about $g_1 >> \sqrt{VPD}$:
 % and:
 %   \[ \sqrt{VPD} \Big|_{\frac{\partial ET}{\partial VPD} = 0} \approx  \frac{2 g_1}{3}  \left( -\frac{ c_p \, g_1\,  1.6  \; R*\; \text{ uWUE }}{R_{air} \gamma c_s } + 1  \right) \]
 
-  % \[ VPD \Big|_{\frac{\partial ET}{\partial VPD} = 0} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
+%   \[ VPD \Big|_{\frac{\partial ET}{\partial VPD} = 0} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
 \end{frame}
 
 \begin{frame}{``Sign'' Term}
@@ -124,60 +124,28 @@ so do expansion about $g_1 >> \sqrt{VPD}$:
 
 
 \section{Test Theory}
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Test theory with FLUXNET data - CSH}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{csh_eee.png}
-            };
-        \end{tikzpicture}
+    \begin{frame}{Test theory with FLUXNET data - CSH}
+                \includegraphics[width=3.5in]{csh_eee.png}
      \end{frame}
-}
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Test theory with FLUXNET data - ENF}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{enf_eee.png}
-            };
-        \end{tikzpicture}
-     \end{frame}
-}
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Test theory with FLUXNET data - DBF}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{dbf_eee.png}
-            };
-        \end{tikzpicture}
+    \begin{frame}{Test theory with FLUXNET data - ENF}
+                \includegraphics[width=3.5in]{enf_eee.png}
      \end{frame}
-}
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Test theory with FLUXNET data - CRO}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{cro_eee.png}
-            };
-        \end{tikzpicture}
-     \end{frame}
-}
 
-{ % all template changes are local to this group.
-    \setbeamertemplate{navigation symbols}{}
-    \begin{frame}[plain]{Test theory with FLUXNET data - GRA}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center)] {
-                \includegraphics[width=\paperwidth]{gra_eee.png}
-            };
-        \end{tikzpicture}
+    \begin{frame}{Test theory with FLUXNET data - DBF}
+                \includegraphics[width=3.5in]{dbf_eee.png}
      \end{frame}
-}
+
+    \begin{frame}{Test theory with FLUXNET data - CRO}
+                \includegraphics[width=3.5in]{cro_eee.png}
+     \end{frame}
+
+    \begin{frame}{Test theory with FLUXNET data - GRA}
+                \includegraphics[width=3.5in]{gra_eee.png}
+     \end{frame}
+
 
 
 % \begin{frame}{Summary of theory}
@@ -208,9 +176,9 @@ so do expansion about $g_1 >> \sqrt{VPD}$:
   \begin{itemize}
   \item Derived a new form of Penman-Monteith that explicitly calculates ET given published constants.
   \item Developed a theory for when atmospheric dryness will increase ET (atmospheric demand dominates) vs. decrease ET (plant response dominates). Theory tests well using real data from FLUXNET2015 on plant types CSH, ENF, and DBF. Applicability to CRO and GRA is more uncertain.
-  \item For plants evolved to prioritize water conservation over production (low uWUE and $g_1$), atmospherc demand is less likely to dominate.
+  \item For plants evolved to prioritize water conservation over production, atmospherc demand is less likely to dominate.
   \item All plant types except for crops had common occurence of decreases in ET (plant response dominates) with increases in VPD (plant response dominates). Therefore, the hydrometeorologists perspective is often wrong, and drought indices built upon assumptions about atmospheric demand are unrealistic for vegetated surfaces.
-  \item Our form of Penman-Monteith is capable of estimating ET more realistically and could be used as a replacement for PET in drought indices (e.g. Palmer Drought Severity Index - PDSI).
+  \item Our form of Penman-Monteith is capable of estimating ET realistically and could be used as a replacement for PET in drought indices (e.g. Palmer Drought Severity Index - PDSI).
   \end{itemize}
 \end{frame}
   

@@ -136,33 +136,33 @@ def scatter_plot_paper(_df, meta):
   fig.set_figwidth(fig.get_figwidth()*nplots)
 
   if nplots == 4:
-    titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
-              r'$\frac{\partial \; ET}{\partial \; D}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{\sigma})$']
+    titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
+              r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}(\overline{\sigma})$']
     _vars = [_df['d_et'],\
              _df['d_et']/_df['g_a'],\
              _df['d_et_lai_fixed'],\
              _df['d_et_lai_fixed']/_df['g_a']]# ,\
   elif nplots == 5:
-    titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
-              r'$\frac{\partial \; ET}{\partial \; D}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{\sigma})$',\
+    titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
+              r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}(\overline{\sigma})$',\
               r'$\frac{\partial \; ET}'\
-              r'{g_a \partial \; D}(\overline{LAI, \gamma})$']
+              r'{g_a \partial \, VPD}(\overline{LAI, \gamma})$']
     _vars = [_df['d_et'],\
              _df['d_et']/_df['g_a'],\
              _df['d_et_lai_fixed'],\
              _df['d_et_lai_fixed']/_df['g_a'],\
              _df['d_et_lai_gamma_fixed']/_df['g_a']]
   else:
-    titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
-              r'$\frac{\partial \; ET}{\partial \; D}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{\sigma})$',\
+    titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
+              r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}(\overline{\sigma})$',\
               r'$\frac{\partial \;n ET}'\
-              r'{g_a \partial \; D}(\overline{LAI, \gamma})$',\
+              r'{g_a \partial \, VPD}(\overline{LAI, \gamma})$',\
               'c_a_fixed',\
               'c_a and gamma fixed']
     _vars = [_df['d_et'],\
