@@ -73,13 +73,13 @@
 \begin{frame}{Use physically reasonable assumptions to develop a theory.}
   We can use Penman-Monteith (PM) to estimate ET:
   \[ET = \frac{\Delta R + g_a \rho_a c_p \, VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},\]
-\textbf{Problem}: $g_s$ (stomatal conductance) is a function of photosythesis, which is a function of ET itself.  So ET in PM is really an implicit function of itself and we cannot take derivatives!
+\textbf{Problem}: $g_s$ (stomatal conductance) is a function of photosynthesis, which is a function of ET itself.  So ET in PM is really an implicit function of itself and we cannot take derivatives!
 \end{frame}
 
 \begin{frame}{Use physically reasonable assumptions to develop a theory.}
 Apply a constant uWUE assumption (conserved within plant type; see \cite{Zhou_2016}):
 \[uWUE = \frac{GPP \cdot \sqrt{VPD}}{ET},\]
-To derive a new form of Penman-Monteith without implicit ET depedence:
+To derive a new form of Penman-Monteith without implicit ET dependence:
   \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p \, VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right)\footnote{note that all terms are known }}{ \Delta + \gamma}\]
 \end{frame}
 
@@ -97,8 +97,8 @@ To derive a new form of Penman-Monteith without implicit ET depedence:
   \begin{itemize}
   \item $c_p$ and $R*$ are constants
   \item $R_{air}$, $c_s$, and $\gamma$ are approximately constant (relative to $\sqrt{VPD}$)
-  \item uWUE and $g_1$ are constants within plant type (i.e. grass, grops, deciduous forest, evergreen needleleaf forest, shrub)
-  \item Which leaves D = VPD
+  \item uWUE and $g_1$ are constants within plant type (i.e. grass, crops, deciduous forest, evergreen needleleaf forest, shrub)
+  \item Which just leaves VPD
   \end{itemize}
   So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
 \end{frame}
@@ -108,10 +108,10 @@ Below is a little opaque (at least to me):
 \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
 so do expansion about $g_1 >> \sqrt{VPD}$:
 \footnotesize
-\[ \frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{1}{g_1} - \frac{3\sqrt{VPD}}{2 g_1^2} +  \mathcal{O}\left(\frac{\sqrt{VPD}}{g_1}\right)^{2} \right) \right)\]
-\large
-and:
-  \[ \sqrt{VPD} \Big|_{\frac{\partial ET}{\partial VPD} = 0} \approx  \frac{2 g_1}{3}  \left( -\frac{ c_p \, g_1\,  1.6  \; R*\; \text{ uWUE }}{R_{air} \gamma c_s } + 1  \right) \]
+\[ \frac{\partial \, ET}{\partial \, VPD} \approx \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{1}{g_1} - \frac{3\sqrt{VPD}}{2 g_1^2} +  \mathcal{O}\left(\frac{\sqrt{VPD}}{g_1}\right)^{2} \right) \right)\]
+% \large
+% and:
+%   \[ \sqrt{VPD} \Big|_{\frac{\partial ET}{\partial VPD} = 0} \approx  \frac{2 g_1}{3}  \left( -\frac{ c_p \, g_1\,  1.6  \; R*\; \text{ uWUE }}{R_{air} \gamma c_s } + 1  \right) \]
 
   % \[ VPD \Big|_{\frac{\partial ET}{\partial VPD} = 0} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
 \end{frame}
@@ -204,12 +204,13 @@ and:
 
 
 \begin{frame}{Summary}
+  \small
   \begin{itemize}
   \item Derived a new form of Penman-Monteith that explicitly calculates ET given published constants.
   \item Developed a theory for when atmospheric dryness will increase ET (atmospheric demand dominates) vs. decrease ET (plant response dominates). Theory tests well using real data from FLUXNET2015 on plant types CSH, ENF, and DBF. Applicability to CRO and GRA is more uncertain.
-  \item For plants evolved to prioritize production over water conservation (high uWUE and $g_1$), atmospheric demand is more likely to dominate.
-  \item But, for all plant types except for crops decreases in ET (plant response dominates) with increases in VPD are common (plant response dominates). Therefor, the hydrometeorlogists perspective is often wrong, and drought indices built upon assumptions about atmospepheric demand are unrealistic for vegetated surfaces.
-  \item Our form of Penman-Monteith is capable of estimating ET more realistically and could be used as a replacement for PET in drought indices.
+  \item For plants evolved to prioritize water conservation over production (low uWUE and $g_1$), atmospherc demand is less likely to dominate.
+  \item All plant types except for crops had common occurence of decreases in ET (plant response dominates) with increases in VPD (plant response dominates). Therefore, the hydrometeorologists perspective is often wrong, and drought indices built upon assumptions about atmospheric demand are unrealistic for vegetated surfaces.
+  \item Our form of Penman-Monteith is capable of estimating ET more realistically and could be used as a replacement for PET in drought indices (e.g. Palmer Drought Severity Index - PDSI).
   \end{itemize}
 \end{frame}
   
@@ -239,6 +240,10 @@ and:
 \begin{frame}{References}
   \AtNextBibliography{\small}
   \printbibliography
+  \scriptsize
+  \begin{itemize}
+  \item This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices.
+    \end{itemize}
 \end{frame}
 
 

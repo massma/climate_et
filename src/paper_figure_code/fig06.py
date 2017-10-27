@@ -138,8 +138,8 @@ def scatter_plot_paper(_df, meta):
   if nplots == 4:
     titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
               r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
-              r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$']
+              r'$\frac{\partial \; ET}{\partial \; D}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{\sigma})$']
     _vars = [_df['d_et'],\
              _df['d_et']/_df['g_a'],\
              _df['d_et_lai_fixed'],\
@@ -147,8 +147,8 @@ def scatter_plot_paper(_df, meta):
   elif nplots == 5:
     titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
               r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
-              r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$',\
+              r'$\frac{\partial \; ET}{\partial \; D}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{\sigma})$',\
               r'$\frac{\partial \; ET}'\
               r'{g_a \partial \; D}(\overline{LAI, \gamma})$']
     _vars = [_df['d_et'],\
@@ -159,8 +159,8 @@ def scatter_plot_paper(_df, meta):
   else:
     titles = [r'$\frac{\partial \; ET}{\partial \; D}$',\
               r'$\frac{\partial \; ET}{g_a \partial \; D}$',\
-              r'$\frac{\partial \; ET}{\partial \; D}(\overline{LAI})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{LAI})$',\
+              r'$\frac{\partial \; ET}{\partial \; D}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \; D}(\overline{\sigma})$',\
               r'$\frac{\partial \;n ET}'\
               r'{g_a \partial \; D}(\overline{LAI, \gamma})$',\
               'c_a_fixed',\

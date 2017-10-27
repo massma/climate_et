@@ -4,8 +4,6 @@ This script makes fig 5
 """
 from shared_functions import *
 
-
-
 # below is whether to plot taylor series approximation
 PLOT_SERIES = False
 #below is to make slight changes for the talk
@@ -13,7 +11,7 @@ PLOT_TALK = True
 
 if PLOT_TALK:
   paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
-                 r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
+                 r'- \frac{\gamma c_s }{1.6 \; R\; uWUE  }'\
                  r'\left( \frac{2 g_1 + \sqrt{D}}'\
                  r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
 else:
@@ -196,11 +194,11 @@ for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
 axs[1].set_xlabel('VPD (Pa)')
 axs[3].set_xlabel('LAI')
 axs[0].set_ylabel(paren_string)
+axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=1.0)
 plt.setp(axs[2].get_yticklabels(), visible=False)
 axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
 axs[2].set_title('VPD where ET = Min(ET) '\
                  r'($\frac{\partial \; ET}{\partial \; D} = 0$)')
-axs[0].plot(axs[2].get_xlim(), [0., 0.], 'k--', linewidth=0.2)
 # axs[2].set_ylim([0., np.around(df.vpd.quantile(q=0.95), decimals=-2)])
 axs[2].set_ylim([0., 4000.])
 axs[1].set_ylim([0.5,5.5])
