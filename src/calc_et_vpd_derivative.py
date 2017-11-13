@@ -41,13 +41,13 @@ for filename in filenames[:]:
     atmos, canopy, data = calc.calc_derivative(atmos, canopy, data)
     idx = ((canopy['lai'] < canopy['lai'].quantile(q=0.95)) & \
            (canopy['lai'] > canopy['lai'].quantile(q=0.05)))
-    lai_std = canopy.loc[idx, 'lai'].std()
+    lai_std = canopy.loc[idx, 'lai'].std()/canopy.loc[idx, 'lai'].mean()
     if canopy['pft'].iloc[0] == 'GRA':
       canopy['g1'] = pm.WUE_MEDLYN.loc['C4G', 'g1M']
       _atmos, _canopy, _data = calc.calc_derivative(atmos, canopy, data)
       idx = ((_canopy['lai'] < _canopy['lai'].quantile(q=0.95)) & \
              (_canopy['lai'] > _canopy['lai'].quantile(q=0.05)))
-      _lai_std = _canopy.loc[idx, 'lai'].std()
+      _lai_std = _canopy.loc[idx, 'lai'].std()/_canopy.loc[idx, 'lai'].mean()
       if _lai_std < lai_std:
         print('for filename %s c4 grass std (%f) is less than'\
               'c3 gras std (%f)' % (filename, _lai_std, lai_std))
