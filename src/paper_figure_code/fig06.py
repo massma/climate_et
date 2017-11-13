@@ -139,7 +139,8 @@ def scatter_plot_paper(_df, meta):
     titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
               r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
               r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}(\overline{\sigma})$']
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
+              r'(\overline{\sigma})$']
     _vars = [_df['d_et'],\
              _df['d_et']/_df['g_a'],\
              _df['d_et_lai_fixed'],\
@@ -148,7 +149,8 @@ def scatter_plot_paper(_df, meta):
     titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
               r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
               r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
+              r'(\overline{\sigma})$',\
               r'$\frac{\partial \; ET}'\
               r'{g_a \partial \, VPD}(\overline{LAI, \gamma})$']
     _vars = [_df['d_et'],\
@@ -160,7 +162,8 @@ def scatter_plot_paper(_df, meta):
     titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
               r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
               r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}(\overline{\sigma})$',\
+              r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
+              r'(\overline{\sigma})$',\
               r'$\frac{\partial \;n ET}'\
               r'{g_a \partial \, VPD}(\overline{LAI, \gamma})$',\
               'c_a_fixed',\

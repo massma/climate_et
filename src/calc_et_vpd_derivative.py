@@ -29,7 +29,7 @@ H2O = 18.01528e-3 #molecular mass kg/mol
 
 
 start = time.time()
-outdir = '%s/changjie/pandas_data_lai_fix_scaling/' % os.environ['DATA']
+outdir = '%s/changjie/pandas_data_c3_c4/' % os.environ['DATA']
 
 filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
 
@@ -39,6 +39,30 @@ for filename in filenames[:]:
   atmos, canopy, data = d_io.load_mat_data(filename)
   if (data.et_obs.count() > 0) & (canopy.dropna().uwue.count() > 0):
     atmos, canopy, data = calc.calc_derivative(atmos, canopy, data)
+    idx = ((canopy['lai'] < canopy['lai'].quantile(q=0.95)) & \
+           (canopy['lai'] > canopy['lai'].quantile(q=0.05)))
+    lai_std = canopy.loc[idx, 'lai'].std()
+    if canopy['pft'].iloc[0] == 'GRA':
+      canopy['g1'] = pm.WUE_MEDLYN.loc['C4G', 'g1M']
+      _atmos, _canopy, _data = calc.calc_derivative(atmos, canopy, data)
+      idx = ((_canopy['lai'] < _canopy['lai'].quantile(q=0.95)) & \
+             (_canopy['lai'] > _canopy['lai'].quantile(q=0.05)))
+      _lai_std = _canopy.loc[idx, 'lai'].std()
+      if _lai_std < lai_std:
+        print('for filename %s c4 grass std (%f) is less than'\
+              'c3 gras std (%f)' % (filename, _lai_std, lai_std))
+        print('old d_et: %f' % data.d_et.mean())
+        data = _data
+        canopy = _canopy
+        atmos = _atmos
+        canopy.pft = 'C4G'
+        print('new d_et: %f' % data.d_et.mean())
+        print(canopy.g1.iloc[0])
+      else:
+        print('for filename %s c4 gras std (%f)'\
+              'is greater than c3 grass std (%f)'\
+              % (filename, _lai_std, lai_std))
+        canopy['g1'] = pm.WUE_MEDLYN.loc['GRA', 'g1M']
     dfout = pd.concat([atmos, canopy, data], axis=1)
     fname = ''.join(filename.split('/')[-1].split('.')[:-1])
     dfout.to_pickle('%s/%s.pkl' % (outdir, fname))
@@ -81,9 +105,9 @@ def site_clean(_df, var='lai'):
 
 reload_data = True
 if reload_data:
-  concat_dfs(folder='pandas_data_lai_fix_scaling',\
-             fname='full_pandas_fix_scaling')
-  df = pd.read_pickle('%s/changjie/full_pandas_fix_scaling.pkl'\
+  concat_dfs(folder='pandas_data_c3_c4',\
+             fname='full_pandas_c3_c4')
+  df = pd.read_pickle('%s/changjie/full_pandas_c3_c4.pkl'\
                       % os.environ['DATA'])
   meta = {}
   meta['folder_label'] = 'site'
@@ -96,7 +120,7 @@ if reload_data:
   df = clean_df(df, var='lai_gpp')
   # test = df.groupby('site').apply(site_clean, 'lai_gpp')
   # test = clean_df(test, var='lai_gpp')
-  df.to_pickle('%s/changjie/full_pandas_fix_scaling_clean.pkl'\
+  df.to_pickle('%s/changjie/full_pandas_c3_c4_clean.pkl'\
                % os.environ['DATA'])
   print(df.shape)
   #df.groupby('site').apply(histogram, meta)

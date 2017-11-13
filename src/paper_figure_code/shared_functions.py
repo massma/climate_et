@@ -45,10 +45,6 @@ site_list.index = site_list.Site
 site_list = site_list.loc[df.values]
 
 # below is the label
-paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
-               r'- \frac{\gamma c_s }{LAI \; 1.6 \; R\; uWUE  }'\
-               r'\left( \frac{2 g_1 + \sqrt{D}}'\
-               r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
 
 # below commented df should (and is - I checked) equicalent to fix_scaling_clean
 # df = pd.read_pickle('%s/changjie/full_pandas_lai_clean.pkl'\
