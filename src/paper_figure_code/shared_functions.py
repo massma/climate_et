@@ -95,3 +95,6 @@ def et_min_vpd(_df, lai):
     if sqrt_vpd < 0.:
       sqrt_vpd = np.nan
   return sqrt_vpd**2
+
+def get_pft(_df):
+  return _df['pft'].iloc[0]

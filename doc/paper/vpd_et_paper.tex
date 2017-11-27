@@ -200,8 +200,12 @@ We hypothesize that for most plant types a common resonse to increase in VPD wil
 
 In order to quantify plant response to perturbations to atmospheric demand for water, we apply a Penman-Monteith framework to eddy-covariance observations spanning various biomes and climates. Section 2 describes the data used, Section 3 derives the framework, Section 4 presents results, and Section 5 discusses conclusions. The goal of this paper is to use reasonable approximations as a tool to increase intuition for plant response to atmospheric drying. This intuition will aid interpretation of observations and full complexity climate models. 
 
-\section{Methods}
+\section{Data}
+\label{data}
+We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table \ref{pft}),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
 
+\section{Methods}
+n
 The Penman-Monteith equation (hereafter PM) estimates ET as a function of atmospheric and land-surface variables:
 \begin{linenomath*}
   \begin{equation}
@@ -238,33 +242,51 @@ is relatively constant across time and space (within plant functional type). If,
 
 \begin{linenomath*}
   \begin{equation}
-  g_s = \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{\sigma \; uWUE \; ET}{c_s \; \sqrt{D}}
+  g_s = \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{D_{s}}}\right) \frac{uWUE \; ET}{c_s \; \sqrt{D}}
   \end{equation}
 \end{linenomath*}
 
-Note that $uWUE$ is fit on the ecosystem scale in \citet{Zhou_2015} so GPP in \ref{uwue} is really $A\cdot \text{LAI}$. This leads to the cancelation of LAI in addition to uWUE in Equation \ref{medlyn}. We also recognize that our use of $uWUE$ introudces considerable uncertainty, so we added an uncertainty parameter $\sigma = f(t, \text{site})$ modifying $uWUE$. The meaning of this parameter will be elaborated on after the derivation of $\frac{\partial \; ET}{\partial \; D}$.
-
-Next, plugging Equation 5 into Equation 1 and rearranging gives:
+Note that $uWUE$ is fit on the ecosystem scale in \citet{Zhou_2015} so GPP in \ref{uwue} is really $A\cdot \text{LAI}$. This leads to the cancelation of LAI in addition to uWUE in Equation \ref{medlyn}. Plugging Equation 5 into Equation 1 and rearranging gives:
 
 \begin{linenomath*}
   \begin{equation}
-    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} -  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6\; \sigma\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right) }{ \Delta + \gamma}
+    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} -  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right) }{ \Delta + \gamma}
     \label{et}
   \end{equation}
 \end{linenomath*}
 
-Note that if we set the uncertaitny parameter $\sigma$ to 1, and approximage $c_s$ at a global mean CO$_2$ concentration, then Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This then begs the question, why use PET at all for drought metrics in vegetated areas? A much more physically realistic estimate of ET can be had with the same information reqiured to calculate PET. 
-
-We can now take the derivative with respect to $D$ to analytically determine ecosystem response to atmospheric demand perturbations:
+Given FLUXNET data described in Section \ref{data}, every term in Equation \ref{et} is known. However, our sampling of sites and our focus on the growing season may intoduce some deviations of $uWUE$ from those observed in \citet{Zhou_2015}. Also, we wish to include some measure of uncertainty in our analysis to guide if our many assumptions and simplifications are reasonable. To account for both mean deviations of $uWUE$ and uncertainty, we will introduce an uncertainty parameter $\sigma$ modifying $uWUE$:
 
 \begin{linenomath*}
   \begin{equation}
-    \frac{\partial \;  ET}{\partial \; D} = \frac{g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \sigma \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)
+    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p D_{s}}{R_{air}} -  \frac{\gamma c_s \sqrt{D} }{ R* \; 1.6\; \sigma \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D}})} \right) }{ \Delta + \gamma}
+    \label{et_sigma}
+  \end{equation}
+\end{linenomath*}
+
+Now, from each FLUXNET observation we can calculate single value of $\sigma$:
+
+\begin{linenomath*}
+  \begin{equation}
+\sigma = - \frac{g_a \gamma c_s \sqrt{D_s} L_v P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p D_{s}\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}
+    \label{et_sigma}
+  \end{equation}
+\end{linenomath*}
+
+The variablility of $\sigma$ across sites and time will provides some measure of uncertainty in our model, assumptions, as well as the fluxnet observations themselves. Mean shifts in $\sigma$ can be attributed to differences in out sampling from those used to calcualte $uWUE$ in \citet{Zhou_2015}. The influence of $\sigma$ will propogate through any uncertainty to our derivative of Equation \ref{et_sigma}:
+
+\begin{linenomath*}
+  \begin{equation}
+    \frac{\partial \;  ET}{\partial \; D} = \frac{2\; g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \sigma \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)
     \label{d_et}
   \end{equation}
 \end{linenomath*}
 
-The $D$ dependence in Equation \ref{d_et} is a little opaque. However, mean $D$ is 1062 Pa, so $\sqrt{D}$ is 32.6 Pa$^{1/2}$, which is much less than $g_1$ (with the exception of ENF; Table \ref{pft}). So a series expansion in the limit $\frac{\sqrt{D}}{g_1} \to 0$ gives an approximation which makes the functional form more clear:
+With Equation \ref{d_et} we have provided an analytical franework for ecosystem reponse to atmospheric demand perturbations. There are a few subtelties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $D$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; D} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; D} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{partial \; RH} \frac{\partial \; RH}{\partial \; D} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately orthogonal.
+
+
+
+The $D$ dependence in Equation \ref{d_et} is a little opaque. However, mean $D$ is 1062 Pa, so $\sqrt{D}$ is 32.6 Pa$^{1/2}$, which is much less than $g_1$ (with the exception of ENF; Table \ref{pft}). So a series expansion in the limit $\frac{\sqrt{D}}{g_1} \to 0$ gives an approximation which makes the functional form more clear: \explain{Should I even include the series expansion?}
 
 \begin{linenomath*}
   \begin{equation}
@@ -273,18 +295,7 @@ The $D$ dependence in Equation \ref{d_et} is a little opaque. However, mean $D$ 
   \end{equation}
 \end{linenomath*}
 
-
-Note that given yearly uWUE from \citet{Zhou_2015}, $g_1$ from \citet{Lin_2015} \citep[as presented in ][]{Franks_2017}, and observations of R, T, P, D$_s$, and wind speed (WS), all quantities in Equations \ref{d_et} and \ref{d_et_approx} are known except for the uncertainty parameter $\sigma$. With flux tower observations of ET, $\sigma$ will then be uniquely determined for each observation through Equation 6:
-
-\begin{linenomath*}
-  \begin{equation}
-    \sigma = -\frac{g_a \gamma c_s \sqrt{D_s} P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p D_{s}\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{D_s}})}
-    \label{lai}
-  \end{equation}
-\end{linenomath*}
-
-This $\sigma$ will be some part uncertainty associated with assumptions about constant $g1$ and $uWUE$, including differences between the data used here and in the fits in \citet{Zhou_2015} and \citet{Lin_2015}, but also some part general PM model and FLUXNET observationsal uncertainty. By calculating a unique $\sigma$ for each observation we will propagate any model and observational uncertainty forward into our expression for $\frac{\partial \; ET}{\partial D}$. 
-
+One final comment on our derivation which will not be discussed further but is relevant for future analysis: if we  approximage $c_s$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This then begs the question, why use PET for drought metrics in vegetated areas? It appears a much more physically realistic estimate of ET can be had with the same information reqiured to calculate PET. 
 
 \begin{table}
 \caption{Definition of symbols and variables}
@@ -314,9 +325,6 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
 \end{table}
 
 
-\section{Data}
-
-We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table \ref{pft}),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
 
 
 \begin{table}
@@ -358,7 +366,7 @@ By construction, the variability in the $\sigma$ term (Equation \ref{lai}) conta
 \label{lai_fig}
 \end{figure}
 
-An additional concern is that the $\sigma$ term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig}\explain{Figs 2 and 3 can probably be combined - the histogram of $\sigma$ is shown in Fig 3.} plots the joint distribution of $\sigma$ and VPD, and shows that $\sigma$ is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $D$.
+An additional concern is that the $\sigma$ term may in fact be some function of $D$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig} plots the joint distribution of $\sigma$ and VPD, and shows that $\sigma$ is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $D$.
 
 % below show histogram of site specific spearmannr? think would be useful 
 \begin{figure}[h]
@@ -368,15 +376,57 @@ An additional concern is that the $\sigma$ term may in fact be some function of 
 \label{lai_vpd_fig}
 \end{figure}
 
-
 Before calculating the sensitivity of ET to VPD, it is useful to consider the functional form of Equation \ref{d_et}. There are three terms: a scaling term for the full expression we will call Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$), a relatively constant offset we will call Term 2 ($\frac{c_p}{R_{air}}$), and a variable term we will call Term 3 ($\frac{\gamma c_s }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right)$). All variables are positive, so the relative magnitude between Term 2 and Term 3 will determine the sign of the derivative, while Term 1 will scale the expression larger or smaller.
 
-In Term 1, $\frac{P}{T} \propto \rho$, so this should vary little relative to aerodynamic conductance and $\Delta$.  $\gamma$ should also be relatively constant, so the scaling term, Term 1, should be primarily a function of aerodynamic conductance and temperature (through the function $\Delta$). This makes sense, as aerodynamic conductance represents how efficently response at the surface is communicated to the atmosphere. As it increases, any plant response will be communicated more strongly to the atmosphere (and vice-versa).
 
-$\Delta$'s presence in the scaling term also matches physical intition. Evaporative cooling will will dampen the ability of the atmosphere to take more moisture, as $e_{sat}$ decreases with temperature.. The decrease in $e_{sat}$ is proportional to $\Delta$ ($\delta e_{sat} = \Delta \delta T$). So as $\Delta$ increases, you will get a larger damping of ET due to evaporative cooling.  The functional from of $\Delta$ will be the same across PFT, but the temperature range may vary slightly. In contrast, aerodynamic conductance will vary strongly with PFT due to the importance of surface roughness. So most of the differences in scaling between PFT should be in the aerodynamic conductance term. One interesting side note is that the coefficient of variability for both aerodynamic conductance and Term 1 is relatively constant across PFT, suggesting that the influence of aerodynamic conductance on the relative (to the PFT mean) variability of Term 1 is approximately similar across PFT.
+Term 2 minus Term 3's role in determining the sign of the sensitivty of ET to VPD makes it crucuial for answering our question ``When does VPD drive or reduce ET?'' Exploring these terms more, $c_s$ and $\gamma$ variability is relatively less than $\sigma$ and $D$ variability, so variability within PFT will be solely determined by $\sigma$ and $D$. If we fix uncertainty $\sigma$ at PFT averages, then Term 2 minus Term 3 is just a function of $D$. We can further dertmine a $D_{crit}$ where $\frac{\partial \; ET}{\partial \; D} = 0$:
+
+\begin{linenomath*}
+  \begin{equation}
+D_{crit} = \frac{R_{air}}{4 c_p} \left( \frac{\gamma c_s}{1.6\; R \; \overline{\sigma} uWUE} + \sqrt{\frac{\gamma c_s}{1.6\; R \; \overline{\sigma} uWUE}\left( \frac{\gamma c_s}{1.6\; R \; \overline{\sigma} uWUE} + 8 g_1 \frac{c_p}{R_{air}}\right)} - 4 g_1 \frac{c_p}{R_{air}} \right)
+\label{vpd_min_et}
+  \end{equation}
+\end{linenomath*}
+
+Values of $D_{crit}$ as a function of PFT are shown in Table \ref{vpd_crit}. For any values of $D$ less than $D_{crit}$, $\frac{\partial \; ET}{\partial \; D}$ will be negative, and for values of $D$ greater than $D_{crit}$, $\frac{\partial \; ET}{\partial \; D}$ will be positive.
+
+
+\begin{table}
+  \label{vpd_crit}
+\caption{Values of $D_{crit}$, where $\frac{\partial \; ET}{\partial \; D} = 0$, evaluated at PFT average values for $R_{air}$, $\sigma$, $\gamma$, and $c_s$. For reference, these values are also provided. For values of $D$ less than $D_{crit}$, $\frac{\partial \; ET}{\partial \; D}$ will be negative, and for values of $D$ greater than $D_{crit}$, $\frac{\partial \; ET}{\partial \; D}$ will be positive.}
+\centering
+\begin{tabular}{l c c c c c c}
+  \hline
+  PFT & $R_{air}$ & $c_s$ (ppm) & $\gamma$ & $\overline{\sigma}$ & $\overline{\sigma} \cdot uWUE$ & \textbf{$D_{crit}$ (Pa)} \\
+  \hline
+  CRO &  288.680920 & 372.567691& 65.351523& 0.684394&       2.602873&  \textbf{133.165438} \\
+  CSH &   289.067152& 381.593622& 67.613172& 0.997224&       2.175278& \textbf{4439.564212} \\
+  DBF &   288.624437& 377.449849& 63.421812& 0.881061&       2.746393&  \textbf{888.773243} \\
+  ENF &  288.183849& 377.676463& 61.559242& 1.217892&       4.015362&  \textbf{978.084845} \\
+  GRA &  288.425651& 377.264645& 61.598768& 0.850869&       2.281074& \textbf{1141.630778} \\
+\hline
+\multicolumn{2}{l}{$^{a}$Footnote text here.}
+\end{tabular}
+\end{table}
+
+Figure \ref{term3} provides greater description for how (Term 2 - Term 3) varies with $D$, as a function of PFT. Equation \ref{d_et_approx} aids interpretation of Figure \ref{term3}. Larger $uWUE\cdot\overline{\sigma}$, and $g1$ shift the leading-order constant term ($\frac{1}{g_1}$) towards smaller values, and (Term 2 - Term 3) towards positive values. $uWUE$ and $g1$ are both water-use effiency type constants. Higher values corresponde to plants that are more willing to spend water on primary production and less evolved to conserve water. Figure \ref{term3} confirms our physical intuition: CROs are the least water conservative so have the smallest constant portion of Term 3, while CSH are the most water conservative and have the largest constant portion of Term 3. For the VPD-dependent terms in Equation \ref{d_et_approx}, differences in $g1$ between PFTs exert a greater influence than difference $uWUE$, as the power of $g1$ increases. Increasing $uWUE$ and $g1$ decreases the VPD-dependence, but $g1$ has the bigger effect due to its increasing powers. ENF ($g1 = 74.31$) has by far the largest VPD dependence of response, while CRO ($g1 = 183.1$) has the smallest VPD dependence.  
+ 
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{./fig05.pdf}
+\caption{Sources of variability for Term 2 - Term 3. Top: Term 2 - Term 3 as a function of VPD, with $\sigma$ held fixed at PFT averages. The observed range of VPD for each PFT is also shown below the x-axis. Line extent corresponds to 5th and 95th percentiles, while stars denote the location of the 25th, 50th, and 75th percentiles.
+
+Bottom: The location of the minima of ET, as a function of VPD and $\sigma$. Lines and stars denote the distribution of VPD and $\sigma$ next to each axis, following the same percentiles as above.}
+\label{term3}
+\end{figure}
+
+Figure \ref{term3}b shows the location of the minima of ET, as a function of $\sigma$ and $D$. For any $\sigma$ or VPD less (more) than these curves, Term 2 - Term 3 will be negative (positive). It is clear that the portion of VPD observations below/above these curves will be a strong function of $\sigma$. However, we can see some general trends. For CSH, $\frac{\partial \; ET}{\partial \; D}$ should be negative for the vast majority of observed $\sigma$ and VPD. The fraciton of positive $\frac{\partial \; ET}{\partial \; D}$ appears to be more even for ENF, GRA, and DBF, and we might expect a greater frequency of positive $\frac{\partial \; ET}{\partial \; D}$ for CRO. 
+
+While the above discussion of the sign of $\frac{\partial \; ET}{\partial \; D}$ is important to answer our research question, the magnitude of $\frac{\partial \; ET}{\partial \; D}$ will also impact statistics of $\frac{\partial \; ET}{\partial \; D}$ and the importance of $D$ variablility for $ET$ variability. So we will more closely examine the scaling Term 1: $\frac{P}{T} \propto \rho$, so this should vary little relative to aerodynamic conductance and $\Delta$. $\gamma$ should also be relatively constant, so Term 1 should be primarily a function of aerodynamic conductance and temperature (through the function $\Delta$). This makes sense, as aerodynamic conductance represents how efficently response at the surface is communicated to the atmosphere. As it increases, any plant response will be communicated more strongly to the atmosphere (and vice-versa).
+
+$\Delta$'s presence in the scaling term also matches physical intition. Evaporative cooling will dampen the ability of the atmosphere to take more moisture, because $e_{s}$ decreases with temperature. The decrease in $e_{s}$ is proportional to $\Delta$ ($\delta e_{s} = \Delta \delta T$). So as $\Delta$ increases, you will get a larger damping of ET due to evaporative cooling.  The functional from of $\Delta$ will be the same across PFT, but the temperature range may vary slightly. In contrast, aerodynamic conductance will vary strongly with PFT due to the importance of surface roughness. So most of the differences in scaling between PFT should be in the aerodynamic conductance term. One interesting side note is that the coefficient of variability for both aerodynamic conductance and Term 1 is relatively constant across PFT, suggesting that the influence of aerodynamic conductance on the relative (to the PFT mean) variability of Term 1 is approximately similar across PFT.
 
 Figure \ref{scale_vary}A shows Term 1 normalized by mean aerodynamic conductance (calculated for each plant functional type), and confirms that much of the relative variability of Term 1 is contained in the aerodynamic conductance variability. Generally, $T$ has less of a role. Additionally, the impact of $T$ on the relative variability increases with increasing aerodynamic conductance. \explain{plot every PFT and show they collapse onto the same curve? - might just be too messy though}.
-
 
 While the relative variability of Term 1 is similar across PFT, the absolute value of Term 1 varies strongly across PFT. Figure \ref{scale_vary}B shows Term 1 evaluated with the mean aerodynamic conductance for each PFT, and at the range of observed temperatures for each PFT. As expected, for the tree PFTs (DBF, ENF) Term 1 is much larger and the temperature dependence is much stronger. Systematic differences in observed temperatures also cause differences in the average magnitude of Term 1. For example, ENF experiences on average colder temperatures and is thus more likely to have a larger scaling term. Additionally, because the variability of aerodynamic conductance increases proportionally to the mean, the spread of Term 1 due to aerodynamic conductance variability will be larger for the tree PFTs, although this is not shown for simplicity. To summarize, the variability of Term 1 within each PFT will look like Figure \ref{scale_vary}A for each PFT, but the scale of the y-axis will increase or decrease according to mean aerodynamic conductance oberved in Figure \ref{scale_vary}B.
  
@@ -388,26 +438,11 @@ While the relative variability of Term 1 is similar across PFT, the absolute val
 \end{figure}
 
 %%%%% replace below with idea:
+\subsection{Bulk statistics of $\frac{\partial \; ET}{\partial \; D}$}
 
-Term 2 minus Term 3 determines the sign of the sensitivty of ET to VPD and is thus crucial. $c_s$ variability is relatively less than $\sigma$ and $D$ variability, so variability within PFT will be solely determined by $\sigma$ and $D$ at the different fluxnet sites. Figure \ref{term3} shows how (Term 2 - Term 3) varies with $D$ and $\sigma$, as a function of PFT. Equation \ref{d_et_approx} aids interpretation of Figure \ref{term3}. Larger $uWUE$, $\overline{\sigma}$, and $g1$ shift the leading-order constant term ($\frac{1}{g_1}$) towards smaller values, and (Term 2 - Term 3) towards positive values. $uWUE$ and $g1$ are both water-use effiency type constants. Higher values corresponde to plants that are more willing to spend water on primary production and less evolved to conserve water. Figure \ref{term3} confirms our physical intuition: CROs are the least water conservative so have the smallest constant portion of Term 3, while CSH are the most water conservative and have the largest constant portion of Term 3. For the VPD-dependent terms in Equation \ref{d_et_approx}, differences in $g1$ between PFTs exert a greater influence than difference $uWUE$, as the power of $g1$ increases. Increasing $uWUE$ and $g1$ decreases the VPD-dependence, but $g1$ has the bigger effect due to its increasing powers. ENF ($g1 = 74.31$) has by far the largest VPD dependence of response, while CRO ($g1 = 183.1$) has the smallest VPD dependence.  
+Table 3 confirms our expectations for PFT behavior of $\frac{\partial \; ET}{\partial \; D}$. For all PFTs except for CRO, average $\frac{\partial \; ET}{\partial \; D}$ is less than zero. However, $\frac{\partial \; ET}{\partial \; D}$ evaluated at the average of all variables (e.g. $\sigma$, $T$, $c_s$, $D$) is only negative for CSH and GRA. And, DBF in addition to CRO experiences $\frac{\partial \; ET}{\partial \; D}$ < 0 less than half the time. These observations highlight the effect of the nonlinear function in Figure \ref{term3}: $\frac{\partial \; ET}{\partial \; D}$ has a much steeper slope when the function is negative, and is thus more likely to be large.
 
-
- 
-\begin{figure}[h]
-\centering
-\includegraphics[width=20pc]{./fig05.pdf}
-\caption{Sources of variability for Term 2 - Term 3. Top: Term 2 - Term 3 as a function of VPD, with $\sigma$ held fixed at PFT averages. The observed range of VPD for each PFT is also shown below the x-axis. Line extent corresponds to 5th and 95th percentiles, while stars denote the location of the 25th, 50th, and 75th percentiles.
-
-Bottom: The location of the minima of ET, as a function of VPD and $\sigma$. Lines and stars denote the distribution of VPD and $\sigma$ next to each axis, following the same percentiles as above.}
-\label{term3}
-\end{figure}
-
-
-Figure \ref{term3}b shows the location of the minima of ET, as a function of $\sigma$ and $D$. For any $\sigma$ or VPD less (more) than these curves, Term 2 - Term 3 will be negative (positive). It is clear that the portion of VPD observations below/above these curves will be a strong function of $\sigma$. However, we can see some general trends. For CSH, $\frac{\partial \; ET}{\partial \; D}$ should be negative for the vast majority of observed $\sigma$ and VPD. The fraciton of positive $\frac{\partial \; ET}{\partial \; D}$ appears to be more even for ENF, GRA, and DBF, and we might expect a greater frequency of positive $\frac{\partial \; ET}{\partial \; D}$ for CRO. 
-
-Table 3 confirms these expectations for PFT behavior of $\frac{\partial \; ET}{\partial \; D}$. For all PFTs except for CRO, average $\frac{\partial \; ET}{\partial \; D}$ is less than zero. However, $\frac{\partial \; ET}{\partial \; D}$ evaluated at the average of all variables (e.g. $\sigma$, $T$, $c_s$, $D$) is only negative for CSH and GRA. And, DBF in addition to CRO experiences $\frac{\partial \; ET}{\partial \; D}$ < 0 less than half the time. These observations highlight the effect of the nonlinear function in Figure \ref{term3}: $\frac{\partial \; ET}{\partial \; D}$ has a much steeper slope when the function is negative, and is thus more likely to be large.
-
-The units of $\frac{\partial \; ET}{\partial \; D}$ make it difficult to interpret if $D$ is even a meaningful contributor to ET's variability. To better understand $D$'s contribution, we normalize $\frac{\partial \; ET}{\partial \; D}$ with $D$'s standard deviation to define a (linearized) relative change in ET for variations in $D$ . $D$'s contribution to ET's variability ranges between 16 - 20 W m$^{-2}$ for all PFTs except for CSH, which is about 51 W m$^{-2}$. Another meaningful comparison is to $\frac{\partial \; ET}{\partial \; R} * std(R)$, as net radiationis generally the driver of ET (cite joe berry here). For all PFTs except for CSH $D$ contributes between 14.5 - 20.5 \% of $R$'s contribution to variability. For CSH the portion is much larger, about 44 \%. $D$'s variability is certiantly a non-negligable contributor to $ET$'s variability.
+The units of $\frac{\partial \; ET}{\partial \; D}$ make it difficult to interpret if $D$ is even a meaningful contributor to ET's variability. To better understand $D$'s contribution, we normalize $\frac{\partial \; ET}{\partial \; D}$ with $D$'s standard deviation to define a (linearized) relative change in ET for variations in $D$ . $D$'s contribution to ET's variability ranges between 30 - 40 W m$^{-2}$ for all PFTs except for CSH, which is about 100 W m$^{-2}$. Another meaningful comparison is to $\frac{\partial \; ET}{\partial \; R} \cdot std(R)$, as net radiation is generally the driver of ET (cite joe berry here). For all PFTs except for CSH $D$ contributes between 30 - 40 \% of $R$'s contribution to variability. For CSH the portion is much larger, about 88 \%. $D$'s variability is certiantly a primary contributor to $ET$'s variability.
 
 So far, idealized plots and statistics have illuminated the form of $\frac{\partial \; ET}{\partial \; D}$ and how it varies with PFT. Large mean $\sigma$ and uWUE shifts CRO and DBF towards positive $\frac{\partial \; ET}{\partial \; D}$. However, the strongly nonlinear function of $\frac{\partial \; ET}{\partial \; D}$ at $\frac{\partial \; ET}{\partial \; D} < 0$ pushes $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative for DBF (it does not do this for CRO because of CRO's high $g1$). ENF's low $g1$ value increases the dependence of $\frac{\partial \; ET}{\partial \; D}$ on $D$, and makes the function more strongly nonlinear. This has the side effect of pushing $\overline{\frac{\partial \; ET}{\partial \; D}}$ negative further than other PFTs for a given fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and magnitude $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$. GRA shows the opposite behavior; a relatively high $g1$  makes the function more linear, decreasing the magnitude of $-\overline{\frac{\partial \; ET}{\partial \; D}}$ for a given  [large] fraction $\frac{\partial \; ET}{\partial \; D} < 0$ and negative $\frac{\partial \; ET}{\partial \; D}(\overline{T,\ldots,D})$ (although aerodynamic conductance and Term 1 also probably have a role in this). Finally, low $uWUE$ of CSH pushes to toward by far the lowest values $\frac{\partial \; ET}{\partial \; D}$ (Figure \ref{term3}). Variability in $D$ accounts for the largest about of $ET$ variability for CSH. For the other PFTs, $D$ contributes less to $ET$ variability, but still represents about 15-20 \% of $R$'s contributions to ET variability.
 

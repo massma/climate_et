@@ -37,10 +37,18 @@ test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
 
 print(test)
 
-# antoher table, nto sure which one
+# think below is jsut for reference for the series, but not used in paper
 columns = []
 for i in range(1, 5):
   columns.append('term_%d' % i)
   mean_df[columns[-1]] = 1./(mean_df.lai*mean_df.uwue_norm*mean_df.g1**i)
 
 print(mean_df.loc[:, columns])
+
+mean_df['vpd_crit'] = et_min_vpd(mean_df, mean_df.lai)
+mean_df['sigma_dot_uwue'] = mean_df.lai*mean_df.uwue_norm
+columns = ['r_moist', 'c_a', 'gamma', 'lai',\
+           'sigma_dot_uwue', 'vpd_crit']
+print('\n vpd critical table')
+print(mean_df.loc[:, columns])
+
