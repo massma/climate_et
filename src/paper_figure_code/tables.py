@@ -4,6 +4,7 @@ This script makes all figs for the paper
 """
 
 from shared_functions import *
+import scipy.optimize
 
 ###### table 5 ####
 def frequency(_df):
@@ -51,4 +52,50 @@ columns = ['r_moist', 'c_a', 'gamma', 'lai',\
            'sigma_dot_uwue', 'vpd_crit']
 print('\n vpd critical table')
 print(mean_df.loc[:, columns])
+
+def optimizer(vpd, *args):
+  """this finds the otopmism vpd to get the most true hits"""
+  print('did it!')
+  _dff = args[0]
+  print('was args the problem?', _dff)
+  try:
+    count_true_less = float(_dff.loc[((_dff.vpd < vpd)\
+                                      & (_dff.d_et < 0.0)), 'd_et'].count())
+  except ValueError:
+    count_true_less = 0.0
+  try:
+    count_true_more = float(_dff.loc[((_dff.vpd > vpd)\
+                                      & (_dff.d_et > 0.0)), 'd_et'].count())
+  except ValueError:
+    count_true_more = 0.0
+  output = (count_true_less+count_true_more)
+  return output
+
+def vpd_statistics(_df):
+  """computes fraction of time theory is correct, and mean det/dvpd as a
+  function of theory"""
+  columns = ['frac_correct_less', 'frac_incorrect_less',\
+             'frac_correct_more', 'frac_incorrect_more',\
+             'mean_less', 'mean_more', 'mean'] # ,\
+             # 'optimized_vpd', 'true_vpd']
+  vpd_crit = mean_df.loc[_df.pft.iloc[0], 'vpd_crit']
+  less_df = _df.d_et.loc[(_df.vpd < vpd_crit)]
+  more_df = _df.d_et.loc[(_df.vpd > vpd_crit)]
+  # print('test', vpd_crit)
+  # vpd_opt = scipy.optimize.golden(optimizer, args=(_df))# ,\
+  #                                 # brack=(0.0, 5.0*vpd_crit),\
+  # print(vpd_opt)
+  vpd = np.linspace(0.0, 2.0*vpd_crit)
+  hits = 
+
+  data = [float(less_df.loc[less_df < 0.0].count())/float(less_df.count()),
+          float(less_df.loc[less_df > 0.0].count())/float(less_df.count()),
+          float(more_df.loc[more_df > 0.0].count())/float(more_df.count()),
+          float(more_df.loc[more_df < 0.0].count())/float(more_df.count()),
+          less_df.mean(), more_df.mean()]# , _df.d_et.mean(), vpd_opt, vpd_crit]
+  df_out = pd.DataFrame(data=[data], index=[_df.pft.iloc[0]], columns=columns)
+  return df_out
+
+fraction_data = df.groupby('pft').apply(vpd_statistics)
+
 
