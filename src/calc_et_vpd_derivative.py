@@ -103,6 +103,13 @@ def site_clean(_df, var='lai'):
                 (_df[var] > _df[var].quantile(q=0.05))), :]
   return out
 
+def print_cv_lai_lai_gpp(_df):
+  """prints the cv of lai and lai_gpp"""
+  print(_df.site.iloc[0], _df.pft.iloc[0])
+  print('cv lai: %f' % (_df.lai.std()/_df.lai.mean()))
+  print('cv lai_gpp: %f'  %(_df.lai_gpp.std()/_df.lai_gpp.mean()))
+  return (_df.lai.std()/_df.lai.mean())# ,\
+          # (_df.lai_gpp.std()/_df.lai_gpp.mean())
 reload_data = True
 if reload_data:
   concat_dfs(folder='pandas_data_c3_c4',\
@@ -122,6 +129,8 @@ if reload_data:
   # test = clean_df(test, var='lai_gpp')
   df.to_pickle('%s/changjie/full_pandas_c3_c4_clean.pkl'\
                % os.environ['DATA'])
+
+  cvs = df.groupby('site').apply(print_cv_lai_lai_gpp)
   print(df.shape)
   #df.groupby('site').apply(histogram, meta)
   # histogram(df, meta)
