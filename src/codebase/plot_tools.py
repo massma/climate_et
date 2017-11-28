@@ -200,8 +200,8 @@ def histogram(_df, meta):
               (meta['folder'], _df.pft.iloc[0],  _df.site.iloc[0], meta['var'])
   elif meta['folder_label'] == 'pft':
     ax.set_title('pft: %s' % (_df.pft.iloc[0]))
-    outname = '%s/%s_%s.png' %\
-              (meta['folder'], _df.pft.iloc[0], meta['var'])
+    outname = '%s/%s_%s_%s.png' %\
+              (meta['folder'], _df.pft.iloc[0], meta['var'], meta['suff'])
   else:
     ax.set_xlim([0.,2.5])
     outname = 'full_%s.png' % meta['var']
@@ -286,3 +286,6 @@ def vpd_swc_dependence(_df, meta):
                % (os.environ['PLOTS'], meta['var'],\
                   _df.pft.iloc[0], _df.site.iloc[0]))
   return
+
+
+
