@@ -31,8 +31,8 @@
 
 \title[Your Short Title]{When does vapor pressure deficit drive or reduce evapotranspiration?}
 \author{Adam Massmann,  Pierre Gentine and Changjie Lin}
-\institute{AGU Fall Meeting}
-\date{October 27th, 2017}
+\institute{AGU Fall Meeting (Rough Draft)}
+\date{December 14th, 2017}
 
 \begin{document}
 
@@ -118,7 +118,7 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
     \begin{itemize}
     \item Introduce a free uncertainty parameter $\sigma$ to Penman Monteith:
       \[ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6\; \boldsymbol{\sigma} \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}\]
-    \item At each observation calculate a unique $\sigma$:
+    \item At each observation from FLUXNET (56 sites across globe) calculate a unique $\sigma$:
       \small
       \[\sigma = - \frac{g_a \gamma c_s \sqrt{VPD} P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p VPD\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})}\]
       \normalsize
@@ -193,6 +193,7 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
   \scriptsize
   \begin{itemize}
   \item This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices.
+    \item This material is based upon work supported by the National Science Foundation Graduate Research Fellowship under Grant No. DGE 16-44869. Any opinion, findings, and conclusions or recommendations expressed in this material are those of the authors(s) and do not necessarily reflect the views of the National Science Foundation.
     \end{itemize}
 \end{frame}
 
