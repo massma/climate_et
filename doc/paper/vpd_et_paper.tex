@@ -235,7 +235,7 @@ While Equation 3 can be used in PM, it will make analytical work with the functi
 \begin{linenomath*}
   \begin{equation}
     \label{uwue}
-uWUE = \frac{GPP \cdot \sqrt{VPD}{ET}
+uWUE = \frac{GPP \cdot \sqrt{VPD}}{ET}
   \end{equation}
 \end{linenomath*}
 is relatively constant across time and space (within plant functional type). If, following \citet{Lin_2015}, we approximate $g_0$ as $0$, we can use uWUE to remove $A$ from $g_s$ in a way that makes PM analytically tractable:
@@ -451,13 +451,13 @@ So far, idealized plots and statistics have illuminated the form of $\frac{\part
 \centering
 \begin{tabular}{l c c c c c}
   \hline
-PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{T, \ldots , VPD}\right)$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{T, \ldots , VPD}\right)*\text{std}(VPD)$ & $\frac{\frac{\partial \; ET}{\partial \; VPD}\left(\overline{T, \ldots , VPD}\right)*\text{std}(VPD)}{ \frac{\partial \; ET}{\partial \; R}\left(\overline{T, \ldots , VPD}\right)*\text{std}(R)}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)$ & $\frac{\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)}{ \frac{\partial \; ET}{\partial \; R}\left(\overline{env}\right)*\text{std}(R)}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
   \hline
-CRO & 0.000853 & 0.026241 & 18.523659 & 0.203022 & 0.473311\\
-CSH & -0.108234 & -0.091526 & 50.861613 & 0.439379 & 0.931660\\
-DBF & -0.012727 & 0.013794 & 19.734435 & 0.164241 & 0.461674\\
-ENF & -0.034087 & 0.000706 & 16.611852 & 0.148548 & 0.534425\\
-GRA & -0.019637 & -0.000921 & 16.798083 & 0.173552 & 0.631735\\
+CRO & 0.000853 & 0.026241 & 37.05 & 0.41 & 0.473311\\
+CSH & -0.108234 & -0.091526 & 101.72 & 0.88 & 0.931660\\
+DBF & -0.012727 & 0.013794 & 39.47 & 0.33 & 0.461674\\
+ENF & -0.034087 & 0.000706 & 33.22 & 0.30 & 0.534425\\
+GRA & -0.019637 & -0.000921 & 33.60 & 0.35 & 0.631735\\
 \hline
 \multicolumn{2}{l}{$^{a}$Footnote text here.}  
 

@@ -7,8 +7,7 @@ from shared_functions import *
 import scipy.optimize
 import matplotlib.pyplot as plt
 
-full_clean = True
-
+full_clean = False
 if full_clean:
   def clean_df(_df, var='lai'):
     """remove unphysical LAI values from a df"""
@@ -111,10 +110,10 @@ def vpd_statistics(_df, ax, site=False):
   function of theory"""
   columns = ['frac_correct_less', 'frac_incorrect_less',\
              'frac_correct_more', 'frac_incorrect_more',\
-             'mean_less', 'mean_more', 'mean'] # ,\
+             'total_frac_correct', 'mean_less', 'mean_more', 'mean'] # ,\
              # 'optimized_vpd', 'true_vpd']
   # mean_df.loc[_df.pft.iloc[0], 'vpd_crit']
-  median = _df.median()
+  # median = _df.median()
   vpd_crit = et_min_vpd(_df.mean(), _df.mean().lai)#median.lai)
   less_df = _df.d_et.loc[(_df.vpd < vpd_crit)]
   try:
@@ -145,7 +144,8 @@ def vpd_statistics(_df, ax, site=False):
   #ax.plot([vpd_crit, vpd_crit], [hits.min(), hits.max()], label=_df.pft.iloc[0])
 
   data = np.hstack([less, more,\
-                    [less_df.mean(), more_df.mean() , _df.d_et.mean()]])
+                    [float(optimizer([vpd_crit], _df))/_df.d_et.count(),\
+                     less_df.mean(), more_df.mean() , _df.d_et.mean()]])
   #, vpd_opt, vpd_crit]
   df_out = pd.DataFrame(data=[data], index=[_df.pft.iloc[0]], columns=columns)
   return df_out
@@ -154,7 +154,9 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 fraction_data = df.groupby('pft').apply(vpd_statistics, ax)
 plt.legend(loc='best')
-plt.savefig('./garb_fullcln_mean_all.png')
+ax.set_xlabel('VPD (Pa)')
+ax.set_ylabel('# observations theory gets right')
+plt.savefig('./for_agu.pdf')
 print(fraction_data)
 
 def site_plot(pft):
@@ -164,7 +166,7 @@ def site_plot(pft):
   fraction_data = df.loc[(df.pft == pft), :]\
                     .groupby('site').apply(vpd_statistics, ax, site=True)
   plt.legend(loc='best')
-  plt.savefig('./garb_%s_fullcln.png' % pft)
+  plt.savefig('./garb_%s_normalized.png' % pft)
   print(fraction_data)
   return
 
