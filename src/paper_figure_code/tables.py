@@ -7,6 +7,7 @@ from shared_functions import *
 import scipy.optimize
 import matplotlib.pyplot as plt
 
+
 full_clean = False
 if full_clean:
   def clean_df(_df, var='lai'):
@@ -115,6 +116,7 @@ def vpd_statistics(_df, ax, site=False):
   # mean_df.loc[_df.pft.iloc[0], 'vpd_crit']
   # median = _df.median()
   vpd_crit = et_min_vpd(_df.mean(), _df.mean().lai)#median.lai)
+  print(vpd_crit)
   less_df = _df.d_et.loc[(_df.vpd < vpd_crit)]
   try:
     less = [float(less_df.loc[less_df < 0.0].count())/float(less_df.count()),

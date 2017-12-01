@@ -66,9 +66,10 @@ site_list = site_list.loc[df.values]
 # for column1, column2,  _diff in zip(_df.columns, _df2.columns, difference):
 #   print(column1, column2, _diff)
 
-df = pd.read_pickle('%s/changjie/full_pandas_fix_scaling_clean.pkl'\
-                    % os.environ['DATA'])
-
+# df = pd.read_pickle('%s/changjie/full_pandas_fix_scaling_clean.pkl'\
+#                     % os.environ['DATA'])
+df = pd.read_pickle('%s/changjie/full_pandas_calc_uwue_clean.pkl'\
+             % os.environ['DATA'])
 df['g_a'] = 1./df['r_a']
 df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
 df['d_et_atm'] = df['scaling']*df['vpd_atm']
@@ -86,6 +87,7 @@ jacobians = {'vpd' : calc.d_et,\
 def et_min_vpd(_df, lai):
   """calculates theoretical max vpd as functoin of -df and lai"""
   c3 = pm.CP/_df.r_moist
+  # c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
   c1 = _df.gamma*_df.c_a/(pm.R_STAR*1.6*_df.uwue_norm)
   c2 = _df.g1
   sqrt_vpd = (c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3)
@@ -94,6 +96,7 @@ def et_min_vpd(_df, lai):
   except TypeError:
     if sqrt_vpd < 0.:
       sqrt_vpd = np.nan
+      print("setting to nan")
   return sqrt_vpd**2
 
 def get_pft(_df):
