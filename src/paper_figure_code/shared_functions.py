@@ -86,7 +86,7 @@ jacobians = {'vpd' : calc.d_et,\
 def et_min_vpd(_df, lai):
   """calculates theoretical max vpd as functoin of -df and lai"""
   c3 = pm.CP/_df.r_moist
-  c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+  c1 = _df.gamma*_df.c_a/(pm.R_STAR*1.6*_df.uwue_norm)
   c2 = _df.g1
   sqrt_vpd = (c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3)
   try:
