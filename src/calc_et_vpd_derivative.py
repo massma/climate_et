@@ -29,40 +29,19 @@ H2O = 18.01528e-3 #molecular mass kg/mol
 
 
 start = time.time()
-outdir = '%s/changjie/pandas_data_c3_c4/' % os.environ['DATA']
+outdir = '%s/changjie/pandas_data_calc_uwue/' % os.environ['DATA']
 
 filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
 
 time_start = time.time()
-for filename in filenames[:]:
+for filename in filenames[:1]:
   print('working on %s' % filename)
   atmos, canopy, data = d_io.load_mat_data(filename)
+  print('canopy colums', canopy.columns, canopy.columns.size)
+  print('atmos colums', atmos.columns, atmos.columns.size)
+  print('data colums', data.columns, data.columns.size)
   if (data.et_obs.count() > 0) & (canopy.dropna().uwue.count() > 0):
-    atmos, canopy, data = calc.calc_derivative(atmos, canopy, data)
-    idx = ((canopy['lai'] < canopy['lai'].quantile(q=0.95)) & \
-           (canopy['lai'] > canopy['lai'].quantile(q=0.05)))
-    lai_std = canopy.loc[idx, 'lai'].std()/canopy.loc[idx, 'lai'].mean()
-    if canopy['pft'].iloc[0] == 'GRA':
-      canopy['g1'] = pm.WUE_MEDLYN.loc['C4G', 'g1M']
-      _atmos, _canopy, _data = calc.calc_derivative(atmos, canopy, data)
-      idx = ((_canopy['lai'] < _canopy['lai'].quantile(q=0.95)) & \
-             (_canopy['lai'] > _canopy['lai'].quantile(q=0.05)))
-      _lai_std = _canopy.loc[idx, 'lai'].std()/_canopy.loc[idx, 'lai'].mean()
-      if _lai_std < lai_std:
-        print('for filename %s c4 grass std (%f) is less than'\
-              'c3 gras std (%f)' % (filename, _lai_std, lai_std))
-        print('old d_et: %f' % data.d_et.mean())
-        data = _data
-        canopy = _canopy
-        atmos = _atmos
-        canopy.pft = 'C4G'
-        print('new d_et: %f' % data.d_et.mean())
-        print(canopy.g1.iloc[0])
-      else:
-        print('for filename %s c4 gras std (%f)'\
-              'is greater than c3 grass std (%f)'\
-              % (filename, _lai_std, lai_std))
-        canopy['g1'] = pm.WUE_MEDLYN.loc['GRA', 'g1M']
+    # atmos, canopy, data = calc.calc_derivative(atmos, canopy, data)
     dfout = pd.concat([atmos, canopy, data], axis=1)
     fname = ''.join(filename.split('/')[-1].split('.')[:-1])
     dfout.to_pickle('%s/%s.pkl' % (outdir, fname))
@@ -76,6 +55,17 @@ print('time was %f s' % ((time.time()-start)))
 # if str(__name__) == '__main__':
 #   main()
 # now concat and clean up LAI outliers
+def gen_uwue(_df):
+  """calclautes uWUE in units (umol C)/ (m h20) *sqrt(Pa)"""
+  return pm.LV*_df.gpp_obs.mean()*np.sqrt(_df.vpd.mean())/_df.et_obs.mean()
+
+def set_uwue(_df, uwue):
+  """sets the uwue of a _df grouped by pft"""
+  print(uwue[_df.pft.iloc[0]])
+  print(_df.shape)
+  _df.loc[:, 'uwue'] = uwue[_df.pft.iloc[0]]
+  return _df
+
 def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
   """
   puts all the individual site data into one pdf, and adds a site column to df
@@ -88,6 +78,15 @@ def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
     _df['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
     dfs.append(_df)
   full_df = pd.concat(dfs)
+  full_df = full_df.reset_index()
+  uwue = full_df.groupby('pft').apply(gen_uwue)
+  full_df = full_df.groupby('pft').apply(set_uwue, uwue)
+  full_df = full_df.drop(columns='index')
+  atmos = full_df.iloc[:, :21]
+  canopy = full_df.iloc[:, 21:29]
+  data = full_df.iloc[:, 29:]
+  atmos, canopy, data = calc.calc_derivative(atmos, canopy, data)
+  full_df = pd.concat([atmos, canopy, data], axis=1)
   full_df.to_pickle('%s/changjie/%s.pkl'\
                     % (os.environ['DATA'], fname))
   return full_df
@@ -110,11 +109,12 @@ def print_cv_lai_lai_gpp(_df):
   print('cv lai_gpp: %f'  %(_df.lai_gpp.std()/_df.lai_gpp.mean()))
   return (_df.lai.std()/_df.lai.mean())# ,\
           # (_df.lai_gpp.std()/_df.lai_gpp.mean())
+
 reload_data = True
 if reload_data:
-  concat_dfs(folder='pandas_data_c3_c4',\
-             fname='full_pandas_c3_c4')
-  df = pd.read_pickle('%s/changjie/full_pandas_c3_c4.pkl'\
+  df = concat_dfs(folder='pandas_data_calc_uwue',\
+                  fname='full_pandas_calc_uwue')
+  df = pd.read_pickle('%s/changjie/full_pandas_calc_uwue.pkl'\
                       % os.environ['DATA'])
   meta = {}
   meta['folder_label'] = 'site'
@@ -127,7 +127,7 @@ if reload_data:
   df = clean_df(df, var='lai_gpp')
   # test = df.groupby('site').apply(site_clean, 'lai_gpp')
   # test = clean_df(test, var='lai_gpp')
-  df.to_pickle('%s/changjie/full_pandas_c3_c4_clean.pkl'\
+  df.to_pickle('%s/changjie/full_pandas_calc_uwue_clean.pkl'\
                % os.environ['DATA'])
 
   cvs = df.groupby('site').apply(print_cv_lai_lai_gpp)
@@ -136,3 +136,4 @@ if reload_data:
   # histogram(df, meta)
   # meta['var'] = 'lai'
   # histogram(df, meta)
+
