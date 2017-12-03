@@ -57,7 +57,8 @@ print('time was %f s' % ((time.time()-start)))
 # now concat and clean up LAI outliers
 def gen_uwue(_df):
   """calclautes uWUE in units (umol C)/ (m h20) *sqrt(Pa)"""
-  return pm.LV*_df.gpp_obs.mean()*np.sqrt(_df.vpd.mean())/_df.et_obs.mean()
+  vpd_eff = np.nansum(_df.gpp_obs*np.sqrt(_df.vpd))/np.nansum(_df.gpp_obs)
+  return pm.LV*_df.gpp_obs.mean()*vpd_eff/_df.et_obs.mean()
 
 def set_uwue(_df, uwue):
   """sets the uwue of a _df grouped by pft"""
