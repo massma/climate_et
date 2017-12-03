@@ -34,7 +34,7 @@ outdir = '%s/changjie/pandas_data_calc_uwue/' % os.environ['DATA']
 filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
 
 time_start = time.time()
-for filename in filenames[:1]:
+for filename in filenames[:]:
   print('working on %s' % filename)
   atmos, canopy, data = d_io.load_mat_data(filename)
   print('canopy colums', canopy.columns, canopy.columns.size)
@@ -81,6 +81,7 @@ def concat_dfs(folder='pandas_data_v2', fname='full_pandas_v2'):
   full_df = pd.concat(dfs)
   full_df = full_df.reset_index()
   uwue = full_df.groupby('pft').apply(gen_uwue)
+  print(uwue)
   full_df = full_df.groupby('pft').apply(set_uwue, uwue)
   full_df = full_df.drop(columns='index')
   atmos = full_df.iloc[:, :21]
@@ -122,7 +123,7 @@ if reload_data:
   meta['folder'] = 'hist_plots'
   meta['var'] = 'lai_gpp'
   print(df.shape)
-  df = df.groupby('site').apply(site_clean)
+  df = df.groupby('pft').apply(site_clean)
   print(df.shape)
   df = clean_df(df)
   df = clean_df(df, var='lai_gpp')
