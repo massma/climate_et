@@ -7,7 +7,14 @@ from shared_functions import *
 # below is whether to plot taylor series approximation
 PLOT_SERIES = False
 #below is to make slight changes for the talk
-PLOT_TALK = False
+PLOT_TALK = True
+
+
+name_dict = {'CRO': 'crops',\
+             'DBF': 'deciduous forest',
+             'ENF': 'evergreen forest',
+             'GRA': 'grass',
+             'CSH': 'shrub (closed)'}
 
 if PLOT_TALK:
   paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
@@ -124,7 +131,7 @@ def pft_leaf(_df, axs):
   if PLOT_TALK:
     p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
                     label="%s: uWUE=%4.2f, g1=%4.1f"\
-                    % (_df.pft.iloc[0],\
+                    % (name_dict[_df.pft.iloc[0]],\
                        _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
   else:
     p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
@@ -223,7 +230,11 @@ axs[2].text(1.4, 3500., r'$\frac{\partial \; ET}{\partial \; D} > 0$',\
 axs[0].set_ylim((-1.8058955891452384, 0.87408219563044132))
 for ax in axs[:1]:
   h, l = ax.get_legend_handles_labels()
-  ax.legend(h, l, loc='best', fontsize=9)
+  ax.legend(h, l, loc='best', fontsize=11)
 # plt.legend(loc='best')
 plt.tight_layout()
-plt.savefig('../../doc/paper/fig05.pdf')
+if PLOT_TALK:
+  plt.savefig('../../doc/shared_figs/fig05.pdf')
+else:
+  plt.savefig('../../doc/paper/fig05.pdf')
+

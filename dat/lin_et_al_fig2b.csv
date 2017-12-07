@@ -1,0 +1,8 @@
+# taken from lin et al figure 2b, alternative to frank et al's table
+# Units: kPa**0.5
+PFT, g1m
+ENF,2.35
+DBF,3.97
+CSH,4.22
+GRA,4.5
+CRO,5.79
