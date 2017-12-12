@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 %
 % Choose how your presentation looks.
 %
@@ -42,32 +42,38 @@
 
 
 \section{Introduction}
-\begin{frame}{Does VPD drive or reduce ET? - hydrometeorologists' perspective}
+\begin{frame}{Does VPD drive or reduce ET? - atmospheric demand perspective}
   \begin{Huge}
   \[VPD = (1-RH)\cdot e_s (T)\]
 \end{Huge}
   \begin{itemize}
-  \item \textbf{Hydrometeorologists} would say that an increase in VPD (increase in \textbf{atmospheric demand}) would drive an \textbf{increase in ET}.
+  \item Increase in VPD (\textbf{increase in atmospheric demand}) drives  an \textbf{increase in ET}.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Does VPD drive or reduce ET? - physiologists' perspective}
-  \begin{figure}
-  \includegraphics[width=2.25in]{stomata.png}% was O(1.5in)
-  \caption{from evolution.berkeley.edu}
-\end{figure}
-  \begin{itemize}
-  \item However, \textbf{plant physiologists} know that plants have evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
-  \end{itemize}
+\begin{frame}{Does VPD drive or reduce ET? - plant response perspective}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+      \item However, plants evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \includegraphics[width=2.25in]{stomata.png}% was O(1.5in)
+        \caption{from evolution.berkeley.edu}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 
 \begin{frame}{The question is, which effect dominates with an increase in VPD: plant response (decrease in ET) or atmospheric demand (increase in ET)?}
   \begin{itemize}
-  \item It should be a function of plant type and the environment:
+  \item Apriori intuition:
     \begin{itemize}
-    \item Plants that are evolved to conserve water will tend to reduce ET with increases in VPD.
-    \item However the environment can overwhelm plant response: at some threshold (i.e. very high VPD) the atmospheric demand should dominate and plants will not be able to conserve water, no matter how much they have evolved to do so.
+    \item Should be a function of plant type. e.g. plants that are evolved to conserve water will tend to reduce ET with increases in VPD.
+    \item But the environment still matters: if the atmosphere dries enough  e.g. in very dry conditions the plants will not be able to conserve water, no matter how much they have evolved to do so.
     \end{itemize}
   \end{itemize}
 \end{frame}
