@@ -45,21 +45,24 @@
 
 
 \section{Introduction}
+
+
 \begin{frame}{Does VPD drive or reduce ET? - atmospheric demand perspective}
-  \begin{Huge}
-  \[VPD = (1-RH)\cdot e_s (T)\]
-\end{Huge}
-  \begin{itemize}
-  \item Increase in VPD (\textbf{increase in atmospheric demand}) drives  an \textbf{increase in ET}.
-  \end{itemize}
+  \begin{columns}
+    \begin{column}{0.7\textwidth}
+      Increase in VPD (\textbf{increase in atmospheric demand}) drives  an \textbf{increase in ET}.
+      \[VPD = (1-RH)\cdot e_s (T)\]
+    \end{column}
+    \begin{column}{0.3\textwidth}<2>      
+      \includegraphics[width=\textwidth]{towel.jpg}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Does VPD drive or reduce ET? - plant response perspective}
   \begin{columns}
     \begin{column}{0.5\textwidth}
-      \begin{itemize}
-      \item However, plants evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
-      \end{itemize}
+      However, plants evolved to use stomata to conserve and regulate water use. So \textbf{stomata closure} in response to increases in VPD may \textbf{decrease ET}.
     \end{column}
     \begin{column}{0.5\textwidth}
       \begin{figure}
@@ -84,7 +87,7 @@
 \section{Method}
 \begin{frame}{Develop a theory to quantify VPD effects}
   \begin{itemize}
-  \item The goal is to simply the problem (increase transparency) while still capturing the leading order behavior the system. (intrinsic knowledge)
+  \item The goal is to simply the problem (increase transparency) while still capturing the leading order behavior the system.
     \begin{itemize}
     \item While simplifying the system aids intrinsic understanding, simplifying assumptions sacrifice physical realism.
     \end{itemize}
@@ -94,8 +97,11 @@
 
 \begin{frame}{Simple theory - start with Penman-Monteith}
   We can use Penman-Monteith (PM) to estimate ET:
-  \[ET = \frac{\Delta R + g_a \rho_a c_p \, VPD}{\Delta + \gamma(1 + \frac{g_a}{\textcolor{magenta}{\boldsymbol{g_s}}})},\]
-\textbf{Problem}: \Large $\textcolor{magenta}{\boldsymbol{g_s}}$ \normalsize (stomatal conductance) is a function of photosynthesis, which is a function of ET itself.  So ET in Penman-Monteith is really an implicit function of itself and we cannot take derivatives!
+    \[ET = \frac{\Delta R + g_a \rho_a c_p \, VPD}{\Delta + \gamma(1 + \frac{g_a}{\textcolor{magenta}{\boldsymbol{g_s}}})},\]
+  \begin{overprint}
+    \onslide<2>
+    \textbf{Problem}: \Large $\textcolor{magenta}{\boldsymbol{g_s}}$ \normalsize (stomatal conductance) is a function of photosynthesis, which is a function of ET itself.  So ET in Penman-Monteith is really an implicit function of itself and we cannot take derivatives!<2>
+  \end{overprint}
 \end{frame}
 
 \begin{frame}{Use physically reasonable assumptions remove implicit dependence}
@@ -138,6 +144,17 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
   \end{itemize}
   So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
 \end{frame}
+
+\begin{frame}{Consequences of theory - ``sign'' term}
+  \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g1 + \sqrt{VPD}}{2 (g1 + \sqrt{VPD})^2}\right) \right)\]
+  \begin{itemize}
+  \item $c_p$ and $R*$ are constants
+  \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
+  \item uWUE and $g1$ are constants within plant type (e.g. grass, crops, deciduous broadleaf forest, evergreen needleleaf forest, shrub)
+  \end{itemize}
+  So \textbf{within each plant type}, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is approximately \textbf{just a function of VPD}!
+\end{frame}
+
 
 \begin{frame}{``Sign'' term as a function of VPD and PFT}
   \begin{figure}
@@ -206,6 +223,18 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
       \includegraphics[width=1.2\textwidth]{DBF_box.pdf}
     \end{column}
     \begin{column}{0.33\textwidth}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Test theory with FLUXNET data - the good}
+  \begin{columns}
+    \begin{column}{0.33\textwidth}
+      \includegraphics[width=1.2\textwidth]{DBF_box.pdf}
+    \end{column}
+    \begin{column}{0.33\textwidth}
       \includegraphics[width=1.2\textwidth]{ENF_box.pdf}
     \end{column}
     \begin{column}{0.33\textwidth}
@@ -251,14 +280,14 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
 % \end{frame}
 
 
-\begin{frame}{Summary}
-  \small
+\begin{frame}{Summary - When does VPD drive or reduce ET?}
   \begin{itemize}
-  \item Derived a new form of Penman-Monteith that explicitly calculates ET given published constants.
-  \item Developed a theory for when atmospheric dryness will increase ET (atmospheric demand dominates) vs. decrease ET (plant response dominates). Theory tests well using real data from FLUXNET2015 on plant types CSH, ENF, and DBF. Applicability to CRO and GRA is more uncertain.
-  \item For plants evolved to prioritize water conservation over production, atmospheric demand is less likely to dominate.
-  \item All plant types except for crops had common occurrence of decreases in ET with increases in VPD (plant response dominates). Therefore, the hydrometeorologists perspective is often wrong, and drought indices built upon assumptions about atmospheric demand are unrealistic for vegetated surfaces.
-  \item Our form of Penman-Monteith is capable of estimating ET realistically and could be used as a replacement for PET in drought indices (e.g. Palmer Drought Severity Index - PDSI).
+  \item Theory predicts that each plant type has a \textbf{critical VPD} \textbf{below which ET will decrease} (plant response dominates), and \textbf{above which ET will increase} (atmosheric demand dominsates).
+  \item For forest sites, environmental VPD approximately straddles the critical VPD.
+  \item For shrubs environmental VPD never exceeds the critical VPD.
+  \item Theory tested poorly with FLUXNET data for for crops and grass. 
+  \item All plant types exhibited a response far below that of PET.
+  \item The new uWUE-version of Penman-Monteith we derived could be used as a replacement for PET in drought indices over vegetated surfaces.
   \end{itemize}
 \end{frame}
 
