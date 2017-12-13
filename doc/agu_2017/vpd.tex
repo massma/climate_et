@@ -122,24 +122,29 @@
 
 \section{Results - theory}
 \begin{frame}{Consequences of theory - ``sign'' term}
-  \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{\textcolor{magenta}{\boldsymbol{ c_p}}}{R_{air}} - \frac{\gamma c_s }{1.6 \; \textcolor{magenta}{\boldsymbol{R*}}\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
   \begin{overprint}
     \onslide<1>
+    \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{\textcolor{magenta}{\boldsymbol{ c_p}}}{R_{air}} - \frac{\gamma c_s }{1.6 \; \textcolor{magenta}{\boldsymbol{R*}}\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
     \begin{itemize}
     \item $\textcolor{magenta}{\boldsymbol{c_p}}$ and $\textcolor{magenta}{\boldsymbol{R*}}$ are constants
     \end{itemize}
     \onslide<2>
+    \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{\textcolor{magenta}{\boldsymbol{R_{air}}}} - \frac{\textcolor{magenta}{\boldsymbol{\gamma c_s}} }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
     \begin{itemize}
     \item $c_p$ and $R*$ are constants
     \item $\textcolor{magenta}{\boldsymbol{R_{air}}}$, $\textcolor{magenta}{\boldsymbol{\gamma}}$, and $\textcolor{magenta}{\boldsymbol{c_s}}$ are approximately constant (relative to $\sqrt{VPD}$)
     \end{itemize}
     \onslide<3>
+    \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ \textcolor{magenta}{\textbf{ uWUE}} }} \left( \frac{2  \textcolor{magenta}{\boldsymbol{g_1}} + \sqrt{VPD}}{2 ( \textcolor{magenta}{\boldsymbol{g_1}} + \sqrt{VPD})^2}\right) \right)\]
+
     \begin{itemize}
     \item $c_p$ and $R*$ are constants
     \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
     \item \textcolor{magenta}{\textbf{uWUE}} and $\textcolor{magenta}{\boldsymbol{g1}}$ are constants within plant type (e.g. grass, crops, deciduous broadleaf forest, evergreen needleleaf forest, shrub)
     \end{itemize}
     \onslide<4>
+    \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+
     \begin{itemize}
     \item $c_p$ and $R*$ are constants
     \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
@@ -274,7 +279,7 @@
 
 \begin{frame}{Summary - When does VPD drive or reduce ET?}
   \begin{itemize}
-  \item Theory predicts that each plant type has a \textbf{critical VPD} \textbf{below which ET will decrease} (plant response dominates), and \textbf{above which ET will increase} (atmosheric demand dominsates).
+  \item Theory predicts that each plant type has a \textbf{critical VPD} \textbf{below which ET will decrease} (plant response dominates), and \textbf{above which ET will increase} (atmospheric demand dominates).
   \item For forest sites, environmental VPD approximately straddles the critical VPD.
   \item For shrubs environmental VPD never exceeds the critical VPD.
   \item Theory tested poorly with FLUXNET data for for crops and grass. 
@@ -284,7 +289,7 @@
 \end{frame}
 
 \section{References}
-\begin{frame}{Acknowledgements - Thank you NSF and FLUXNET!!!}
+\begin{frame}{Acknowledgments - Thank you NSF and FLUXNET!!!}
  This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices.\\
   \medskip
   This material is based upon work supported by the National Science Foundation Graduate Research Fellowship under Grant No. DGE 16-44869. Any opinion, findings, and conclusions or recommendations expressed in this material are those of the authors(s) and do not necessarily reflect the views of the National Science Foundation.
@@ -325,6 +330,8 @@
   variance statistics
   joint distributions of LAI and VPD, and RH and esat
   aerodynamic scaling theory.
+  put vpd in kpa
+  add pictures to first slide
 \end{frame}
 
 \begin{frame}{Extra slide - is theory VPD$_{crit}$ optimum?}
