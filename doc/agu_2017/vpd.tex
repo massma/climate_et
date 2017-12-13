@@ -155,28 +155,28 @@
 \end{frame}
 
 \begin{frame}{``Sign'' term as a function of VPD and PFT}
-    \begin{figure}
-      \begin{tikzpicture}
-        \node[anchor=south west,inner sep=0] (image) at (0,0) {\adjincludegraphics[width=3.3in, trim={0 {0.51\height} 0 0}, clip]{fig05.pdf}};
-        \begin{scope}[x={(image.south east)},y={(image.north west)}]
-          %% next four lines will help you to locate the point needed by forming a grid. comment these four lines in the final picture.↓
-          % \draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
-          % \draw[help lines,xstep=.05,ystep=.05] (0,0) grid (1,1);
-          % \foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
-          % \foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y};}
-          %% upto here
-          \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,0.3in)node[anchor=south] {ET Increasing};
-          \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,-0.3in)node[anchor=north] {ET Decreasing};
+  \begin{figure}
+    \begin{tikzpicture}
+      \node[anchor=south west,inner sep=0] (image) at (0,0) {\adjincludegraphics[width=3.3in, trim={0 {0.51\height} 0 0}, clip]{fig05.pdf}};
+      \begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %% next four lines will help you to locate the point needed by forming a grid. comment these four lines in the final picture.↓
+        % \draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+        % \draw[help lines,xstep=.05,ystep=.05] (0,0) grid (1,1);
+        % \foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+        % \foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y};}
+        %% upto here
+        \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,0.3in)node[anchor=south] {ET Increasing};
+        \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,-0.3in)node[anchor=north] {ET Decreasing};
 
-          % \draw[dashed,-latex, line width=5pt] (0.8,0.75) --++(0.0in,+0.5in)node[anchor=north] {ET Decreasing};
-        \end{scope}
-        % \node[align=center,red,font={\large}] at (image.southwest) {ET decreasing};
-      \end{tikzpicture}
-    \end{figure}
+        % \draw[dashed,-latex, line width=5pt] (0.8,0.75) --++(0.0in,+0.5in)node[anchor=north] {ET Decreasing};
+      \end{scope}
+      % \node[align=center,red,font={\large}] at (image.southwest) {ET decreasing};
+    \end{tikzpicture}
+  \end{figure}
 \end{frame}
 
 
-\begin{frame}{``Sign'' term as a function of VPD and PFT}
+\begin{frame}{``Sign'' term as a function of VPD and plant type}
   \begin{figure}
     \begin{tikzpicture}
       \node[anchor=south west,inner sep=0] (image) at (0,0) {\adjincludegraphics[width=3.3in, trim={0 {0.51\height} 0 0}, clip]{fig05_pet.pdf}};
@@ -216,8 +216,8 @@
 \end{frame}
 
 \begin{frame}{Test theory with FLUXNET data - the good}
-    \begin{textblock*}{1.0\textwidth}(0.3\textwidth,0.8\textheight)
-      \textcolor{blue}{Blue line} is theory's critical VPD.\\
+  \begin{textblock*}{1.0\textwidth}(0.3\textwidth,0.8\textheight)
+    \textcolor{blue}{Blue line} is theory's critical VPD.\\
   \end{textblock*}
 
   \begin{columns}
@@ -246,8 +246,8 @@
       \includegraphics[width=\textwidth]{CRO_box.pdf}
     \end{column}
   \end{columns}
-      \begin{textblock*}{1.0\textwidth}(0.3\textwidth,0.85\textheight)
-      \textcolor{blue}{Blue line} is theory's critical VPD.\\
+  \begin{textblock*}{1.0\textwidth}(0.3\textwidth,0.85\textheight)
+    \textcolor{blue}{Blue line} is theory's critical VPD.\\
   \end{textblock*}
 
 \end{frame}
@@ -290,7 +290,7 @@
 
 \section{References}
 \begin{frame}{Acknowledgments - Thank you NSF and FLUXNET!!!}
- This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices.\\
+  This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices.\\
   \medskip
   This material is based upon work supported by the National Science Foundation Graduate Research Fellowship under Grant No. DGE 16-44869. Any opinion, findings, and conclusions or recommendations expressed in this material are those of the authors(s) and do not necessarily reflect the views of the National Science Foundation.
 \end{frame}
@@ -298,10 +298,10 @@
 \begin{frame}{References}
   \begin{enumerate}
   \item Franks, P. J., Berry, J. A., Lombardozzi, D. L., \& Bonan, G. B. (2017). Stomatal function across temporal and spatial scales: deep-time trends, land-atmosphere coupling and global models. \textit{Plant Physiology}, 174(2), 583-602.
-    \item Lin, Y. S., Medlyn, B. E., Duursma, R. A., Prentice, I. C., Wang, H., Baig, S., ... \& De Beeck, M. O. (2015). Optimal stomatal behaviour around the world. Nature Climate Change, 5(5), 459-464.
-    \item Medlyn, B. E., Duursma, R. A., Eamus, D., Ellsworth, D. S., Prentice, I. C., Barton, C. V., ... \& Wingate, L. (2011). Reconciling the optimal and empirical approaches to modelling stomatal conductance. \textit{Global Change Biology}, 17(6), 2134-2144.
-    \item Zhou, S., Yu, B., Huang, Y., \& Wang, G. (2015). Daily underlying water use efficiency for AmeriFlux sites. \textit{Journal of Geophysical Research: Biogeosciences}, 120(5), 887-902.
-    \end{enumerate}
+  \item Lin, Y. S., Medlyn, B. E., Duursma, R. A., Prentice, I. C., Wang, H., Baig, S., ... \& De Beeck, M. O. (2015). Optimal stomatal behaviour around the world. Nature Climate Change, 5(5), 459-464.
+  \item Medlyn, B. E., Duursma, R. A., Eamus, D., Ellsworth, D. S., Prentice, I. C., Barton, C. V., ... \& Wingate, L. (2011). Reconciling the optimal and empirical approaches to modelling stomatal conductance. \textit{Global Change Biology}, 17(6), 2134-2144.
+  \item Zhou, S., Yu, B., Huang, Y., \& Wang, G. (2015). Daily underlying water use efficiency for AmeriFlux sites. \textit{Journal of Geophysical Research: Biogeosciences}, 120(5), 887-902.
+  \end{enumerate}
 \end{frame}
 
 \section{Extra Slides}
@@ -325,14 +325,63 @@
   \end{table}
 \end{frame}
 
+\begin{frame}{Quantitative $VPD_{crit}$}
+
+  \scriptsize
+  \begin{table}
+    \label{vpd_crit}
+    \caption{Values of $VPD_{crit}$, where $\frac{\partial \; ET}{\partial \; VPD} = 0$, evaluated at PFT average values for $R_{air}$, $\sigma$, $\gamma$, and $c_s$. For reference, these values are also provided. For values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive.}
+    \centering
+    \begin{tabular}{l c c c c c}
+      \hline
+      PFT & $R_{air}$ & $c_s$ (ppm) & $\gamma$ &  uWUE & \textbf{$VPD_{crit}$ (Pa)} \\
+      \hline
+      CRO &  288.680920 & 372.567691& 65.351523& 2.602873&  \textbf{133.165438} \\
+      CSH &   289.067152& 381.593622& 67.613172& 2.175278& \textbf{4439.564212} \\
+      DBF &   288.624437& 377.449849& 63.421812& 2.746393&  \textbf{888.773243} \\
+      ENF &  288.183849& 377.676463& 61.559242& 4.015362&  \textbf{978.084845} \\
+      GRA &  288.425651& 377.264645& 61.598768& 2.281074& \textbf{1141.630778} \\
+      \hline
+      \multicolumn{2}{l}{}
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}{Statistics with uncertainty}
+  \scriptsize
+  \begin{table}
+    \caption{Statistics of $\frac{\partial \; ET}{\partial \; VPD}$ as a function of PFT.}
+    \centering
+    \begin{tabular}{l c c c c c}
+      \hline
+      PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)$ & $\frac{\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)}{ \frac{\partial \; ET}{\partial \; R}\left(\overline{env}\right)*\text{std}(R)}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+      \hline
+      CRO & 0.000853 & 0.026241 & 37.05 & 0.41 & 0.473311\\
+      CSH & -0.108234 & -0.091526 & 101.72 & 0.88 & 0.931660\\
+      DBF & -0.012727 & 0.013794 & 39.47 & 0.33 & 0.461674\\
+      ENF & -0.034087 & 0.000706 & 33.22 & 0.30 & 0.534425\\
+      GRA & -0.019637 & -0.000921 & 33.60 & 0.35 & 0.631735\\
+      \hline
+      \multicolumn{2}{l}{}
+
+      
+    \end{tabular}
+  \end{table}
+\end{frame}
 \begin{frame}{ideas}
-  full summary statistics
-  variance statistics
   joint distributions of LAI and VPD, and RH and esat
-  aerodynamic scaling theory.
   put vpd in kpa
   add pictures to first slide
 \end{frame}
+
+\begin{frame}{Scaling Term}
+  \[\frac{\partial \;  ET}{\partial \; D} = \mathbf{ \frac{g_a \; P}{T(\Delta + \gamma)} }   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+  \begin{figure}
+    \includegraphics[width=3.0in]{scaling.png}
+    % \caption{}
+  \end{figure}
+\end{frame}
+
 
 \begin{frame}{Extra slide - is theory VPD$_{crit}$ optimum?}
   \includegraphics[width=0.7\textwidth]{for_agu.pdf}
@@ -359,38 +408,47 @@
   \includegraphics[width=3.5in]{gra_eee.png}
 \end{frame}
 
+\begin{frame}{How to take VPD derivative?}
+  % below gnereated in fig03.py
+  \includegraphics[width=3.0in]{e_s_rh.png}
+\end{frame}
+
+\begin{frame}{Is uncertainty a function of VPD?}
+  \includegraphics[width=3.0in]{vpd_sigma.png}
+\end{frame}
+
 
 % \begin{frame}{Summary statistics - extra sl}
 %   \begin{table}
 %     \caption{Statistics of $\frac{\partial \; ET}{\partial \, VPD}$ as a function of PFT.}
 %     \centering
 %     \begin{tabular}{l c c}
-        %         \hline
-        %         PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
-        %         \hline
-        %         CRO & 0.000853  & 0.473311\\
-        %         CSH & -0.108234 & 0.931660\\
-        %         DBF & -0.012727 & 0.461674\\
-        %         ENF & -0.034087 & 0.534425\\
-        %         GRA & -0.019637 & 0.631735\\
-        %         \hline
-        %         \multicolumn{2}{l}{}  
-        %       \end{tabular}
-        %         \end{table}
-        %         \end{frame}
+%       \hline
+%       PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+%       \hline
+%       CRO & 0.000853  & 0.473311\\
+%       CSH & -0.108234 & 0.931660\\
+%       DBF & -0.012727 & 0.461674\\
+%       ENF & -0.034087 & 0.534425\\
+%       GRA & -0.019637 & 0.631735\\
+%       \hline
+%       \multicolumn{2}{l}{}  
+%     \end{tabular}
+%   \end{table}
+% \end{frame}
 
 
 
 
 
-        %         \begin{table}
-        %         \centering
-        %         \begin{tabular}{l|r}
-        %         Item & Quantity \\\hline
-        %         Widgets & 42 \\
-        %         Gadgets & 13
-                            %       \end{tabular}
-                            %                             \caption{\label{tab:widgets}An example table.}
-                            %                             \end{table}
+% \begin{table}
+%   \centering
+%   \begin{tabular}{l|r}
+%     Item & Quantity \\\hline
+%     Widgets & 42 \\
+%     Gadgets & 13
+%   \end{tabular}
+%   \caption{\label{tab:widgets}An example table.}
+% \end{table}
 
 \end{document}

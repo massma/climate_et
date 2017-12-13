@@ -230,7 +230,7 @@ def test_trend(_df, meta, fig=None):
     g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
                       xlim=meta['xlim'], ylim=meta['ylim'], stat_func=spearmanr)
     g.set_axis_labels(meta['x_var'],meta['y_var'])
-  plt.title('pft: %s' % _df['pft'].iloc[0])
+
   if meta['full_ds']:
     util.test_savefig('%s/climate_et/scatters/%s_%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
@@ -238,10 +238,12 @@ def test_trend(_df, meta, fig=None):
     util.test_savefig('%s/climate_et/scatters/%s_%s_site/%s.png'\
                  % (os.environ['PLOTS'], meta['x_var'],\
                     meta['y_var'],  _df['site'].iloc[0]))
+    plt.title('pft: %s' % _df['pft'].iloc[0])
   else:
     util.test_savefig('%s/climate_et/scatters/%s_%s/%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'],\
                    meta['y_var'],  _df['pft'].iloc[0]))
+    plt.title('pft: %s' % _df['pft'].iloc[0])
   return spearmanr(_df[meta['x_var']], _df[meta['y_var']]).correlation
 
 def scatter_wrapper(df, meta):
