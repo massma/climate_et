@@ -3,12 +3,13 @@
 This script makes fig 5
 """
 from shared_functions import *
-
+fontsize=11
 # below is whether to plot taylor series approximation
 PLOT_SERIES = False
 #below is to make slight changes for the talk
 PLOT_TALK = True
 
+PLOT_PET = False
 
 name_dict = {'CRO': 'crops',\
              'DBF': 'deciduous forest',
@@ -150,7 +151,7 @@ def pft_leaf(_df, axs):
   axs[1].plot(vpd, np.ones(vpd.shape)*I)
   axs[1].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
   vpd_crit = et_min_vpd(_df.mean(), lai)
-  axs[1].plot([vpd_crit], [I], 'k|', markersize=15)
+  axs[1].plot([vpd_crit], [I], 'k|', markersize=15, mew=3)
   axs[-1].plot(np.ones(vpd.shape)*I, vpd)
   axs[-1].plot(np.ones(ptiles.shape)*I, ptiles, 'k*')
 
@@ -198,10 +199,13 @@ for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
   pft_leaf(_df, axs)
 
 # df.groupby('pft').apply(pft_leaf, axs)
-axs[1].set_xlabel('VPD (Pa)')
+axs[1].set_xlabel('VPD (Pa)', fontsize=fontsize)
 axs[3].set_xlabel('$\sigma$')
-axs[0].set_ylabel(paren_string)
+axs[0].set_ylabel(paren_string, fontsize=fontsize)
 axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=1.0)
+if PLOT_PET:
+  axs[0].plot(axs[0].get_xlim(), [pm.CP/287.0, pm.CP/287.0],\
+              'm--', linewidth=2.0, label='PET')
 plt.setp(axs[2].get_yticklabels(), visible=False)
 axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
 axs[2].set_title(r'D$_{crit}$'\
@@ -227,14 +231,20 @@ axs[2].text(1.4, 3500., r'$\frac{\partial \; ET}{\partial \; D} > 0$',\
 # axs[3].set_xlabel('VPD (Pa)')
 # axs[2].set_ylabel(paren_string)
 # axs[3].set_ylabel(r'-$\frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}$')
-axs[0].set_ylim((-1.8058955891452384, 0.87408219563044132))
+if not PLOT_PET:
+  axs[0].set_ylim((-1.8058955891452384, 0.87408219563044132))
 for ax in axs[:1]:
   h, l = ax.get_legend_handles_labels()
-  ax.legend(h, l, loc='best', fontsize=11)
+  if not PLOT_PET:
+    ax.legend(h, l, loc='best', fontsize=fontsize)
 # plt.legend(loc='best')
 plt.tight_layout()
 if PLOT_TALK:
-  plt.savefig('../../doc/shared_figs/fig05.pdf')
+  #plt.savefig('../../doc/shared_figs/fig05_pet.pdf')
+  if PLOT_PET:
+    plt.savefig('../../doc/shared_figs/fig05_pet.pdf')
+  else:
+    plt.savefig('../../doc/shared_figs/fig05.pdf')
 else:
   plt.savefig('../../doc/paper/fig05.pdf')
 

@@ -20,6 +20,7 @@
 \usepackage[style=authoryear]{biblatex}
 \addbibresource{references.bib}
 \usepackage{tikz}
+\usepackage{xcolor}
 \graphicspath{{figures/}}
 \DeclareMathOperator{\sign}{sign}
 
@@ -70,29 +71,39 @@
 
 \begin{frame}{The question is, which effect dominates with an increase in VPD: plant response (decrease in ET) or atmospheric demand (increase in ET)?}
   \begin{itemize}
-  \item Prior intuition:
+  \item Prior expectation:
     \begin{itemize}
     \item Should be a function of plant type: plants that are evolved to conserve water will tend to reduce ET with increases in VPD.
-    \item But the environment still matters: if the atmosphere dries enough plant water conservation strategies will max out and atmospheric demand drives increases in ET with increases in VPD.
+    \item But the environment still matters: if the atmosphere dries enough, plant water conservation strategies will reach their limit and atmospheric demand will drive increases in ET with increases in VPD.
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \section{Method}
-\begin{frame}{Use physically reasonable assumptions to develop a theory.}
-  We can use Penman-Monteith (PM) to estimate ET:
-  \[ET = \frac{\Delta R + g_a \rho_a c_p \, VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},\]
-\textbf{Problem}: $g_s$ (stomatal conductance) is a function of photosynthesis, which is a function of ET itself.  So ET in PM is really an implicit function of itself and we cannot take derivatives!
+\begin{frame}{Develop a theory to quantify VPD effects}
+  \begin{itemize}
+  \item The goal is to simply the problem (increase transparency) while still capturing the leading order behavior the system. (intrinsic knowledge)
+    \begin{itemize}
+    \item While simplifying the system aids intrinsic understanding, simplifying assumptions sacrifice physical realism.
+    \end{itemize}
+  \item Because we run the risk of over-simplification, we will use FLUXNET2015 data to test how well our theory matches the data. 
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{Use physically reasonable assumptions to develop a theory.}
+\begin{frame}{Simple theory - start with Penman-Monteith}
+  We can use Penman-Monteith (PM) to estimate ET:
+  \[ET = \frac{\Delta R + g_a \rho_a c_p \, VPD}{\Delta + \gamma(1 + \frac{g_a}{\textcolor{magenta}{\boldsymbol{g_s}}})},\]
+\textbf{Problem}: \Large $\textcolor{magenta}{\boldsymbol{g_s}}$ \normalsize (stomatal conductance) is a function of photosynthesis, which is a function of ET itself.  So ET in Penman-Monteith is really an implicit function of itself and we cannot take derivatives!
+\end{frame}
+
+\begin{frame}{Use physically reasonable assumptions remove implicit dependence}
 Apply a constant uWUE assumption (conserved within plant type; see \cite{Zhou_2016}):
 \[uWUE = \frac{GPP \cdot \sqrt{VPD}}{ET},\]
 To derive a new form of Penman-Monteith without implicit ET dependence:
-  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p \, VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right)\footnote{note that all terms are known }}{ \Delta + \gamma}\]
+  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p \, VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right)}{ \Delta + \gamma}\]
 \end{frame}
 
-\begin{frame}{Use physically reasonable assumptions to develop a theory.}
+\begin{frame}{Now just take $\frac{\partial \; ET}{\partial \; VPD}$}
   With our new form of Penman-Monteith we can now take derivatives, giving:
   \[\frac{\partial \;  ET}{\partial \, VPD} = \frac{2 g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
   In the interest of time, we will just focus in the ``sign'' term:
@@ -102,19 +113,48 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
 
 \section{Results - theory}
 \begin{frame}{Consequences of theory - ``sign'' term}
-  \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+  \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{\textcolor{magenta}{\boldsymbol{ c_p}}}{R_{air}} - \frac{\gamma c_s }{1.6 \; \textcolor{magenta}{\boldsymbol{R*}}\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+  \begin{itemize}
+  \item $\textcolor{magenta}{\boldsymbol{c_p}}$ and $\textcolor{magenta}{\boldsymbol{R*}}$ are constants
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Consequences of theory - ``sign'' term}
+  \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{\textcolor{magenta}{\boldsymbol{R_{air}}}} - \frac{\textcolor{magenta}{\boldsymbol{\gamma}} \textcolor{magenta}{\boldsymbol{c_s}} }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+  \begin{itemize}
+  \item $c_p$ and $R*$ are constants
+  \item $\textcolor{magenta}{\boldsymbol{R_{air}}}$, $\textcolor{magenta}{\boldsymbol{\gamma}}$, and $\textcolor{magenta}{\boldsymbol{c_s}}$ are approximately constant (relative to $\sqrt{VPD}$)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Consequences of theory - ``sign'' term}
+  \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ \textcolor{magenta}{\textbf{uWUE }}}} \left( \frac{2 \textcolor{magenta}{\boldsymbol{g1}} + \sqrt{VPD}}{2 (\textcolor{magenta}{\boldsymbol{g1}} + \sqrt{VPD})^2}\right) \right)\]
   \begin{itemize}
   \item $c_p$ and $R*$ are constants
   \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
-  \item uWUE and $g_1$ are constants within plant type (i.e. grass, crops, deciduous forest, evergreen needleleaf forest, shrub)
-  \item Which just leaves VPD
+  \item \textcolor{magenta}{\textbf{uWUE}} and $\textcolor{magenta}{\boldsymbol{g1}}$ are constants within plant type (i.e. grass, crops, deciduous forest, evergreen needleleaf forest, shrub)
   \end{itemize}
   So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
 \end{frame}
 
-\begin{frame}{``Sign'' Term}
+\begin{frame}{``Sign'' term as a function of VPD and PFT}
   \begin{figure}
-    \adjincludegraphics[width=3.5in, trim={0 {0.51\height} 0 0}, clip]{fig05.pdf}
+      \begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\adjincludegraphics[width=3.3in, trim={0 {0.51\height} 0 0}, clip]{fig05.pdf}};
+        \begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %% next four lines will help you to locate the point needed by forming a grid. comment these four lines in the final picture.↓
+       % \draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+       % \draw[help lines,xstep=.05,ystep=.05] (0,0) grid (1,1);
+       % \foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+       % \foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y};}
+       %% upto here
+        \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,0.3in)node[anchor=south] {ET Increasing};
+        \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,-0.3in)node[anchor=north] {ET Decreasing};
+
+        % \draw[dashed,-latex, line width=5pt] (0.8,0.75) --++(0.0in,+0.5in)node[anchor=north] {ET Decreasing};
+    \end{scope}
+    % \node[align=center,red,font={\large}] at (image.southwest) {ET decreasing};
+  \end{tikzpicture}
   \end{figure}
 \end{frame}
 
