@@ -21,6 +21,8 @@
 \addbibresource{references.bib}
 \usepackage{tikz}
 \usepackage{xcolor}
+\usepackage{relsize}
+\usepackage[absolute,overlay]{textpos}
 \graphicspath{{figures/}}
 \DeclareMathOperator{\sign}{sign}
 
@@ -132,7 +134,7 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
   \begin{itemize}
   \item $c_p$ and $R*$ are constants
   \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
-  \item \textcolor{magenta}{\textbf{uWUE}} and $\textcolor{magenta}{\boldsymbol{g1}}$ are constants within plant type (i.e. grass, crops, deciduous forest, evergreen needleleaf forest, shrub)
+  \item \textcolor{magenta}{\textbf{uWUE}} and $\textcolor{magenta}{\boldsymbol{g1}}$ are constants within plant type (e.g. grass, crops, deciduous broadleaf forest, evergreen needleleaf forest, shrub)
   \end{itemize}
   So within each plant type, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is essentially just a function of VPD!
 \end{frame}
@@ -159,42 +161,70 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
 \end{frame}
 
 
+\begin{frame}{``Sign'' term as a function of VPD and PFT}
+  \begin{figure}
+      \begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\adjincludegraphics[width=3.3in, trim={0 {0.51\height} 0 0}, clip]{fig05_pet.pdf}};
+        \begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %% next four lines will help you to locate the point needed by forming a grid. comment these four lines in the final picture.↓
+       % \draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+       % \draw[help lines,xstep=.05,ystep=.05] (0,0) grid (1,1);
+       % \foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+       % \foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y};}
+       %% upto here
+        % \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,0.3in)node[anchor=south] {ET Increasing};
+        % \draw[-latex, line width=2pt] (0.83,0.725) --++(0.0in,-0.3in)node[anchor=north] {ET Decreasing};
+        % \draw[dashed,-latex, line width=5pt] (0.8,0.75) --++(0.0in,+0.5in)node[anchor=north] {ET Decreasing};
+    \end{scope}
+    % \node[align=center,red,font={\large}] at (image.southwest) {ET decreasing};
+  \end{tikzpicture}
+\end{figure}
+\begin{textblock*}{0.25\textwidth}(0.02\textwidth,0.3\textheight)
+  \textcolor{magenta}{Dashed line} gives response for potential evapotranspiration (PET).\\
+\medskip
+  Plants are crucial for land response!
+\end{textblock*}
+\end{frame}
+
+
 \section{Test Theory}
-\begin{frame}{The theory seems nice, but we should test with data!}
-    \begin{itemize}
-    \item Introduce a free uncertainty parameter $\sigma$ to Penman Monteith:
-      \[ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6\; \boldsymbol{\sigma} \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}\]
-    \item At each observation from FLUXNET (56 sites across globe) calculate a unique $\sigma$:
-      \small
-      \[\sigma = - \frac{g_a \gamma c_s \sqrt{VPD} P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p VPD\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})}\]
-      \normalsize
-    \item Then propagate uncertainty forward by including $\sigma$ in the derivative:
+\begin{frame}{The theory seems nice, but we need to test with data!}
+  \begin{itemize}
+  \item Introduce a free uncertainty parameter \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize to Penman Monteith:
+    \[ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6\; \textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}} \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}\]
+  \item At each observation from FLUXNET (56 sites) calculate a unique \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize:
+    \[\textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}}(t, \text{site}) = f(ET_{obs})\]
+
+    \item Then propagate uncertainty forward by including \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize in the derivative:
     \end{itemize}
-      \[\frac{\partial \;  ET}{\partial \; VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \sigma \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
-
-  \end{frame}
+      \[\frac{\partial \;  ET}{\partial \; VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}} \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+\end{frame}
   
-    \begin{frame}{Test theory with FLUXNET data - CSH}
-                \includegraphics[width=3.5in]{csh_eee.png}
-     \end{frame}
+\begin{frame}{Test theory with FLUXNET data - the good}
+  \begin{columns}
+    \begin{column}{0.33\textwidth}
+      \includegraphics[width=1.2\textwidth]{DBF_box.pdf}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \includegraphics[width=1.2\textwidth]{ENF_box.pdf}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \includegraphics[width=1.2\textwidth]{CSH_box.pdf}
+    \end{column}
+  \end{columns}
+\end{frame}
 
 
-    \begin{frame}{Test theory with FLUXNET data - ENF}
-                \includegraphics[width=3.5in]{enf_eee.png}
-     \end{frame}
-
-
-    \begin{frame}{Test theory with FLUXNET data - DBF}
-                \includegraphics[width=3.5in]{dbf_eee.png}
-     \end{frame}
-
-    \begin{frame}{Test theory with FLUXNET data - CRO}
-                \includegraphics[width=3.5in]{cro_eee.png}
-     \end{frame}
-
-    \begin{frame}{Test theory with FLUXNET data - GRA}
-                \includegraphics[width=3.5in]{gra_eee.png}
-     \end{frame}
+\begin{frame}{Test theory with FLUXNET data - the bad}
+    \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{GRA_box.pdf}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{CRO_box.pdf}
+    \end{column}
+  \end{columns}
+\end{frame}
 
 
 
@@ -265,8 +295,30 @@ To derive a new form of Penman-Monteith without implicit ET dependence:
 \end{frame}
 
 \begin{frame}{Extra slide - is theory VPD$_{crit}$ optimum?}
-  \includegraphics[width=\textwidth]{for_agu.pdf}
+  \includegraphics[width=0.7\textwidth]{for_agu.pdf}
 \end{frame}
+
+\begin{frame}{Test theory with FLUXNET data - CSH}
+  \includegraphics[width=3.5in]{csh_eee.png}
+\end{frame}
+
+\begin{frame}{Test theory with FLUXNET data - ENF}
+  \includegraphics[width=3.5in]{enf_eee.png}
+\end{frame}
+
+  
+\begin{frame}{Test theory with FLUXNET data - DBF}
+  \includegraphics[width=3.5in]{dbf_eee.png}
+\end{frame}
+
+\begin{frame}{Test theory with FLUXNET data - CRO}
+  \includegraphics[width=3.5in]{cro_eee.png}
+\end{frame}
+
+\begin{frame}{Test theory with FLUXNET data - GRA}
+  \includegraphics[width=3.5in]{gra_eee.png}
+\end{frame}
+
 
 % \begin{frame}{Summary statistics - extra sl}
 %      \begin{table}
