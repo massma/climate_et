@@ -93,9 +93,12 @@
   \begin{itemize}
   \item The goal is to simply the problem (increase transparency) while still capturing the leading order behavior the system.
     \begin{itemize}
-    \item While simplifying the system aids intrinsic understanding, simplifying assumptions sacrifice physical realism.
+    \item Simplifying the system aids intrinsic understanding, but at a physical realism.
     \end{itemize}
-  \item Because we run the risk of over-simplification, we will use FLUXNET2015 data to test how well our theory matches the data. 
+  \item Because we run the risk of over-simplification, we will use FLUXNET2015 data to test how well our theory matches the data.
+    \begin{itemize}
+    \item We will test in the growing season of 5 plant types: Deciduous broadleaf forest, evergreen needleleaf forest, shrub, grass, and crops.
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -111,8 +114,11 @@
 \begin{frame}{Use physically reasonable assumptions remove implicit dependence}
   Apply a constant uWUE assumption (conserved within plant type; see \cite{Zhou_2016}):
   \[uWUE = \frac{GPP \cdot \sqrt{VPD}}{ET},\]
-  To derive a new form of Penman-Monteith without implicit ET dependence:
-  \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p \, VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right)}{ \Delta + \gamma}\]
+  \begin{overprint}
+    \onslide<2>
+    To derive a new form of Penman-Monteith without implicit ET dependence:
+    \[  ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p \, VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6 \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right)}{ \Delta + \gamma}\]
+    \end{overprint}
 \end{frame}
 
 \begin{frame}{Now just take $\frac{\partial \; ET}{\partial \; VPD}$}
@@ -143,7 +149,7 @@
     \begin{itemize}
     \item $c_p$ and $R*$ are constants
     \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
-    \item \textcolor{magenta}{\textbf{uWUE}} and $\textcolor{magenta}{\boldsymbol{g1}}$ are constants within plant type (e.g. grass, crops, deciduous broadleaf forest, evergreen needleleaf forest, shrub)
+    \item \textcolor{magenta}{\textbf{uWUE}} and $\textcolor{magenta}{\boldsymbol{g1}}$ are constants within plant type.
     \end{itemize}
     \onslide<4>
     \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
@@ -151,7 +157,7 @@
     \begin{itemize}
     \item $c_p$ and $R*$ are constants
     \item $R_{air}$, $\gamma$, and $c_s$ are approximately constant (relative to $\sqrt{VPD}$)
-    \item uWUE and $g1$ are constants within plant type (e.g. grass, crops, deciduous broadleaf forest, evergreen needleleaf forest, shrub)
+    \item uWUE and $g1$ are constants within plant type
     \end{itemize}
     So \textbf{within each plant type}, whether the atmospheric demand (ET increasing with VPD) or plant response (ET decreasing with VPD) dominates is approximately \textbf{just a function of VPD}!
   \end{overprint}    
@@ -286,7 +292,7 @@
   \item For shrubs environmental VPD never exceeds the critical VPD.
   \item Theory tested poorly with FLUXNET data for for crops and grass. 
   \item All plant types exhibited a response far below that of PET.
-  \item The new uWUE-version of Penman-Monteith we derived could be used as a replacement for PET in drought indices over vegetated surfaces.
+  \item The new uWUE-version of Penman-Monteith we derived could be used as a complement for PET in drought indices over vegetated surfaces.
   \end{itemize}
 \end{frame}
 
