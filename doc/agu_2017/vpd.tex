@@ -204,14 +204,13 @@
 
 \section{Test Theory}
 \begin{frame}{The theory seems nice, but we need to test with data!}
-  \begin{itemize}
-  \item Introduce a free uncertainty parameter \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize to Penman Monteith:
-    \[ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6\; \textcolor{magenta}{\boldsymbol{\mathlarger{\mathlarger{\sigma}}}} \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}\]
-  \item At each observation from FLUXNET (56 sites) calculate a unique \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize:
-    \[\textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}}(t, \text{site}) = f(ET_{obs})\]
+  Introduce a free uncertainty parameter \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize to Penman Monteith:
+  \[ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6\; \textcolor{magenta}{\boldsymbol{\mathlarger{\mathlarger{\sigma}}}} \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}\]
+  At each observation from FLUXNET (56 sites) calculate a unique \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize:
+  \[\textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}}(t, \text{site}) = f(ET_{obs})\]
 
-  \item Then propagate uncertainty forward by including \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize in the derivative:
-  \end{itemize}
+  Then propagate uncertainty forward by including \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize in the derivative:
+
   \[\frac{\partial \;  ET}{\partial \; VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \textcolor{magenta}{\boldsymbol{\mathlarger{\mathlarger{\sigma}}}} \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
 \end{frame}
 
@@ -403,13 +402,13 @@
   \includegraphics[width=3.5in]{gra_eee.png}
 \end{frame}
 
+\begin{frame}{Is uncertainty a function of VPD?}
+  \includegraphics[width=3.0in]{vpd_sigma.png}
+\end{frame}
+
 \begin{frame}{How to take VPD derivative?}
   % below gnereated in fig03.py
   \includegraphics[width=3.0in]{e_s_rh.png}
-\end{frame}
-
-\begin{frame}{Is uncertainty a function of VPD?}
-  \includegraphics[width=3.0in]{vpd_sigma.png}
 \end{frame}
 
 
