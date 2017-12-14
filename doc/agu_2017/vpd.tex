@@ -99,10 +99,10 @@
 \begin{frame}{Simple theory - start with Penman-Monteith}
   We can use Penman-Monteith (PM) to estimate ET:
   \[ET = \frac{\Delta R + g_a \rho_a c_p \, VPD}{\Delta + \gamma(1 + \frac{g_a}{\textcolor{magenta}{\boldsymbol{g_s}}})},\]
-  \begin{overprint}
-    \onslide<2>
-    \textbf{Problem}: \Large $\textcolor{magenta}{\boldsymbol{g_s}}$ \normalsize (stomatal conductance) is a function of photosynthesis, which is a function of ET itself.  So ET in Penman-Monteith is really an implicit function of itself and we cannot take derivatives!<2>
-  \end{overprint}
+  % \begin{overprint}
+  %   \onslide<2>
+    \textbf{Problem}: \Large $\textcolor{magenta}{\boldsymbol{g_s}}$ \normalsize (stomatal conductance) is a function of photosynthesis, which is a function of ET itself.  So ET in Penman-Monteith is really an implicit function of itself and we cannot take derivatives!
+  % \end{overprint}
 \end{frame}
 
 \begin{frame}{Use physically reasonable assumptions remove implicit dependence}
@@ -206,13 +206,13 @@
 \begin{frame}{The theory seems nice, but we need to test with data!}
   \begin{itemize}
   \item Introduce a free uncertainty parameter \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize to Penman Monteith:
-    \[ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6\; \textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}} \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}\]
+    \[ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_s \sqrt{VPD} }{ R* \; 1.6\; \textcolor{magenta}{\boldsymbol{\mathlarger{\mathlarger{\sigma}}}} \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}\]
   \item At each observation from FLUXNET (56 sites) calculate a unique \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize:
     \[\textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}}(t, \text{site}) = f(ET_{obs})\]
 
   \item Then propagate uncertainty forward by including \Large $\textcolor{magenta}{\boldsymbol{\sigma}}$ \normalsize in the derivative:
   \end{itemize}
-  \[\frac{\partial \;  ET}{\partial \; VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \textcolor{magenta}{\boldsymbol{\mathlarger{\sigma}}} \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+  \[\frac{\partial \;  ET}{\partial \; VPD} = \text{scaling} \cdot \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \textcolor{magenta}{\boldsymbol{\mathlarger{\mathlarger{\sigma}}}} \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
 \end{frame}
 
 \begin{frame}{Test theory with FLUXNET data - the good}
@@ -222,13 +222,13 @@
 
   \begin{columns}
     \begin{column}{0.33\textwidth}<1-2>
-      \includegraphics[width=1.2\textwidth]{DBF_box.pdf}
+      \includegraphics[width=1.1\textwidth]{DBF_box.pdf}
     \end{column}
     \begin{column}{0.33\textwidth}<2>
-      \includegraphics[width=1.2\textwidth]{ENF_box.pdf}
+      \includegraphics[width=1.1\textwidth]{ENF_box.pdf}
     \end{column}
     \begin{column}{0.33\textwidth}<2>
-      \includegraphics[width=1.2\textwidth]{CSH_box.pdf}
+      \includegraphics[width=1.1\textwidth]{CSH_box.pdf}
     \end{column}
   \end{columns}
 \end{frame}
@@ -367,11 +367,6 @@
       
     \end{tabular}
   \end{table}
-\end{frame}
-\begin{frame}{ideas}
-  joint distributions of LAI and VPD, and RH and esat
-  put vpd in kpa
-  add pictures to first slide
 \end{frame}
 
 \begin{frame}{Scaling Term}

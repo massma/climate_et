@@ -3,7 +3,10 @@
 This script makes fig 5
 """
 from shared_functions import *
-fontsize=11
+fontsize=14
+linewidth=2.5
+dashedlinewidth=3.0
+markersize=8
 # below is whether to plot taylor series approximation
 PLOT_SERIES = False
 #below is to make slight changes for the talk
@@ -130,10 +133,10 @@ def pft_leaf(_df, axs):
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
   if PLOT_TALK:
-    p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
-                    label="%s: uWUE=%4.2f, g1=%4.1f"\
-                    % (name_dict[_df.pft.iloc[0]],\
-                       _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+    p = axs[0].plot(vpd/1.0e3, term_2(_df, lai, vpd), linewidth=linewidth,\
+                    label="%s"#: uWUE=%4.2f, g1=%4.1f"\
+                    % (name_dict[_df.pft.iloc[0]]))# ,\
+                       # _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
   else:
     p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
                     label="%s: $uWUE\cdot\overline{\sigma}$=%4.2f,f g1=%4.1f"\
@@ -148,9 +151,10 @@ def pft_leaf(_df, axs):
   #             label='%s, g1 = %4.1f' % (_df.pft.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
-  axs[1].plot(vpd, np.ones(vpd.shape)*I)
-  axs[1].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
-  vpd_crit = et_min_vpd(_df.mean(), lai)
+  axs[1].plot(vpd/1.0e3, np.ones(vpd.shape)*I, linewidth=linewidth)
+  axs[1].plot(ptiles/1.0e3,\
+              np.ones(ptiles.shape)*I, 'k*', markersize=markersize)
+  vpd_crit = et_min_vpd(_df.mean(), lai)/1.0e3
   axs[1].plot([vpd_crit], [I], 'k|', markersize=15, mew=3)
   axs[-1].plot(np.ones(vpd.shape)*I, vpd)
   axs[-1].plot(np.ones(ptiles.shape)*I, ptiles, 'k*')
@@ -199,13 +203,13 @@ for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
   pft_leaf(_df, axs)
 
 # df.groupby('pft').apply(pft_leaf, axs)
-axs[1].set_xlabel('VPD (Pa)', fontsize=fontsize)
+axs[1].set_xlabel('VPD (kPa)', fontsize=fontsize)
 axs[3].set_xlabel('$\sigma$')
 axs[0].set_ylabel(paren_string, fontsize=fontsize)
-axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=1.0)
+axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=linewidth)
 if PLOT_PET:
   axs[0].plot(axs[0].get_xlim(), [pm.CP/287.0, pm.CP/287.0],\
-              'm--', linewidth=2.0, label='PET')
+              'm--', linewidth=dashedlinewidth, label='PET')
 plt.setp(axs[2].get_yticklabels(), visible=False)
 axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
 axs[2].set_title(r'D$_{crit}$'\
