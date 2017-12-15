@@ -89,7 +89,7 @@
 \end{frame}
 
 \section{Method}
-\begin{frame}{Develop a theory to quantify VPD effects}
+\begin{frame}{Develop a theory to quantify ET response to VPD}
   \begin{itemize}
   \item The goal is to simply the problem (increase transparency) while still capturing the leading order behavior the system.
     \begin{itemize}
@@ -97,7 +97,7 @@
     \end{itemize}
   \item Because we run the risk of over-simplification, we will use FLUXNET2015 data to test how well our theory matches the data.
     \begin{itemize}
-    \item We will test in the growing season of 5 plant types: Deciduous broadleaf forest, evergreen needleleaf forest, shrub, grass, and crops.
+    \item We will test in the growing season of 5 plant types: deciduous broadleaf forest, evergreen needleleaf forest, shrub, grass, and crops.
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -225,23 +225,21 @@
 
 \begin{frame}{Test theory with FLUXNET data - the good}
   \begin{textblock*}{1.0\textwidth}(0.3\textwidth,0.8\textheight)
-    \textcolor{blue}{Blue line} is theory's critical VPD.\\
+    \textcolor{blue}{Blue line} is theory.\\
   \end{textblock*}
 
   \begin{columns}
-    \begin{column}{0.33\textwidth}<1-2>
+    \begin{column}{0.33\textwidth}<1-3>
       \includegraphics[width=1.1\textwidth]{DBF_box.pdf}
     \end{column}
-    \begin{column}{0.33\textwidth}<2>
-      \includegraphics[width=1.1\textwidth]{ENF_box.pdf}
-    \end{column}
-    \begin{column}{0.33\textwidth}<2>
+    \begin{column}{0.33\textwidth}<2-3>
       \includegraphics[width=1.1\textwidth]{CSH_box.pdf}
+    \end{column}
+    \begin{column}{0.33\textwidth}<3>
+      \includegraphics[width=1.1\textwidth]{ENF_box.pdf}
     \end{column}
   \end{columns}
 \end{frame}
-
-
 
 
 
@@ -255,7 +253,7 @@
     \end{column}
   \end{columns}
   \begin{textblock*}{1.0\textwidth}(0.3\textwidth,0.85\textheight)
-    \textcolor{blue}{Blue line} is theory's critical VPD.\\
+    \textcolor{blue}{Blue line} is theory.\\
   \end{textblock*}
 
 \end{frame}
@@ -310,6 +308,20 @@
   \item Medlyn, B. E., Duursma, R. A., Eamus, D., Ellsworth, D. S., Prentice, I. C., Barton, C. V., ... \& Wingate, L. (2011). Reconciling the optimal and empirical approaches to modelling stomatal conductance. \textit{Global Change Biology}, 17(6), 2134-2144.
   \item Zhou, S., Yu, B., Huang, Y., \& Wang, G. (2015). Daily underlying water use efficiency for AmeriFlux sites. \textit{Journal of Geophysical Research: Biogeosciences}, 120(5), 887-902.
   \end{enumerate}
+\end{frame}
+
+\begin{frame}{Summary - When does VPD drive or reduce ET?}
+  \begin{itemize}
+  \item Theory predicts that each plant type has a \textbf{critical VPD} \textbf{below which ET will decrease} (plant response dominates), and \textbf{above which ET will increase} (atmospheric demand dominates).
+  \item For forest sites, environmental VPD approximately straddles the critical VPD.
+  \item For shrubs environmental VPD never exceeds the critical VPD.
+  \item Theory tested poorly with FLUXNET data for for crops and grass. 
+  \item All plant types exhibited a response far below that of PET.
+  \item The new uWUE-version of Penman-Monteith we derived could be used as a complement for PET in drought indices over vegetated surfaces.
+  \end{itemize}
+  \bigskip
+  \medskip
+  Adam Massmann:\textbf{ akm2203@columbia.edu }
 \end{frame}
 
 \section{Extra Slides}
@@ -411,6 +423,20 @@
   \includegraphics[width=3.5in]{gra_eee.png}
 \end{frame}
 
+\begin{frame}{Consequences of theory - ``sign'' term}
+Below is a little opaque (at least to me):
+\[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+so do expansion about $g_1 >> \sqrt{VPD}$:
+\footnotesize
+\[ \frac{\partial \, ET}{\partial \, VPD} \approx \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{1}{g_1} - \frac{3\sqrt{VPD}}{2 g_1^2} +  \mathcal{O}\left(\frac{\sqrt{VPD}}{g_1}\right)^{2} \right) \right)\]
+% \large
+% and:
+%   \[ \sqrt{VPD} \Big|_{\frac{\partial ET}{\partial VPD} = 0} \approx  \frac{2 g_1}{3}  \left( -\frac{ c_p \, g_1\,  1.6  \; R*\; \text{ uWUE }}{R_{air} \gamma c_s } + 1  \right) \]
+
+%   \[ VPD \Big|_{\frac{\partial ET}{\partial VPD} = 0} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
+\end{frame}
+
+
 \begin{frame}{Is uncertainty a function of VPD?}
   \includegraphics[width=3.0in]{vpd_sigma.png}
 \end{frame}
@@ -439,10 +465,6 @@
 %     \end{tabular}
 %   \end{table}
 % \end{frame}
-
-
-
-
 
 % \begin{table}
 %   \centering

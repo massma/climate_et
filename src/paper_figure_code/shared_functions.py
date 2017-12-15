@@ -104,4 +104,15 @@ def et_min_vpd(_df, lai):
 def get_pft(_df):
   return _df['pft'].iloc[0]
 
+def term_2(_df, lai, vpd):
+  """calculates term 2, takes in a _df of one pft"""
+  atmos = {'gamma' : _df.gamma.mean(), 'c_a' : _df.c_a.mean(),\
+           'vpd' : vpd}
+  if _df.uwue.std() > 1.e-8:
+    print('error, uWUE is variable: %f!!!!' % _df.uwue.std())
+  elif _df.g1.std() > 1.e-8:
+    print('error, g1 is variabile: %f!!!!!' % _df.g1.std())
+  canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
+  return pm.CP/_df.r_moist.mean() +calc.leaf_vpd(atmos, canopy, lai)
+
 # df.index = df.reset_index(drop=True)

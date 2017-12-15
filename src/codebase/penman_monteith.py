@@ -385,6 +385,18 @@ def penman_monteith(_atmos, _canopy):
        /(_atmos['delta']+_atmos['gamma']*(1. + _canopy['r_s']/_atmos['r_a']))
   return _et
 
+def new_penman_monteith(_df, vpd=None):
+  """provides et function for my derived penman monteith"""
+  if vpd is None:
+    vpd = _df['vpd']
+    print('none?')
+  _et = (_df['delta']*\
+       (_df['r_n']-_df['g_flux'])+\
+         (_df['rho_a']*CP*vpd\
+          - _df['gamma']*_df['r_s'].values[:, 0])/_df['r_a'])\
+         /(_df['delta']+_df['gamma'])
+  return _et
+
 def penman_monteith_uwue(_atmos, _canopy):
   """
   returns ET in W/m2, different from penman_monteith in that uWUE effeciency
@@ -397,16 +409,15 @@ def penman_monteith_uwue(_atmos, _canopy):
   else:
     vpd = _atmos['vpd']
 
-
   _atmos, _canopy = penman_monteith_prep(_atmos, _canopy)
   _canopy = et_adam_medlyn_r_e(vpd, _canopy, _atmos)
 
-  # _atmos.loc[_atmos['r_a'] < 0.1, 'r_a'] = np.nan
   _et = (_atmos['delta']*\
-       (_atmos['r_n']-_canopy['g_flux'])+\
-         (_atmos['rho_a']*CP*_atmos['vpd']\
-          - _atmos['gamma']*_canopy['r_s'])/_atmos['r_a'])\
-         /(_atmos['delta']+_atmos['gamma'])
+     (_atmos['r_n']-_canopy['g_flux'])+\
+       (_atmos['rho_a']*CP*_atmos['vpd']\
+        - _atmos['gamma']*_canopy['r_s'])/_atmos['r_a'])\
+       /(_atmos['delta']+_atmos['gamma'])
+
   return _et
 
 def optimizer_wrapper(_et, *env_vars):

@@ -33,17 +33,7 @@ else:
 
 
 # ##### Figure 5 #####
-def term_2(_df, lai, vpd):
-  """calculates term 2"""
-  atmos = {'gamma' : _df.gamma.mean(), 'c_a' : _df.c_a.mean(),\
-           'vpd' : vpd}
-  if _df.uwue.std() > 1.e-8:
-    print('error, uWUE is variable: %f!!!!' % _df.uwue.std())
-  elif _df.g1.std() > 1.e-8:
-    print('error, g1 is variabile: %f!!!!!' % _df.g1.std())
-  canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
-  return pm.CP/_df.r_moist.mean() +calc.leaf_vpd(atmos, canopy, lai)
-
+## term 2 movwd to shared_figs
 
 def term_2_approx(_df, lai, vpd, order=4):
   """calculates term 2"""
