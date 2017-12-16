@@ -1,4 +1,16 @@
 import metcalcs as met
+import numpy as np
+
+#geophysical constats
+VP_FACTOR = 100. #convert hPa -> Pa
+K = 0.41 # vonkarmans constant
+CP = 1012. # specific heat air, got from Changjie (I usually use 1004)
+GAMMA = 66. # psychrometric constant
+LV = 2.5e6
+R_AIR = .0289645 # mean kg/mol dry air
+R_STAR = 8.3144598 #J /mol/K
+R_DRY = 287.058
+G = 9.81 #gravity constant, m/s2
 
 def delta(_df):
   """calculates delta in Pa/C, from shuttleworth equation 2.18"""
@@ -21,62 +33,95 @@ def saturation_vapor_pressure(_df):
   """returns asturation vapor pressure"""
   return met.vapor_pres(_df['t_a'])*VP_FACTOR
 
-def r_a(_atmos, _canopy):
+def psim(ksi):
+  """
+  From Changjie, who adapted from Paulson 1970 (unsstablel ksi <0)
+  and Beljaars and Holtstag 1991 (stable ksi >0)
+  """
+  unstable_idx = (ksi < 0.)
+  _psim = np.ones(ksi.shape)*np.nan
+  chik2 = np.sqrt(1. - 16.*ksi[unstable_idx])
+  chik  = np.sqrt(chik2)
+  _psim[unstable_idx] = 2.*np.log((1.+chik)*0.5) + np.log((1.+chik2)*0.5)\
+                        -2.*np.arctan(chik)+0.5*np.pi
+
+  _ksi = ksi[~unstable_idx]
+  _psim[~unstable_idx]  = -(0.7*_ksi+0.75*(_ksi-5./0.35)\
+                            *np.exp(-0.35*_ksi)+3.75/0.35)
+  return _psim
+
+def psih(ksi):
+  """
+  From Changjie, who adapted from Paulson 1970 (unsstablel ksi <0)
+  and Beljaars and Holtstag 1991 (stable ksi >0), note comment
+  that stable could be broken?
+  """
+  unstable_idx = (ksi < 0.)
+  _psih = np.ones(ksi.shape)*np.nan
+  chik2 = np.sqrt(1. - 16.*ksi[unstable_idx])
+  _psih[unstable_idx] = 2.*np.log((1.+chik2)*0.5)
+  _ksi = ksi[~unstable_idx]
+  print(_ksi[~np.isnan(_ksi)].size)
+  _psih[~unstable_idx]  = -((1.+(2.*_ksi)/3.)**1.5+0.667*(_ksi-5./0.35)\
+                            *np.exp(-(0.35*_ksi))+(0.667*5.)/0.35-1.)
+  return _psih
+
+def r_a(_df):
   """
   returns atmospheric resistance in s/m,
   see pg 298, eq. 20.36  in Shuttleworth
   implicit assumption that z0=z0h=z0m - changjie says maybe reduce factor 10
   """
-  return np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0'])**2\
-    /(K**2*_atmos['u_z'])
+  return np.log((_df['zmeas']-_df['d'])/_df['z0'])**2\
+    /(K**2*_df['u_z'])
 
-def corrected_r_a(_atmos, _canopy):
+def corrected_r_a(_df):
   """
   returns atmospehric resistsance in s/m, but requires vars ustar and
-  heat flux (h) in _atmos, which might not be actually available many
-  of times. should only gets called when ustar is in _atmos
+  heat flux (h) in _df, which might not be actually available many
+  of times. should only gets called when ustar is in _df
   """
   ksit = 0.465 # point of continuity in the stability profiles for heat
 
   # checked below from shuttleworth pg 292, should be good except t_a
   # should be  virtual (as should flux).
-  _atmos['L'] = -_atmos['ustar']**3*CP*_atmos['rho_a']*(_atmos['t_a']+273.15)\
-                /(K*G*_atmos['h'])
-  _r_a = np.ones(_atmos['L'].shape)*np.nan
-  neutral_idx = (np.absolute(_atmos['L']) <= 1.e-4)
+  _df['L'] = -_df['ustar']**3*CP*_df['rho_a']*(_df['t_a']+273.15)\
+                /(K*G*_df['sensible'])
+  _r_a = np.ones(_df['L'].shape)*np.nan
+  neutral_idx = (np.absolute(_df['L']) <= 1.e-4)
   if _r_a[neutral_idx].size > 0.:
-    _r_a[neutral_idx] = _atmos['r_a_uncorrected'][neutral_idx]
-  _atmos['ksi'] = (_canopy['zmeas']-_canopy['d'])/_atmos['L']
-  _atmos['ksi'][neutral_idx] = np.nan
+    _r_a[neutral_idx] = _df['r_a_uncorrected'][neutral_idx]
+  _df['ksi'] = (_df['zmeas']-_df['d'])/_df['L']
+  _df['ksi'][neutral_idx] = np.nan
   #below could be way more efficient
-  _ = K/(np.log(-ksit*_atmos['L']/_canopy['z0'])
-                 - psih(-ksit*np.ones(_atmos['L'].shape))
-                 + psih(_canopy['z0']/_atmos['L'])
-                 + 0.8*((ksit)**(-0.333)-(-_atmos['ksi'])**(-0.333)))
-  ksit_idx = (_atmos['ksi'] < -ksit)
+  _ = K/(np.log(-ksit*_df['L']/_df['z0'])
+                 - psih(-ksit*np.ones(_df['L'].shape))
+                 + psih(_df['z0']/_df['L'])
+                 + 0.8*((ksit)**(-0.333)-(-_df['ksi'])**(-0.333)))
+  ksit_idx = (_df['ksi'] < -ksit)
   _r_a[ksit_idx & (~neutral_idx)] = _[ksit_idx & (~neutral_idx)]
-  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0'])
-                - psih(_atmos['ksi'])
-                + psih(_canopy['z0']/_atmos['L']))
-  zero_idx = (_atmos['ksi'] < 0.)
+  _   = K/(np.log((_df['zmeas']-_df['d'])/_df['z0'])
+                - psih(_df['ksi'])
+                + psih(_df['z0']/_df['L']))
+  zero_idx = (_df['ksi'] < 0.)
   _r_a[zero_idx & (~ksit_idx) & (~neutral_idx)] = _[zero_idx & (~ksit_idx)\
                                                     & (~neutral_idx)]
-  _   = K/(np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0'])\
-           + 5.*_atmos['ksi']-5.*_canopy['z0']/_atmos['L'])
-  one_idx = (_atmos['ksi'] <= 1.)
+  _   = K/(np.log((_df['zmeas']-_df['d'])/_df['z0'])\
+           + 5.*_df['ksi']-5.*_df['z0']/_df['L'])
+  one_idx = (_df['ksi'] <= 1.)
   _r_a[one_idx & (~zero_idx) & (~ksit_idx)\
        & (~neutral_idx)] = _[one_idx & (~zero_idx) & (~ksit_idx)\
                              & (~neutral_idx)]
-  _   = K/(np.log(_atmos['L']/_canopy['z0']) + 5. - 5.*_canopy['z0']/_atmos['L']
-                + (5.*np.log(_atmos['ksi'])+_atmos['ksi']-1.))
+  _   = K/(np.log(_df['L']/_df['z0']) + 5. - 5.*_df['z0']/_df['L']
+                + (5.*np.log(_df['ksi'])+_df['ksi']-1.))
   _r_a[(~one_idx) & (~zero_idx) & (~ksit_idx)\
        & (~neutral_idx)] = _[(~one_idx) & (~zero_idx) & (~ksit_idx)\
                              & (~neutral_idx)]
   _r_a[_r_a < 1.e-3] = 1.e-3
-  _r_a = 1./(_r_a*_atmos['ustar'])
+  _r_a = 1./(_r_a*_df['ustar'])
   return _r_a
 
-def generate_vars():
+def generate_vars(_df):
   """
   does calculations on data sructures
   atmos and canopy requred by penman moneith

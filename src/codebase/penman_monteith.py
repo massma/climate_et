@@ -168,38 +168,6 @@ def fitted_m_r_e(vpd, pft, _et):
   _m = FITTED_M.loc[pft].m_mean
   return 1./(g_0 + g_1/(vpd/1000.)**_m*wue*_et/LV/np.sqrt(vpd))
 
-def psim(ksi):
-  """
-  From Changjie, who adapted from Paulson 1970 (unsstablel ksi <0)
-  and Beljaars and Holtstag 1991 (stable ksi >0)
-  """
-  unstable_idx = (ksi < 0.)
-  _psim = np.ones(ksi.shape)*np.nan
-  chik2 = np.sqrt(1. - 16.*ksi[unstable_idx])
-  chik  = np.sqrt(chik2)
-  _psim[unstable_idx] = 2.*np.log((1.+chik)*0.5) + np.log((1.+chik2)*0.5)\
-                        -2.*np.arctan(chik)+0.5*np.pi
-
-  _ksi = ksi[~unstable_idx]
-  _psim[~unstable_idx]  = -(0.7*_ksi+0.75*(_ksi-5./0.35)\
-                            *np.exp(-0.35*_ksi)+3.75/0.35)
-  return _psim
-
-def psih(ksi):
-  """
-  From Changjie, who adapted from Paulson 1970 (unsstablel ksi <0)
-  and Beljaars and Holtstag 1991 (stable ksi >0), note comment
-  that stable could be broken?
-  """
-  unstable_idx = (ksi < 0.)
-  _psih = np.ones(ksi.shape)*np.nan
-  chik2 = np.sqrt(1. - 16.*ksi[unstable_idx])
-  _psih[unstable_idx] = 2.*np.log((1.+chik2)*0.5)
-  _ksi = ksi[~unstable_idx]
-  print(_ksi[~np.isnan(_ksi)].size)
-  _psih[~unstable_idx]  = -((1.+(2.*_ksi)/3.)**1.5+0.667*(_ksi-5./0.35)\
-                            *np.exp(-(0.35*_ksi))+(0.667*5.)/0.35-1.)
-  return _psih
 
 def r_a(_atmos, _canopy):
   """
