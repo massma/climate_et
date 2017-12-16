@@ -20,15 +20,6 @@ R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
 G = 9.81 #gravity constant, m/s2
 
-# From Changjie's oren model for stomatal resistance
-# see "Survey and synthesis of intra- and interspecific variation
-# in stomatal sensitivity to vapour pressure deficit" - Oren
-# Gs = G1+G2*ln(VPD) in mm/s
-OREN = pd.read_csv('../dat/orens_model.csv')
-# convert to m/s
-OREN.iloc[:, 2:6] = OREN.iloc[:, 2:6]/1000.
-OREN.index = OREN.PFT
-
 #see comments in files below for info on source, etc.
 WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
                          comment='#', delimiter=',')
@@ -43,40 +34,11 @@ WUE.index = WUE.PFT
 WUE.loc[:, 'u_wue_yearly'] = WUE.loc[:, 'u_wue_yearly']\
                              *1.e6/12.011*np.sqrt(100.)
 
-LAI = pd.read_csv('../dat/bonan_et_al_table4_lai.csv',\
-                  comment='#', delimiter=',')
-LAI.index = LAI.PFT
-
-DIM = pd.read_csv('../dat/bonan_et_al_table5_dimensions.csv',\
-                  comment='#', delimiter=',')
-DIM.index = DIM.PFT
 
 ROUGH = pd.read_csv('../dat/wrf_roughness_length.csv',
           comment='#', delimiter=',')
 ROUGH.index = ROUGH.PFT
 
-MEDLYN = pd.read_csv('../dat/changjie_medlyn.csv',\
-           comment='#', delimiter=',')
-#convert to m/s
-MEDLYN.iloc[:, 2:6] = MEDLYN.iloc[:, 2:6]/1000.
-MEDLYN.index = MEDLYN.PFT
-
-
-ADAM_MEDLYN = pd.read_csv('../dat/adam_mm_s_medlyn.csv',\
-           comment='#', delimiter=',')
-#now I take care of below conversion in adam funciton, b/c units
-# for this are acutall mol/m2/s
-# #convert to m/s - note only need to convert g0 b/c of functional form
-# ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
-ADAM_MEDLYN.index = ADAM_MEDLYN.PFT
-
-# ADAM_MEDLYN_UWUE = pd.read_csv('../dat/adam_mm_s_W_m2_medlyn.csv',\
-#            comment='#', delimiter=',')
-# #now I take care of below conversion in adam funciton, b/c units
-# # for this are acutall mol/m2/s
-# # #convert to m/s - note only need to convert g0 b/c of functional form
-# # ADAM_MEDLYN.iloc[:, 1:3] = ADAM_MEDLYN.iloc[:, 1:3]/1000.
-# ADAM_MEDLYN_UWUE.index = ADAM_MEDLYN_UWUE.PFT
 
 
 LEUNING = pd.read_csv('../dat/changjie_leuning.csv',\
@@ -243,7 +205,7 @@ def r_a(_atmos, _canopy):
   """
   returns atmospheric resistance in s/m,
   see pg 298, eq. 20.36  in Shuttleworth
-  implicit assumption that z0=z0h=z0m
+  implicit assumption that z0=z0h=z0m - changjie says maybe reduce factor 10
   """
   return np.log((_canopy['zmeas']-_canopy['d'])/_canopy['z0'])**2\
     /(K**2*_atmos['u_z'])
@@ -253,7 +215,7 @@ def corrected_r_a(_atmos, _canopy):
   """
   returns atmospehric resistsance in s/m, but requires vars ustar and
   heat flux (h) in _atmos, which might not be actually available many
-  of times. only gets called by penman_monteith if ustar is in _atmos
+  of times. should only gets called when ustar is in _atmos
   """
   ksit = 0.465 # point of continuity in the stability profiles for heat
 
@@ -312,6 +274,10 @@ def rho_air(_atmos):
   """returns rho in kg/m3"""
   return _atmos['p_a']/(_atmos['r_moist']*(_atmos['t_a']+273.15))
 
+def saturation_vapor_pressure(t_a):
+  """returns asturation vapor pressure"""
+  return met.vapor_pres(_atmos['t_a'])*VP_FACTOR
+
 def penman_monteith_prep(_atmos, _canopy):
   """
   does calculations on data sructures
@@ -319,7 +285,7 @@ def penman_monteith_prep(_atmos, _canopy):
   returns updated data structures
   """
   #derived constants
-  _atmos['e_s'] = met.vapor_pres(_atmos['t_a'])*VP_FACTOR
+  _atmos['e_s'] = 
   _atmos['delta'] = delta(_atmos)
   _atmos['gamma'] = gamma(_atmos)
   _atmos['r_moist'] = r_moist(_atmos)

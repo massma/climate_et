@@ -6,6 +6,7 @@ simulated ET, VPD and d ET/ d VPD for full, leaf and atm
 import os
 import pandas as pd
 import numpy as np
+import glob
 import codebase.penman_monteith as pm
 import scipy.io as io
 
@@ -15,31 +16,29 @@ SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        delimiter=',')
 SITELIST.index = SITELIST.Site
 
-def atmos_dict(data):
+def add_atmos_dict(data_out, data):
   """generates an atmos dictionary"""
-  atmos = {}
-  atmos['t_a'] = np.squeeze(data['TA']) #C
-  atmos['rh'] = np.squeeze(data['RH']*100.) #percent
-  atmos['h'] = np.squeeze(data['H'])
-  atmos['r_n'] = np.squeeze(data['NETRAD'])
-  atmos['ustar'] = np.squeeze(data['USTAR']) #m/s
-  atmos['p_a'] = np.squeeze(data['PA']*1000.) #Pa
-  atmos['u_z'] = np.squeeze(data['WS'])
-  atmos['u_z'][atmos['u_z'] <= 0.] = np.nan
+  data_out['t_a'] = np.squeeze(data['TA']) #C
+  data_out['rh'] = np.squeeze(data['RH']*100.) #percent
+  data_out['sensible'] = np.squeeze(data['H']) # w/m2
+  data_out['r_n'] = np.squeeze(data['NETRAD']) # w/m2
+  data_out['ustar'] = np.squeeze(data['USTAR']) #m/s
+  data_out['p_a'] = np.squeeze(data['PA']*1000.) #Pa
+  data_out['u_z'] = np.squeeze(data['WS']) # m/s
+  data_out['u_z'][data_out['u_z'] <= 0.] = np.nan
   if data['flag_Ca'] == 1:
-    atmos['c_a'] = np.squeeze(data['Ca'])
+    data_out['c_a'] = np.squeeze(data['Ca'])
   else:
-    atmos['c_a'] = np.ones(atmos['p_a'].shape)*400. #ppm
-  return atmos
+    data_out['c_a'] = np.ones(data_out['p_a'].shape)*400. #ppm
+  return data_out
 
-def canopy_dict(data):
+def add_canopy_dict(data_out, data):
   """generates a canopy dict from loaded data"""
-  canopy = {}
-  canopy['g_flux'] = np.squeeze(data['G'])
-  canopy['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
-  canopy['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
-  canopy['r_s'] = np.squeeze(data['Rs']) #s/m
-  return canopy
+  data_out['g_flux'] = np.squeeze(data['G'])
+  data_out['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
+  data_out['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
+  data_out['pft'] = str(np.squeeze(data['cover_type']))
+  return data_out
 
 def gen_time(data):
   """creates time, but not sure if start or end see Read_data.m"""
@@ -50,68 +49,44 @@ def gen_time(data):
   #time = np.datetime64()
   return datestr
 
-def load_mat_data(filename):
-  """
-  takes a filename (matlab file from changjie),
-  and returns data structures for penman_monteith,
-  as well as a dictionary for the mat file
-  _data is misc. data to be output
-  """
+def load_file(filename):
+  """loads up a matlab file from changjie"""
   data = io.loadmat(filename)
-  _data = {}
+  data_out = {}
   # below mm/s
-  _data['et_obs'] = np.squeeze(data['LE'])
-  _data['swc'] = np.squeeze(data['SWC'])
-  _data['gpp_obs'] = np.squeeze(data['GEP'])
-  _data['r_a_cha'] = np.squeeze(data['Ra']) # s/m
+  data_out['et_obs'] = np.squeeze(data['LE'])
+  data_out['swc'] = np.squeeze(data['SWC'])
+  data_out['gpp_obs'] = np.squeeze(data['GEP'])
+  data_out['r_a_changie'] = np.squeeze(data['Ra']) # s/m
 
-  atmos = atmos_dict(data)
-  canopy = canopy_dict(data)
-  _data['time'] = gen_time(data)
-
-  atmos, canopy = pm.penman_monteith_prep(atmos, canopy)
-  atmos['vpd'][atmos['vpd'] <= 0.] = np.nan
-  canopy.pop('r_s')
-  atmos = pd.DataFrame(data=atmos, index=np.squeeze(data['time']))
-  canopy = pd.DataFrame(data=canopy, index=np.squeeze(data['time']))
-  _data = pd.DataFrame(data=_data, index=np.squeeze(data['time']))
-  _dataclmns = _data.columns
-  canopyclmns = canopy.columns
-  atmosclmns = atmos.columns
-  df = pd.concat([atmos, canopy, _data], axis=1).dropna()
-  _data = df[_dataclmns].copy()
-  atmos = df[atmosclmns].copy()
-  canopy = df[canopyclmns].copy()
-  canopy['pft'] = str(np.squeeze(data['cover_type']))
-  # below is s/m
-  _data['r_s'] = ((((atmos['delta']*(atmos['r_n']-canopy['g_flux'])+\
-                    (1012.*atmos['rho_a']*atmos['vpd'])/atmos['r_a'])\
-                   /np.squeeze(_data['et_obs'])-atmos['delta'])\
-                  /atmos['gamma'])-1.)*atmos['r_a']
-  #below is mm/s
-  _data['g_s'] = 1./_data['r_s']*1000.
-  # _data.loc[_data['g_s'] < 0., 'g_s'] = np.nan
-  # _data.loc[_data['g_s'] > 100., 'g_s'] = np.nan
-  _data.loc[_data['et_obs'] <= 0.0, 'et_obs'] = np.nan
-  _data = _data.dropna()
-  atmos = atmos.loc[_data.index, :]
-  canopy = canopy.loc[_data.index, :]
-  print(canopy.shape)
-  print(_data.shape)
+  data_out = add_atmos_dict(data_out, data)
+  data_out = add_canopy_dict(data_out, data)
+  data_out['time'] = gen_time(data)
+  data_out = pd.DataFrame(data=data_out, index=np.squeeze(data['time']))
+  data_out = data_out.dropna()
+  data_out.loc[data_out['et_obs'] <= 0.0, 'et_obs'] = np.nan
   try:
-    pft = canopy.iloc[0, :].loc['pft']
+    pft = data_out.iloc[0, :].loc['pft']
   except IndexError:
-    print('file %s has no data' % filename)
+    print('file %s has no data, exiting' % filename)
     pft = 'nan'
+    return None
   try:
-    canopy['uwue'] = pm.WUE.loc[pft, 'u_wue_yearly']
+    data_out['g1'] = pm.WUE_MEDLYN.loc[pft, 'g1M']
   except KeyError:
-    print("file %s 's pft (%s) has no uWUE, setting to nan" % (filename, pft))
-    canopy['uwue'] = np.nan
-  try:
-    canopy['g1'] = pm.WUE_MEDLYN.loc[pft, 'g1M']
-  except KeyError:
-    canopy['g1'] = np.nan
-    print('error, no medlyn coeffieent for %s, pft: %s, setting to nan'\
+    data_out['g1'] = np.nan
+    print('error, no medlyn coeffieent for %s, pft: %s, setting to none'\
           % (filename, pft))
-  return atmos, canopy, _data
+    return None
+  data_out['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
+  data_out = data_out.dropna()
+  return data_out
+
+def load_mat_data():
+  """loads all mat data provided by changjie, outputing dataframe"""
+  filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
+  data_list = [load_file(filename) for filename in filenames]
+  data_list = [df for df in data_list if df is not None]
+  all_site_data = pd.concat(data_list)
+  all_site_data = all_site_data.reset_index()
+  return all_site_data
