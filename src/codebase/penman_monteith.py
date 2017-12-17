@@ -253,7 +253,7 @@ def penman_monteith_prep(_atmos, _canopy):
   returns updated data structures
   """
   #derived constants
-  _atmos['e_s'] = 
+  _atmos['e_s'] = met.vapor_pres(_atmos['t_a'])*VP_FACTOR
   _atmos['delta'] = delta(_atmos)
   _atmos['gamma'] = gamma(_atmos)
   _atmos['r_moist'] = r_moist(_atmos)

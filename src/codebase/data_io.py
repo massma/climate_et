@@ -1,14 +1,30 @@
 #! ~/edward/bin/python
+
 """
-This module uses site specific medlyn fits to calcualte
-simulated ET, VPD and d ET/ d VPD for full, leaf and atm
+This module loads in data prepared by Changjie,
+and also loads in some data from tables from Zhou and Franks et. al.
 """
 import os
+import glob
 import pandas as pd
 import numpy as np
-import glob
-import codebase.penman_monteith as pm
 import scipy.io as io
+
+LV = 2.5e6
+WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
+                         comment='#', delimiter=',')
+WUE_MEDLYN.index = WUE_MEDLYN.PFT
+# convert from sqrt(kPa) to sqrt(Pa)
+WUE_MEDLYN.loc[:, 'g1M'] = WUE_MEDLYN.loc[:, 'g1M']*np.sqrt(1000.)
+
+WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
+                  comment='#', delimiter=',')
+WUE.index = WUE.PFT
+# convert from g C to micromol (units of c_s),
+# and from sqrt(hPa) to sqrt(PA)
+# and from kg H20 to joules
+WUE.loc[:, 'u_wue_yearly'] = WUE.loc[:, 'u_wue_yearly']\
+                             *1.e6/12.011*np.sqrt(100.)/LV
 
 
 SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
@@ -72,12 +88,16 @@ def load_file(filename):
     pft = 'nan'
     return None
   try:
-    data_out['g1'] = pm.WUE_MEDLYN.loc[pft, 'g1M']
+    data_out['g1'] = WUE_MEDLYN.loc[pft, 'g1M']
   except KeyError:
     data_out['g1'] = np.nan
     print('error, no medlyn coeffieent for %s, pft: %s, setting to none'\
           % (filename, pft))
     return None
+  try:
+    data_out['uwue_zhou'] = WUE.loc[pft, 'u_wue_yearly']
+  except KeyError:
+    data_out['uwue_zhou'] = np.nan
   data_out['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
   data_out = data_out.dropna()
   return data_out
