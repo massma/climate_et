@@ -13,7 +13,7 @@ R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
 G = 9.81 #gravity constant, m/s2
 
-def calc_uwue_old(_df):
+def uwue_old(_df):
   """cals uwue given structure, with an explcit et_obs
   This was the onld structure before refactoring"""
   return - _df['gamma']*_df['c_a']\
@@ -25,7 +25,7 @@ def calc_uwue_old(_df):
                   *1.6*R_STAR*(273.15 + _df['t_a'])\
                   *(1.+_df['g1']/np.sqrt(_df['vpd'])))
 
-def calc_uwue(_df):
+def uwue(_df):
   """
   calcs uwue from _df with obs
   note possible issue with c_a instead of c_s
