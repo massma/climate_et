@@ -15,9 +15,9 @@ df.to_pickle('%s/changjie/loaded_data.pkl' % os.environ['DATA'])
 
 prep_df = d_prep.generate_vars(df)
 importlib.reload(d_calc)
-calc_df, mean_df, min_df, max_df = d_calc.all_diagnostics(prep_df)
+dfs = d_calc.all_diagnostics(prep_df)
 importlib.reload(test)
-test.run_all_tests(calc_df)
+test.run_all_tests(dfs)
 
 
 # importlib.reload(test)

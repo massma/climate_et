@@ -35,14 +35,10 @@ def clean_df(_df, var='uwue', vpd_thresh=10.0):
   based on calc'd uwue. Could look into more sophisticated outlier
   identification (seems like from histogram there are clear ouliers).
   """
-  clean_df = _df.loc[((_df[var] < _df.uwue.quantile(q=0.95)) &\
+  cleaned_df = _df.loc[((_df[var] < _df.uwue.quantile(q=0.95)) &\
                       (_df[var] > _df.uwue.quantile(q=0.05)) &\
                       (_df.vpd > vpd_thresh))].copy()
-
-  # clean_df = _df.loc[((_df[var] < f_df.uwue.quantile(q=0.95)) &\
-  #                     (_df[var] > _df.uwue.quantile(q=0.05)))].copy()
-
-  return clean_df
+  return cleaned_df
 
 def pm_et(_df, vpd=None):
   """calculates et using our new penman-monteith"""
@@ -55,7 +51,6 @@ def pm_et(_df, vpd=None):
       /(R_STAR*1.6*_df['uwue']\
         *(1.0+_df['g1']/np.sqrt(vpd)))))\
         /(_df['delta']+_df['gamma'])
-
 
 def sign(_df, vpd=None):
   """calculates the 'sign' term of et derivative w.r.t. vpd"""
@@ -85,7 +80,10 @@ def all_diagnostics(_df):
   _df['scaling'] = scaling(_df)
   _df['sign'] = sign(_df)
   _df['d_et'] = _df['scaling']*_df['sign']
-  mean_df = _df.groupby('pft').mean()
-  min_df = _df.groupby('pft').min()
-  max_df = _df.groupby('pft').max()
-  return _df, mean_df, min_df, max_df
+  dfs = {'full' : _df,\
+         'mean' : _df.groupby('pft').mean(),\
+         'min' : _df.groupby('pft').min(),\
+         'max' : _df.groupby('pft').max(),\
+         '5' : _df.groupby('pft').quantile(q=0.05),\
+         '95' : _df.groupby('pft').quantile(q=0.95)}
+  return dfs

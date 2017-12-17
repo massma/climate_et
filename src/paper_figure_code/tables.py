@@ -2,7 +2,6 @@
 """
 This script makes all figs for the paper
 """
-
 from shared_functions import *
 import scipy.optimize
 import matplotlib.pyplot as plt
