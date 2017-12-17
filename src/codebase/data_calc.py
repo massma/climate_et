@@ -13,17 +13,6 @@ R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
 G = 9.81 #gravity constant, m/s2
 
-def uwue_old(_df):
-  """cals uwue given structure, with an explcit et_obs
-  This was the onld structure before refactoring"""
-  return - _df['gamma']*_df['c_a']\
-                *np.sqrt(_df['vpd'])*_df['p_a']\
-                /(_df['r_a']\
-                  *(_df['et_obs']*(_df['gamma']+_df['delta'])\
-                    -_df['delta']*(_df['r_n']-_df['g_flux'])\
-                    -1./_df['r_a']*_df['rho_a']*CP*_df['vpd'])
-                  *1.6*R_STAR*(273.15 + _df['t_a'])\
-                  *(1.+_df['g1']/np.sqrt(_df['vpd'])))
 
 def uwue(_df):
   """
