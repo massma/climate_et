@@ -16,7 +16,6 @@ R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
 G = 9.81 #gravity constant, m/s2
 
-
 def uwue(_df):
   """
   calcs uwue from _df with obs
@@ -30,63 +29,63 @@ def uwue(_df):
                   *1.6*R_STAR*_df['t_a_k']*(1.0+_df['g1']/np.sqrt(_df['vpd'])))
   return _df
 
-def clean_df(_df):
+def clean_df(_df, var='uwue', vpd_thresh=10.0):
   """
   cleans df, for now removing lower and upper 5 percent of values,
   based on calc'd uwue. Could look into more sophisticated outlier
   identification (seems like from histogram there are clear ouliers).
   """
-  clean_df = _df.loc[((_df.uwue < _df.uwue.quantile(q=0.95)) &\
-                      (_df.uwue > _df.uwue.quantile(q=0.05)))]
+  clean_df = _df.loc[((_df[var] < _df.uwue.quantile(q=0.95)) &\
+                      (_df[var] > _df.uwue.quantile(q=0.05)) &\
+                      (_df.vpd > vpd_thresh))].copy()
+
+  # clean_df = _df.loc[((_df[var] < f_df.uwue.quantile(q=0.95)) &\
+  #                     (_df[var] > _df.uwue.quantile(q=0.05)))].copy()
+
   return clean_df
 
 def pm_et(_df, vpd=None):
   """calculates et using our new penman-monteith"""
   if vpd is None:
     vpd = _df['vpd']
-  _df['et'] = (_df['delta']*_df['r_net']\
-               +_df['g_a']*_df['p_a']/_df['t_a_k']\
-               *(CP*vpd/_df['r_moist']\
-                 -_df['gamma']*_df['c_a']*np.sqrt(vpd)\
-                 /(R_STAR*1.6*_df['uwue']\
-                   *(1.0+_df['g1']/np.sqrt(vpd)))))\
-                   /(_df['delta']+_df['gamma'])
-  return _df
+  return (_df['delta']*_df['r_net']\
+    +_df['g_a']*_df['p_a']/_df['t_a_k']\
+    *(CP*vpd/_df['r_moist']\
+      -_df['gamma']*_df['c_a']*np.sqrt(vpd)\
+      /(R_STAR*1.6*_df['uwue']\
+        *(1.0+_df['g1']/np.sqrt(vpd)))))\
+        /(_df['delta']+_df['gamma'])
+
 
 def sign(_df, vpd=None):
-  """calculates the 'sign' term"""
+  """calculates the 'sign' term of et derivative w.r.t. vpd"""
   if vpd is None:
     vpd = _df['vpd']
-  _df['sign'] = CP/_df['r_moist']\
+  return CP/_df['r_moist']\
                 -_df['gamma']*_df['c_a']\
                 /(1.6*R_STAR*_df['uwue'])\
                 *((2.*_df['g1']+np.sqrt(vpd))\
                   /(2.0*(_df['g1']+np.sqrt(vpd))**2))
-  return _df
 
 def scaling(_df):
   """
-  calculates the 'scaling' term,
+  calculates the 'scaling' term of the et derivative w.r.t. vpd,
   note 2.0 factor is from esat-rh decomposition,
   but need to double check this
   """
-  _df['scaling'] = 2.0*_df['g_a']*_df['p_a']\
-                   /(_df['t_a_k']*(_df['delta'] + _df['gamma']))
-  return _df
-
-def d_et_d_vpd(_df, vpd=None):
-  """calculates the derivative of et w.r.t. vpd"""
-  if vpd is None:
-    vpd = _df['vpd']
-  _df = scaling(_df)
-  _df = sign(_df)
-  _df['d_et'] = _df['scaling']*_df['sign']
-  return _df
+  return 2.0*_df['g_a']*_df['p_a']\
+    /(_df['t_a_k']*(_df['delta'] + _df['gamma']))
 
 def all_diagnostics(_df):
   """calcualtes all diagnostics"""
   _df = uwue(_df)
-  _df = clean_df(_df)
-  _df = pm_et(_df)
-  _df = d_et_d_vpd(_df)
-  return _df
+  _df = _df.groupby('pft').apply(clean_df)
+  _df = _df.reset_index(drop=True)
+  _df['et'] = pm_et(_df)
+  _df['scaling'] = scaling(_df)
+  _df['sign'] = sign(_df)
+  _df['d_et'] = _df['scaling']*_df['sign']
+  mean_df = _df.groupby('pft').mean()
+  min_df = _df.groupby('pft').min()
+  max_df = _df.groupby('pft').max()
+  return _df, mean_df, min_df, max_df

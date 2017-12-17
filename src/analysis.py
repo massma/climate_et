@@ -14,14 +14,14 @@ df = d_io.load_mat_data()
 df.to_pickle('%s/changjie/loaded_data.pkl' % os.environ['DATA'])
 
 prep_df = d_prep.generate_vars(df)
-calc_df = d_calc.all_diagnostics(prep_df)
-
-def max_diff(quant1, quant2):
-  """caclualte the maximuma boslute difference"""
-  return np.nanmax(np.absolute(quant1-quant2))
-
+importlib.reload(d_calc)
+calc_df, mean_df, min_df, max_df = d_calc.all_diagnostics(prep_df)
 importlib.reload(test)
-test.test_et_model(calc_df)
+test.run_all_tests(calc_df)
+
+
+# importlib.reload(test)
+# test.test_et_model(calc_df)
 
 
 
