@@ -5,7 +5,7 @@ This script makes box plot figures for code
 from shared_functions import *
 import seaborn as sns
 import importlib
-importlib.reload(pm)
+
 fontsize=18
 linewidth=2.5
 boxprops = {'linewidth' : 1.5}
@@ -32,10 +32,11 @@ paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
 
 def plot_box(_df):
   """makes a box plot"""
+  mean_row = mean_df.loc[_df.pft.iloc[0], :]
   plt.close('all')
   fig = plt.figure()
   ax = fig.add_subplot(111)
-  ptiles = np.arange(5.0, 91.0, 5.9)
+  ptiles = np.arange(5.0, 91.0, 5.0)
   positions = []
   labels = []
   data = []
@@ -55,10 +56,9 @@ def plot_box(_df):
   #ax.plot(orig_xlim, [d_calc.CP/287.0, d_calc.CP/287.0], 'm--', linewidth=1.0)
   ylim = ax.get_ylim()#[-4.0, 4.0]
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
-  lai = _df.lai.mean()
-  # vpd_crit = et_min_vpd(_df.mean(), _df.lai.mean())/1.0e3
-  # ax.plot([vpd_crit, vpd_crit], ylim, 'b-', linewidth=bluelinewidth)
-  ax.plot(vpd/1.e3, term_2(_df, lai, vpd), 'b-', linewidth=bluelinewidth)
+  uwue = mean_row.uwue
+  ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd),\
+          'b-', linewidth=bluelinewidth)
   #_df.groupby(pd.cut(_df.vpd, bins=20)).apply(add_box, ax=ax)
   #_df.boxplot(column='sign', by=pd.cut(_df.vpd, bins=20), ax=ax)
   if (_df.pft.iloc[0] == 'GRA') | (_df.pft.iloc[0] == 'DBF'):
@@ -71,10 +71,10 @@ def plot_box(_df):
 
   ax.set_xlim(orig_xlim)
   if _df.pft.iloc[0] == 'ENF':
-    ax.text(1.75, 1.2, '*', horizontalalignment='center',\
+    ax.text(1.95, 1.2, '*', horizontalalignment='center',\
             verticalalignment='center', fontdict={'fontsize' : 40})
   plt.tight_layout()
-  plt.savefig('../../doc/shared_figs/%s_box.pdf' % _df.pft.iloc[0])
+  plt.savefig('../../doc/shared_figs/%s_box_garb.pdf' % _df.pft.iloc[0])
   return
 
 #_df = df.iloc[:1000, :].copy()

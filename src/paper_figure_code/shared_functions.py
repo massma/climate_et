@@ -30,7 +30,7 @@ df = dfs['full']
 mean_df = dfs['mean']
 
 def et_min_vpd(_df, uwue=None):
-  """calculates theoretical max vpd as functoin of -df and lai"""
+  """calculates theoretical vpd_crit as functoin of -df and lai"""
   if uwue is None:
     uwue = _df.uwue
   c3 = d_calc.CP/_df.r_moist

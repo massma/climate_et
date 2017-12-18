@@ -75,6 +75,9 @@ def make_ax_plot(_ax, var, _df, meta):
                    meta['title']))
   cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
   cbar.set_label(meta['title'])
+  y_lim = _ax.get_ylim()
+  vpd_crit = et_min_vpd(mean_df.loc[_df.pft.iloc[0], :])
+  _ax.plot(np.ones(2)*vpd_crit, np.array(y_lim), 'k-', linewidth=2.0)
   return
 
 def scatter_plot_paper(_df, meta):
