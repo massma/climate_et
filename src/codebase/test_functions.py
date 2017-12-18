@@ -46,49 +46,21 @@ def test_d_et_model(_df):
         max_diff(_df['d_et']/2.0, d_et_num))
   return
 
-def plot_et_curve(mean_row, min_row, max_row, index):
+def plot_et_curve(mean_row, min_row, max_row, index, _function=pm_et):
   """plots the et curve given a row of df"""
   vpd = np.linspace(min_row.vpd, max_row.vpd)
   et = pm_et(mean_row, vpd=vpd)
+  et_orig = pm_et_orig(mean_row, vpd=vpd)
   plt.figure()
-  plt.plot(vpd, et)
+  plt.plot(vpd, et, label='New PM')
+  plt.plot(vpd, et_orig, label='Mean GPP')
+  plt.legend(loc='best')
   plt.title(index)
   plt.xlabel('vpd (Pa')
   plt.ylabel('et (w/m2)')
   plt.savefig('%s/%s_et_vpd_curve.png' % (PLOTDIR, index))
   return
 
-def medlyn(_df, vpd=None):
-  """calcs medlyn given gpp obs"""
-  return R_STAR*_df['t_a_k']/_df['p_a']\
-    *1.6*(1.0 + _df['g1']/np.sqrt(vpd))*_df['gpp_obs']/_df['c_a']
-
-def lai(_df):
-  """calcs a lai given gpp obs"""
-  vpd = _df['vpd']
-  return _df['g_a']/(((_df['delta']*_df['r_net']\
-                       +_df['g_a']*_df['p_a']*CP*vpd\
-                       /(_df['t_a_k']*_df['r_moist']))\
-                      /_df['et_obs']\
-                      -_df['delta'])/_df['gamma'] -1.0)\
-                      /medlyn(_df, vpd=_df['vpd'])
-
-def pm_et_orig(_df, vpd=None):
-  """original penman monteith as a function of GPP"""
-  if vpd is None:
-    vpd = _df['vpd']
-  return (_df['delta']*_df['r_net']\
-          +_df['g_a']*_df['p_a']*CP*vpd/(_df['t_a_k']*_df['r_moist']))\
-          /(_df['delta']+_df['gamma']*(1.0 + _df['g_a']\
-                                       /(_df['lai']*medlyn(_df, vpd=vpd))))
-
-def pet(_df, vpd=None):
-  """caluclates pet"""
-  if vpd is None:
-    vpd = _df['vpd']
-  return (_df['delta']*_df['r_net']\
-          +_df['g_a']*_df['p_a']*CP*vpd/(_df['t_a_k']*_df['r_moist']))\
-          /(_df['delta']+_df['gamma'])
 
 def get_bias(models, _df):
   """calcs bias for all three"""
@@ -112,12 +84,11 @@ def compare_et(_df, mean_df):
   print('\n PFT: %s' % _df.pft.iloc[0])
   cp_df = _df.copy()
   cp_df.loc[:, 'uwue'] = mean_df.uwue.loc[_df.pft.iloc[0]]
-  cp_df['lai'] = lai(_df)
-  cp_df['lai'] = cp_df.lai.mean() # 1.0
+  cp_df['lai_pm'] = cp_df.lai_pm.mean() # 1.0
   models = {}
   models['new'] = pm_et(cp_df)
   models['original'] = pm_et_orig(cp_df)
-  models['pet'] = pet(_df)
+  models['pet'] = cp_df['pet']
   bias = get_bias(models, _df)
   rmse = get_rmse(models, _df)
   for key in bias:

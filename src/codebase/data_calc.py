@@ -71,6 +71,40 @@ def scaling(_df):
   return 2.0*_df['g_a']*_df['p_a']\
     /(_df['t_a_k']*(_df['delta'] + _df['gamma']))
 
+
+def medlyn(_df, vpd=None):
+  """calcs medlyn given gpp obs"""
+  return R_STAR*_df['t_a_k']/_df['p_a']\
+    *1.6*(1.0 + _df['g1']/np.sqrt(vpd))*_df['gpp_obs']/_df['c_a']
+
+def lai(_df):
+  """calcs a lai given gpp obs"""
+  vpd = _df['vpd']
+  return _df['g_a']/(((_df['delta']*_df['r_net']\
+                       +_df['g_a']*_df['p_a']*CP*vpd\
+                       /(_df['t_a_k']*_df['r_moist']))\
+                      /_df['et_obs']\
+                      -_df['delta'])/_df['gamma'] -1.0)\
+                      /medlyn(_df, vpd=_df['vpd'])
+
+def pm_et_orig(_df, vpd=None):
+  """original penman monteith as a function of GPP"""
+  if vpd is None:
+    vpd = _df['vpd']
+  return (_df['delta']*_df['r_net']\
+          +_df['g_a']*_df['p_a']*CP*vpd/(_df['t_a_k']*_df['r_moist']))\
+          /(_df['delta']+_df['gamma']*(1.0 + _df['g_a']\
+                                       /(_df['lai_pm']*medlyn(_df, vpd=vpd))))
+
+def pet(_df, vpd=None):
+  """caluclates pet"""
+  if vpd is None:
+    vpd = _df['vpd']
+  return (_df['delta']*_df['r_net']\
+          +_df['g_a']*_df['p_a']*CP*vpd/(_df['t_a_k']*_df['r_moist']))\
+          /(_df['delta']+_df['gamma'])
+
+
 def all_diagnostics(_df):
   """calcualtes all diagnostics"""
   _df = uwue(_df)
@@ -80,6 +114,9 @@ def all_diagnostics(_df):
   _df['scaling'] = scaling(_df)
   _df['sign'] = sign(_df)
   _df['d_et'] = _df['scaling']*_df['sign']
+  _df['lai_pm'] = lai(_df)
+  _df['et_pm_original'] = pm_et_orig(_df)
+  _df['pet'] = pet(_df)
   dfs = {'full' : _df,\
          'mean' : _df.groupby('pft').mean(),\
          'min' : _df.groupby('pft').min(),\
