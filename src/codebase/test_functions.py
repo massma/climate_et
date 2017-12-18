@@ -8,6 +8,8 @@ import seaborn as sns
 import numpy as np
 from codebase.data_calc import *
 
+plt.close('all')
+
 PLOTDIR = '%s/climate_et/test_plots' % os.environ['PLOTS']
 
 def max_diff(quant1, quant2):
@@ -23,8 +25,8 @@ def test_et_model(_df):
   sigma = _df['uwue']/_df['uwue_zhou']
   plt.figure()
   sns.distplot(sigma)
-  plt.xlabel("(calc'ed uwue)/(zhou's uwue)")
-  plt.title("Middle 90\% of data")
+  plt.xlabel("sigma") #"(calc'ed uwue)/(zhou's uwue)")
+  plt.title("PDF for middle 90\% of data")
   plt.savefig('%s/sigma_hist.png' % PLOTDIR)
   return
 
@@ -104,9 +106,12 @@ def compare_et_wrapper(dfs):
   pfts = list(dfs['mean'].index)
   bias = {'new' : [], 'original' : [], 'gppfixed' : []}
   rmse = {'new' : [], 'original' : [], 'gppfixed' :[]}
+  bias = {'new' : [], 'original' : []}
+  rmse = {'new' : [], 'original' : []}
+
   for pft in pfts:
     _bias, _rmse = compare_et(dfs['full'].loc[(dfs['full'].pft == pft), :],\
-                            dfs['mean'])
+                              dfs['mean'])
     for key in bias:
       bias[key].append(_bias[key])
       rmse[key].append(_rmse[key])

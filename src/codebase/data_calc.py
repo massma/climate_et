@@ -40,15 +40,17 @@ def clean_df(_df, var='uwue', vpd_thresh=10.0):
                       (_df.vpd > vpd_thresh))].copy()
   return cleaned_df
 
-def pm_et(_df, vpd=None):
+def pm_et(_df, vpd=None, uwue=None):
   """calculates et using our new penman-monteith"""
   if vpd is None:
     vpd = _df['vpd']
+  if uwue is None:
+    uwue = _df['uwue']
   return (_df['delta']*_df['r_net']\
     +_df['g_a']*_df['p_a']/_df['t_a_k']\
     *(CP*vpd/_df['r_moist']\
       -_df['gamma']*_df['c_a']*np.sqrt(vpd)\
-      /(R_STAR*1.6*_df['uwue']\
+      /(R_STAR*1.6*uwue\
         *(1.0+_df['g1']/np.sqrt(vpd)))))\
         /(_df['delta']+_df['gamma'])
 
@@ -124,7 +126,7 @@ def gpp_fixed_wrapper(_df, mean_df):
                                                  'gpp_obs'])
   _df['et_gppfixed'] = pm_et_orig(_df, gpp=mean_df.loc[_df.pft.iloc[0],\
                                                        'gpp_obs'],\
-                                  lai=_df['lai_gppfixed'].mean())
+                                  lai=_df['lai_gppfixed'].mean()) # 1.0
   return _df
 
 def all_diagnostics(_df):
