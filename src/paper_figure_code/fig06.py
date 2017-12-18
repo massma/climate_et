@@ -5,46 +5,19 @@ This script makes fig 6
 from shared_functions import *
 import time
 
+# mean_df is defined up at this level
+
 ### Figure 6 ###
-# note below really takes a long time t
-def d_et_lai_fixed(_df):
+# note below really takes a long time
+def d_et_uwue_fixed(_df):
   """returns d_et calced with mean lai"""
+  mean_row = mean_df.loc[_df.pft.iloc[0], :]
   temp_df = _df.copy()
-  temp_df['lai'] = _df.lai.mean()
-  # print(temp_df['lai'])
-  _df['d_et_lai_fixed'] = calc.d_et(temp_df)
-  temp_df['c_a'] = _df.c_a.mean()
-  _df['d_et_lai_c_a_fixed'] = calc.d_et(temp_df)
-  temp_df['gamma'] = _df.gamma.mean()
-  _df['d_et_lai_all_fixed'] = calc.d_et(temp_df)
-  # temp_df['gamma'] = _df.gamma.mean()
-  # _df['d_et_lai_all_fixed'] = calc.d_et(temp_df)
-  temp_df['c_a'] = _df.c_a
-  _df['d_et_lai_gamma_fixed'] = calc.d_et(temp_df)
+  temp_df['uwue'] = mean_row.uwue
+  _df['d_et_uwue_fixed'] = d_calc.sign(temp_df)*d_calc.scaling(temp_df)
   return _df
 
-df = df.groupby('pft').apply(d_et_lai_fixed)
-
-def rh_d_et_min(_df):
-  """returns rh where ET is minimized, as a function of T and LAI"""
-  mean_df = _df.loc[:, ['r_moist', 'gamma', 'c_a',\
-                        'lai', 'uwue_norm', 'g1']].mean()
-  vpd = et_min_vpd(mean_df, mean_df.lai)
-  t = np.linspace(_df.t_a.min(), _df.t_a.max())
-  esat = met.vapor_pres(t)*100.
-  print('mean esat', esat.mean())
-  print('mean vpd', vpd)
-  rh = (1. - vpd/esat)*100.
-  rh[rh < 0.] = np.nan
-  return t, rh
-
-def vpd_d_et_min(_df):
-  """returns rh where ET is minimized, as a function of T and LAI"""
-  mean_df = _df.loc[:, ['r_moist', 'gamma', 'c_a',\
-                        'lai', 'uwue_norm', 'g1']].mean()
-  t = np.linspace(_df.t_a.min(), _df.t_a.max())
-  vpd = np.ones(t.shape)*et_min_vpd(mean_df, mean_df.lai)
-  return t, vpd
+df = df.groupby('pft').apply(d_et_uwue_fixed)
 
 def meshgrid_apply(_df, column='var', sample=False):
   """calculates a mean on column if size > 1"""
@@ -57,18 +30,11 @@ def meshgrid_apply(_df, column='var', sample=False):
 
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
-  # divider = make_axes_locatable(_ax)
-  # axs.append(_ax)
-  # _ax2 = divider.append_axes("right", size="20%", pad=0.0)
-
   vmax = meta['vmax']
   vmin = -vmax
-  # color = _ax.scatter(_df[meta['x_axis']], _df['t_a'], c=var, alpha=0.1,\
-  #                     s=meta['size'], cmap=meta['cmap'],\
-  #                     vmin=vmin, vmax=vmax)
-  #below is a hack, should have done by name to begin with
+
   _df['var'] = var
-  _df = _df.assign(x_cut=pd.cut(_df[meta['x_axis']], 1000),\
+  _df = _df.assign(x_cut=pd.cut(_df['vpd'], 1000),\
                    t_a_cut=pd.cut(_df['t_a'], 1000))
   if meta['sample'] == 'sampled':
     grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply,\
@@ -80,12 +46,14 @@ def make_ax_plot(_ax, var, _df, meta):
   grouped = grouped.pivot('x_cut', 't_a_cut').transpose()
   # print(grouped)
   _xstr = grouped.columns.values
+  # print(_xstr)
   _ystr = grouped.index.levels[1].values
+  # print(_ystr)
   # add some x, y modifies here to just grab the appropriate edge
-  _x = np.array([float(s[1:-1].split(', ')[0]) for s in _xstr])
-  _xmax = np.array([float(s[1:-1].split(', ')[-1]) for s in _xstr]).max()
-  _y = np.array([float(s[1:-1].split(', ')[0]) for s in _ystr])
-  _ymax = np.array([float(s[1:-1].split(', ')[-1]) for s in _ystr]).max()
+  _x = np.array([interval.left for interval in _xstr])
+  _xmax = np.array([interval.right for interval in _xstr]).max()
+  _y = np.array([interval.left for interval in _ystr])
+  _ymax = np.array([interval.right for interval in _ystr]).max()
   grouped.columns = _x
   grouped.index = _y
   grouped = grouped.sort_index(axis=1)
@@ -97,26 +65,13 @@ def make_ax_plot(_ax, var, _df, meta):
   _x = np.append(_x, _xmax)
   _y = np.append(_y, _ymax)
   _x, _y = np.meshgrid(_x, _y)
-  # grouped[np.isnan(grouped)] = 0.
-  # print('_x mesh', _x)
-  # print('_y mesh', _y)
   z = np.ma.masked_array(grouped.values, mask=np.isnan(grouped.values))
   color = _ax.pcolormesh(_x, _y, z, cmap=meta['cmap'],\
                          vmin=vmin, vmax=vmax)
-  # t, rh = rh_d_et_min(_df)
-  # _ax.plot(rh, t, 'k-')
-  if (meta['x_axis'] == 'vpd'):
-    t, vpd = vpd_d_et_min(_df)
-    _ax.plot(vpd, t, 'k-')
-    t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
-    # test = met.vapor_pres(t_a)*100.*(1. - 0.90)
-    # _ax.plot(test, t_a, 'k-')
-    # test = met.vapor_pres(t_a)*100.*(1. - 0.2)
-    # _ax.plot(test, t_a, 'k-')
-  _ax.set_xlabel('%s (Pa)' % meta['x_axis'].upper())
+  _ax.set_xlabel('%s (Pa)' % 'vpd'.upper())
   _ax.set_ylabel('T (C)')
   _ax.set_title('PFT: %s; %s'\
-                % (str(_df['pft'][0]),\
+                % (str(_df['pft'].iloc[0]),\
                    meta['title']))
   cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
   cbar.set_label(meta['title'])
@@ -126,55 +81,22 @@ def scatter_plot_paper(_df, meta):
   """
   creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
   """
-
-  #meta['x_axis'] = 'vpd'
-  nplots = meta['nplots'] #5
+  nplots = 4
   meta['size'] = 1
   meta['cmap'] = 'RdBu'
 
   fig = plt.figure()
   fig.set_figwidth(fig.get_figwidth()*nplots)
 
-  if nplots == 4:
-    titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
-              r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
-              r'(\overline{\sigma})$']
-    _vars = [_df['d_et'],\
-             _df['d_et']/_df['g_a'],\
-             _df['d_et_lai_fixed'],\
-             _df['d_et_lai_fixed']/_df['g_a']]# ,\
-  elif nplots == 5:
-    titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
-              r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
-              r'(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}'\
-              r'{g_a \partial \, VPD}(\overline{LAI, \gamma})$']
-    _vars = [_df['d_et'],\
-             _df['d_et']/_df['g_a'],\
-             _df['d_et_lai_fixed'],\
-             _df['d_et_lai_fixed']/_df['g_a'],\
-             _df['d_et_lai_gamma_fixed']/_df['g_a']]
-  else:
-    titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
-              r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
-              r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
-              r'(\overline{\sigma})$',\
-              r'$\frac{\partial \;n ET}'\
-              r'{g_a \partial \, VPD}(\overline{LAI, \gamma})$',\
-              'c_a_fixed',\
-              'c_a and gamma fixed']
-    _vars = [_df['d_et'],\
-             _df['d_et']/_df['g_a'],\
-             _df['d_et_lai_fixed'],\
-             _df['d_et_lai_fixed']/_df['g_a'],\
-             _df['d_et_lai_gamma_fixed']/_df['g_a'],\
-             _df['d_et_lai_c_a_fixed']/_df['g_a'],\
-             _df['d_et_lai_all_fixed']/_df['g_a']]
+  titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
+            r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
+            r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
+            r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
+            r'(\overline{\sigma})$']
+  _vars = [_df['d_et'],\
+           _df['d_et']/_df['g_a'],\
+           _df['d_et_uwue_fixed'],\
+           _df['d_et_uwue_fixed']/_df['g_a']]# ,\
 
   axs = [fig.add_subplot(1, nplots, i+1) for i in range(nplots)]
 
@@ -185,8 +107,8 @@ def scatter_plot_paper(_df, meta):
 
   plt.tight_layout()
 
-  fname = '%s/climate_et/paper_plots/scatter/%s_%s.png'\
-          % (os.environ['PLOTS'], _df.pft.iloc[0], meta['x_axis'])
+  fname = '%s/climate_et/paper_plots/scatter/%s_vpd.png'\
+          % (os.environ['PLOTS'], _df.pft.iloc[0])
 
   try:
     plt.savefig(fname)
@@ -200,23 +122,10 @@ start = time.time()
 
 plt.close('all')
 meta = {}
-meta['nplots'] = 4 # 5 4
-# if meta['saple'] == sapmpld, then will take a sample over
-# bins instead of average
-# meta['sample'] = 'sampled'
-meta['sample'] = ''
-meta['x_axis'] = 'vpd'
+meta['sample'] = '' # 'sampled'
 df.groupby('pft').apply(scatter_plot_paper, meta)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*%s.png '\
+os.system('convert -append %s/climate_et/paper_plots/scatter/*vpd.png '\
           '../../doc/paper/fig06%s.png'\
-          % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
+          % (os.environ['PLOTS'], meta['sample']))
 print('done with vpd, time was %f min' % ((time.time()-start)/60.))
-
-meta['x_axis'] = 'rh'
-df.groupby('pft').apply(scatter_plot_paper, meta)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*_%s.png '\
-          '../../doc/paper/fig06b%s.png'\
-          % (os.environ['PLOTS'], meta['x_axis'], meta['sample']))
-print('done with rh, time was %f min' % ((time.time()-start)/60.))
-
 
