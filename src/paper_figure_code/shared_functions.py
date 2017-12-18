@@ -23,7 +23,7 @@ importlib.reload(plot_tools)
 
 # grab sites actually used in analysis
 with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
-          mode='wb') as file:
+          mode='rb') as file:
   dfs = pickle.load(file)
 df = dfs['full']
 mean_df = dfs['mean']

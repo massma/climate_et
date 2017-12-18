@@ -21,7 +21,7 @@ df.to_pickle('%s/changjie/prepped_data.pkl' % os.environ['DATA'])
 importlib.reload(d_calc)
 dfs = d_calc.all_diagnostics(prep_df)
 with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
-          mode='wb') as file:
+          mode='wb') as file :
   pickle.dump(dfs, file)
 importlib.reload(test)
 test.run_all_tests(dfs)
