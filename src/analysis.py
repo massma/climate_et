@@ -20,8 +20,3 @@ importlib.reload(test)
 test.run_all_tests(dfs)
 
 
-# importlib.reload(test)
-# test.test_et_model(calc_df)
-
-
-
