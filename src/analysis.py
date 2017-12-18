@@ -1,6 +1,7 @@
 import codebase.data_io as d_io
 import os
 import importlib
+import pickle
 import numpy as np
 import pandas as pd
 import codebase.data_prep as d_prep
@@ -19,7 +20,9 @@ prep_df = d_prep.generate_vars(df)
 df.to_pickle('%s/changjie/prepped_data.pkl' % os.environ['DATA'])
 importlib.reload(d_calc)
 dfs = d_calc.all_diagnostics(prep_df)
-df.to_pickle('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'])
+with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
+          mode='wb') as file:
+  pickle.dump(dfs, file)
 importlib.reload(test)
 test.run_all_tests(dfs)
 

@@ -7,43 +7,6 @@ import scipy.optimize
 import matplotlib.pyplot as plt
 
 
-full_clean = False
-if full_clean:
-  def clean_df(_df, var='lai'):
-    """remove unphysical LAI values from a df"""
-    out = _df.loc[((_df[var] > 0.1) & (_df[var] < 100.)), :]
-    return out
-
-  def site_clean(_df, var='lai'):
-    """this will remove some percentile of data"""
-    out = _df.loc[((_df[var] < _df[var].quantile(q=0.95)) & \
-                  (_df[var] > _df[var].quantile(q=0.05))), :]
-    return out
-
-  print('all removal')
-  df = pd.read_pickle('%s/changjie/full_pandas_fix_scaling.pkl'\
-                      % os.environ['DATA'])
-  print(df.shape)
-  df = site_clean(df)
-  print('outlier', df.shape)
-  df = clean_df(df)
-  print('cleaned', df.shape)
-  df = clean_df(df, var='lai_gpp')
-  print('lceaned gpp', df.shape)
-  print(df.shape)
-  df['g_a'] = 1./df['r_a']
-  df['d_et_leaf'] = df['scaling']*df['vpd_leaf']
-  df['d_et_atm'] = df['scaling']*df['vpd_atm']
-  df['uwue_norm'] = df.uwue/pm.LV
-  df['r_net'] = df['r_n'] - df['g_flux']
-  jacobians = {'vpd' : calc.d_et,\
-               'lai' : calc.d_et_d_lai,\
-               'seasonal_lai' : calc.d_et_d_lai,\
-               'residual_lai' : calc.d_et_d_lai,\
-               'g_a' : calc.d_et_d_g_a,\
-               'delta' : calc.d_et_d_delta,\
-               'r_net' : calc.d_et_d_r_net}
-
 plt.close('all')
 ###### table 5 ####
 def frequency(_df):

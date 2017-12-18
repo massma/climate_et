@@ -30,14 +30,6 @@ paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
                r'\left( \frac{2 g_1 + \sqrt{D}}'\
                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
 
-# def add_box(_df, ax=None):
-#   """adds a box plot"""
-#   _df_temp = _df.loc[:, ['vpd', 'sign']].copy()
-#   _df_temp.vpd = _df_temp.vpd.mean()
-#   sns.boxplot(x='vpd', y='sign', data=_df_temp, ax=ax)
-#   return
-
-
 def plot_box(_df):
   """makes a box plot"""
   plt.close('all')
@@ -60,7 +52,7 @@ def plot_box(_df):
              whis=[5, 95], boxprops=boxprops, medianprops=medianprops)#sym=('')
   print('make hist for %s' % _df.pft.iloc[0])
   orig_xlim = ax.get_xlim()
-  #ax.plot(orig_xlim, [pm.CP/287.0, pm.CP/287.0], 'm--', linewidth=1.0)
+  #ax.plot(orig_xlim, [d_calc.CP/287.0, d_calc.CP/287.0], 'm--', linewidth=1.0)
   ylim = ax.get_ylim()#[-4.0, 4.0]
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   lai = _df.lai.mean()
@@ -90,15 +82,3 @@ def plot_box(_df):
 df.groupby('pft').apply(plot_box)
 
 
-# _df = df.iloc[:1000, :]
-# plot_box(_df)
-mean_df = df.groupby('pft').mean()
-vpd = np.linspace(1.0,2000.0)
-importlib.reload(pm)
-for index in mean_df.index:
-  plt.figure()
-  test = pm.new_penman_monteith(mean_df.loc[index], vpd=vpd)
-  plt.plot(vpd, test)
-  plt.title(str(index))
-  plt.savefig('%s/temp/%s.png' % (os.environ['PLOTS'], index))
-  print(index)

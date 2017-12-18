@@ -64,3 +64,14 @@ term1 = g_a*rho/(gamma + delta_es)
 test2 = Derivative(term1, e_s)
 
 test2
+
+
+#below was originally in shared_functions, computes series:
+#try some analytis with sympy
+g1 = Symbol('g_1')
+x = Symbol('\frac{\sqrt{D}}{g_1}')
+func = g1*(2 + x)/(2*g1**2*(1 + x)**2)
+print(latex(series(func, x, x0=0., dir='+', n=4)))
+# x = Symbol('\sqrt{D}')
+# func  = (2*g1 + x)/(2*(g1 + x)**2)
+# print(latex(series(func, x, x0=0., dir='+')))

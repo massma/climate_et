@@ -45,16 +45,16 @@ def term_2_approx(_df, lai, vpd, order=4):
     print('error, g1 is variabile: %f!!!!!' % _df.g1.std())
   canopy = {'uwue' : _df.uwue.mean(), 'g1' : _df.g1.mean()}
   if order == 4:
-    return pm.CP/_df.r_moist.mean() \
-      -atmos['gamma']*atmos['c_a']*pm.LV/\
-      (lai*1.6*pm.R_STAR*canopy['uwue'])\
+    return d_calc.CP/_df.r_moist.mean() \
+      -atmos['gamma']*atmos['c_a']*d_calc.LV/\
+      (lai*1.6*d_calc.R_STAR*canopy['uwue'])\
       *(1./canopy['g1'] - 3.*np.sqrt(atmos['vpd'])/(2.*canopy['g1']**2)
         + 2.*atmos['vpd']/canopy['g1']**3\
         - 5.*np.sqrt(atmos['vpd'])**3/(2.*canopy['g1']**4))
   elif order == 2:
-    return pm.CP/_df.r_moist.mean() \
-      -atmos['gamma']*atmos['c_a']*pm.LV/\
-      (lai*1.6*pm.R_STAR*canopy['uwue'])\
+    return d_calc.CP/_df.r_moist.mean() \
+      -atmos['gamma']*atmos['c_a']*d_calc.LV/\
+      (lai*1.6*d_calc.R_STAR*canopy['uwue'])\
       *(1./canopy['g1'] - 3.*np.sqrt(atmos['vpd'])/(2.*canopy['g1']**2))
   else:
     print('error uncoded order number %d' % order)
@@ -65,7 +65,7 @@ grouped = df.groupby('pft')
 print('mean lai: %5.2f' % grouped.lai.mean().mean())
 print('mean vpd: %5.2f' % grouped.vpd.mean().mean())
 
-for key in ['lai', 'vpd', 'g1', 'uwue_norm']:
+for key in ['lai', 'vpd', 'g1', 'uwue']:
   print('cv %s: %5.2f' % (key,\
                           grouped[key].mean().std()/grouped[key].mean().mean()))
 
@@ -86,7 +86,7 @@ plt.savefig('%s/temp/garb.png' % os.environ['PLOTS'])
 def first_half(_df, lai):
   """calcs first half of term 3"""
   return -_df.gamma.mean()*df.c_a.mean()/\
-(lai*1.6*pm.R_STAR*_df.uwue_norm.mean())
+(lai*1.6*d_calc.R_STAR*_df.uwue.mean())
 
 def second_half(_df, vpd):
   """calcs second half of term 3"""
@@ -96,8 +96,8 @@ def second_half(_df, vpd):
 
 def et_min_vpd(_df, lai):
   """calculates theoretical max vpd as functoin of -df and lai"""
-  c3 = pm.CP/_df.r_moist
-  c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+  c3 = d_calc.CP/_df.r_moist
+  c1 = _df.gamma*_df.c_a/(lai*d_calc.R_STAR*1.6*_df.uwue)
   c2 = _df.g1
   sqrt_vpd = (c1 + np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3)
   try:
@@ -110,8 +110,8 @@ def et_min_vpd(_df, lai):
 # def et_min_vpd1(_df, lai):
 #   """calculates theoretical max vpd as functoin of -df and lai"""
 #   """note below is only valid for negative x, which we don't have"""
-#   c3 = pm.CP/_df.r_moist
-#   c1 = _df.gamma*_df.c_a/(lai*pm.R_STAR*1.6*_df.uwue_norm)
+#   c3 = d_calc.CP/_df.r_moist
+#   c1 = _df.gamma*_df.c_a/(lai*d_calc.R_STAR*1.6*_df.uwue)
 #   c2 = _df.g1
 #   return ((c1 - np.sqrt(c1 + 8.*c2*c3)*np.sqrt(c1)-4.*c2*c3)/(4.*c3))**2
 
@@ -126,12 +126,12 @@ def pft_leaf(_df, axs):
     p = axs[0].plot(vpd/1.0e3, term_2(_df, lai, vpd), linewidth=linewidth,\
                     label="%s"#: uWUE=%4.2f, g1=%4.1f"\
                     % (name_dict[_df.pft.iloc[0]]))# ,\
-                       # _df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+                       # _df.uwue.iloc[0],  _df.g1.iloc[0]))
   else:
     p = axs[0].plot(vpd, term_2(_df, lai, vpd),\
                     label="%s: $uWUE\cdot\overline{\sigma}$=%4.2f,f g1=%4.1f"\
                     % (_df.pft.iloc[0],\
-                       lai*_df.uwue_norm.iloc[0],  _df.g1.iloc[0]))
+                       lai*_df.uwue.iloc[0],  _df.g1.iloc[0]))
 
   if PLOT_SERIES:
     axs[0].plot(vpd, term_2_approx(_df, lai, vpd, order=4), linestyle='dashed',\
@@ -161,14 +161,14 @@ def pft_leaf(_df, axs):
   axs[2].plot(lai, et_min,\
               label=r"PFT = %s, uWUE$\cdot\overline\sigma$=%4.2f, g1=%4.1f"\
               % (_df.pft.iloc[0],\
-                 _df.lai.mean()*_df.uwue_norm.iloc[0], _df.g1.iloc[0]))
+                 _df.lai.mean()*_df.uwue.iloc[0], _df.g1.iloc[0]))
   ptiles = np.array([_df.lai.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
   axs[3].plot(lai, np.ones(lai.shape)*I)
   axs[3].plot(ptiles, np.ones(ptiles.shape)*I, 'k*')
   # axs[1].plot(lai, first_half(_df, lai),\
   #             label='%s, uWUE = %4.2f'\
-  #             % (_df.pft.iloc[0], _df.uwue_norm.iloc[0]))
+  #             % (_df.pft.iloc[0], _df.uwue.iloc[0]))
   # # axs[0].plot(ptiles, term_2(_df, ptiles, vpd), 'k*')
   # axs[1].plot(ptiles, first_half(_df, ptiles), 'k*')
   # now second half
@@ -198,7 +198,7 @@ axs[3].set_xlabel('$\sigma$')
 axs[0].set_ylabel(paren_string, fontsize=fontsize)
 axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=linewidth)
 if PLOT_PET:
-  axs[0].plot(axs[0].get_xlim(), [pm.CP/287.0, pm.CP/287.0],\
+  axs[0].plot(axs[0].get_xlim(), [d_calc.CP/287.0, d_calc.CP/287.0],\
               'm--', linewidth=dashedlinewidth, label='PET')
 plt.setp(axs[2].get_yticklabels(), visible=False)
 axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')

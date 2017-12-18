@@ -35,4 +35,10 @@ def make_map(_df):
 
 ### FIGURE 1 ###
 #make a map fig 1
+# get metadata
+site_list = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
+                   'Site_list_(canopy_height).csv' % (os.environ['DATA']))
+site_list.index = site_list.Site
+site_list = site_list.loc[df.values]
+
 make_map(site_list)
