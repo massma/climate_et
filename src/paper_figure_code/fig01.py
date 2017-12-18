@@ -30,7 +30,7 @@ def make_map(_df):
     # m.drawmeridians(np.arange(0.,420.,60.))
   plt.legend(loc='best')
   plt.tight_layout()
-  util.test_savefig('../../doc/paper/fig01_garb.pdf')
+  util.test_savefig('../../doc/paper/fig01.pdf')
   return
 
 ### FIGURE 1 ###

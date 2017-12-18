@@ -35,7 +35,7 @@ def rho_air(_df):
   """returns rho in kg/m3"""
   return _df['p_a']/(_df['r_moist']*(_df['t_a']+273.15))
 
-def saturation_vapor_pressure(_df):
+def sat_vapor_press(_df):
   """returns asturation vapor pressure"""
   return met.vapor_pres(_df['t_a'])*VP_FACTOR
 
@@ -134,7 +134,7 @@ def generate_vars(_df):
   returns updated data structures
   """
   #derived constants
-  _df['e_s'] = saturation_vapor_pressure(_df)
+  _df['e_s'] = sat_vapor_press(_df)
   _df['delta'] = delta(_df)
   _df['gamma'] = gamma(_df)
   _df['r_moist'] = r_moist(_df)

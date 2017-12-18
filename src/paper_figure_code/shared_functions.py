@@ -20,6 +20,7 @@ mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
 importlib.reload(util)
 importlib.reload(plot_tools)
+importlib.reload(d_calc)
 
 # grab sites actually used in analysis
 with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\

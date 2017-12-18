@@ -4,6 +4,7 @@
 This module calculates all diagnostics used in the paper
 """
 import numpy as np
+import codebase.data_prep as d_prep
 
 #geophysical constats
 VP_FACTOR = 100. #convert hPa -> Pa
@@ -64,14 +65,21 @@ def sign(_df, vpd=None):
                 *((2.*_df['g1']+np.sqrt(vpd))\
                   /(2.0*(_df['g1']+np.sqrt(vpd))**2))
 
-def scaling(_df):
+def scaling(_df, t_a=None, g_a=None):
   """
   calculates the 'scaling' term of the et derivative w.r.t. vpd,
   note 2.0 factor is from esat-rh decomposition,
   but need to double check this
   """
-  return 2.0*_df['g_a']*_df['p_a']\
-    /(_df['t_a_k']*(_df['delta'] + _df['gamma']))
+  if t_a is None:
+    delta = _df['delta']
+  else:
+    delta = d_prep.delta({'e_s' : d_prep.sat_vapor_press({'t_a' : t_a}),\
+                          't_a' : t_a})
+  if g_a is None:
+    g_a = _df['g_a']
+  return 2.0*g_a*_df['p_a']\
+    /(_df['t_a_k']*(delta + _df['gamma']))
 
 
 def medlyn(_df, vpd=None, gpp=None):
@@ -141,6 +149,8 @@ def all_diagnostics(_df):
   _df['lai_pm'] = lai(_df)
   _df['et_pm_original'] = pm_et_orig(_df)
   _df['pet'] = pet(_df)
+  # below is measure of uncertainty, comaprison to zhou et al
+  _df['sigma'] = _df['uwue']/_df['uwue_zhou']
   dfs = {'mean' : _df.groupby('pft').mean(),\
          'min' : _df.groupby('pft').min(),\
          'max' : _df.groupby('pft').max(),\

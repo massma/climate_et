@@ -22,9 +22,8 @@ def median_diff(quant1, quant2):
 
 def test_et_model(_df):
   """makes a histogram of calc'd uwue as compated to zhou uwue"""
-  sigma = _df['uwue']/_df['uwue_zhou']
   plt.figure()
-  sns.distplot(sigma)
+  sns.distplot(_df['sigma'])
   plt.xlabel("sigma") #"(calc'ed uwue)/(zhou's uwue)")
   plt.title("PDF for middle 90\% of data")
   plt.savefig('%s/sigma_hist.png' % PLOTDIR)
@@ -63,7 +62,6 @@ def plot_et_curve(mean_row, min_row, max_row, index, _function=pm_et):
   plt.savefig('%s/%s_et_vpd_curve_with_pm.png' % (PLOTDIR, index))
   return
 
-
 def get_bias(models, _df):
   """calcs bias for all three"""
   bias = {}
@@ -90,7 +88,7 @@ def compare_et(_df, mean_df):
   models['new'] = pm_et(cp_df)
   models['original'] = pm_et_orig(cp_df,\
                                   lai=mean_df.lai_pm.loc[_df.pft.iloc[0]]) #1.0
-  models['gppfixed'] = _df['et_gppfixed']
+  # models['gppfixed'] = _df['et_gppfixed']
   models['pet'] = cp_df['pet']
   bias = get_bias(models, _df)
   rmse = get_rmse(models, _df)
