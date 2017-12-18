@@ -30,15 +30,17 @@ def make_map(_df):
     # m.drawmeridians(np.arange(0.,420.,60.))
   plt.legend(loc='best')
   plt.tight_layout()
-  util.test_savefig('../../doc/paper/fig01.pdf')
+  util.test_savefig('../../doc/paper/fig01_garb.pdf')
   return
 
 ### FIGURE 1 ###
 #make a map fig 1
 # get metadata
+sites_used = df.loc[:, 'site'].drop_duplicates()
+
 site_list = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                    'Site_list_(canopy_height).csv' % (os.environ['DATA']))
 site_list.index = site_list.Site
-site_list = site_list.loc[df.values]
+site_list = site_list.loc[sites_used.values]
 
 make_map(site_list)
