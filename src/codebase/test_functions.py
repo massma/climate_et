@@ -58,7 +58,7 @@ def plot_et_curve(mean_row, min_row, max_row, index, _function=pm_et):
   plt.title(index)
   plt.xlabel('vpd (Pa')
   plt.ylabel('et (w/m2)')
-  plt.savefig('%s/%s_et_vpd_curve.png' % (PLOTDIR, index))
+  plt.savefig('%s/%s_et_vpd_curve_with_pm.png' % (PLOTDIR, index))
   return
 
 
@@ -84,10 +84,11 @@ def compare_et(_df, mean_df):
   print('\n PFT: %s' % _df.pft.iloc[0])
   cp_df = _df.copy()
   cp_df.loc[:, 'uwue'] = mean_df.uwue.loc[_df.pft.iloc[0]]
-  cp_df['lai_pm'] = cp_df.lai_pm.mean() # 1.0
   models = {}
   models['new'] = pm_et(cp_df)
-  models['original'] = pm_et_orig(cp_df)
+  models['original'] = pm_et_orig(cp_df,\
+                                  lai=mean_df.lai_pm.loc[_df.pft.iloc[0]]) #1.0
+  models['gppfixed'] = _df['et_gppfixed']
   models['pet'] = cp_df['pet']
   bias = get_bias(models, _df)
   rmse = get_rmse(models, _df)
@@ -101,8 +102,8 @@ def compare_et(_df, mean_df):
 def compare_et_wrapper(dfs):
   """organizes figure and wraps compare_et, which compares new to old PM"""
   pfts = list(dfs['mean'].index)
-  bias = {'new' : [], 'original' : []}
-  rmse = {'new' : [], 'original' : []}
+  bias = {'new' : [], 'original' : [], 'gppfixed' : []}
+  rmse = {'new' : [], 'original' : [], 'gppfixed' :[]}
   for pft in pfts:
     _bias, _rmse = compare_et(dfs['full'].loc[(dfs['full'].pft == pft), :],\
                             dfs['mean'])

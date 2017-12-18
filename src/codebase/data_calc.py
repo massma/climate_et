@@ -72,29 +72,38 @@ def scaling(_df):
     /(_df['t_a_k']*(_df['delta'] + _df['gamma']))
 
 
-def medlyn(_df, vpd=None):
+def medlyn(_df, vpd=None, gpp=None):
   """calcs medlyn given gpp obs"""
+  if gpp is None:
+    gpp = _df['gpp_obs']
   return R_STAR*_df['t_a_k']/_df['p_a']\
-    *1.6*(1.0 + _df['g1']/np.sqrt(vpd))*_df['gpp_obs']/_df['c_a']
+    *1.6*(1.0 + _df['g1']/np.sqrt(vpd))*gpp/_df['c_a']
 
-def lai(_df):
+def lai(_df, vpd=None, gpp=None):
   """calcs a lai given gpp obs"""
-  vpd = _df['vpd']
+  if vpd is None:
+    vpd = _df['vpd']
+  if gpp is None:
+    gpp = _df['gpp_obs']
   return _df['g_a']/(((_df['delta']*_df['r_net']\
                        +_df['g_a']*_df['p_a']*CP*vpd\
                        /(_df['t_a_k']*_df['r_moist']))\
                       /_df['et_obs']\
                       -_df['delta'])/_df['gamma'] -1.0)\
-                      /medlyn(_df, vpd=_df['vpd'])
+                      /medlyn(_df, vpd=_df['vpd'], gpp=gpp)
 
-def pm_et_orig(_df, vpd=None):
+def pm_et_orig(_df, vpd=None, gpp=None, lai=None):
   """original penman monteith as a function of GPP"""
   if vpd is None:
     vpd = _df['vpd']
+  if gpp is None:
+    gpp = _df['gpp_obs']
+  if lai is None:
+    lai = _df['lai_pm']
   return (_df['delta']*_df['r_net']\
           +_df['g_a']*_df['p_a']*CP*vpd/(_df['t_a_k']*_df['r_moist']))\
-          /(_df['delta']+_df['gamma']*(1.0 + _df['g_a']\
-                                       /(_df['lai_pm']*medlyn(_df, vpd=vpd))))
+          /(_df['delta']+_df['gamma']\
+            *(1.0 + _df['g_a']/(lai*medlyn(_df, vpd=vpd, gpp=gpp))))
 
 def pet(_df, vpd=None):
   """caluclates pet"""
@@ -104,6 +113,19 @@ def pet(_df, vpd=None):
           +_df['g_a']*_df['p_a']*CP*vpd/(_df['t_a_k']*_df['r_moist']))\
           /(_df['delta']+_df['gamma'])
 
+def gpp_fixed_wrapper(_df, mean_df):
+  """
+  calculates et with original penman monteith, assuming
+  GPP and lai is constant within PFT. used to compare with new
+  penman monteith.
+  Designed to be called by groupby on pft
+  """
+  _df['lai_gppfixed'] = lai(_df, gpp=mean_df.loc[_df.pft.iloc[0],\
+                                                 'gpp_obs'])
+  _df['et_gppfixed'] = pm_et_orig(_df, gpp=mean_df.loc[_df.pft.iloc[0],\
+                                                       'gpp_obs'],\
+                                  lai=_df['lai_gppfixed'].mean())
+  return _df
 
 def all_diagnostics(_df):
   """calcualtes all diagnostics"""
@@ -117,10 +139,12 @@ def all_diagnostics(_df):
   _df['lai_pm'] = lai(_df)
   _df['et_pm_original'] = pm_et_orig(_df)
   _df['pet'] = pet(_df)
-  dfs = {'full' : _df,\
-         'mean' : _df.groupby('pft').mean(),\
+  dfs = {'mean' : _df.groupby('pft').mean(),\
          'min' : _df.groupby('pft').min(),\
          'max' : _df.groupby('pft').max(),\
          '5' : _df.groupby('pft').quantile(q=0.05),\
          '95' : _df.groupby('pft').quantile(q=0.95)}
+  _df = _df.groupby('pft').apply(gpp_fixed_wrapper, dfs['mean'])
+  _df = _df.reset_index(drop=True)
+  dfs['full'] = _df
   return dfs

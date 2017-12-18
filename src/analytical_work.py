@@ -55,12 +55,12 @@ subbed = deriv.subs(delta_es, delta)
 subbed_2 = subbed.subs(e_s*(rh-1), -vpd)
 subbed_3 = simplify(subbed_2)
 subbed_3
+
 print('latex:\n', latex(subbed_3))
 
 e_s = Function('e_s')(t_a)
 delta_es = Derivative(e_s, t_a)
 term1 = g_a*rho/(gamma + delta_es)
 test2 = Derivative(term1, e_s)
-
 
 test2
