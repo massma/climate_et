@@ -324,156 +324,156 @@
   Adam Massmann:\textbf{ akm2203@columbia.edu }
 \end{frame}
 
-\section{Extra Slides}
+% \section{Extra Slides}
 
-\begin{frame}{Extra slide - statistics}
-  \begin{table}
-    \label{vpd_crit}
-    \caption{More quantitative test of theory.}
-    \centering
-    \begin{tabular}{l c c c c c c}
-      \hline
-      PFT & \specialcell{Fraction of Obs.\\Theory is Correct} & Mean ($\frac{\partial \; ET}{\partial \; VPD} < 0$) & Mean ($\frac{\partial \; ET}{\partial \; VPD} > 0$)\\
-      \hline
-      CRO & 0.566517 & -0.209152 &  0.005856\\
-      CSH & 0.931660 & -0.264746 &       NaN\\
-      DBF & 0.633363 & -0.135679 &  0.042910\\
-      ENF & 0.633138 & -0.150665 &  0.029281\\
-      GRA & 0.442306 & -0.042158 & -0.042480\\
-      \hline
-    \end{tabular}
-  \end{table}
-\end{frame}
-
-\begin{frame}{Quantitative $VPD_{crit}$}
-
-  \scriptsize
-  \begin{table}
-    \label{vpd_crit}
-    \caption{Values of $VPD_{crit}$, where $\frac{\partial \; ET}{\partial \; VPD} = 0$, evaluated at PFT average values for $R_{air}$, $\sigma$, $\gamma$, and $c_s$. For reference, these values are also provided. For values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive.}
-    \centering
-    \begin{tabular}{l c c c c c}
-      \hline
-      PFT & $R_{air}$ & $c_s$ (ppm) & $\gamma$ &  uWUE & \textbf{$VPD_{crit}$ (Pa)} \\
-      \hline
-      CRO &  288.680920 & 372.567691& 65.351523& 2.602873&  \textbf{133.165438} \\
-      CSH &   289.067152& 381.593622& 67.613172& 2.175278& \textbf{4439.564212} \\
-      DBF &   288.624437& 377.449849& 63.421812& 2.746393&  \textbf{888.773243} \\
-      ENF &  288.183849& 377.676463& 61.559242& 4.015362&  \textbf{978.084845} \\
-      GRA &  288.425651& 377.264645& 61.598768& 2.281074& \textbf{1141.630778} \\
-      \hline
-      \multicolumn{2}{l}{}
-    \end{tabular}
-  \end{table}
-\end{frame}
-
-\begin{frame}{Statistics with uncertainty}
-  \scriptsize
-  \begin{table}
-    \caption{Statistics of $\frac{\partial \; ET}{\partial \; VPD}$ as a function of PFT.}
-    \centering
-    \begin{tabular}{l c c c c c}
-      \hline
-      PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)$ & $\frac{\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)}{ \frac{\partial \; ET}{\partial \; R}\left(\overline{env}\right)*\text{std}(R)}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
-      \hline
-      CRO & 0.000853 & 0.026241 & 37.05 & 0.41 & 0.473311\\
-      CSH & -0.108234 & -0.091526 & 101.72 & 0.88 & 0.931660\\
-      DBF & -0.012727 & 0.013794 & 39.47 & 0.33 & 0.461674\\
-      ENF & -0.034087 & 0.000706 & 33.22 & 0.30 & 0.534425\\
-      GRA & -0.019637 & -0.000921 & 33.60 & 0.35 & 0.631735\\
-      \hline
-      \multicolumn{2}{l}{}
-
-      
-    \end{tabular}
-  \end{table}
-\end{frame}
-
-\begin{frame}{Scaling Term}
-  \[\frac{\partial \;  ET}{\partial \; D} = \mathbf{ \frac{g_a \; P}{T(\Delta + \gamma)} }   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
-  \begin{figure}
-    \includegraphics[width=3.0in]{scaling.png}
-    % \caption{}
-  \end{figure}
-\end{frame}
-
-
-\begin{frame}{Extra slide - is theory VPD$_{crit}$ optimum?}
-  \includegraphics[width=0.7\textwidth]{for_agu.pdf}
-\end{frame}
-
-\begin{frame}{Test theory with FLUXNET data - CSH}
-  \includegraphics[width=3.5in]{csh_eee.png}
-\end{frame}
-
-\begin{frame}{Test theory with FLUXNET data - ENF}
-  \includegraphics[width=3.5in]{enf_eee.png}
-\end{frame}
-
-
-\begin{frame}{Test theory with FLUXNET data - DBF}
-  \includegraphics[width=3.5in]{dbf_eee.png}
-\end{frame}
-
-\begin{frame}{Test theory with FLUXNET data - CRO}
-  \includegraphics[width=3.5in]{cro_eee.png}
-\end{frame}
-
-\begin{frame}{Test theory with FLUXNET data - GRA}
-  \includegraphics[width=3.5in]{gra_eee.png}
-\end{frame}
-
-\begin{frame}{Consequences of theory - ``sign'' term}
-Below is a little opaque (at least to me):
-\[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
-so do expansion about $g_1 >> \sqrt{VPD}$:
-\footnotesize
-\[ \frac{\partial \, ET}{\partial \, VPD} \approx \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{1}{g_1} - \frac{3\sqrt{VPD}}{2 g_1^2} +  \mathcal{O}\left(\frac{\sqrt{VPD}}{g_1}\right)^{2} \right) \right)\]
-% \large
-% and:
-%   \[ \sqrt{VPD} \Big|_{\frac{\partial ET}{\partial VPD} = 0} \approx  \frac{2 g_1}{3}  \left( -\frac{ c_p \, g_1\,  1.6  \; R*\; \text{ uWUE }}{R_{air} \gamma c_s } + 1  \right) \]
-
-%   \[ VPD \Big|_{\frac{\partial ET}{\partial VPD} = 0} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
-\end{frame}
-
-
-\begin{frame}{Is uncertainty a function of VPD?}
-  \includegraphics[width=3.0in]{vpd_sigma.png}
-\end{frame}
-
-\begin{frame}{How to take VPD derivative?}
-  % below gnereated in fig03.py
-  \includegraphics[width=3.0in]{e_s_rh.png}
-\end{frame}
-
-
-% \begin{frame}{Summary statistics - extra sl}
+% \begin{frame}{Extra slide - statistics}
 %   \begin{table}
-%     \caption{Statistics of $\frac{\partial \; ET}{\partial \, VPD}$ as a function of PFT.}
+%     \label{vpd_crit}
+%     \caption{More quantitative test of theory.}
 %     \centering
-%     \begin{tabular}{l c c}
+%     \begin{tabular}{l c c c c c c}
 %       \hline
-%       PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+%       PFT & \specialcell{Fraction of Obs.\\Theory is Correct} & Mean ($\frac{\partial \; ET}{\partial \; VPD} < 0$) & Mean ($\frac{\partial \; ET}{\partial \; VPD} > 0$)\\
 %       \hline
-%       CRO & 0.000853  & 0.473311\\
-%       CSH & -0.108234 & 0.931660\\
-%       DBF & -0.012727 & 0.461674\\
-%       ENF & -0.034087 & 0.534425\\
-%       GRA & -0.019637 & 0.631735\\
+%       CRO & 0.566517 & -0.209152 &  0.005856\\
+%       CSH & 0.931660 & -0.264746 &       NaN\\
+%       DBF & 0.633363 & -0.135679 &  0.042910\\
+%       ENF & 0.633138 & -0.150665 &  0.029281\\
+%       GRA & 0.442306 & -0.042158 & -0.042480\\
 %       \hline
-%       \multicolumn{2}{l}{}  
 %     \end{tabular}
 %   \end{table}
 % \end{frame}
 
-% \begin{table}
-%   \centering
-%   \begin{tabular}{l|r}
-%     Item & Quantity \\\hline
-%     Widgets & 42 \\
-%     Gadgets & 13
-%   \end{tabular}
-%   \caption{\label{tab:widgets}An example table.}
-% \end{table}
+% \begin{frame}{Quantitative $VPD_{crit}$}
+
+%   \scriptsize
+%   \begin{table}
+%     \label{vpd_crit}
+%     \caption{Values of $VPD_{crit}$, where $\frac{\partial \; ET}{\partial \; VPD} = 0$, evaluated at PFT average values for $R_{air}$, $\sigma$, $\gamma$, and $c_s$. For reference, these values are also provided. For values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive.}
+%     \centering
+%     \begin{tabular}{l c c c c c}
+%       \hline
+%       PFT & $R_{air}$ & $c_s$ (ppm) & $\gamma$ &  uWUE & \textbf{$VPD_{crit}$ (Pa)} \\
+%       \hline
+%       CRO &  288.680920 & 372.567691& 65.351523& 2.602873&  \textbf{133.165438} \\
+%       CSH &   289.067152& 381.593622& 67.613172& 2.175278& \textbf{4439.564212} \\
+%       DBF &   288.624437& 377.449849& 63.421812& 2.746393&  \textbf{888.773243} \\
+%       ENF &  288.183849& 377.676463& 61.559242& 4.015362&  \textbf{978.084845} \\
+%       GRA &  288.425651& 377.264645& 61.598768& 2.281074& \textbf{1141.630778} \\
+%       \hline
+%       \multicolumn{2}{l}{}
+%     \end{tabular}
+%   \end{table}
+% \end{frame}
+
+% \begin{frame}{Statistics with uncertainty}
+%   \scriptsize
+%   \begin{table}
+%     \caption{Statistics of $\frac{\partial \; ET}{\partial \; VPD}$ as a function of PFT.}
+%     \centering
+%     \begin{tabular}{l c c c c c}
+%       \hline
+%       PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)$ & $\frac{\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)*\text{std}(VPD)}{ \frac{\partial \; ET}{\partial \; R}\left(\overline{env}\right)*\text{std}(R)}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+%       \hline
+%       CRO & 0.000853 & 0.026241 & 37.05 & 0.41 & 0.473311\\
+%       CSH & -0.108234 & -0.091526 & 101.72 & 0.88 & 0.931660\\
+%       DBF & -0.012727 & 0.013794 & 39.47 & 0.33 & 0.461674\\
+%       ENF & -0.034087 & 0.000706 & 33.22 & 0.30 & 0.534425\\
+%       GRA & -0.019637 & -0.000921 & 33.60 & 0.35 & 0.631735\\
+%       \hline
+%       \multicolumn{2}{l}{}
+
+      
+%     \end{tabular}
+%   \end{table}
+% \end{frame}
+
+% \begin{frame}{Scaling Term}
+%   \[\frac{\partial \;  ET}{\partial \; D} = \mathbf{ \frac{g_a \; P}{T(\Delta + \gamma)} }   \left(\frac{ c_p}{R_{air}} - \frac{\text{LAI$_{ref}$}}{\text{LAI}} \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{D}}{2 (g_1 + \sqrt{D})^2}\right) \right)\]
+%   \begin{figure}
+%     \includegraphics[width=3.0in]{scaling.png}
+%     % \caption{}
+%   \end{figure}
+% \end{frame}
+
+
+% \begin{frame}{Extra slide - is theory VPD$_{crit}$ optimum?}
+%   \includegraphics[width=0.7\textwidth]{for_agu.pdf}
+% \end{frame}
+
+% \begin{frame}{Test theory with FLUXNET data - CSH}
+%   \includegraphics[width=3.5in]{csh_eee.png}
+% \end{frame}
+
+% \begin{frame}{Test theory with FLUXNET data - ENF}
+%   \includegraphics[width=3.5in]{enf_eee.png}
+% \end{frame}
+
+
+% \begin{frame}{Test theory with FLUXNET data - DBF}
+%   \includegraphics[width=3.5in]{dbf_eee.png}
+% \end{frame}
+
+% \begin{frame}{Test theory with FLUXNET data - CRO}
+%   \includegraphics[width=3.5in]{cro_eee.png}
+% \end{frame}
+
+% \begin{frame}{Test theory with FLUXNET data - GRA}
+%   \includegraphics[width=3.5in]{gra_eee.png}
+% \end{frame}
+
+% \begin{frame}{Consequences of theory - ``sign'' term}
+% Below is a little opaque (at least to me):
+% \[\frac{\partial \, ET}{\partial \, VPD} = \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)\]
+% so do expansion about $g_1 >> \sqrt{VPD}$:
+% \footnotesize
+% \[ \frac{\partial \, ET}{\partial \, VPD} \approx \text{scaling} \cdot  \left(\frac{ c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R*\; \text{ uWUE }} \left( \frac{1}{g_1} - \frac{3\sqrt{VPD}}{2 g_1^2} +  \mathcal{O}\left(\frac{\sqrt{VPD}}{g_1}\right)^{2} \right) \right)\]
+% % \large
+% % and:
+% %   \[ \sqrt{VPD} \Big|_{\frac{\partial ET}{\partial VPD} = 0} \approx  \frac{2 g_1}{3}  \left( -\frac{ c_p \, g_1\,  1.6  \; R*\; \text{ uWUE }}{R_{air} \gamma c_s } + 1  \right) \]
+
+% %   \[ VPD \Big|_{\frac{\partial ET}{\partial VPD} = 0} = \frac{R_{air}}{4 \, c_p} \left[ \frac{\gamma  c_s}{R* \, 1.6\, \text{uWUE}} + \sqrt{\left(g_1 + 8\, \frac{c_p}{R_{air}}\right) \frac{\gamma c_s}{R* \, 1.6\, \text{uWUE}}} - 4 \, g_1 \frac{ c_p}{R_{air}}\right] \]
+% \end{frame}
+
+
+% \begin{frame}{Is uncertainty a function of VPD?}
+%   \includegraphics[width=3.0in]{vpd_sigma.png}
+% \end{frame}
+
+% \begin{frame}{How to take VPD derivative?}
+%   % below gnereated in fig03.py
+%   \includegraphics[width=3.0in]{e_s_rh.png}
+% \end{frame}
+
+
+% % \begin{frame}{Summary statistics - extra sl}
+% %   \begin{table}
+% %     \caption{Statistics of $\frac{\partial \; ET}{\partial \, VPD}$ as a function of PFT.}
+% %     \centering
+% %     \begin{tabular}{l c c}
+% %       \hline
+% %       PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
+% %       \hline
+% %       CRO & 0.000853  & 0.473311\\
+% %       CSH & -0.108234 & 0.931660\\
+% %       DBF & -0.012727 & 0.461674\\
+% %       ENF & -0.034087 & 0.534425\\
+% %       GRA & -0.019637 & 0.631735\\
+% %       \hline
+% %       \multicolumn{2}{l}{}  
+% %     \end{tabular}
+% %   \end{table}
+% % \end{frame}
+
+% % \begin{table}
+% %   \centering
+% %   \begin{tabular}{l|r}
+% %     Item & Quantity \\\hline
+% %     Widgets & 42 \\
+% %     Gadgets & 13
+% %   \end{tabular}
+% %   \caption{\label{tab:widgets}An example table.}
+% % \end{table}
 
 \end{document}

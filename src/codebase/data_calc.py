@@ -55,13 +55,15 @@ def pm_et(_df, vpd=None, uwue=None):
         *(1.0+_df['g1']/np.sqrt(vpd)))))\
         /(_df['delta']+_df['gamma'])
 
-def sign(_df, vpd=None):
+def sign(_df, vpd=None, uwue=None):
   """calculates the 'sign' term of et derivative w.r.t. vpd"""
   if vpd is None:
     vpd = _df['vpd']
+  if uwue is None:
+    uwue = _df['uwue']
   return CP/_df['r_moist']\
                 -_df['gamma']*_df['c_a']\
-                /(1.6*R_STAR*_df['uwue'])\
+                /(1.6*R_STAR*uwue)\
                 *((2.*_df['g1']+np.sqrt(vpd))\
                   /(2.0*(_df['g1']+np.sqrt(vpd))**2))
 
