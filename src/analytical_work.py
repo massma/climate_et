@@ -26,13 +26,13 @@ g_a, p, t, cp, vpd, r_air = symbols('g_a P T c_p VPD R_air')
 gamma, c_s, r_star, uwue, g_1 = symbols('gamma c_s R* uWUE g_1')
 
 # powers
-wue_power, g1_power = symbols('k n')
+wue_power = symbols('n')
 
 et = (delta*r\
       +g_a*p/t\
        *(cp*vpd/r_air\
          -gamma*c_s*vpd**wue_power\
-          /(r_star*1.6*uwue*(1+g_1/vpd**g1_power))))\
+          /(r_star*1.6*uwue*(1+g_1/sqrt(vpd)))))\
       /(delta + gamma)
 
 d_vpd = diff(et, vpd)
@@ -41,10 +41,12 @@ et
 vpd
 simple_second = simplify(d2_vpd)
 sign_terms = simple_second\
-             *(r_star*t*vpd**6*uwue*(delta + gamma)*(vpd**g1_power+g_1)**3)
+             *(r_star*t*vpd**6*uwue*(delta + gamma)*(sqrt(vpd)+g_1)**3)
 sign_terms = simplify(sign_terms\
-                      /(p*vpd**(wue_power+g1_power+4)*c_s*g_a*gamma))
-sign_func = lambdify([wue_power, g1_power, g_1, vpd], sign_terms)
+                      /(p*vpd**(wue_power+1/2+4)*c_s*g_a*gamma))
+sign_func = lambdify([wue_power, g_1, vpd], sign_terms)
+
+
 
 w_power = np.linspace(0.5, 1.0)
 g_power = np.linspace(0.5, 1.0)
