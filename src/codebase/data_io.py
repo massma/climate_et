@@ -25,6 +25,8 @@ WUE.index = WUE.PFT
 # and from kg H20 to joules
 WUE.loc[:, 'u_wue_yearly'] = WUE.loc[:, 'u_wue_yearly']\
                              *1.e6/12.011*np.sqrt(100.)/LV
+WUE.loc[:, 'u_wue_yearly_std'] = WUE.loc[:, 'u_wue_yearly_std']\
+                             *1.e6/12.011*np.sqrt(100.)/LV
 
 
 SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
@@ -96,8 +98,10 @@ def load_file(filename):
     return None
   try:
     data_out['uwue_zhou'] = WUE.loc[pft, 'u_wue_yearly']
+    data_out['uwue_zhou_std'] = WUE.loc[pft, 'u_wue_yearly_std']
   except KeyError:
     print('Setting Zhou uWUE to NaN for PFT: %s' % pft)
+    data_out['uwue_zhou_std'] = np.nan
     data_out['uwue_zhou'] = np.nan
   data_out['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
   data_out = data_out.dropna()

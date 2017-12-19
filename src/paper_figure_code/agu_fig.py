@@ -57,8 +57,15 @@ def plot_box(_df):
   ylim = ax.get_ylim()#[-4.0, 4.0]
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   uwue = mean_row.uwue
-  ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd),\
+  #\ uwue=mean_row.uwue_zhou),\
+  ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd),
           'b-', linewidth=bluelinewidth)
+  # ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd, uwue=(mean_row.uwue_zhou\
+  #                                             +mean_row.uwue_zhou_std)),\
+  #         'b-', linewidth=1.0)
+  # ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd, uwue=(mean_row.uwue_zhou\
+  #                                               -mean_row.uwue_zhou_std)),\
+  #         'b-', linewidth=1.0)
   #_df.groupby(pd.cut(_df.vpd, bins=20)).apply(add_box, ax=ax)
   #_df.boxplot(column='sign', by=pd.cut(_df.vpd, bins=20), ax=ax)
   if (_df.pft.iloc[0] == 'GRA') | (_df.pft.iloc[0] == 'DBF'):
@@ -74,7 +81,7 @@ def plot_box(_df):
     ax.text(1.95, 1.2, '*', horizontalalignment='center',\
             verticalalignment='center', fontdict={'fontsize' : 40})
   plt.tight_layout()
-  plt.savefig('../../doc/shared_figs/%s_box_garb.pdf' % _df.pft.iloc[0])
+  plt.savefig('../../doc/shared_figs/%s_box.pdf' % _df.pft.iloc[0])
   return
 
 #_df = df.iloc[:1000, :].copy()

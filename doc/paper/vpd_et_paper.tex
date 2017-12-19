@@ -202,10 +202,17 @@ In order to quantify plant response to perturbations to atmospheric demand for w
 
 \section{Data}
 \label{data}
-We use data from FLUXNET2015. Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table \ref{pft}),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
+We use data from FLUXNET2015, including all sites with more than four years of data. Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme (\cite{Loveland_1999}).  Because $g_1$ coefficients \citep{Lin_2015} and uWUE were only both available for five plant functional types (PFTs - see Table \ref{pft}),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
+
+The purpose of this study is examine ecosystem response to atmospheric drying during the growing season. To accomplish this, we filter and quality control the data using a similiar procedure as \cite{Zhou_2015}:
+\begin{itemize}
+\item Only measured or highest (``good'') quality gapfilled data, according to qualtiy control flags, are used.
+\item To isolate the growing season, we only use days in which the average GPP exceeds 10\% of the observed 95th percentile of GPP for a given site.
+\item We remove days with rain and the day following to avoid issues with rain interveption and sensor satruation and high relative humidity (Medlyn et. al. 2017).
+\end{itemize}
+Additionally, we restrict data to the daytime which is identified when downwelling shortwave radation is greater than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W m$^{-2}$. To reduce further reduce the chance of sensor saturation at high relative humidity, we remove all time steps for which VPD is less than .01 kPa. Timesteps with negative observed GPP or ET are also removed. After these quality control proceedures, 332556 upscaled hourly observations remain.
 
 \section{Methods}
-n
 The Penman-Monteith equation (hereafter PM) estimates ET as a function of atmospheric and land-surface variables:
 \begin{linenomath*}
   \begin{equation}
@@ -230,7 +237,7 @@ This can be adapted to an ecosystem-scale stomatal resistance by multiplying by 
   \end{equation}
 \end{linenomath*}
 
-While Equation 3 can be used in PM, it will make analytical work with the function intractable because $A$ is a function of ET itself. To remove dependence of ET on $A$ we can use the semi-empirical results of \citet{Zhou_2015}. \citet{Zhou_2015} showed that:
+While Equation 3 can be used in PM, it will make analytical work with the function intractable because $A$, net CO$_2$ assimilation, is closely functionally related to ET itself. To remove dependence of ET on $A$ we can use the semi-empirical results of \citet{Zhou_2015}. \citet{Zhou_2015} showed that:
 
 \begin{linenomath*}
   \begin{equation}
@@ -273,7 +280,7 @@ Now, from each FLUXNET observation we can calculate single value of $\sigma$:
   \end{equation}
 \end{linenomath*}
 
-The variablility of $\sigma$ across sites and time will provides some measure of uncertainty in our model, assumptions, as well as the fluxnet observations themselves. Mean shifts in $\sigma$ can be attributed to differences in out sampling from those used to calcualte $uWUE$ in \citet{Zhou_2015}. The influence of $\sigma$ will propogate through any uncertainty to our derivative of Equation \ref{et_sigma}:
+The variablility of $\sigma$ across sites and time will provides some measure of uncertainty in our model, assumptions, as well as the fluxnet observations themselves. To correct for differences in sampling between \cite{Zhou_2015} and our data, we set uWUE such that $\overline{\sigma} = 1$. The variability of $\sigma$ then propogates through any uncertainty to our derivative of Equation \ref{et_sigma}:
 
 \begin{linenomath*}
   \begin{equation}
@@ -282,7 +289,7 @@ The variablility of $\sigma$ across sites and time will provides some measure of
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{d_et} we have provided an analytical franework for ecosystem reponse to atmospheric demand perturbations. There are a few subtelties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately orthogonal.
+With Equation \ref{d_et} we have provided an analytical franework for ecosystem reponse to atmospheric demand perturbations. There are a few subtelties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$\explain{Should I take the derivative this way? I think it's more mathematically correct, but it makes the explanation more complicated and only changes the solution by a factor of two.}. $RH$ and $e_s$ are assumed to be approximately orthogonal.
 
 
 
@@ -298,27 +305,27 @@ The $VPD$ dependence in Equation \ref{d_et} is a little opaque. However, mean $V
 One final comment on our derivation which will not be discussed further but is relevant for future analysis: if we  approximage $c_s$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This then begs the question, why use PET for drought metrics in vegetated areas? It appears a much more physically realistic estimate of ET can be had with the same information reqiured to calculate PET. 
 
 \begin{table}
-\caption{Definition of symbols and variables}
+\caption{Definition of symbols and variables, with citation for calculation if applicable.}
 \centering
-\begin{tabular}{l c c}
+\begin{tabular}{l c c c}
 \hline
- Variable & Description & Units  \\
+ Variable & Description & Units & Citation \\
 \hline
-$e_s$  & saturation vapor pressure & Pa  \\ 
-$T$  & temperature  & K \\
-$\Delta$  & $\frac{\partial e_s}{\partial T}$ & Pa K$^{-1}$ \\
-$R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
-  $g_a$  & aerodynamic conductance & m s$^{-1}$  \\
-  $\rho_a$  & air density & kg m$^{-3}$  \\
-  $c_p$  & specific heat capacity of air at constant pressure & J K$^{-1}$ kg$^{-1}$ \\
-  $VPD$  & vapor pressure deficit & Pa  \\
-  $\gamma$  & psychrometric constant & Pa K$^{-1}$   \\
-  $g_s$  & stomatal conductance & m s$^{-1}$  \\
-  $g_{l-s}$  & leaf-scale stomatal conductance & mol m$^{-2}$ s$^{-1}$  \\
-  $R*$ & universal gas constant & J mol$^{-1}$ K$^{-1}$ \\
-  $LAI$ & leaf area index & -\\
-  $\sigma$ & uncertainty parameter & -\\
-  $c_s$ & CO$_2$ concentration & $\mu$ mol CO$_2$ mol$^{-1}$ air\\
+$e_s$  & saturation vapor pressure & Pa  & - \\ 
+$T$  & temperature  & K & - \\
+$\Delta$  & $\frac{\partial e_s}{\partial T}$ & Pa K$^{-1}$ & - \\
+$R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \\
+  $g_a$  & aerodynamic conductance & m s$^{-1}$  & \cite{Thom_1977}, \cite{Paulson_1970}, \cite{Beljaars_1991} \\
+  $\rho_a$  & air density & kg m$^{-3}$  & - \\
+  $c_p$  & specific heat capacity of air at constant pressure & J K$^{-1}$ kg$^{-1}$ & - \\
+  $VPD$  & vapor pressure deficit & Pa  & - \\
+  $\gamma$  & psychrometric constant & Pa K$^{-1}$   & - \\
+  $g_s$  & stomatal conductance & m s$^{-1}$  & \cite{MEDLYN_2011} \\
+  $g_{l-s}$  & leaf-scale stomatal conductance & mol m$^{-2}$ s$^{-1}$  & \cite{MEDLYN_2011} \\
+  $R*$ & universal gas constant & J mol$^{-1}$ K$^{-1}$ & - \\
+  $LAI$ & leaf area index & -& - \\
+  $\sigma$ & uncertainty parameter & -& - \\
+  $c_s$ & CO$_2$ concentration & $\mu$ mol CO$_2$ mol$^{-1}$ air& - \\
 \hline
 \multicolumn{2}{l}{$^{a}$Footnote text here.}
 \end{tabular}
@@ -352,12 +359,10 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   \\
 \label{map_fig}
  \end{figure}
 
-We restrict our analysis to the daytime (sensible heat > 5 W m$^{-1}$ and shortwave radiation > 50 W m$^{-2}$) when there is no precipitation and the plants are growing (GPP > 10\% of the 95th percentile) \explain{This GPP thresholding was used by Changjie, do you know if there is a citation for it? Otherwise it seems like something a reviewer would have issue with as it is arbitray}. Also, because some sites use half hourly data but some use hourly, we aggregate all data to hourly averages. Only times with good quality control flags are used.
-
 \section{Results}
 \label{results}
 
-By construction, the variability in the $\sigma$ term (Equation \ref{lai}) contains all model and observational uncertainties. For an observation that perfectly matches our model and assumptions $\sigma$ will be one. Therefore, if for our assumptions and framework to be reasonable $\sigma$ should be $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated $\sigma$s with outliers (lowest and highest 5\% percent) and nonphysical values ($\sigma$ $<$ 0.) removed. All remaining $\sigma$ values are $O(1)$ which provides confidence in model framework.
+By construction, the variability in the $\sigma$ term (Equation \ref{lai}) contains all model and observational uncertainties. For an observation that perfectly matches our model and constant uWUE assumption $\sigma$ will be one. Therefore, for our assumptions and framework to be reasonable $\sigma$ should be $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated $\sigma$s with outliers (lowest and highest 5\% percent). All remaining $\sigma$ values are $O(1)$ which provides confidence in model framework.
 
 \begin{figure}[h]
 \centering
