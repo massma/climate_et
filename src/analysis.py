@@ -26,4 +26,3 @@ with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
 importlib.reload(test)
 test.run_all_tests(dfs)
 
-

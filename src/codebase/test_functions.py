@@ -3,6 +3,7 @@
 This module does some tests to make sure I didn't do any errors
 """
 import os
+import time
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -47,12 +48,25 @@ def test_d_et_model(_df):
         max_diff(_df['d_et']/2.0, d_et_num))
   return
 
-def plot_et_curve(mean_row, min_row, max_row, index, _function=pm_et):
+def plot_et_curve(mean_row, min_row, max_row, index, _df):
   """plots the et curve given a row of df"""
+  # _df = _df.loc[(_df.pft == index)]
+  # start = time.time()
+  # plt.figure()
+  # sns.jointplot(_df.vpd, _df.et_obs, kind='hex')
+  # plt.savefig('%s/joint_plt_%s.png' % (PLOTDIR, index))
+  # print('sns plot time was %f s' % (time.time()-start))
   vpd = np.linspace(min_row.vpd, max_row.vpd)
   et = pm_et(mean_row, vpd=vpd)
   et_orig = pm_et_orig(mean_row, vpd=vpd)
   plt.figure()
+  # start = time.time()
+  # _df = _df.loc[((_df.r_net > mean_row.r_net-2.0) &\
+  #                (_df.r_net < mean_row.r_net+2.0))]
+  # end = time.time()
+  # print('for pft %s, time to subset was %f s, and nobs was %d'\
+  #     % (index, (end-start), _df.shape[0]))
+  # plt.scatter(_df.vpd, _df.et_obs, s=4.0, c='m')
   plt.plot(vpd, et, label='New PM')
   plt.plot(vpd, et_orig, label='Mean GPP')
   plt.legend(loc='best')
@@ -138,6 +152,7 @@ def run_all_tests(dfs):
   test_pm(_df)
   [plot_et_curve(dfs['mean'].loc[index],\
                  dfs['5'].loc[index],\
-                 dfs['95'].loc[index], index) for index in dfs['mean'].index]
+                 dfs['95'].loc[index], index, _df)\
+   for index in dfs['mean'].index]
   compare_et_wrapper(dfs)
   return
