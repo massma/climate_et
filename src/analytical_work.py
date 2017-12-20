@@ -51,7 +51,7 @@ r, delta = symbols('r Delta')
 # init aero
 g_a, p, t, cp, vpd, r_air = symbols('g_a P T c_p VPD R_air')
 # init plant
-gamma, c_s, r_star, uwue, g_1 = symbols('gamma c_s R* uWUE g_1')
+gamma, c_s, r_star, uwue, g_1, onesix = symbols('gamma c_s R* uWUE g_1 1.6')
 
 # powers
 wue_power = symbols('n')
@@ -60,10 +60,15 @@ et = (delta*r\
       +g_a*p/t\
        *(cp*vpd/r_air\
          -gamma*c_s*vpd**wue_power\
-          /(r_star*1.6*uwue*(1+g_1/vpd**(1/2)))))\
+          /(r_star*onesix*uwue*(1+g_1/vpd**(1/2)))))\
       /(delta + gamma)
 
+def sgn(expr):
+  """crudely returns the sign term given the d_et derivative"""
+  return expr*t*(delta+gamma)/(p*g_a)
+
 d_vpd = diff(et, vpd)
+sign = sgn(d_vpd)
 d2_vpd = diff(d_vpd, vpd)
 et
 vpd
@@ -85,6 +90,7 @@ et_bb = (delta*r\
            /(delta + gamma)
 
 d_vpd_bb = diff(et_bb, vpd)
+sign_bb = sgn(d_vpd_bb)
 d2_vpd_bb = diff(d_vpd_bb, vpd)
 simple = simplify(d2_vpd_bb)
 sign_terms_bb = simple*r_star*t*vpd**3*g_1b*uwue*(delta+gamma)*(vpd-e_s)**3\
