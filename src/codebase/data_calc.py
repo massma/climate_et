@@ -17,18 +17,26 @@ R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
 G = 9.81 #gravity constant, m/s2
 
-def uwue(_df):
+def medlyn_kernel(_df, vpd):
+  """calcs medlyn without g/c_s/1.6 multipliers"""
+  return 1.0+_df['g1']/np.sqrt(vpd)
+
+def bb_kernel(_df, vpd):
+  """calcs kernel for ball-berry model"""
+  return (_df['g1b']*(1.0-vpd/_df['e_s']))/1.6
+
+def uwue(_df, n=0.5, kernel=medlyn_kernel):
   """
   calcs uwue from _df with obs
   note possible issue with c_a instead of c_s
   """
-  _df['uwue'] = -_df['g_a']*_df['gamma']*_df['c_a']\
-                *np.sqrt(_df['vpd'])*_df['p_a']\
+  return -_df['g_a']*_df['gamma']*_df['c_a']\
+                *_df['vpd']**n*_df['p_a']\
                 /((_df['et_obs']*(_df['delta']+_df['gamma'])\
                    -_df['delta']*_df['r_net']\
                    -_df['g_a']*_df['rho_a']*CP*_df['vpd'])\
-                  *1.6*R_STAR*_df['t_a_k']*(1.0+_df['g1']/np.sqrt(_df['vpd'])))
-  return _df
+                  *1.6*R_STAR*_df['t_a_k']*(kernel(_df, vpd=_df['vpd'])))
+
 
 def clean_df(_df, var='uwue', vpd_thresh=10.0):
   """
@@ -36,12 +44,13 @@ def clean_df(_df, var='uwue', vpd_thresh=10.0):
   based on calc'd uwue. Could look into more sophisticated outlier
   identification (seems like from histogram there are clear ouliers).
   """
-  cleaned_df = _df.loc[((_df[var] < _df.uwue.quantile(q=0.95)) &\
-                      (_df[var] > _df.uwue.quantile(q=0.05)) &\
+  cleaned_df = _df.loc[((_df[var] < _df[var].quantile(q=0.95)) &\
+                      (_df[var] > _df[var].quantile(q=0.05)) &\
                       (_df.vpd > vpd_thresh))].copy()
   return cleaned_df
 
-def pm_et(_df, vpd=None, uwue=None):
+
+def pm_et(_df, vpd=None, uwue=None, n=0.5, kernel=medlyn_kernel):
   """calculates et using our new penman-monteith"""
   if vpd is None:
     vpd = _df['vpd']
@@ -50,9 +59,9 @@ def pm_et(_df, vpd=None, uwue=None):
   return (_df['delta']*_df['r_net']\
     +_df['g_a']*_df['p_a']/_df['t_a_k']\
     *(CP*vpd/_df['r_moist']\
-      -_df['gamma']*_df['c_a']*np.sqrt(vpd)\
+      -_df['gamma']*_df['c_a']*vpd**n\
       /(R_STAR*1.6*uwue\
-        *(1.0+_df['g1']/np.sqrt(vpd)))))\
+        *(kernel(_df, vpd)))))\
         /(_df['delta']+_df['gamma'])
 
 def sign(_df, vpd=None, uwue=None, n=0.5):
@@ -67,7 +76,7 @@ def sign(_df, vpd=None, uwue=None, n=0.5):
   return CP/_df['r_moist']\
                 -_df['gamma']*_df['c_a']\
                 /(1.6*R_STAR*uwue)\
-                *(vpd**(n-1)*((n+0.5)*_df['g1']/np.sqrt(vpd)+1))
+                *(vpd**(n-1.0)*((n+0.5)*_df['g1']/np.sqrt(vpd)+n))\
                   /(_df['g1']/np.sqrt(vpd)+1.0)**2
 
 def scaling(_df, t_a=None, g_a=None):
@@ -144,7 +153,10 @@ def gpp_fixed_wrapper(_df, mean_df):
 
 def all_diagnostics(_df):
   """calcualtes all diagnostics"""
-  _df = uwue(_df)
+  _df['uwue'] = uwue(_df)
+  _df['uwue_bb'] = uwue(_df, kernel=bb_kernel)
+  _df['iwue_bb'] = uwue(_df, kernel=bb_kernel, n=1.0)
+  _df['iwue'] = uwue(_df, n=1.0)
   _df = _df.groupby('pft').apply(clean_df)
   _df = _df.reset_index(drop=True)
   _df['et'] = pm_et(_df)

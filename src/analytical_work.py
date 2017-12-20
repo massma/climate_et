@@ -65,7 +65,10 @@ et = (delta*r\
 
 def sgn(expr):
   """crudely returns the sign term given the d_et derivative"""
-  return expr*t*(delta+gamma)/(p*g_a)
+  sign = expr*t*(delta+gamma)/(p*g_a)
+  neg = sign- cp/r_air
+  coll = collect(neg, (c_s*gamma/(1.6*r_star*uwue*onesix)))
+  return coll
 
 d_vpd = diff(et, vpd)
 sign = sgn(d_vpd)
