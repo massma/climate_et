@@ -12,11 +12,39 @@ df = dfs['full']
 mean_df = dfs['mean']
 
 
-# #try some anayltics with sympy
-# g_1 = Symbol('g_1')
-# x = Symbol('\frac{\sqrt{D}}{g_1}')
-# func = g_1*(2 + x)/(2*g_1**2*(1 + x)**2)
-# print(latex(series(func, x, x0=0., dir='+', n=4)))
+def plot_second_derivative(function, name):
+  """
+  given a fucntion for second derivative, makes a plot
+  vpd on x axis wue power on y axis
+  """
+  w_power = np.linspace(0.5, 1.0)
+  plt.close('all')
+  fig = plt.figure()
+  fig.set_figheight(fig.get_figheight()*3)
+  fig.set_figwidth(fig.get_figwidth()*2)
+  axs = [fig.add_subplot(3,2,i+1) for i in range(5)]
+  for index, ax in zip(mean_df.index, axs):
+    row = dfs['mean'].loc[index, :]
+    _vpd = np.linspace(dfs['5'].loc[index, 'vpd'],\
+                      dfs['95'].loc[index, 'vpd'])
+    _vpd, _w_power = np.meshgrid(_vpd, w_power)
+    # note should probably have g1 units move with g1 power
+    zvar = function(_w_power, _vpd, row.g1)
+    vmax = 1000.0#1.0*zvar.std()+zvar.mean()
+    color = ax.pcolormesh(_vpd, _w_power, zvar, cmap='RdBu',\
+                          vmin=-vmax, vmax=vmax)
+    ax.set_xlabel('VPD')
+    ax.set_ylabel('WUE VPD power')
+    ax.set_title('PFT: %s' % (index))
+    cbar = plt.colorbar(color, ax=ax)
+
+  cbar.set_label('Second Derivative')
+  plt.tight_layout()
+  plt.savefig('%s/climate_et/analytics/%s.png'\
+              % (os.environ['PLOTS'], name))
+  fig.clf()
+  return
+
 init_printing()
 # init rad
 r, delta = symbols('r Delta')
@@ -32,7 +60,7 @@ et = (delta*r\
       +g_a*p/t\
        *(cp*vpd/r_air\
          -gamma*c_s*vpd**wue_power\
-          /(r_star*1.6*uwue*(1+g_1/sqrt(vpd)))))\
+          /(r_star*1.6*uwue*(1+g_1/vpd**(1/2)))))\
       /(delta + gamma)
 
 d_vpd = diff(et, vpd)
@@ -41,35 +69,57 @@ et
 vpd
 simple_second = simplify(d2_vpd)
 sign_terms = simple_second\
-             *(r_star*t*vpd**6*uwue*(delta + gamma)*(sqrt(vpd)+g_1)**3)
+             *(r_star*t*vpd**6*uwue*(delta + gamma)*(vpd**(1/2)+g_1)**3)
 sign_terms = simplify(sign_terms\
                       /(p*vpd**(wue_power+1/2+4)*c_s*g_a*gamma))
-sign_func = lambdify([wue_power, g_1, vpd], sign_terms)
+sign_func = lambdify([wue_power, vpd, g_1], sign_terms)
 
+plot_second_derivative(sign_func, 'medlyn')
 
+g_1b, e_s = symbols('g_1b e_s')
+et_bb = (delta*r\
+         +g_a*p/t\
+         *(cp*vpd/r_air\
+           -gamma*c_s*vpd**wue_power\
+           /(r_star*uwue*g_1b*(1-vpd/e_s))))\
+           /(delta + gamma)
 
+d_vpd_bb = diff(et_bb, vpd)
+d2_vpd_bb = diff(d_vpd_bb, vpd)
+simple = simplify(d2_vpd_bb)
+sign_terms_bb = simple*r_star*t*vpd**3*g_1b*uwue*(delta+gamma)*(vpd-e_s)**3\
+                /(p*c_s*e_s*g_a*gamma)
+
+sign_func_bb = lambdify([wue_power, vpd, e_s], sign_terms_bb)
+name = 'bb'
+function = sign_func_bb
 w_power = np.linspace(0.5, 1.0)
-g_power = np.linspace(0.5, 1.0)
-w_power, g_power = np.meshgrid(w_power, g_power)
 plt.close('all')
 fig = plt.figure()
 fig.set_figheight(fig.get_figheight()*3)
-for index in mean_df.index:
-  axs = [fig.add_subplot(3,1,i+1) for i in range(3)]
-  for ax, key in zip(axs, ['5', 'mean', '95']):
-    row = dfs[key].loc[index, :]
-    # note should probably have g1 units move with g1 power
-    g1_corrected = (row.g1**2)**g_power
-    zvar = sign_func(w_power, g_power, g1_corrected, row.vpd)
-    vmax = 1000.0#1.0*zvar.std()+zvar.mean()
-    color = ax.pcolormesh(w_power, g_power, zvar, cmap='RdBu',\
-                          vmin=-vmax, vmax=vmax)
-    ax.set_xlabel('WUE VPD power')
-    ax.set_ylabel('Stomatal VPD power')
-    ax.set_title('PFT: %s, %s percentile VPD' % (index, key))
-    plt.colorbar(color, ax=ax)
-  plt.savefig('%s/climate_et/analytics/%s.png' % (os.environ['PLOTS'], index))
-  fig.clf()
+fig.set_figwidth(fig.get_figwidth()*2)
+axs = [fig.add_subplot(3,1,i+1) for i in range(3)]
+for key, ax in zip(['5', 'mean', '95'], axs):
+  e_s = dfs[key].e_s.mean()
+  _vpd = np.linspace(dfs['5'].vpd.min(),\
+                     np.min([dfs['95'].vpd.max(), e_s]))
+  _vpd, _w_power = np.meshgrid(_vpd, w_power)
+
+  zvar = function(_w_power, _vpd, e_s)
+  vmax = 1.e6#1.0*zvar.std()+zvar.mean()
+  color = ax.pcolormesh(_vpd, _w_power, zvar, cmap='RdBu',\
+                        vmin=-vmax, vmax=vmax)
+  ax.set_xlabel('VPD')
+  ax.set_ylabel('WUE VPD power')
+  ax.set_title('e_s percentile: %s, value: %f' % (key, e_s))
+  cbar = plt.colorbar(color, ax=ax)
+
+cbar.set_label('Second Derivative')
+plt.tight_layout()
+plt.savefig('%s/climate_et/analytics/%s.png'\
+            % (os.environ['PLOTS'], name))
+fig.clf()
+
 
 # #belos is doing split of d_s and vpd
 # # vpd = (1. - rh)*e_s
