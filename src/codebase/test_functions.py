@@ -72,11 +72,11 @@ def plot_et_curve(mean_row, min_row, max_row, index, _df):
   vpd = np.linspace(min_row.vpd, max_row.vpd)
   et = pm_et(mean_row, vpd=vpd)
   et_orig = pm_et_orig(mean_row, vpd=vpd)
-  et_iwue = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue, n=1.0)
-  et_iwue_bb = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue_bb,\
-                  n=1.0, kernel=bb_kernel)
-  et_bb = pm_et(mean_row, vpd=vpd, uwue=mean_row.uwue_bb,\
-                  n=0.5, kernel=bb_kernel)
+  # et_iwue = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue, n=1.0)
+  # et_iwue_bb = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue_bb,\
+  #                 n=1.0, kernel=bb_kernel)
+  # et_bb = pm_et(mean_row, vpd=vpd, uwue=mean_row.uwue_bb,\
+  #                 n=0.5, kernel=bb_kernel)
   plt.figure()
   # start = time.time()
   # _df = _df.loc[((_df.r_net > mean_row.r_net-2.0) &\
@@ -87,9 +87,9 @@ def plot_et_curve(mean_row, min_row, max_row, index, _df):
   # plt.scatter(_df.vpd, _df.et_obs, s=4.0, c='m')
   plt.plot(vpd, et, label='uWUE PM')
   plt.plot(vpd, et_orig, label='Mean GPP')
-  plt.plot(vpd, et_iwue, label='iWUE PM')
-  plt.plot(vpd, et_bb, label='uWUE BB')
-  plt.plot(vpd, et_iwue_bb, label='iWUE BB')
+  # plt.plot(vpd, et_iwue, label='iWUE PM')
+  # plt.plot(vpd, et_bb, label='uWUE BB')
+  # plt.plot(vpd, et_iwue_bb, label='iWUE BB')
   plt.legend(loc='best')
   plt.title(index)
   plt.xlabel('vpd (Pa')
