@@ -25,29 +25,22 @@ def bb_kernel(_df, vpd):
   """calcs kernel for ball-berry model"""
   return (_df['g1b']*(1.0-vpd/_df['e_s']))/1.6
 
-def uwue(_df, n=0.5, kernel=medlyn_kernel):
-  """
-  calcs uwue from _df with obs
-  note possible issue with c_a instead of c_s
-  """
-  # -_df['g_a']*_df['gamma']*_df['c_a']\
-  #               *_df['vpd']**n*_df['p_a']\
-  #               /((_df['et_obs']*(_df['delta']+_df['gamma'])\
-  #                  -_df['delta']*_df['r_net']\
-  #                  -_df['g_a']*_df['rho_a']*CP*_df['vpd'])\
-  #                 *1.6*R_STAR*_df['t_a_k']*(kernel(_df, vpd=_df['vpd'])))
-  return 
-
-def clean_df(_df, var='uwue', vpd_thresh=10.0):
+def clean_df(_df, var='uwue', vpd_thresh=10.0, frac_error=0.2):
   """
   cleans df, for now removing lower and upper 5 percent of values,
   based on calc'd uwue. Could look into more sophisticated outlier
   identification (seems like from histogram there are clear ouliers).
   """
-  cleaned_df = _df.loc[((_df[var] < _df[var].quantile(q=0.95)) &\
-                      (_df[var] > _df[var].quantile(q=0.05)) &\
-                      (_df.vpd > vpd_thresh))].copy()
-  return cleaned_df
+  # cleaned_df = _df.loc[((_df[var] < _df[var].quantile(q=0.95)) &\
+  #                     (_df[var] > _df[var].quantile(q=0.05)) &\
+  #                     (_df.vpd > vpd_thresh))].copy()
+  # cleaned_df = _df.loc[((_df.gpp_obs > 1.0) &\
+  #                       (_df.et_obs > 10.0) &\
+  #                       (_df.vpd > 100.0))].copy()
+
+  # diff = np.absolute(_df['et']/_df['et_obs']-1.0)
+  # cleaned_df = _df.loc[diff < frac_error].copy()
+  return _df # cleaned_df
 
 
 def pm_et(_df, vpd=None, uwue=None, n=0.5, kernel=medlyn_kernel):
@@ -153,12 +146,6 @@ def gpp_fixed_wrapper(_df, mean_df):
 
 def all_diagnostics(_df):
   """calcualtes all diagnostics"""
-  _df['uwue'] = uwue(_df)
-  _df['uwue_bb'] = uwue(_df, kernel=bb_kernel)
-  _df['iwue_bb'] = uwue(_df, kernel=bb_kernel, n=1.0)
-  _df['iwue'] = uwue(_df, n=1.0)
-  _df = _df.groupby('pft').apply(clean_df)
-  _df = _df.reset_index(drop=True)
   _df['et'] = pm_et(_df)
   _df['scaling'] = scaling(_df)
   _df['sign'] = sign(_df)

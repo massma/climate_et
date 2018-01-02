@@ -8,6 +8,7 @@ import os
 import glob
 import pandas as pd
 import numpy as np
+import metcalcs as met
 import scipy.io as io
 
 LV = 2.5e6
@@ -33,6 +34,12 @@ SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        'Site_list_(canopy_height).csv' % os.environ['DATA'],\
                        delimiter=',')
 SITELIST.index = SITELIST.Site
+
+
+def sat_vapor_press(_df):
+  """returns asturation vapor pressure"""
+  return met.vapor_pres(_df['t_a'])*100
+
 
 def add_atmos_dict(data_out, data):
   """generates an atmos dictionary"""
@@ -67,8 +74,21 @@ def gen_time(data):
   #time = np.datetime64()
   return datestr
 
+def filter_uwue(_df):
+  """does same QC produre as Zhou et al 2015, but with hourly"""
+  if _df.et_obs.count() >= 12:
+    _df['uwue'] = _df['gpp_obs'].sum()/_df['et_obs'].sum()\
+                  *np.sqrt(_df['vpd'].mean())
+    _df['iwue'] = _df['gpp_obs'].sum()/_df['et_obs'].sum()\
+                  *np.sqrt(_df['vpd'].mean())
+  else:
+    _df['uwue'] = np.nan
+    _df['iwue'] = np.nan
+  return _df
+
 def load_file(filename):
   """loads up a matlab file from changjie"""
+  print('workijng on %s' % filename)
   data = io.loadmat(filename)
   data_out = {}
   # below mm/s
@@ -80,9 +100,14 @@ def load_file(filename):
   data_out = add_atmos_dict(data_out, data)
   data_out = add_canopy_dict(data_out, data)
   data_out['time'] = gen_time(data)
-  data_out = pd.DataFrame(data=data_out, index=np.squeeze(data['time']))
-  data_out = data_out.dropna()
+  data_out = pd.DataFrame(data=data_out, index=pd.DatetimeIndex(data['time']))
+  data_out['e_s'] = sat_vapor_press(data_out)
+  data_out['vpd'] = data_out['e_s']*(1.0 - data_out['rh']/100.0)
   data_out.loc[data_out['et_obs'] <= 0.0, 'et_obs'] = np.nan
+  data_out.loc[data_out['gpp_obs'] <= 0.0, 'gpp_obs'] = np.nan
+  data_out.loc[data_out['vpd'] <= 0.0, 'vpd'] = np.nan
+  data_out = data_out.dropna()
+  data_out = data_out.groupby(pd.TimeGrouper('D')).apply(filter_uwue)
   try:
     pft = data_out.iloc[0, :].loc['pft']
   except IndexError:
