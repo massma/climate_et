@@ -30,13 +30,13 @@ def uwue(_df, n=0.5, kernel=medlyn_kernel):
   calcs uwue from _df with obs
   note possible issue with c_a instead of c_s
   """
-  return -_df['g_a']*_df['gamma']*_df['c_a']\
-                *_df['vpd']**n*_df['p_a']\
-                /((_df['et_obs']*(_df['delta']+_df['gamma'])\
-                   -_df['delta']*_df['r_net']\
-                   -_df['g_a']*_df['rho_a']*CP*_df['vpd'])\
-                  *1.6*R_STAR*_df['t_a_k']*(kernel(_df, vpd=_df['vpd'])))
-
+  # -_df['g_a']*_df['gamma']*_df['c_a']\
+  #               *_df['vpd']**n*_df['p_a']\
+  #               /((_df['et_obs']*(_df['delta']+_df['gamma'])\
+  #                  -_df['delta']*_df['r_net']\
+  #                  -_df['g_a']*_df['rho_a']*CP*_df['vpd'])\
+  #                 *1.6*R_STAR*_df['t_a_k']*(kernel(_df, vpd=_df['vpd'])))
+  return 
 
 def clean_df(_df, var='uwue', vpd_thresh=10.0):
   """
