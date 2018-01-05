@@ -35,6 +35,6 @@ _df = dfs['full']
 import seaborn as sns
 import matplotlib.pyplot as plt
 plt.figure()
-sns.distplot(_df.uwue)
-#sns.jointplot(_df.et_obs, _df.et, kind='hex')
+#sns.distplot(_df.uwue)
+sns.jointplot(_df.et_obs, _df.et, kind='hex')
 plt.savefig('%s/temp/garb1.png' % os.environ['PLOTS'])

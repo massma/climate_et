@@ -38,7 +38,7 @@ SITELIST.index = SITELIST.Site
 
 def sat_vapor_press(_df):
   """returns asturation vapor pressure"""
-  return met.vapor_pres(_df['t_a'])*100
+  return met.vapor_pres(_df['t_a'])*100.0
 
 
 def add_atmos_dict(data_out, data):
