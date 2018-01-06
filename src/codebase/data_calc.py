@@ -33,7 +33,7 @@ def uwue(_df, n=0.5, kernel=medlyn_kernel):
   return -_df['g_a']*_df['gamma']*_df['c_a']\
     *_df['vpd']**n*_df['p_a']\
     /((_df['et_obs']*(_df['delta']+_df['gamma'])\
-       n-_df['delta']*_df['r_net']\
+       -_df['delta']*_df['r_net']\
        -_df['g_a']*_df['rho_a']*CP*_df['vpd'])\
       *1.6*R_STAR*_df['t_a_k']*(kernel(_df, vpd=_df['vpd'])))
 

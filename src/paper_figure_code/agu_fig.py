@@ -27,8 +27,8 @@ name_dict = {'CRO': 'Crops',\
 
 paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
                r'- \frac{\gamma c_s }{1.6 \; R\; \sigma \; uWUE  }'\
-               r'\left( \frac{2 g_1 + \sqrt{D}}'\
-               r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
+               r'\left( \frac{2 g_1 + \sqrt{VPD}}'\
+               r'{2 (g_1 + \sqrt{VPD})^2}\right)\right)$'
 
 def plot_box(_df):
   """makes a box plot"""
@@ -68,18 +68,20 @@ def plot_box(_df):
   #         'b-', linewidth=1.0)
   #_df.groupby(pd.cut(_df.vpd, bins=20)).apply(add_box, ax=ax)
   #_df.boxplot(column='sign', by=pd.cut(_df.vpd, bins=20), ax=ax)
-  if (_df.pft.iloc[0] == 'GRA') | (_df.pft.iloc[0] == 'DBF'):
+  if (_df.pft.iloc[0] == 'ENF') | (_df.pft.iloc[0] == 'DBF')\
+     | (_df.pft.iloc[0] == 'CSH'):
     ax.set_ylabel(paren_string, fontsize=fontsize)
-  ax.set_xlabel('VPD (kPa)', fontsize=fontsize)
+  if (_df.pft.iloc[0] == 'CSH') | (_df.pft.iloc[0] == 'GRA'):
+    ax.set_xlabel('VPD (kPa)', fontsize=fontsize)
   ax.set_title(name_dict[_df.pft.iloc[0]], fontsize=fontsize+3)
   ax.plot(orig_xlim, [0., 0.], 'k--', linewidth=dashedlinewidth)
 
   ax.set_ylim(ylim)
 
   ax.set_xlim(orig_xlim)
-  if _df.pft.iloc[0] == 'ENF':
-    ax.text(1.95, 1.2, '*', horizontalalignment='center',\
-            verticalalignment='center', fontdict={'fontsize' : 40})
+  # if _df.pft.iloc[0] == 'ENF':
+  #   ax.text(1.95, 1.2, '*', horizontalalignment='center',\
+  #           verticalalignment='center', fontdict={'fontsize' : 40})
   plt.tight_layout()
   plt.savefig('../../doc/shared_figs/%s_box.pdf' % _df.pft.iloc[0])
   return
@@ -88,4 +90,20 @@ def plot_box(_df):
 #plot_box(_df)
 df.groupby('pft').apply(plot_box)
 
-
+os.system('pdfjam %s/DBF_box.pdf %s/ENF_box.pdf %s/CSH_box.pdf '\
+          '--nup 1x3 --no-landscape --outfile %s/first-column.pdf'\
+          % tuple(['../../doc/shared_figs']*4))
+os.system('pdfcrop --margins 10 %s %s'\
+          % tuple(['../../doc/shared_figs/first-column.pdf']*2))
+os.system('pdfjam %s/CRO_box.pdf %s/GRA_box.pdf '\
+          '--nup 1x3 --no-landscape --outfile %s/second-column.pdf'\
+          % tuple(['../../doc/shared_figs']*3))
+os.system('pdfcrop --margins 10 %s %s'\
+          % tuple(['../../doc/shared_figs/second-column.pdf']*2))
+os.system('pdfjam %s %s '\
+          '--nup 2x1 --no-landscape --outfile %s/agu_fig.pdf'\
+          % ('../../doc/shared_figs/first-column.pdf',\
+             '../../doc/shared_figs/second-column.pdf',\
+             '../../doc/paper/'))
+os.system('pdfcrop --margins 10 %s %s'\
+          % tuple(['../../doc/paper/agu_fig.pdf']*2))

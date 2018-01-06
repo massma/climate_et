@@ -1,65 +1,7 @@
 % 11/23/2015
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% AGUJournalTemplate.tex: this template file is for articles formatted with LaTeX
-%
-% This file includes commands and instructions
-% given in the order necessary to produce a final output that will
-% satisfy AGU requirements. 
-%
-% You may copy this file and give it your
-% article name, and enter your text.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PLEASE DO NOT USE YOUR OWN MACROS
-% DSO NOT USE \newcommand, \renewcommand, or \def, etc.
-%
-% FOR FIGURES, DO NOT USE \psfrag or \subfigure.
-% DO NOT USE \psfrag or \subfigure commands.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Step 1: Set the \documentclass
-%
-% There are two options for article format:
-%
-% 1) PLEASE USE THE DRAFT OPTION TO SUBMIT YOUR PAPERS.
-% The draft option produces double spaced output.
-% 
-% 2) numberline will give you line numbers.
-
-%% To submit your paper:
 \documentclass[draft,linenumbers]{agujournal}
 % \draftfalse
 \drafttrue
-
-%% For final version.
-% \documentclass{agujournal}
-
-% Now, type in the journal name: \journalname{<Journal Name>}
-
-% ie, \journalname{Journal of Geophysical Research}
-%% Choose from this list of Journals:
-%
-% JGR-Atmospheres
-% JGR-Biogeosciences
-% JGR-Earth Surface
-% JGR-Oceans
-% JGR-Planets
-% JGR-Solid Earth
-% JGR-Space Physics
-% Global Biochemical Cycles
-% Geophysical Research Letters
-% Paleoceanography
-% Radio Science
-% Reviews of Geophysics
-% Tectonics
-% Space Weather
-% Water Resource Research
-% Geochemistry, Geophysics, Geosystems
-% Journal of Advances in Modeling Earth Systems (JAMES)
-% Earth's Future
-% Earth and Space Science
-%
-%
 
 \journalname{Agricultural and Forest Meteorology}
 
@@ -277,7 +219,7 @@ Now, from each FLUXNET observation we can calculate single value of $\sigma$:
 \begin{linenomath*}
   \begin{equation}
 \sigma = - \frac{g_a \gamma c_s \sqrt{VPD} L_v P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p VPD\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})}
-    \label{et_sigma}
+    \label{sigma}
   \end{equation}
 \end{linenomath*}
 
@@ -363,12 +305,12 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \
 \section{Results}
 \label{results}
 
-By construction, the variability in the $\sigma$ term (Equation \ref{lai}) contains all model and observational uncertainties. For an observation that perfectly matches our model and constant uWUE assumption $\sigma$ will be one. Therefore, for our assumptions and framework to be reasonable $\sigma$ should be $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated $\sigma$s with outliers removed (lowest and highest 5\% percent). All remaining $\sigma$ values are $O(1)$ which provides confidence in model framework.
+By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) contains all model and observational uncertainties. For an observation that perfectly matches our model and constant uWUE assumption $\sigma$ will be one. Therefore, for our assumptions and framework to be reasonable $\sigma$ should be $O(1)$. Figure \ref{lai_fig} presents the histogram of calculated $\sigma$s with outliers removed (lowest and highest 5\% percent). All remaining $\sigma$ values are $O(1)$ which provides confidence in model framework.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig02.png}
-\caption{Histogram of $\sigma$ values calculated for each site and time according to Equation \ref{lai}. The lowest and highest 5\% are removed as outliers, as well as any values below 0. The curve is normalized such that its area is 1. }
+\caption{Histogram of $\sigma$ values calculated for each site and time according to Equation \ref{sigma}. The lowest and highest 5\% are removed as outliers, as well as any values below 0. The curve is normalized such that its area is 1. }
 \label{lai_fig}
 \end{figure}
 
@@ -511,8 +453,16 @@ In general Figures \ref{real} and \ref{agu_fig} match our expectations, even wit
 
 \begin{figure}[h]
 \centering
+\includegraphics[width=\textwidth]{./agu_fig.pdf}
+\caption{Comparison of the sign term with moden uncertainty included (box plots) to the sign term as calculated with simplifying assumptions (blue line).}
+\label{agu_fig}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
 \includegraphics[width=\textwidth]{./fig06.png}
-\caption{Scatter plots of $\frac{\partial \; ET}{\partial \; VPD}$. Each row is a different PFT, and each column is a different quantity related to $\frac{\partial \; ET}{\partial \; VPD}$, as labeled: Column 1: $\frac{\partial \; ET}{\partial \; VPD}$; Column 2: $\frac{\partial \; ET}{\partial \; VPD}$ normalized by $g_a$; Column 3: $\frac{\partial \; ET}{\partial \; VPD}$ with $\sigma$ held fixed at 1; and Column 4: $\frac{\partial \; ET}{\partial \; VPD}$ normalized by $g_a$ and with $\sigma$ held fixed. For reference, lines corresponding to RH = 20\% and RH = 90 \% are drawn. Please note differences in the colorbar scale. ***see alternate (or additional) plot below.***}
+\caption{Scatter plots of $\frac{\partial \; ET}{\partial \; VPD}$. Each row is a different PFT, and each column is a different quantity related to $\frac{\partial \; ET}{\partial \; VPD}$, as labeled: Column 1: $\frac{\partial \; ET}{\partial \; VPD}$; Column 2: $\frac{\partial \; ET}{\partial \; VPD}$ normalized by $g_a$; Column 3: $\frac{\partial \; ET}{\partial \; VPD}$ with $\sigma$ held fixed at 1; and Column 4: $\frac{\partial \; ET}{\partial \; VPD}$ normalized by $g_a$ and with $\sigma$ held fixed. Please note differences in the colorbar scale.}
 \label{real}
 \end{figure}
 
@@ -743,168 +693,14 @@ This work used eddy covariance data acquired and shared by the FLUXNET community
 % 4. Run LaTeX on your new file which will produce the citations.
 %
 % AGU does not want a .bib or a .bbl file. Please copy in the contents of your .bbl file here.
-% \bibliography{references.bib}
+%\bibliography{references.bib}
 \input{vpd_et_paper.bbl}
 
 
-
-
-%% After you run BibTeX, Copy in the contents of the .bbl file here:
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Track Changes:
-% To add words, \added{<word added>}
-% To delete words, \deleted{<word deleted>}
-% To replace words, \replace{<word to be replaced>}{<replacement word>}
-% To explain why change was made: \explain{<explanation>} This will put
-% a comment into the right margin.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% At the end of the document, use \listofchanges, which will list the
-% changes and the page and line number where the change was made.
-
-% When final version, \listofchanges will not produce anything,
-% \added{<word or words>} word will be printed, \deleted{<word or words} will take away the word,
-% \replaced{<delete this word>}{<replace with this word>} will print only the replacement word.
-%  In the final version, \explain will not print anything.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%
 \listofchanges
-%%%
+
 
 \end{document}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Supporting Information
-%% (Optional) See AGUSuppInfoSamp.tex/pdf for requirements 
-%% for Supporting Information.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-More Information and Advice:
-
-%% ------------------------------------------------------------------------ %%
-%
-%  SECTION HEADS
-%
-%% ------------------------------------------------------------------------ %%
-
-% Capitalize the first letter of each word (except for
-% prepositions, conjunctions, and articles that are
-% three or fewer letters).
-
-% AGU follows standard outline style; therefore, there cannot be a section 1 without
-% a section 2, or a section 2.3.1 without a section 2.3.2.
-% Please make sure your section numbers are balanced.
-% ---------------
-% Level 1 head
-%
-% Use the \section{} command to identify level 1 heads;
-% type the appropriate head wording between the curly
-% brackets, as shown below.
-%
-%An example:
-%\section{Level 1 Head: Introduction}
-%
-% ---------------
-% Level 2 head
-%
-% Use the \subsection{} command to identify level 2 heads.
-%An example:
-%\subsection{Level 2 Head}
-%
-% ---------------
-% Level 3 head
-%
-% Use the \subsubsection{} command to identify level 3 heads
-%An example:
-%\subsubsection{Level 3 Head}
-%
-%---------------
-% Level 4 head
-%
-% Use the \subsubsubsection{} command to identify level 3 heads
-% An example:
-%\subsubsubsection{Level 4 Head} An example.
-%
-%% ------------------------------------------------------------------------ %%
-%
-%  IN-TEXT LISTS
-%
-%% ------------------------------------------------------------------------ %%
-%
-% Do not use bulleted lists; enumerated lists are okay.
-% \begin{enumerate}
-% \item
-% \item
-% \item
-% \end{enumerate}
-%
-%% ------------------------------------------------------------------------ %%
-%
-%  EQUATIONS
-%
-%% ------------------------------------------------------------------------ %%
-
-% Single-line equations are centered.
-% Equation arrays will appear left-aligned.
-
-
-%If you don't want an equation number, use the star form:
-%\begin{eqnarray*}...\end{eqnarray*}
-
-% Break each line at a sign of operation
-% (+, -, etc.) if possible, with the sign of operation
-% on the new line.
-
-% Indent second and subsequent lines to align with
-% the first character following the equal sign on the
-% first line.
-
-% Use an \hspace{} command to insert horizontal space
-% into your equation if necessary. Place an appropriate
-% unit of measure between the curly braces, e.g.
-% \hspace{1in}; you may have to experiment to achieve
-% the correct amount of space.
-
-
-%% ------------------------------------------------------------------------ %%
-%
-%  EQUATION NUMBERING: COUNTER
-%
-%% ------------------------------------------------------------------------ %%
-
-% You may change equation numbering by resetting
-% the equation counter or by explicitly numbering
-% an equation.
-
-% To explicitly number an equation, type \eqnum{}
-% (with the desired number between the brackets)
-% after the \begin{equation} or \begin{eqnarray}
-% command.  The \eqnum{} command will affect only
-% the equation it appears with; LaTeX will number
-% any equations appearing later in the manuscript
-% according to the equation counter.
-%
-
-% If you have a multiline equation that needs only
-% one equation number, use a \nonumber command in
-% front of the double backslashes (\\) as shown in
-% the multiline equation above.
-
-% If you are using line numbers, remember to surround
-% equations with \begin{linenomath*}...\end{linenomath*}
-
-%  To add line numbers to lines in equations:
-%  \begin{linenomath*}
-%  \begin{equation}
-%  \end{equation}
-%  \end{linenomath*}
 
 
 
