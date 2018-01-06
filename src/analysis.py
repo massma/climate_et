@@ -22,19 +22,11 @@ print('pre-calc data shape:', prep_df.shape)
 df.to_pickle('%s/changjie/prepped_data.pkl' % os.environ['DATA'])
 importlib.reload(d_calc)
 dfs = d_calc.all_diagnostics(prep_df)
+prep_df = d_prep.generate_vars(df)
 print('post-calc data shape:', dfs['full'].shape)
 
 with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
           mode='wb') as file :
   pickle.dump(dfs, file)
-# importlib.reload(test)
-# test.run_all_tests(dfs)
-
-_df = dfs['full']
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-plt.figure()
-#sns.distplot(_df.uwue)
-sns.jointplot(_df.et_obs, _df.et, kind='hex')
-plt.savefig('%s/temp/garb1.png' % os.environ['PLOTS'])
+importlib.reload(test)
+test.run_all_tests(dfs)
