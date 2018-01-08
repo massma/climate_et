@@ -134,9 +134,9 @@
 \section{Introduction}\explain{This section needs to be fleshed out, and I definitely need to add more citations}
 
 
-Answering the question ``When does vapor pressure deficit drive or reduce evapotranspiration?'' is motivated by two potenential but opposing perspectives on the matter. The first persepctive is that increases to vapor pressure deficit (VPD) increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indicies and hydrometeorological studies, only quantifies atmospheric demand effects. However, there is another possible perspective for vegetated surfaces. Plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase in VPD may actually correspond to a decrease in ET because stomatal closure can cancel the effects of shifts to atmospheric de. So really a question of ``When does VPD drive or reduce ET?'' becomes a question of ``When does plant response or atmospheric demand dominate?.''
+Answering the question ``When does vapor pressure deficit drive or reduce evapotranspiration?'' is motivated by two potential but opposing perspectives on the matter. The first perspective is that increases to vapor pressure deficit (VPD) increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies, only quantifies atmospheric demand effects. However, there is another possible perspective for vegetated surfaces. Plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase in VPD may actually correspond to a decrease in ET because stomatal closure can cancel the effects of shifts to atmospheric demand. So really a question of ``When does VPD drive or reduce ET?'' becomes a question of ``When does plant response or atmospheric demand dominate?.''
 
-Quantifying the plant response to a perturbation to atmospheric VPD increases our understanding of land surface response to shifts in atmospheric conditions. If plant response reduces ET in response to atmospheric drying then soil moisture will be conserved for later ET. An increase in ET in reponse to atmospheric drying will reduce soil moisture, but contribute increased moisenting to the atmosperhere. Understanding the one way response of the land surface to the atmosphere is a critical first step to disentangling land-atmosphere feedbacks. The sign and magnitude of land-surface response drives the co-evolution of the atmosphere and land-surface at many timescales, from diurnal to interdecadal.
+Quantifying the plant response to a perturbation to atmospheric VPD increases our understanding of land surface response to shifts in atmospheric conditions. If plant response reduces ET in response to atmospheric drying then soil moisture will be conserved for later ET. An increase in ET in response to atmospheric drying will reduce soil moisture, but contribute increased moistening to the atmosphere. Understanding the one way response of the land surface to the atmosphere is a critical first step to disentangling land-atmosphere feedbacks. The sign and magnitude of land-surface response drives the co-evolution of the atmosphere and land-surface at many timescales, from diurnal to interdecadal.
 
 Before diving into math and data, we have some prior intuition for how the system might behave. First, whether VPD drives or reduces ET should be a function of plant type. Plants that evolved to conserve water (e.g. arid shrubs) will be more likely to reduce ET with increasing VPD, and plants that have evolved to care little about water (e.g. crops) will be more likely to increase ET with increasing VPD. Additionally, atmospheric conditions must matter as well. At the ecosystem scale there are limits to the strategies plants use to hold water back from the atmosphere. As atmospheric demand for water (VPD) increases, ecosystems will begin to reach their water conservation limits. At this stage any further increase in VPD will most likely drive an increase in ET, because there is little more the plants can do keep water back. 
 
@@ -144,13 +144,13 @@ In order to quantify plant response to perturbations to atmospheric demand for w
 
 \section{Data}
 \label{data}
-We use data from FLUXNET2015, including all sites with more than four years of data. Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme (\cite{Loveland_1999}).  Because physical constats used in Section \ref{methods} are only published for five plant functional types (PFTs - see Table \ref{pft}),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
+We use data from FLUXNET2015, including all sites with more than four years of data. Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme (\cite{Loveland_1999}).  Because physical constants used in Section \ref{methods} are only published for five plant functional types (PFTs - see Table \ref{pft}),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
 
-The purpose of this study is to examine ecosystem response to atmospheric drying during the growing season. To accomplish this, we filter and quality control the data using a similiar procedure as \cite{Zhou_2015}:
+The purpose of this study is to examine ecosystem response to atmospheric drying during the growing season. To accomplish this, we filter and quality control the data using a similar procedure as \cite{Zhou_2015}:
 \begin{itemize}
-\item Only measured or highest (``good'') quality gapfilled data, according to qualtiy control flags, are used.
+\item Only measured or highest (``good'') quality gapfilled data, according to quality control flags, are used.
 \item To isolate the growing season, we only use days in which the average GPP exceeds 10\% of the observed 95th percentile of GPP for a given site.
-\item We remove days with rain and the day following to avoid issues with rain interveption and sensor satruation and high relative humidity (Medlyn et. al. 2017).
+\item We remove days with rain and the day following to avoid issues with rain interception and sensor saturation and high relative humidity (\cite{MEDLYN2016).
 \end{itemize}
 Additionally, we restrict data to the daytime which is identified when downwelling shortwave radation is greater than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W m$^{-2}$. To further reduce the chance of sensor saturation at high relative humidity, we remove all time steps for which VPD is less than .01 kPa. Timesteps with negative observed GPP or ET are also removed. After these quality control proceedures, 332556 upscaled hourly observations remain. 
 
@@ -279,7 +279,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \
 
 \begin{table}
   \label{pft}
-\caption{Plant functional types, their abbreviation, Medlyn coefficient \citep[from ][]{Lin_2015}, and uWfUE \citep[from ][]{Zhou_2015}. Note that units are converted such that the quantities fit into Equations 1-8 with the variables in Table 1.}
+\caption{Plant functional types, their abbreviation, Medlyn coefficient \citep[from ][]{Lin_2015}, and uWUE \citep[from ][]{Zhou_2015}. Note that units are converted such that the quantities fit into Equations 1-8 with the variables in Table 1.}
 \centering
 \begin{tabular}{l c c c}
   \hline
@@ -298,7 +298,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig01.pdf}
-\caption{Plant functional type and location of sites used in analysis. ***\textbf{This is just  aplaceholder for now, I am currently fixing it***}}
+\caption{Plant functional type and location of sites used in analysis. ***\textbf{This is just  a placeholder for now, I am currently fixing it***}}
 \label{map_fig}
  \end{figure}
 
@@ -378,7 +378,7 @@ Figure \ref{term3} confirms our physical intuition: CROs are the least water con
 \includegraphics[width=20pc]{./fig05.pdf}
 \caption{Sources of variability for the sign term. Top: sign term as a function of VPD, with $\sigma$ held fixed at 1. The observed range of VPD for each PFT is also shown below the x-axis. Line extent corresponds to 5th and 95th percentiles, while stars denote the location of the 25th, 50th, and 75th percentiles.
 
-Bottom: The location of the minima of ET, as a function of VPD and $\sigma$. Lines and stars denote the distribution of VPD and $\sigma$ next to each axis, following the same percentiles as above. \textbf{***need to replot with correct sigma (normalzied to 1)***}}
+Bottom: The location of the minima of ET, as a function of VPD and $\sigma$. Lines and stars denote the distribution of VPD and $\sigma$ next to each axis, following the same percentiles as above. \textbf{***need to replot with correct sigma (normalized to 1)***}}
 \label{term3}
 \end{figure}
 
@@ -443,7 +443,7 @@ As stated in the above discussion of ENF, we are mostly interested in the critic
 
 A final comparison for Figure \ref{agu_fig} is to the value of the sign term for PET. For PET, the sign term is a constant $\frac{c_p}{R_{air}}\approx 3.5$. This is far more than any of the observed values in Figure \ref{agu_fig}, even when uncertainty is included. So, even when atmospheric demand dominates plant response, the plant response still has a large role in attenuating atmospheric demand. In order to understand and capture the behavior of land-surface reponse, representation of the plants must be included in some form. This comparison casts doubt on the usefulness of PET for interprenting land-atmosphere evolution, as is done often in hydrometeorlogical studies.
 
-Figure \ref{real} presents calculated $\frac{\partial \; ET}{\partial \; VPD}$ where, unless otherwise noted, all variables in Equation \ref{d_et} are allowed to vary, including uncertainty. Each column is a different quantity related to $\frac{\partial \; ET}{\partial \; VPD}$, and each row is a different PFT. Vertical black lines denote where our theory says $VPD_{crit}$ should be. For any obervations to the left of this line $\frac{]aprial \; ET}{\partial \; VPD}$ should be negative, and any ovservations the righ right of the line should be postiive. In addition to seeing how the theory $VPD_{crit}$ matches observations, these plots are also useful for observing how the scaling term affects the magnitude of the derivative, if at all. 
+Figure \ref{real} presents calculated $\frac{\partial \; ET}{\partial \; VPD}$ where, unless otherwise noted, all variables in Equation \ref{d_et} are allowed to vary, including uncertainty. Each column is a different quantity related to $\frac{\partial \; ET}{\partial \; VPD}$, and each row is a different PFT. Vertical black lines denote where our theory says $VPD_{crit}$ should be. For any obervations to the left of this line $\frac{]\partial \; ET}{\partial \; VPD}$ should be negative, and any ovservations the righ right of the line should be postiive. In addition to seeing how the theory $VPD_{crit}$ matches observations, these plots are also useful for observing how the scaling term affects the magnitude of the derivative, if at all. 
 
 The scatter plots generally confirm expectations from Figure \ref{agu_fig}. By comparing different columns of Figure \ref{real} we can see the impact of $\sigma$ and $g_a$ on the variability of $\frac{\partial \; ET}{\partial \; VPD}$. $g_a$'s scaling (included in columns 1 and 3) alters the magnitude considerably, particularly between PFTs. $\sigma$ variability (included in columns 1 and 2) adds a lot of additional noise to the signal of $\frac{\partial \; ET}{\partial \; VPD}$, as observed in Figure \ref{agu_fig}. However, the general story with the noise appears to match the cleaner signal when $\sigma$ is help constant and $VPD_{crit}$ is clearly visible. The exceptions are, as discussed above, for GRA and CRO, where the full complexity plots (Columns 1 and 2) to not match well with $\sigma$ held fixed (Columns 3 and 4).
 
@@ -454,7 +454,7 @@ In general Figures \ref{real} and \ref{agu_fig} match our expectations, even wit
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{./agu_fig.pdf}
-\caption{Comparison of the sign term with moden uncertainty included (box plots) to the sign term as calculated with simplifying assumptions (blue line).}
+\caption{Comparison of the sign term with model uncertainty included (box plots) to the sign term as calculated with simplifying assumptions (blue line).}
 \label{agu_fig}
 \end{figure}
 
