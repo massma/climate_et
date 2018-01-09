@@ -6,7 +6,8 @@ from shared_functions import *
 
 # mean_df defined her at module-level
 
-fontsize=14
+fontsize=10
+
 linewidth=2.5
 dashedlinewidth=3.0
 markersize=8
@@ -22,16 +23,13 @@ name_dict = {'CRO': 'crops',\
              'GRA': 'grass',
              'CSH': 'shrub (closed)'}
 
-if PLOT_TALK:
-  paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
-                 r'- \frac{\gamma c_s }{1.6 \; R\; uWUE  }'\
-                 r'\left( \frac{2 g_1 + \sqrt{D}}'\
-                 r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
-else:
-  paren_string = r'(Term 2 - Term 3) $\left(\frac{ c_p}{R_{air}} '\
-               r'- \frac{\gamma c_s }{\sigma \; 1.6 \; R\; uWUE  }'\
+paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
+               r'- \frac{\gamma c_s }{1.6 \; R\; uWUE  }'\
                r'\left( \frac{2 g_1 + \sqrt{D}}'\
                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
+
+if PLOT_TALK:
+  fontsize=14
 
 
 
@@ -50,16 +48,16 @@ def pft_leaf(_df, axs):
                        # _df.uwue.iloc[0],  _df.g1.iloc[0]))
   else:
     p = axs[0].plot(vpd, d_calc.sign(mean_row, vpd=vpd, uwue=uwue),\
-                    label="%s: $uWUE\cdot\overline{\sigma}$=%4.2f,f g1=%4.1f"\
+                    label="%s: $uWUE$=%4.2f, g1=%4.1f"\
                     % (_df.pft.iloc[0],\
                        uwue,  _df.g1.iloc[0]))
 
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
-  axs[1].plot(vpd/1.0e3, np.ones(vpd.shape)*I, linewidth=linewidth)
-  axs[1].plot(ptiles/1.0e3,\
+  axs[1].plot(vpd, np.ones(vpd.shape)*I, linewidth=linewidth)
+  axs[1].plot(ptiles,\
               np.ones(ptiles.shape)*I, 'k*', markersize=markersize)
-  vpd_crit = et_min_vpd(mean_row, uwue=uwue)/1.0e3
+  vpd_crit = et_min_vpd(mean_row, uwue=uwue)
   axs[1].plot([vpd_crit], [I], 'k|', markersize=15, mew=3)
   axs[-1].plot(np.ones(vpd.shape)*I, vpd)
   axs[-1].plot(np.ones(ptiles.shape)*I, ptiles, 'k*')
@@ -93,7 +91,7 @@ for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
   _df = df.loc[df.pft == pft, :]
   pft_leaf(_df, axs)
 
-axs[1].set_xlabel('VPD (kPa)', fontsize=fontsize)
+axs[1].set_xlabel('VPD', fontsize=fontsize)
 axs[3].set_xlabel('$\sigma$')
 axs[0].set_ylabel(paren_string, fontsize=fontsize)
 axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=linewidth)
@@ -102,7 +100,7 @@ if PLOT_PET:
               'm--', linewidth=dashedlinewidth, label='PET')
 plt.setp(axs[2].get_yticklabels(), visible=False)
 axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
-axs[2].set_title(r'D$_{crit}$'\
+axs[2].set_title(r'VPD$_{crit}$'\
                  r' (where $\frac{\partial \; ET}{\partial \; D} = 0$)')
 axs[2].set_ylim([0., 4000.])
 axs[1].set_ylim([0.5,5.5])
@@ -132,5 +130,5 @@ if PLOT_TALK:
   else:
     plt.savefig('../../doc/shared_figs/fig05_garb.pdf')
 else:
-  plt.savefig('../../doc/paper/fig05_garb.pdf')
+  plt.savefig('../../doc/paper/fig05.pdf')
 

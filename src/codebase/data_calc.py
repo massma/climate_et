@@ -150,6 +150,11 @@ def gpp_fixed_wrapper(_df, mean_df):
                                   lai=_df['lai_gppfixed'].mean()) # 1.0
   return _df
 
+def calc_sigma(_df):
+  """calcualtes a sgima for variabiility"""
+  _df['sigma'] = _df['uwue']/_df['uwue'].mean()
+  return _df
+
 def all_diagnostics(_df):
   """calcualtes all diagnostics"""
   _df['uwue'] = uwue(_df)
@@ -166,7 +171,10 @@ def all_diagnostics(_df):
   _df['et_pm_original'] = pm_et_orig(_df)
   _df['pet'] = pet(_df)
   # below is measure of uncertainty, comaprison to zhou et al
-  _df['sigma'] = _df['uwue']/_df['uwue_zhou']
+  # _df['sigma'] = _df['uwue']/_df['uwue_zhou']
+  # no, do comparison to mean to set mean sigma = 1
+  _df = _df.groupby('pft').apply(calc_sigma)
+  _df = _df.reset_index(drop=True)
   dfs = {'mean' : _df.groupby('pft').mean(),\
          'min' : _df.groupby('pft').min(),\
          'max' : _df.groupby('pft').max(),\
