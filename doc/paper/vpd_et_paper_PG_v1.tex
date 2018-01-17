@@ -132,15 +132,12 @@
 % \section{Conclusions}
 
 
-\section{Introduction}\explain{This section needs to be fleshed out, and I definitely need to add more citations}
+\section{Introduction}
 
 
-Vapor pressure deficit (VPD)is expected to rise over continents in the future due to the combination of increased temperature and relative humidity drying (Byrne and O'Gorman 2013). In turn VPD modifies the atmospheric demand of evapotranspiration (ET) (Penman Monteith) but is also a stressors for stomata \citep{Leuning_1990, MEDLYN_2011}.
-Answering the question ``When does vapor pressure deficit drive or reduce evapotranspiration?'' is thus motivated by two potential but opposing perspectives on the matter. The first, hydrometeorological, perspective is that higher vapor pressure deficit  increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies, only quantifies atmospheric demand effects. On the other hand, there is another perspective for vegetated surfaces. Plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase in VPD, in well watered soil conditions, may actually correspond to a decrease in ET because of stomatal closure. This decrease in ET would reduce and potentially cancel (in case of full closure) the effects of shifts to atmospheric demand. IN other words, the  question ``When does VPD drive or reduce ET?'' can be related to whether plant regulation or atmospheric demand dominate ET?.
+Vapor pressure deficit (VPD) is expected to rise over continents in the future due to the combination of increased temperature and relative humidity drying\explain{Is increased RH conclusive and universal?- I'm not so sure... is there another citation? I don't think Byrne 2013 shows that.} \citep{Byrne_2013}.. In turn VPD modifies the atmospheric demand of evapotranspiration (ET) (Penman Monteith) but is also a stressor for stomata \citep{Leuning_1990, MEDLYN_2011}.
 
-Adam: Merge those tow paragraphs, I only later noticed your paragraph below. Try to be as generic as possible when you are discussing the introduction.
-
-If plant response reduces ET in response to atmospheric drying then soil moisture will be better conserved. This would seem a sensible evolutionary strategy to cope with aridity. If stomata were fully passive (similarly to soil pores. -cite Dani Or), increased atmospheric aridity would further reduce soil moisture. In turn, this would further increase aridity as low soil moisture levels increase the Bowen ratio, and in turn increase temperature and reduce atmospheric humidity (gentine et al. GRL 2016, Berg 2016).  This however would not seem to be a sensible strategy for plants from an evolutionary standpoint.
+Answering the question ``When does vapor pressure deficit drive or reduce evapotranspiration?'' is thus motivated by two potential but opposing perspectives on the matter. The first, hydrometeorological, perspective is that higher vapor pressure deficit increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies, only quantifies atmospheric demand effects. On the other hand, there is another perspective for vegetated surfaces. Plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase in VPD, in well watered soil conditions, may actually correspond to a decrease in ET because of stomatal closure. This decrease in ET would reduce and potentially cancel (in case of full closure) the effects of shifts to atmospheric demand. In other words, the  question ``When does VPD drive or reduce ET?'' can be related to whether plant regulation or atmospheric demand dominate ET. If plant response reduces ET in response to atmospheric drying then soil moisture will be better conserved. This would seem a sensible evolutionary strategy to cope with aridity. If stomata were fully passive \citep [similar to soil pores, e.g. ][]{Or_2013}, increased atmospheric aridity would further reduce soil moisture. In turn, this would further increase aridity as low soil moisture levels increase the Bowen ratio, and in turn increase temperature and reduce atmospheric humidity (gentine et al. GRL 2016, Berg 2016).  This however would not seem to be a sensible strategy for plants from an evolutionary standpoint.
 
 First, whether VPD drives or reduces ET should be a function of plant type. Plants that evolved to conserve water (e.g. arid shrubs) will be more likely to reduce ET with increasing VPD, and plants that have evolved to care little about water (e.g. crops) will be more likely to increase ET with increasing VPD. Atmospheric conditions must matter as well. At the ecosystem scale there are limits to the strategies plants use to hold water back from the atmosphere. As atmospheric demand for water (VPD) increases, ecosystems will begin to reach their water conservation limits. At this stage any further increase in VPD will most likely drive an increase in ET, because there is little more the plants can do keep water back. 
 
@@ -148,34 +145,32 @@ The objective of the present manuscript is thus to evaluate the VPD dependence o
 
 \section{Data}
 \label{data}
-We use data from the FLUXNET2015 database (ADAM: BE AS PRECISE AS POSSIBLE), including all sites with more than four years of data. Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme (\cite{Loveland_1999}). Because physical constants used in Section \ref{methods} are only published for five plant functional types (PFTs - see Table \ref{pft}),  only 56 of the 77 sites were used. Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now} presents each site and its plant functional type.
+We use both meterological and turbulent flux data from the FLUXNET2015 database, including all sites with more than four years of data\explain{Pierre says ``be as precise as possible,'' but not sure what he means}. Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in Section \ref{methods} are only published for five plant functional types (PFTs) crops (CRO), deciduous broadleaf forest (DBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 56 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now}.
 
 The purpose of this study is to examine ecosystem response to atmospheric drying during the growing season. To accomplish this, we filter and quality control the data using a similar procedure as \cite{Zhou_2015}:
 \begin{itemize}
 \item Only measured or highest (``good'') quality gapfilled data, according to quality control flags, are used.
-\item To isolate the growing season, we only use days in which the average GPP exceeds 10\% of the observed 95th percentile of GPP for a given site.
+\item To isolate the growing season, we only use days in which the average GPP exceeds 10\% of the observed 95th percentile of GPP for a given site. GPP is calculated using the nighttime respiration partitioning method.
 \item We remove days with rain and the day following to avoid issues with rain interception and sensor saturation at high relative humidity (\cite{MEDLYN_2011}).
 \end{itemize}
-Additionally, we restrict data to the daytime, which is identified when downwelling shortwave radiation is greater than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W m$^{-2}$. To further reduce the chance of sensor saturation at high relative humidity, we remove all time steps for which VPD is less than .01 kPa. Timesteps with negative observed GPP or ET are also removed. After these quality control procedures, 332556 upscaled hourly observations remain. 
-
-ADAM MENTION IF YOU ARE USING HOURLY OR SEMI-HOURLY DATA AND SAY THAT YOU ARE USING ALSO WEATHER STATION DATA. MENTION GPP WAS DERIVED FROM WHICH TECHNIQUE. CLOSURE? SEE CHANGJIE's DESCRIPTION OF DATA USED
+Additionally, we restrict data to the daytime, which is identified when downwelling shortwave radiation is greater than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W m$^{-2}$. To further reduce the chance of sensor saturation at high relative humidity, we remove all time steps for which VPD is less than .01 kPa. Timesteps with negative observed GPP or ET are also removed, and we aggregate half hourly data to hourly averages to reduce noise. After these quality control procedures, 332556 upscaled hourly observations remain. 
 
 \section{Methods}
 \label{methods}
-The Penman-Monteith equation (hereafter PM) REFERENCE estimates ET as a function of observable atmospheric variables and surface conductances:
+The Penman-Monteith equation (hereafter PM \explain{find pm ciatation in shuttlewroth}) estimates ET as a function of observable atmospheric variables and surface conductances:
 \begin{linenomath*}
   \begin{equation}
       ET = \frac{\Delta R + g_a \rho_a c_p VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},
   \end{equation}
 \end{linenomath*}
-where variable definitions are given in Table 1. \citet{MEDLYN_2011} developed a model for stomatal conductance ($g_s$) by combining optimal photosynthesis theory FARQUAHR, KATUL with empirical approaches, which describes the dependence of $g_s$ to VPD. The result for leaf-scale stomatal conductance was:
+where variable definitions are given in Table 1. \citet{MEDLYN_2011} developed a model for stomatal conductance ($g_s$) by combining optimal photosynthesis theory \citep{Farquhar_1980, Katul_2010} with empirical approaches, which describes the dependence of $g_s$ to VPD. The result for leaf-scale stomatal conductance was:
 
 \begin{linenomath*}
   \begin{equation}
   g_{l-s} = g_0 + 1.6 \left(1 + \frac{g_1}{\sqrt{VPD}}\right) \frac{A}{c_s}
   \end{equation}
 \end{linenomath*}
-This model has been shown to behave very well across PFTs, compared to other models (LIN AND MEDLYN NAT GEO).
+This model has been shown to behave very well across PFTs, compared to other models \citep{Lin_2015}.
 
 This can be adapted to the ecosystem scale by multiplying by leaf area index (LAI) and converting units to m s$^{-1}$:
 
@@ -220,7 +215,7 @@ Given FLUXNET data described in Section \ref{data}, every term in Equation \ref{
   \end{equation}
 \end{linenomath*}
 
-Now, from each FLUXNET observation we can evaluate $\sigma$ at each time step and thus we can evaluate departure from our theory (as a departure from unity). The variability of $\sigma$ across sites and time will provides a measure of uncertainty in our model, assumptions, as well as the FLUXNET observations themselves. To correct for differences in sampling between \cite{Zhou_2015} and our data, we set uWUE such that $\overline{\sigma} = 1$. The variability of $\sigma$ then propagates through any uncertainty to our derivative of Equation \ref{et_sigma}:
+Now, from each FLUXNET observation we can evaluate $\sigma$ at each time step and thus we can evaluate departure from our theory (as a departure from unity). The variability of $\sigma$ across sites and time provides a measure of uncertainty in our model, assumptions, as well as the FLUXNET observations themselves. To correct for differences in sampling between \cite{Zhou_2015} and our data, we set uWUE such that $\overline{\sigma} = 1$. The variability of $\sigma$ then propagates through any uncertainty to our derivative of Equation \ref{et_sigma}:
 
 \begin{linenomath*}
   \begin{equation}
@@ -229,20 +224,9 @@ Now, from each FLUXNET observation we can evaluate $\sigma$ at each time step an
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{d_et} we have provided an analytical framework for ecosystem response to atmospheric demand perturbations.\explain{Should I take the derivative this way? I think it's more mathematically correct, but it makes the explanation more complicated and only changes the solution by a factor of two. ADAM I AM NOT SURE I UNDERSTNAD WHAT YOU MEAN HERE. USE THE RIGHT ONE! NOT ONE THAT IS SIMPLY PROPORTIONAL} There are a few subtleties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately orthogonal. IS THIS WHAT YOU ARE DOING? GIVE THE ANSWER YOU ARE USING 
+With Equation \ref{d_et} we have provided an analytical framework for ecosystem response to atmospheric demand perturbations. There are a few subtleties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately orthogonal. 
 
-
-
-The $VPD$ dependence in Equation \ref{d_et} is a little opaque. However, a typical value of $VPD$ is about 1kPa, so $\sqrt{VPD}$ is 33 Pa$^{1/2}$, which is much less than $g_1$ (with the exception of ENF; Table \ref{pft}). So a series expansion in the limit $\frac{\sqrt{VPD}}{g_1} \to 0$ gives an approximation which makes the functional form more clear: \explain{Should I even include the series expansion? NO}
-
-\begin{linenomath*}
-  \begin{equation}
-    \frac{\partial \;  ET}{\partial \; VPD} \approx \frac{g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_s }{1.6 \; R*\; \sigma \; \text{ uWUE }} \left( \frac{1}{g_{1}} - \frac{3 \sqrt{VPD}}{2 g_{1}^{2}} + \frac{2 \sqrt{VPD}^{2}}{g_{1}^{3}} - \frac{5 \sqrt{VPD}^{3}}{2 g_{1}^{4}} + \mathcal{O}\left(\left(\frac{\sqrt{VPD}}{g_1}\right)^{4}\right) \right) \right)
-    \label{d_et_approx}
-  \end{equation}
-\end{linenomath*}
-
-We note one final comment on our derivation which= is relevant for future analysis. If we  approximate $c_s$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface. 
+We note one final comment on our derivation which is relevant for future analysis. If we  approximate $c_s$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface. 
 
 \begin{table}
 \caption{Definition of symbols and variables, with citation for calculation if applicable.}
@@ -270,9 +254,6 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \
 \multicolumn{2}{l}{$^{a}$Footnote text here.}
 \end{tabular}
 \end{table}
-
-
-
 
 \begin{table}
   \label{pft}
@@ -313,7 +294,6 @@ By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) con
 
 An additional concern is that $\sigma$ may in fact be correlated with $VPD$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig} plots the joint distribution of $\sigma$ and VPD, and shows that $\sigma$ is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $VPD$.
 
-% below show histogram of site specific spearmannr? think would be useful 
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{./fig03.png}
@@ -333,11 +313,11 @@ and a ``sign'' term, which determines whether the derivative is positive i.e. at
   \label{sign}
   \frac{c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right).
 \end{equation}
-All variables are positive, so the relative magnitude between the first term and the second term in Equation \ref{sign} will determine whether ET increases or decreases with increasing VPD. If the second term is larger magnitude then plant response dominates, while if the first term is larger then atmospheric demand dominates. The sign will determine whether ET is increasing or decreasing and we thus evaluate its functional form first. I AM OT A BIG FAN OF PLACING QUESTIONS IN THE TEXT, SOUNDS LIKE A TRAIN OF THOUGHT.ALSO TRY TO BE MORE FORMAL IN YOUR WRITING STYLE
+All variables are positive, so the relative magnitude between the first term and the second term in Equation \ref{sign} will determine whether ET increases or decreases with increasing VPD. If the second term is larger magnitude then plant response dominates, while if the first term is larger then atmospheric demand dominates. The sign will determine whether ET is increasing or decreasing and we thus evaluate its functional form first. 
 
 \subsection{Functional Form of the Sign Term}
 \label{sign_func}
-First, we explore the variables within the sign term to gain better intuition on the driver of either the increase or reduction of EF with VPD. $c_s$ and $\gamma$ are relatively constant to a good approximation so that the variability is dominated by $\sigma$ and $VPD$. $uWUE$ could vary with soil moisture but has been shown to be relatively constant except in very dry soil conditions ZHOU ET AL, LIN ET AL. We thus further assume that the soil is not too dry so that $uWUE$ can be approximated as a constant. This then means that the sign term only depends on VPD for a given PFT and is approximately just a function of $VPD$. We can further determine a critical threshold operating increase from decrease in ET, such that $VPD_{crit}$ where $\frac{\partial \; ET}{\partial \; VPD} = 0$:
+First, we explore the variables within the sign term to gain better intuition on the driver of either the increase or reduction of ET with VPD. $c_s$ and $\gamma$ are relatively constant to a good approximation so that the variability is dominated by $\sigma$ and $VPD$. $uWUE$ could vary with soil moisture but has been shown to be relatively constant except in very dry soil conditions \citep{Zhou_2016, Lin_2015}. We thus further assume that the soil is not too dry so that $uWUE$ can be approximated as a constant. This then means that the sign term only depends on VPD for a given PFT and is approximately just a function of $VPD$. We can further determine a critical threshold operating increase from decrease in ET, such that $VPD_{crit}$ where $\frac{\partial \; ET}{\partial \; VPD} = 0$:
 
 \begin{linenomath*}
   \begin{equation}
@@ -346,10 +326,7 @@ VPD_{crit} = \frac{R_{air}}{4 c_p} \left( \frac{\gamma c_s}{1.6\; R \; \overline
   \end{equation}
 \end{linenomath*}
 
-Values of $VPD_{crit}$ as a function of PFT are shown in Table \ref{vpd_crit}. For any values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive. In other words, ecosystems can regulate and mitigate evaporative losses up to a VPD limit, above which atmospheric demand is just too high to be entirely compensated by stomatal regulation. We note however that even though ET increases again above the critical threshold, $VPD_{crit}$, ET is still much lower that potential evaporation as stomata are stills strongly regulating vapor fluxes. Even in the absence of soil pore evaporation, stomata do not shut down entirely at very high VPD and ET does not go to zero, because stomata are still slightly open to perform some photosynthesis (CITE BALL, MEDLYN ETC). In addition, upward xylem transport is necessary to maintain phloem transport and thus carbon allocation (MENCUCCINI).
-
-REMOVE THIS PARAGRAPH: Intuitively this makes sense TRY NOT TO WRITE LIKE THIS< BE MORE FORMAL; as VPD increases ecosystems will start to run out of strategies to hold back water, and atmospheric demand will increase. SOMETHING WAS NOT CONSISTENT IN THE SENTENCE HERE: Any further increases in atmospheric demand will then result in an increase in VPD. The extent to which a given ecosystem has evolved to conserve water will determine at what VPD atmospheric demand takes over. 
-
+Values of $VPD_{crit}$ as a function of PFT are shown in Table \ref{vpd_crit}. For any values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive. In other words, ecosystems can regulate and mitigate evaporative losses up to a VPD limit, above which atmospheric demand is just too high to be entirely compensated by stomatal regulation. We note however that even though ET increases again above the critical threshold, $VPD_{crit}$, ET is still much lower that potential evaporation as stomata are stills strongly regulating vapor fluxes. Even in the absence of soil pore evaporation, stomata do not shut down entirely at very high VPD and ET does not go to zero, because stomata are still slightly open to perform some photosynthesis \citep{Ball_1987, Leuning_1990, Medlyn_2011}. In addition, upward xylem transport is necessary to maintain phloem transport and thus carbon allocation (MENCUCCINI) \explain{Not sure citation  - Comparative criteria for models of the vasuclar transport systems of tall trees}.
 
 \begin{table}
   \label{vpd_crit}
@@ -369,9 +346,10 @@ REMOVE THIS PARAGRAPH: Intuitively this makes sense TRY NOT TO WRITE LIKE THIS< 
 \end{tabular}
 \end{table}
 
-Figure \ref{term3} provides a greater description for how the sign term varies with $VPD$, as a function of PFT I AM NOT A FAN OF SENTENCES LIKE: FGIGURE XX SHOWS BLABLABLA. RATHER SAY WHAT YOU SEE AND JUST PLACE FIGURE IN BRACKET. FRAME THIS DIFFERNTLY< SAY THAT THE OSBERVATIONS VALIDATE TEH CRITCAL THERESHOLD ANALYTICALLY FOUND. Equation \ref{d_et_approx} aids interpretation of Figure \ref{term3}. Larger $uWUE$ and $g1$ shift the leading-order constant term ($\frac{1}{g_1}$) towards smaller values, and the sign term towards overall positive values. % Higher values corresponde to plants that are more willing to spend water on primary production and less evolved to conserve water.\explain{really need to think about this sentence more, tehre is more nuance and I actually thing g1 and uwue really partially cancel.}
-Based on Figure \ref{term3}, CROs are the least water conservative so have the smallest constant portion of Term 3 ($\frac{\gamma c_s }{1.6 \; R*\; \sigma \; \text{ uWUE }} \left(\frac{1}{g_1}\right)$), while CSH are the most water conservative and have the largest constant portion of Term 3. For the VPD-dependent terms in Equation \ref{d_et_approx}, differences in $g1$ between PFTs exert a greater influence than differences in $uWUE$. Increasing $uWUE$ and $g1$ decreases the VPD-dependence, but $g1$ has the bigger effect, particularly at high VPD when the series becomes disordered. ENF ($g1 = 74.31$) has by far the largest VPD dependence of response, while CRO ($g1 = 183.1$) has the smallest VPD dependence. SAY WHAT IT MEANS IN LAYMAN's TERMS
+Differences in $uWUE$ and $g_1$ between PFTs alter the functional form of the sign term.  Larger $uWUE$ and $g_1$ will shift the sign term towards overall positive values. $g_1$ additionally plays a primary role in determining dependnece on VPD: the smaller $g_1$, the greater the $VPD$ dependence for the PFT (Figure \ref{term3}).
 
+Based on Figure \ref{term3} and Table \ref{vpd_crit}, CROs are the least water conservative and have the most positive constant offset, while CSH are the most water conservative and have the most negative constant offset in the sign term.  ENF ($g_1 = 74.31$) has by far the largest VPD dependence of response, while CRO ($g_1 = 183.1$) has the smallest VPD dependence. This means ENF's stomatal response evolved to change substantially depending on the envionmental dryness. This contasts\explain{think about this - what does it mean - go back to Franks and think about g1's relation to wue}
+ 
 A primary takeaway from Figure \ref{term3}a is that according to our theory for all PFTs except for crops there is frequent occurrence of a negative (plant dominating) ET response to increases in VPD. This thus means that plants are able in most atmospheric conditions to redue ET in response to increased VPD and thus to reduce water losses. To better illustrate this, the ranges of observed environmental VPDs at the FLUXNET sites are plotted parallel to the x-axis. ALL OF THIS SHOULD BE IN CAPTION NOT IN MAIN TEXT: (25th, 50th, and 75th percentiles are marked by stars), 
 The location of VPD$_{crit}$ is marked by a vertical line. For CSH, VPD is always less than VPD$_{crit}$ so that the plant response dominates and empathizes the water conservative strategy of those plants. For CRO on the other, VPD is almost always higher than VPD$_{crit}$, emphasizing that those plants are water intensive and were actually engineered for photosynthesis rather than water saving. For forests and grass, whether plant response or atmospheric demand dominates is more dependent on the environment, with about half of of observed VPD less than VPD$_{crit}$, i.e. in conditions where plant response dominates. It is also important to note that even when atmospheric demand dominates, the response is still far smaller than it would be for potential evaporation i.e. atmospheric demand only, emphasizing that there is still a strong regulation of evaporative flux by stomata and though the plant xylem. The sign term in this case would just be a constant ($\frac{c_p}{R_{air}} \approx 3.5$), which is far larger than any part of the curves for any PFT. This highlights the deficiencies of PET's ability to capture land response to changes in atmospheric dryness (VPD) SEEMS TOO GENERIC BETTER EXPLAIN. However, we have assumed $\sigma$ (uncertainty) equal to one. We still need to test if inclusion of uncertainty could change our conclusions.
 \begin{figure}[h]
@@ -412,7 +390,7 @@ Table 3 confirms our expectations for PFT behavior of $\frac{\partial \; ET}{\pa
 
 The units of $\frac{\partial \; ET}{\partial \; VPD}$ make it difficult to interpret if $VPD$ is even a meaningful contributor to ET's variability. To better understand $VPD$'s contribution, we multiply $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)$ with $VPD$'s standard deviation to define a (linearized) relative change in ET for variations in $VPD$ . $VPD$'s contribution to ET's variability ranges between 30 - 40 W m$^{-2}$ for all PFTs except for CSH, which is about 100 W m$^{-2}$. Another meaningful comparison is to $\frac{\partial \; ET}{\partial \; R} \cdot std(R)$, as net radiation is generally the driver of ET (cite joe berry here)\explain{Find citation?}. For all PFTs except for CSH $VPD$ contributes between 30 - 40 \% of $R$'s contribution to variability. For CSH the portion is much larger, about 88 \%. $VPD$'s variability is certainly a non-negligible contributor to $ET$'s variability.
 
-Theoretical derivation has so far illuminated the dependence of $\frac{\partial \; ET}{\partial \; VPD}$ and how it varies across PFT. Large mean $uWUE$ shifts CRO and DBF towards positive $\frac{\partial \; ET}{\partial \; VPD}$ i.e. increasing ET at higher VPD, but $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ is still negative for DBF due to its lower $g1$ SAY PHISICALLY WHAT IT IS FOR THE READER TO UNDERSTAND. ENF's low $g1$, which is even lower than DBF, increases the dependence of $\frac{\partial \; ET}{\partial \; VPD}$ on $VPD$, and makes the function strongly nonlinear. This has the side effect of pushing $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ negative further than other PFTs for a given fraction $\frac{\partial \; ET}{\partial \; VPD} < 0$ and magnitude $\frac{\partial \; ET}{\partial \; VPD}(\overline{T,\ldots,VPD})$. SAY THIS IN WORDS AS WELL OR YOU WILL LSOE THE READER. GRA shows the opposite behavior; a relatively high $g1$  makes the function more linear, decreasing the magnitude of $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ for a given fraction $\frac{\partial \; ET}{\partial \; VPD} < 0$ and negative $\frac{\partial \; ET}{\partial \; VPD}(\overline{T,\ldots,VPD})$. SAY IN WORDS AGAIN WHAT IT MEANS OTHERWISE PEOPLE WILL NOT UNDERSTAND OUR RESULTS. Finally, the low $uWUE$ of CSH pushes it toward the lowest values of $\frac{\partial \; ET}{\partial \; VPD}$ (Figure \ref{term3}) across all PFTs WHAT DOES IT MEAN AGAIN. Variability in $VPD$ accounts for the largest amount of $ET$ variability for CSH. For the other PFTs, $VPD$ contributes less to $ET$ variability, but still represents about 30-40 \% of $R$'s contributions to ET variability. WHAT IS THE SORUCE OF VARIBILITY OF THE REST OF ET I DON"T KNOW IF THAT IS RELEVANT FOR THE PRESENT PAPER.
+Theoretical derivation has so far illuminated the dependence of $\frac{\partial \; ET}{\partial \; VPD}$ and how it varies across PFT. Large mean $uWUE$ shifts CRO and DBF towards positive $\frac{\partial \; ET}{\partial \; VPD}$ i.e. increasing ET at higher VPD, but $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ is still negative for DBF due to its lower $g_1$ SAY PHISICALLY WHAT IT IS FOR THE READER TO UNDERSTAND. ENF's low $g_1$, which is even lower than DBF, increases the dependence of $\frac{\partial \; ET}{\partial \; VPD}$ on $VPD$, and makes the function strongly nonlinear. This has the side effect of pushing $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ negative further than other PFTs for a given fraction $\frac{\partial \; ET}{\partial \; VPD} < 0$ and magnitude $\frac{\partial \; ET}{\partial \; VPD}(\overline{T,\ldots,VPD})$. SAY THIS IN WORDS AS WELL OR YOU WILL LSOE THE READER. GRA shows the opposite behavior; a relatively high $g_1$  makes the function more linear, decreasing the magnitude of $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ for a given fraction $\frac{\partial \; ET}{\partial \; VPD} < 0$ and negative $\frac{\partial \; ET}{\partial \; VPD}(\overline{T,\ldots,VPD})$. SAY IN WORDS AGAIN WHAT IT MEANS OTHERWISE PEOPLE WILL NOT UNDERSTAND OUR RESULTS. Finally, the low $uWUE$ of CSH pushes it toward the lowest values of $\frac{\partial \; ET}{\partial \; VPD}$ (Figure \ref{term3}) across all PFTs WHAT DOES IT MEAN AGAIN. Variability in $VPD$ accounts for the largest amount of $ET$ variability for CSH. For the other PFTs, $VPD$ contributes less to $ET$ variability, but still represents about 30-40 \% of $R$'s contributions to ET variability. WHAT IS THE SORUCE OF VARIBILITY OF THE REST OF ET I DON"T KNOW IF THAT IS RELEVANT FOR THE PRESENT PAPER.
 
 \begin{table}
 \caption{Statistics of $\frac{\partial \; ET}{\partial \; VPD}$ as a function of PFT. \textbf{***dated, need to update these statistics***}}
@@ -442,7 +420,7 @@ ALL OF THE REST SHOULDB EB EXPLAINED IN MUCH MORE DETAIL DESCRIBE EACH FIGURE AN
 
 The theory does not match as well for CRO and GRA. Perhaps this should be expected. Our theory, for practical reasons, does not include important sources of variability (particularly between sites) for CRO and GRA. We do not account for seasonal changes in LAI, variability in crop height and surface roughness, differences in C3 vs C4 photosynthesis, or differences in irrigation practices between the sites. Given that the our theory does not do as well for CRO and GRA, we will refrain from firm statements about how CRO and GRA respond to changes in VPD.
 
-ENF is a special case. The VPD dependence of the theory is not well captured by observations. However, the theory closely captures the intercept where $\frac{\partial \; ET}{\partial \; VPD} = 0$. Resolving this feature is the key to answering our question, so perhaps the theory is still useful for ENF for the purpose of addressing when VPD drives or reduces ET. It is also noteworthy that we used published constants for $g1$, which determines the VPD dependence, from \cite{Lin_2015}. We could have fit our own constants so that the theory would best match the observations, but our goal was to use a priori physical constants whenever possible.
+ENF is a special case. The VPD dependence of the theory is not well captured by observations. However, the theory closely captures the intercept where $\frac{\partial \; ET}{\partial \; VPD} = 0$. Resolving this feature is the key to answering our question, so perhaps the theory is still useful for ENF for the purpose of addressing when VPD drives or reduces ET. It is also noteworthy that we used published constants for $g_1$, which determines the VPD dependence, from \cite{Lin_2015}. We could have fit our own constants so that the theory would best match the observations, but our goal was to use a priori physical constants whenever possible.
 
 While the above discussion shows that our theory has some limitations when applied to some sites, especially for crops and grasslands, another question could be, how does our theory's performance compare to often-used PET? Again, as in Section \ref{sign_func}, the PET response to changes in VPD will be constant at about 3.5. Even with uncertainty included, no values of the response approach the PET case YOU NEED TO ELABORATE WAY MORE AND GUDE THE READER THROUGH YOUR THOUGHTS. PET's status outside the error bars of our theory highlight the usefulness of our theory (and Equation \ref{et}) for estimating land response and moisture budgeting.
 
@@ -703,7 +681,7 @@ This work used eddy covariance data acquired and shared by the FLUXNET community
 %
 % AGU does not want a .bib or a .bbl file. Please copy in the contents of your .bbl file here.
 %\bibliography{references.bib}
-\input{vpd_et_paper.bbl}
+\input{vpd_et_paper_PG_v1.bbl}
 
 
 \listofchanges
