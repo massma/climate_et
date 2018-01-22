@@ -8,76 +8,15 @@
 
 \begin{document}
 
-%% ------------------------------------------------------------------------ %%
-%  Title
-% 
-% (A title should be specific, informative, and brief. Use
-% abbreviations only if they are defined in the abstract. Titles that
-% start with general keywords then specific terms are optimized in
-% searches)
-%
-%% ------------------------------------------------------------------------ %%
-
-% Example: \title{This is a test title}
-
 \title{When does vapor pressure deficit drive or reduce evapotranspiration?}
 
-%% ------------------------------------------------------------------------ %%
-%
-%  AUTHORS AND AFFILIATIONS
-%
-%% ------------------------------------------------------------------------ %%
-
-% Authors are individuals who have significantly contributed to the
-% research and preparation of the article. Group authors are allowed, if
-% each author in the group is separately identified in an appendix.)
-
-% List authors by first name or initial followed by last name and
-% separated by commas. Use \affil{} to number affiliations, and
-% \thanks{} for author notes.  
-% Additional author notes should be indicated with \thanks{} (for
-% example, for current addresses). 
-
-% Example: \authors{A. B. Author\affil{1}\thanks{Current address, Antartica}, B. C. Author\affil{2,3}, and D. E.
-% Author\affil{3,4}\thanks{Also funded by Monsanto.}}
 
 \authors{A. Massmann\affil{1}, P. Gentine\affil{1}, C. Lin\affil{1,2}}
-
-
-% \affiliation{1}{First Affiliation}
-% \affiliation{2}{Second Affiliation}
-% \affiliation{3}{Third Affiliation}
-% \affiliation{4}{Fourth Affiliation}
 
 \affiliation{1}{Department of Earth and Environmental Engineering, Columbia University, New York, NY 10027}
 \affiliation{2}{Department of Hydraulic Engineering, Tsinghua University, Beijing, CN}
 
-  % (repeat as many times as is necessary)
-
-%% Corresponding Author:
-% Corresponding author mailing address and e-mail address:
-
-% (include name and email addresses of the corresponding author.  More
-% than one corresponding author is allowed in this LaTeX file and for
-% publication; but only one corresponding author is allowed in our
-% editorial system.)  
-
-% Example: \correspondingauthor{First and Last Name}{email@address.edu}
-
 \correspondingauthor{Adam Massmann}{akm2203@columbia.edu}
-
-%% Keypoints, final entry on title page.
-
-% Example: 
-% \begin{keypoints}
-% \item	List up to three key points (at least one is required)
-% \item	Key Points summarize the main points and conclusions of the article
-% \item	Each must be 100 characters or less with no special characters or punctuation 
-% \end{keypoints}
-
-%  List up to three key points (at least one is required)
-%  Key Points summarize the main points and conclusions of the article
-%  Each must be 100 characters or less with no special characters or punctuation 
 
 \begin{keypoints}
 \item = enter point 1 here = 
@@ -85,67 +24,26 @@
 \item = enter point 3 here = 
 \end{keypoints}
 
-%% ------------------------------------------------------------------------ %%
-%
-%  ABSTRACT
-%
-% A good abstract will begin with a short description of the problem
-% being addressed, briefly describe the new data or analyses, then
-% briefly states the main conclusion(s) and how they are supported and
-% uncertainties. 
-%% ------------------------------------------------------------------------ %%
-
-%% \begin{abstract} starts the second page 
 
 \begin{abstract}
 = enter abstract here =
 \end{abstract}
 
-
-%% ------------------------------------------------------------------------ %%
-%
-%  TEXT
-%
-%% ------------------------------------------------------------------------ %%
-
-%%% Suggested section heads:
-% \section{Introduction}
-% 
-% The main text should start with an introduction. Except for short
-% manuscripts (such as comments and replies), the text should be divided
-% into sections, each with its own heading. 
-
-% Headings should be sentence fragments and do not begin with a
-% lowercase letter or number. Examples of good headings are:
-
-% \section{Materials and Methods}
-% Here is text on Materials and Methods.
-%
-% \subsection{A descriptive heading about methods}
-% More about Methods.
-% 
-% \section{Data} (Or section title might be a descriptive heading about data)
-% 
-% \section{Results} (Or section title might be a descriptive heading about the
-% results)
-% 
-% \section{Conclusions}
-
-
 \section{Introduction}
 
+Vapor pressure deficit (VPD) is expected to rise over continents in the future due to the combination of increased temperature and relative humidity drying\explain{Is decreased RH conclusive and universal?- I'm not so sure... is there another citation? I don't think Byrne 2013 shows that.} \citep{Byrne_2013}. Increases in VPD increase the atmospheric demand of evapotranspiration (ET) \citep{Monteith_1965} but also stress plant stomata \citep{Leuning_1990, MEDLYN_2011}.
 
-Vapor pressure deficit (VPD) is expected to rise over continents in the future due to the combination of increased temperature and relative humidity drying\explain{Is increased RH conclusive and universal?- I'm not so sure... is there another citation? I don't think Byrne 2013 shows that.} \citep{Byrne_2013}.. In turn VPD modifies the atmospheric demand of evapotranspiration (ET) (Penman Monteith) but is also a stressor for stomata \citep{Leuning_1990, MEDLYN_2011}.
+This leades to two potential but opposing perspectives on how ET adjusts to changes in VPD. The first, a hydrometeorological perspective, is that higher VPD increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies, only quantifies atmospheric demand effects. On the other hand, there is another perspective for vegetated surfaces. Plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase in VPD, particularly in well watered soil conditions, may actually correspond to a decrease in ET because of stomatal closure. This decrease in ET would reduce and potentially cancel (in the case of full stomatal closure) the effects of shifts to atmospheric demand. In other words, the  question ``When does VPD drive or reduce ET?'' can be related to whether plant regulation or atmospheric demand dominates ET.
 
-Answering the question ``When does vapor pressure deficit drive or reduce evapotranspiration?'' is thus motivated by two potential but opposing perspectives on the matter. The first, hydrometeorological, perspective is that higher vapor pressure deficit increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies, only quantifies atmospheric demand effects. On the other hand, there is another perspective for vegetated surfaces. Plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}.  Therefore, an increase in VPD, in well watered soil conditions, may actually correspond to a decrease in ET because of stomatal closure. This decrease in ET would reduce and potentially cancel (in case of full closure) the effects of shifts to atmospheric demand. In other words, the  question ``When does VPD drive or reduce ET?'' can be related to whether plant regulation or atmospheric demand dominate ET. If plant response reduces ET in response to atmospheric drying then soil moisture will be better conserved. This would seem a sensible evolutionary strategy to cope with aridity. If stomata were fully passive \citep [similar to soil pores, e.g. ][]{Or_2013}, increased atmospheric aridity would further reduce soil moisture. In turn, this would further increase aridity as low soil moisture levels increase the Bowen ratio, and in turn increase temperature and reduce atmospheric humidity (gentine et al. GRL 2016, Berg 2016).  This however would not seem to be a sensible strategy for plants from an evolutionary standpoint.
+The ET reponse to changes in VPD alters water partitioning between the soil and atmosphere. If plant response reduces ET in response to atmospheric drying then soil moisture will be better conserved. This would seem a sensible evolutionary strategy to cope with aridity. If stomata were fully passive \citep [similar to soil pores, e.g. ][]{Or_2013}, increased atmospheric aridity would further reduce soil moisture. In turn, this would further increase aridity as low soil moisture levels increase the Bowen ratio, and in turn increase temperature and reduce atmospheric humidity (gentine et al. GRL 2016, Berg 2016).  This however would not seem to be a sensible strategy for plants from an evolutionary standpoint.
 
-First, whether VPD drives or reduces ET should be a function of plant type. Plants that evolved to conserve water (e.g. arid shrubs) will be more likely to reduce ET with increasing VPD, and plants that have evolved to care little about water (e.g. crops) will be more likely to increase ET with increasing VPD. Atmospheric conditions must matter as well. At the ecosystem scale there are limits to the strategies plants use to hold water back from the atmosphere. As atmospheric demand for water (VPD) increases, ecosystems will begin to reach their water conservation limits. At this stage any further increase in VPD will most likely drive an increase in ET, because there is little more the plants can do keep water back. 
+We can use intuition about plant water conservation strategy to hypothesize about ET reponse to changes in VPD. Plants that evolved to conserve water (e.g. arid shrubs) will be more likely to reduce ET with increasing VPD, and plants that have evolved to care little about water (e.g. crops) will be more likely to increase ET with increasing VPD. Atmospheric conditions must matter as well. At the ecosystem scale there are limits to plant water conservation strategies. As atmospheric demand for water (VPD) increases, ecosystems will begin to reach their water conservation limits. At this stage any further increase in VPD will most likely drive an increase in ET, because there is little more the plants can do keep water back. 
 
 The objective of the present manuscript is thus to evaluate the VPD dependence of ET, in non-extreme soil drought conditions. The goal of this paper is to use reasonable approximations as a tool to increase intuition for plant response to atmospheric drying. This intuition will aid interpretation of observations and full complexity models. In order to quantify plant response to perturbations in VPD, we apply a Penman-Monteith framework to derive theoretical response of ET to VPD. The model is then validated and tested at multiple eddy-covariance stations spanning various climates and plant functional types. Section 2 describes the data used. Section 3 derives the framework. Section 4 presents results and comparison to observations. Section 5 discusses conclusions. 
 
 \section{Data}
 \label{data}
-We use both meterological and turbulent flux data from the FLUXNET2015 database, including all sites with more than four years of data\explain{Pierre says ``be as precise as possible,'' but not sure what he means}. Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in Section \ref{methods} are only published for five plant functional types (PFTs) crops (CRO), deciduous broadleaf forest (DBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 56 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now}.
+We use both meterological and turbulent flux data from the FLUXNET2015 database, including all sites with more than four years of data\explain{Pierre says ``be as precise as possible,'' but not sure what he means}. Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in Section \ref{methods} are only published for five plant functional types (PFTs): crops (CRO), deciduous broadleaf forest (DBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 56 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig} \explain{map needs to be improved - it's a placeholder for now}.
 
 The purpose of this study is to examine ecosystem response to atmospheric drying during the growing season. To accomplish this, we filter and quality control the data using a similar procedure as \cite{Zhou_2015}:
 \begin{itemize}
@@ -157,22 +55,30 @@ Additionally, we restrict data to the daytime, which is identified when downwell
 
 \section{Methods}
 \label{methods}
-The Penman-Monteith equation (hereafter PM \explain{find pm ciatation in shuttlewroth}) estimates ET as a function of observable atmospheric variables and surface conductances:
+The Penman-Monteith equation \citep [hereafter PM][]{Monteith_1965}} estimates ET as a function of observable atmospheric variables and surface conductances:
 \begin{linenomath*}
   \begin{equation}
       ET = \frac{\Delta R + g_a \rho_a c_p VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},
   \end{equation}
 \end{linenomath*}
-where variable definitions are given in Table 1. \citet{MEDLYN_2011} developed a model for stomatal conductance ($g_s$) by combining optimal photosynthesis theory \citep{Farquhar_1980, Katul_2010} with empirical approaches, which describes the dependence of $g_s$ to VPD. The result for leaf-scale stomatal conductance was:
+where $\Delta$ is the change in saturation vapor pressure with temperature ($\frac{\partial \; e_s}{\partial \; T}$), $R$ is the net radiation minus ground heat flux, $g_a$ is aerodynamic conductance, $\rho_a$ is air density, $c_p$ is specific heat of air at constant pressure, $\gamma$ is the psychometric constant, and $g_s$ is the stomatal conudctance (Table 1). \citet{MEDLYN_2011} developed a model for stomatal conductance ($g_s$) by combining optimal photosynthesis theory \citep{Farquhar_1980, Katul_2010} with empirical approaches, which describes the dependence of $g_s$ to VPD. The result for leaf-scale stomatal conductance was:
 
 \begin{linenomath*}
   \begin{equation}
   g_{l-s} = g_0 + 1.6 \left(1 + \frac{g_1}{\sqrt{VPD}}\right) \frac{A}{c_s}
   \end{equation}
 \end{linenomath*}
-This model has been shown to behave very well across PFTs, compared to other models \citep{Lin_2015}.
+Where $g_1$ is a leaf-scale ``slope'' parameter, A is the net CO$_2$ assimilation rate, and $c_s$ is the atmospheric CO$_2$ concentration at the leaf surface. \cite{MEDLYN_2011} relate the slope parameter ($g_1$) to physical parameters as:
+\begin{linenomath*}
+  \label{slope}
+  \begin{equation}
+  g_1 = \sqrt{\frac{3 \, \Gamma \, \lambda}{1.6}},\footnote{Note the above expression has units of of (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to Pa$^{1/2}$ using the ideal gas law.}
+  \end{equation}
+\end{linenomath*}
 
-This can be adapted to the ecosystem scale by multiplying by leaf area index (LAI) and converting units to m s$^{-1}$:
+where $\Gamma$ is the CO$_2$ compensation point for photosythesis (without dark respiration), and $\lamda$ is the marinal cost of leaf carbon. So, $g_1$ is a leaf-scale term reflecting the willingness of a leaf to trade water for carbon uptake and growth. The higher $g_1$, the more willing a leaf will be willing to release water in the exchange for water.
+
+The Medlyn model for stomatal conductance has been shown to behave very well across PFTs, compared to other models \citep{Lin_2015}, and can be adapted to the ecosystem scale by multiplying by leaf area index (LAI) and converting units to m s$^{-1}$:
 
 \begin{linenomath*}
   \label{medlyn}
@@ -206,7 +112,7 @@ Note that $uWUE$ is fit on the ecosystem scale in \citet{Zhou_2015} so GPP in \r
   \end{equation}
 \end{linenomath*}
 
-Given FLUXNET data described in Section \ref{data}, every term in Equation \ref{et} is known. However, our sampling of sites at the global scale may introduce some deviations of $uWUE$ from those observed in \citet{Zhou_2015}. Also, we wish to include some measure of uncertainty in our analysis to check whether our assumptions and simplifications are reasonable. To account for both mean deviations of $uWUE$ and uncertainty, we will introduce an uncertainty parameter $\sigma$ modifying $uWUE$:
+With Equation \ref{et}, ET is explicitly a function of environmental variables and two plant-specific constats, the slope parameter ($g_1$), and $uWUE$. The slope parameter is a leaf-scale term related to the willingness of leaves to trade water for new growth. $uWUE$ is semi-empirical ecosystem-scale constant related to how WUE changes with VPD (specifically $\sqrt{VPD}$). Given FLUXNET data described in Section \ref{data}, every term in Equation \ref{et} is known. However, our sampling of sites at the global scale may introduce some deviations of $uWUE$ from those observed in \citet{Zhou_2015}. Also, we wish to include some measure of uncertainty in our analysis to check whether our assumptions and simplifications are reasonable. To account for both mean deviations of $uWUE$ and uncertainty, we will introduce an uncertainty parameter $\sigma$ modifying $uWUE$:
 
 \begin{linenomath*}
   \begin{equation}
@@ -474,219 +380,15 @@ While our theory predicts common occurrence of positive $\frac{\partial \; ET}{\
 
 This paper provides initial intuition for how the land surface responds to atmospheric drying. This intuition for the one-way behavior of  land surface response to atmospheric drying is critical first step to disentangling land-atmosphere feedbacks at various scales, from diurnal to seasonal and beyond. 
 
-%%
-%% Enter Figures and Tables near as possible to where they are first mentioned:
-%
-% DO NOT USE \psfrag or \subfigure commands.
-%
-% Figure captions go below the figure.
-% Table titles go above tables;  other caption information
-%  should be placed in last line of the table, using
-% \multicolumn2l{$^a$ This is a table note.}
-%
-%----------------
-% EXAMPLE FIGURE
-%
-% \begin{figure}[h]
-% \centering
-% when using pdflatex, use pdf file:
-% \includegraphics[width=20pc]{figsamp.pdf}
-%
-% when using dvips, use .eps file:
-% \includegraphics[width=20pc]{figsamp.eps}
-%
-% \caption{Short caption}
-% \label{figone}
-%  \end{figure}
-%
-% ---------------
-% EXAMPLE TABLE
-%
-% \begin{table}
-% \caption{Time of the Transition Between Phase 1 and Phase 2$^{a}$}
-% \centering
-% \begin{tabular}{l c}
-% \hline
-%  Run  & Time (min)  \\
-% \hline
-%   $l1$  & 260   \\
-%   $l2$  & 300   \\
-%   $l3$  & 340   \\
-%   $h1$  & 270   \\
-%   $h2$  & 250   \\
-%   $h3$  & 380   \\
-%   $r1$  & 370   \\
-%   $r2$  & 390   \\
-% \hline
-% \multicolumn{2}{l}{$^{a}$Footnote text here.}
-% \end{tabular}
-% \end{table}
-
-%% SIDEWAYS FIGURE and TABLE 
-% AGU prefers the use of {sidewaystable} over {landscapetable} as it causes fewer problems.
-%
-% \begin{sidewaysfigure}
-% \includegraphics[width=20pc]{figsamp}
-% \caption{caption here}
-% \label{newfig}
-% \end{sidewaysfigure}
-% 
-%  \begin{sidewaystable}
-%  \caption{Caption here}
-% \label{tab:signif_gap_clos}
-%  \begin{tabular}{ccc}
-% one&two&three\\
-% four&five&six
-%  \end{tabular}
-%  \end{sidewaystable}
-
-%% If using numbered lines, please surround equations with \begin{linenomath*}...\end{linenomath*}
-%\begin{linenomath*}
-%\begin{equation}
-%y|{f} \sim g(m, \sigma),
-%\end{equation}
-%\end{linenomath*}
-
-%%% End of body of article
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Optional Appendix goes here
-%
-% The \appendix command resets counters and redefines section heads
-%
-% After typing \appendix
-%
-%\section{Here Is Appendix Title}
-% will show
-% A: Here Is Appendix Title
-%
-%\appendix
-%\section{Here is a sample appendix}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Optional Glossary, Notation or Acronym section goes here:
-%
-%%%%%%%%%%%%%%  
-% Glossary is only allowed in Reviews of Geophysics
-%  \begin{glossary}
-%  \term{Term}
-%   Term Definition here
-%  \term{Term}
-%   Term Definition here
-%  \term{Term}
-%   Term Definition here
-%  \end{glossary}
-
-%
-%%%%%%%%%%%%%%
-% Acronyms
-%   \begin{acronyms}
-%   \acro{Acronym}
-%   Definition here
-%   \acro{EMOS}
-%   Ensemble model output statistics 
-%   \acro{ECMWF}
-%   Centre for Medium-Range Weather Forecasts
-%   \end{acronyms}
-
-%
-%%%%%%%%%%%%%%
-% Notation 
-%   \begin{notation}
-%   \notation{$a+b$} Notation Definition here
-%   \notation{$e=mc^2$} 
-%   Equation in German-born physicist Albert Einstein's theory of special
-%  relativity that showed that the increased relativistic mass ($m$) of a
-%  body comes from the energy of motion of the body—that is, its kinetic
-%  energy ($E$)—divided by the speed of light squared ($c^2$).
-%   \end{notation}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  ACKNOWLEDGMENTS
-%
-% The acknowledgments must list:
-%
-% •	All funding sources related to this work from all authors
-%
-% •	Any real or perceived financial conflicts of interests for any
-%	author
-%
-% •	Other affiliations for any author that may be perceived as
-% 	having a conflict of interest with respect to the results of this
-% 	paper.
-%
-% •	A statement that indicates to the reader where the data
-% 	supporting the conclusions can be obtained (for example, in the
-% 	references, tables, supporting information, and other databases).
-%
-% It is also the appropriate place to thank colleagues and other contributors. 
-% AGU does not normally allow dedications.
-
 
 \acknowledgments
 This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices.
 
-
-%% ------------------------------------------------------------------------ %%
-%% Citations
-
-% Please use ONLY \citet and \citep for reference citations.
-% DO NOT use other cite commands (e.g., \cite, \citeyear, \nocite, \citealp, etc.).
-
-
-%% Example \citet and \citep:
-%  ...as shown by \citet{Boug10}, \citet{Buiz07}, \citet{Fra10},
-%  \citet{Ghel00}, and \citet{Leit74}. 
-
-%  ...as shown by \citep{Boug10}, \citep{Buiz07}, \citep{Fra10},
-%  \citep{Ghel00, Leit74}. 
-
-%  ...has been shown \citep [e.g.,][]{Boug10,Buiz07,Fra10}.
-
-
-
-%%  REFERENCE LIST AND TEXT CITATIONS
-%
-% Either type in your references using
-%
-% \begin{thebibliography}{}
-% \bibitem[{\textit{Kobayashi et~al.}}(2003)]{R2013} Kobayashi, T.,
-% Tran, A.~H., Nishijo, H., Ono, T., and Matsumoto, G.  (2003).
-% Contribution of hippocampal place cell activity to learning and
-% formation of goal-directed navigation in rats. \textit{Neuroscience}
-% 117, 1025--1035.
-%
-% \bibitem{}
-% Text
-% \end{thebibliography}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Or, to use BibTeX:
-%
-% Follow these steps
-%
-% 1. Type in \bibliography{<name of your .bib file>} 
-%    Run LaTeX on your LaTeX file.
-%
-% 2. Run BiBTeX on your LaTeX file.
-%
-% 3. Open the new .bbl file containing the reference list and
-%   copy all the contents into your LaTeX file here.
-%
-% 4. Run LaTeX on your new file which will produce the citations.
-%
 % AGU does not want a .bib or a .bbl file. Please copy in the contents of your .bbl file here.
 %\bibliography{references.bib}
 \input{vpd_et_paper_PG_v1.bbl}
 
-
 \listofchanges
-
 
 \end{document}
 
