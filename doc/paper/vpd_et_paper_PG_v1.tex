@@ -55,7 +55,7 @@ Additionally, we restrict data to the daytime, which is identified when downwell
 
 \section{Methods}
 \label{methods}
-The Penman-Monteith equation \citep [hereafter PM][]{Monteith_1965}} estimates ET as a function of observable atmospheric variables and surface conductances:
+The Penman-Monteith equation \citep [hereafter PM][]{Monteith_1965} estimates ET as a function of observable atmospheric variables and surface conductances:
 \begin{linenomath*}
   \begin{equation}
       ET = \frac{\Delta R + g_a \rho_a c_p VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},
@@ -76,7 +76,7 @@ Where $g_1$ is a leaf-scale ``slope'' parameter, A is the net CO$_2$ assimilatio
   \end{equation}
 \end{linenomath*}
 
-where $\Gamma$ is the CO$_2$ compensation point for photosythesis (without dark respiration), and $\lamda$ is the marinal cost of leaf carbon. So, $g_1$ is a leaf-scale term reflecting the willingness of a leaf to trade water for carbon uptake and growth. The higher $g_1$, the more willing a leaf will be willing to release water in the exchange for water.
+where $\Gamma$ is the CO$_2$ compensation point for photosythesis (without dark respiration), and $\lambda$ is the marginal cost of leaf carbon. So, $g_1$ is a leaf-scale term reflecting the willingness of a leaf to trade water for carbon uptake and growth. The higher $g_1$, the more willing a leaf will be willing to release water in the exchange for water.
 
 The Medlyn model for stomatal conductance has been shown to behave very well across PFTs, compared to other models \citep{Lin_2015}, and can be adapted to the ecosystem scale by multiplying by leaf area index (LAI) and converting units to m s$^{-1}$:
 
@@ -112,7 +112,7 @@ Note that $uWUE$ is fit on the ecosystem scale in \citet{Zhou_2015} so GPP in \r
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{et}, ET is explicitly a function of environmental variables and two plant-specific constats, the slope parameter ($g_1$), and $uWUE$. The slope parameter is a leaf-scale term related to the willingness of leaves to trade water for new growth. $uWUE$ is semi-empirical ecosystem-scale constant related to how WUE changes with VPD (specifically $\sqrt{VPD}$). Given FLUXNET data described in Section \ref{data}, every term in Equation \ref{et} is known. However, our sampling of sites at the global scale may introduce some deviations of $uWUE$ from those observed in \citet{Zhou_2015}. Also, we wish to include some measure of uncertainty in our analysis to check whether our assumptions and simplifications are reasonable. To account for both mean deviations of $uWUE$ and uncertainty, we will introduce an uncertainty parameter $\sigma$ modifying $uWUE$:
+With Equation \ref{et}, ET is explicitly a function of environmental variables and two plant-specific constats, the slope parameter ($g_1$), and $uWUE$. The slope parameter is a leaf-scale term related to the willingness of leaves to trade water for new growth. $uWUE$ is semi-empirical ecosystem-scale constant related to how WUE changes with VPD (specifically $VPD^{-1/2}$). Given FLUXNET data described in Section \ref{data}, every term in Equation \ref{et} is known. However, our sampling of sites at the global scale may introduce some deviations of $uWUE$ from those observed in \citet{Zhou_2015}. Also, we wish to include some measure of uncertainty in our analysis to check whether our assumptions and simplifications are reasonable. To account for both mean deviations of $uWUE$ and uncertainty, we will introduce an uncertainty parameter $\sigma$ modifying $uWUE$:
 
 \begin{linenomath*}
   \begin{equation}
@@ -132,7 +132,7 @@ Now, from each FLUXNET observation we can evaluate $\sigma$ at each time step an
 
 With Equation \ref{d_et} we have provided an analytical framework for ecosystem response to atmospheric demand perturbations. There are a few subtleties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately orthogonal. 
 
-We note one final comment on our derivation which is relevant for future analysis. If we  approximate $c_s$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface. 
+We note one final comment on our derivation which is relevant for future projects and analysis. If we approximate $c_s$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015, Lin_2015}. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface. 
 
 \begin{table}
 \caption{Definition of symbols and variables, with citation for calculation if applicable.}
@@ -198,7 +198,7 @@ By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) con
 \label{lai_fig}
 \end{figure}
 
-An additional concern is that $\sigma$ may in fact be correlated with $VPD$, in which case the dependence would need to be accounted for when taking the derivative. Figure \ref{lai_vpd_fig} plots the joint distribution of $\sigma$ and VPD, and shows that $\sigma$ is very weakly a function of VPD. Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $VPD$.
+An additional concern is that $\sigma$ may in fact be correlated with $VPD$, in which case the dependence would need to be accounted for when taking the derivative. However, the joint distribution of $\sigma$ and VPD shows that $\sigma$ is very weakly a function of VPD (Figure \ref{lai_vpd_fig}). Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $VPD$.
 
 \begin{figure}[h]
 \centering
@@ -219,11 +219,11 @@ and a ``sign'' term, which determines whether the derivative is positive i.e. at
   \label{sign}
   \frac{c_p}{R_{air}} - \frac{\gamma c_s }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right).
 \end{equation}
-All variables are positive, so the relative magnitude between the first term and the second term in Equation \ref{sign} will determine whether ET increases or decreases with increasing VPD. If the second term is larger magnitude then plant response dominates, while if the first term is larger then atmospheric demand dominates. The sign will determine whether ET is increasing or decreasing and we thus evaluate its functional form first. 
+All variables are positive, so the relative magnitude between the first term and the second term in Equation \ref{sign} will determine whether ET increases or decreases with increasing VPD. If the second term is larger magnitude then plant response dominates and ET decreases with increasing VPD. However, if the first term is larger then atmospheric demand dominates and ET increases with increasing VPD. Given this sign 
 
 \subsection{Functional Form of the Sign Term}
 \label{sign_func}
-First, we explore the variables within the sign term to gain better intuition on the driver of either the increase or reduction of ET with VPD. $c_s$ and $\gamma$ are relatively constant to a good approximation so that the variability is dominated by $\sigma$ and $VPD$. $uWUE$ could vary with soil moisture but has been shown to be relatively constant except in very dry soil conditions \citep{Zhou_2016, Lin_2015}. We thus further assume that the soil is not too dry so that $uWUE$ can be approximated as a constant. This then means that the sign term only depends on VPD for a given PFT and is approximately just a function of $VPD$. We can further determine a critical threshold separating an increase from decrease in ET, such that $VPD_{crit}$ where $\frac{\partial \; ET}{\partial \; VPD} = 0$:
+First, we explore the variables within the sign term to gain better intuition on the driver of either the increase or reduction of ET with VPD. CO$_2$ concentration ($c_s$) and the pschometric constant ($\gamma$) are relatively constant to a good approximation so that the variability is dominated by $\sigma$ and $VPD$. $uWUE$ could vary with soil moisture but has been shown to be relatively constant except in very dry soil conditions \citep{Zhou_2016, Lin_2015}. We thus further assume that the soil is not too dry so that $uWUE$ can be approximated as a constant (within PFT). This then means that the sign term only depends on VPD for a given PFT and is approximately just a function of $VPD$. We can further determine a critical threshold separating an increase from decrease in ET, such that $VPD_{crit}$ where $\frac{\partial \; ET}{\partial \; VPD} = 0$:
 
 \begin{linenomath*}
   \begin{equation}
@@ -232,7 +232,7 @@ VPD_{crit} = \frac{R_{air}}{4 c_p} \left( \frac{\gamma c_s}{1.6\; R \; \overline
   \end{equation}
 \end{linenomath*}
 
-Values of $VPD_{crit}$ as a function of PFT are shown in Table \ref{vpd_crit}. For any values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive. In other words, ecosystems can regulate and mitigate evaporative losses up to a VPD limit, above which atmospheric demand is just too high to be entirely compensated by stomatal regulation. We note however that even though ET increases again above the critical threshold, $VPD_{crit}$, ET is still much lower that potential evaporation as stomata are stills strongly regulating vapor fluxes. Even in the absence of soil pore evaporation, stomata do not shut down entirely at very high VPD and ET does not go to zero, because stomata are still slightly open to perform some photosynthesis \citep{Ball_1987, Leuning_1990, Medlyn_2011}. In addition, upward xylem transport is necessary to maintain phloem transport and thus carbon allocation (MENCUCCINI) \explain{Not sure citation  - Comparative criteria for models of the vasuclar transport systems of tall trees}.
+Values of $VPD_{crit}$ as a function of PFT are shown in Table \ref{vpd_crit}. For any values of $VPD$ less than $VPD_{crit}$, ET will decrease with increasing VPD ($\frac{\partial \; ET}{\partial \; VPD} < 0$), and for values of $VPD$ greater than $VPD_{crit}$, ET will increase with increasing VPD ($\frac{\partial \; ET}{\partial \; VPD} > 0$). In other words, ecosystems can regulate and mitigate evaporative losses up to a VPD limit, above which atmospheric demand is just too high to be entirely compensated by stomatal regulation. We note however that even though ET increases again above the critical threshold, $VPD_{crit}$, ET is still much lower that potential evaporation as stomata are still strongly regulating vapor fluxes. Even in the absence of soil pore evaporation, stomata do not shut down entirely at very high VPD and ET does not go to zero, because stomata are still slightly open to perform some photosynthesis \citep{Ball_1987, Leuning_1990, Medlyn_2011}. In addition, upward xylem transport is necessary to maintain phloem transport and thus carbon allocation (MENCUCCINI) \explain{Not sure citation  - Comparative criteria for models of the vasuclar transport systems of tall trees}.
 
 \begin{table}
   \label{vpd_crit}
@@ -252,7 +252,11 @@ Values of $VPD_{crit}$ as a function of PFT are shown in Table \ref{vpd_crit}. F
 \end{tabular}
 \end{table}
 
-Differences in $uWUE$ and $g_1$ between PFTs alter the functional form of the sign term.  Larger $uWUE$ and $g_1$ will shift the sign term towards overall positive values. $g_1$ additionally plays a primary role in determining dependnece on VPD: the smaller $g_1$, the greater the $VPD$ dependence for the PFT (Figure \ref{term3}).
+Differences in the sign term between plant types is exclusively determined by $uWUE$ and the slope parameter ($g_1$). A larger $uWUE$ means that at the ecosystem scale $WUE$ is larger for a given VPD, so plants are more willing to keep stomata open for new growth despite high VPD. Similiarly, high slope parameters ($g_1$) means that at the leaf scale plants are more willing to trade water for growth. Both these effects (large $uWUE$, $g_1$) conspire to shift the sign term towards overall positive values for a given PFT.
+
+This effect of $uWUE$ and $g1$ on the sign term is most apparent by comparing CRO to CSH. CRO has a high slope parameter ($g_1 = 183.1 \, Pa^{1/2}$) and uWUE ($2.32$ -units-) compared to CSH ($g1 = 148.6 \, Pa^{1/2}$, $uWUE=2.11$ -units-). These differences in slope parameter cause opposite ET reponses to changse in VPD. ET almost always increases with increasing VPD for CRO, while ET almost always decreases with increasing VPD for CSH (Figure \ref{term3}). CRO, evolved or bred to prioritize GPP, are very willing to trade water for new growth, despite changes in VPD, while CSH are very unwilling to trade water for new growth.
+
+The slope paramter ($g_1$) is additionally a primary determinant of VPD  dependnece for the sign term shown in Figure \ref{term3}. Plants that are less willing 
 
 Based on Figure \ref{term3} and Table \ref{vpd_crit}, CROs are the least water conservative and have the most positive constant offset, while CSH are the most water conservative and have the most negative constant offset in the sign term.  ENF ($g_1 = 74.31$) has by far the largest VPD dependence of response, while CRO ($g_1 = 183.1$) has the smallest VPD dependence. ENF are less willing to trade water for new growth, so the regulate water much more strongly depending on the dryness environment (VPD). CRO on the otherhand are more willing to trade water for new growth, so they regulate water relatively similiarly irregardless of the environment.
  
