@@ -48,4 +48,8 @@ def et_min_vpd(_df, uwue=None):
 def get_pft(_df):
   return _df['pft'].iloc[0]
 
-# df.index = df.reset_index(drop=True)
+def d_et(_df):
+  """returns d et/d vpd given _df"""
+  return d_calc.scaling(_df)*d_calc.sign(_df)
+
+
