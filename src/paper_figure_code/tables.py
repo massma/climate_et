@@ -17,8 +17,15 @@ def frequency(_df):
 std = df.groupby('pft').std()
 mean_df['d_et_bar'] = d_et(mean_df)
 mean_df['d_et_bar_std'] = np.absolute(mean_df['d_et_bar'])*std['vpd']
+mean_df['d_et_d_rn_bar_std'] = mean_df['delta']/\
+                               (mean_df['delta'] + mean_df['gamma'])\
+                               *std['r_n']
 mean_df['d_et_bar_norm'] = mean_df['d_et_bar_std']\
                            /std['et_obs']
+mean_df['total_var'] = np.sqrt(mean_df.d_et_bar_std**2\
+                               +mean_df.d_et_d_rn_bar_std**2)
+mean_df['d_et_bar_norm_total'] = mean_df['d_et_bar_std']\
+                           /mean_df['total_var']
 
 counts = df.groupby('pft').apply(frequency)
 
@@ -30,7 +37,7 @@ print('\n portion d_et < 0 \n',\
       counts)
 mean_df['counts'] = counts
 test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
-                       'd_et_bar_norm', 'counts']]
+                       'd_et_bar_norm', 'd_et_bar_norm_total', 'counts']]
 
 print(test)
 

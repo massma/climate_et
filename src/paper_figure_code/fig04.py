@@ -13,24 +13,6 @@ for key in ['gamma', 'delta', 'rho_a', 'g_a']:
         % (key, df[key].std(), df[key].mean(), df[key].std()/df[key].mean()))
 df['rho_like'] = df['p_a']/(273.15 + df['t_a'])
 
-def plot_scaling(_df, ax, savefig=False):
-  """makes idealized plots of scaling as a function of g_a and T"""
-  t_a = np.linspace(_df.t_a.quantile(q=0.05), _df.t_a.quantile(q=0.95))
-  ax.plot(t_a, np.ones(t_a.shape)*_df.scaling.mean(), 'k--',\
-          linewidth=0.5, label='Term 1 mean')
-  for percentile in [5., 25., 50., 75., 95.][::-1]:
-    g_a = _df.g_a.quantile(q=percentile/100.)
-    scale = d_calc.scaling(mean__df, t_a, g_a)
-    ax.plot(t_a, scale, label='$g_a$ = %5.3f (%dth percentile)'\
-            % (g_a, int(percentile)))
-  ax.set_xlabel('T (C)')
-  ax.set_ylabel(r'Term 1 ($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
-  ax.set_title('PFT = %s' % _df.pft.iloc[0])
-  plt.legend(loc='best', fontsize=8)
-  if savefig:
-    plt.savefig('../../doc/paper/fig04.pdf')
-  return
-
 def scaled_mean(_df):
   """just scales g_a by mean"""
   _df['scaled_g_a'] = _df.g_a/df.g_a.mean()
@@ -87,8 +69,4 @@ def scaling_wrapper(_df):
   return
 
 
-# plot_scaling(df)
-# os.system('convert -append %s/climate_et/scaling/*.pdf '\
-#           '../../doc/paper/fig04.pdf'\
-#           % (os.environ['PLOTS']))
 scaling_wrapper(df)
