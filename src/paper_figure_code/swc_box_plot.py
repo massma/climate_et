@@ -15,11 +15,14 @@ dashedlinewidth=1.4
 
 bluelinewidth=3.0
 
-def plot_box(_df, pft=False):
+def plot_box(_df, ax=None, pft=False):
   """makes a box plot"""
-  plt.close('all')
-  fig = plt.figure()
-  ax = fig.add_subplot(111)
+  if ax is None:
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    savefig = True
+  else:
+    savefig = False
   # exclude the last 5 percent b/c usually large
   ptiles = np.arange(0.0, 91.0, 5.0)
   positions = []
@@ -40,7 +43,7 @@ def plot_box(_df, pft=False):
   orig_xlim = ax.get_xlim()
   #ax.plot(orig_xlim, [d_calc.CP/287.0, d_calc.CP/287.0], 'm--', linewidth=1.0)
   ylim = ax.get_ylim()#[-4.0, 4.0]
-  ax.set_ylabel('uWUE', fontsize=fontsize)
+  ax.set_ylabel('$\sigma \cdot$ uWUE', fontsize=fontsize)
   ax.set_xlabel('SWC', fontsize=fontsize)
   if pft:
     ax.set_title('PFT: %s'\
@@ -54,17 +57,32 @@ def plot_box(_df, pft=False):
   # ax.set_ylim(ylim)
 
   # ax.set_xlim(orig_xlim)
+  if savefig:
+    plt.tight_layout()
+    if pft:
+      plt.savefig('%s/climate_et/swc_box/pft/%s_box.png'\
+                  % (os.environ['PLOTS'], _df.pft.iloc[0]))
+    else:
+      plt.savefig('%s/climate_et/swc_box/%s_%s_box.png'\
+                  % (os.environ['PLOTS'], _df.pft.iloc[0], _df.site.iloc[0]))
+  return
+
+def scaling_wrapper(_df):
+  """wrapper that groups by pft and does scaling plot"""
+  fig = plt.figure()
+  fig.set_figheight(fig.get_figheight()*3)
+  fig.set_figwidth(fig.get_figwidth()*2)
+  for i, pft in enumerate(mean_df.index.values):
+    print(pft)
+    ax = fig.add_subplot(3, 2, i+1)
+    plot_box(_df.loc[(_df.pft==pft), :], ax=ax, pft=True)
   plt.tight_layout()
-  if pft:
-    plt.savefig('%s/climate_et/swc_box/pft/%s_box.png'\
-                % (os.environ['PLOTS'], _df.pft.iloc[0]))
-  else:
-    plt.savefig('%s/climate_et/swc_box/%s_%s_box.png'\
-                % (os.environ['PLOTS'], _df.pft.iloc[0], _df.site.iloc[0]))
+  plt.savefig('../../doc/paper/swc_boxplot.pdf')
   return
 
 #_df = df.iloc[:1000, :].copy()
 #plot_box(_df)
 #df.groupby('site').apply(plot_box)
-df.groupby('pft').apply(plot_box, pft=True)
+# df.groupby('pft').apply(plot_box, pft=True)
+scaling_wrapper(df)
 
