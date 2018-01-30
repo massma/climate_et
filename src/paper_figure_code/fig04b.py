@@ -31,7 +31,6 @@ def plot_scaling(_df, ax, savefig=False):
     plt.savefig('../../doc/paper/fig04b.pdf')
   return
 
-
 def scaling_wrapper(_df):
   """wrapper that groups by pft and does scaling plot"""
   fig = plt.figure()
