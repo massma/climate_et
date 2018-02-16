@@ -398,11 +398,11 @@
   %% \tiny 5pt font
 
 
-\renewcommand\normalsize{%
+\renewcommand\normalsize{
 \ifdraft
-   \@setfontsize\normalsize\@xpt{\draftskip}
+   \@setfontsize\normalsize\@xiipt{\draftskip}
 \else
-   \@setfontsize\normalsize\@xpt{12}
+   \@setfontsize\normalsize\@xiipt{12}
 \fi
    \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
    \abovedisplayshortskip \z@ \@plus3\p@
