@@ -1,5 +1,5 @@
 % 11/23/2015
-\documentclass[draft,linenumbers]{agujournal}
+\documentclass[draft,linenumbers]{gcbjournal}
 % \draftfalse
 \usepackage{makecell}
 \drafttrue
@@ -31,7 +31,7 @@
 
 \section{Introduction}
 
-Vapor pressure deficit (VPD) is expected to rise over continents in the future due to the combination of increased temperature and relative humidity drying ** RH drying \citep{Byrne_2013 }. Increases in VPD increases the atmospheric demand of evapotranspiration (ET) \citep{Monteith_1965} but also stresses plant stomata \citep{Leuning_1990, MEDLYN_2011}.
+Vapor pressure deficit (VPD) is expected to rise over continents in the future due to the combination of increased temperature and relative humidity drying ** RH drying \citep{Byrne_2013}. Increases in VPD increases the atmospheric demand of evapotranspiration (ET) \citep{Monteith_1965} but also stresses plant stomata \citep{Leuning_1990, MEDLYN_2011}.
 
 This conflicting response between increased demand and higher stomatal stress leads to two potential but opposing perspectives on how ET adjusts to changes in VPD. The first, a hydrometeorological perspective, is that higher VPD increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies \citep[e.g.,][]{Heim_2002, Scheff_2015}, typically only quantifies changes in atmospheric demand with limited surface regulation though ecosystem resistance regualtion \citep{Swann_2016}. On the other hand, there is another perspective for vegetated surfaces. Plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to partially close in response to increased atmospheric dryness \citep{Ball_1987, Leuning_1990, MEDLYN_2011}. Therefore, an increase in VPD, particularly in well-watered soil conditions, may actually correspond to a decrease in ET because of stomatal closure. This decrease in ET would reduce and potentially cancel, in the case of full stomatal closure, the effects of shifts to atmospheric demand. In other words, the  question ``When does VPD drive or reduce ET?'' can be related to whether plant regulation or atmospheric demand dominates ET.
 
@@ -188,7 +188,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \includegraphics[width=20pc]{./fig01.pdf}
 \caption{Plant functional type and location of sites used in analysis. ***\textbf{This is just  a placeholder for now, I am currently fixing it***}}
@@ -200,7 +200,7 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \
 
 By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) contains all model and observational uncertainties. For an observation that perfectly matches our model and constant uWUE assumption $\sigma$ will be one. Therefore, for our assumptions and framework to be reasonable $\sigma$ should be close to 1. Figure \ref{lai_fig} presents the histogram of calculated $\sigma$s with outliers removed (lowest and highest 5\% percent). All remaining $\sigma$ values are close to unity (i.e. $O(1)$), which provides further confidence in the model framework and in the data quality.
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \includegraphics[width=20pc]{./fig02.png}
 \caption{Histogram of $\sigma$ values calculated for each site and time according to Equation \ref{sigma}. The lowest and highest 5\% are removed as outliers, as well as any values below 0. The curve is normalized such that its area is 1. }
@@ -209,7 +209,7 @@ By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) con
 
 An additional concern is that $\sigma$ may in fact be correlated with $VPD$, in which case the dependence would need to be accounted for when taking the derivative. However, the joint distribution of $\sigma$ and VPD shows that $\sigma$ is very weakly a function of VPD (Figure \ref{lai_vpd_fig}). Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $VPD$.
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \includegraphics[width=20pc]{./fig03.png}
 \caption{The joint distribution of $VPD$ and $\sigma$. $\sigma$ has only a weak dependence on $VPD$. \textbf{***note I am redoing/cleaning up this plot, ``lai'' should read sigma***}}
@@ -278,7 +278,7 @@ To summarize our theoretical insights, Figure \ref{term3} and Table \ref{vpd_cri
 
 Figure \ref{term3} clearly shows, according to our theory, that for all PFTs except for crops there is frequent occurrence of a negative (plant dominating) ET response to increases in VPD. Therefore, plants are able in most atmospheric conditions to reduce ET in response to increased VPD and thus to reduce water loss. To better illustrate this, the ranges of observed environmental VPDs at the FLUXNET sites are plotted parallel to the x-axis. For CSH, VPD is always less than VPD$_{crit}$ so that the plant response dominates in typical environmental conditions, emphasizing the water conservative strategy of those plants. For CRO on the other hand, VPD is almost always higher than VPD$_{crit}$, emphasizing that those plants operate with an aggressive water usage strategy, are water intensive and were actually engineered for photosynthesis rather than water saving. For forests and grass, whether plant response or atmospheric demand dominates is more dependent on environmental conditions, with about half of the observed VPD less than VPD$_{crit}$, i.e. in conditions where plant response dominates. It is also important to note that even when atmospheric demand dominates, ET response to VPD is still far smaller than it would be for potential evaporation $\partial PET/\partial VPD$, i.e. atmospheric demand only, emphasizing that there is still a strong regulation of evaporative flux by stomata and though the plant xylem. The sign term in this case would just be a constant ($\frac{c_p}{R_{air}} \approx 3.5$), which is far larger than any part of the curves for any PFT. This highlights the deficiencies of PET's ability to capture land response to changes in atmospheric dryness (VPD). Plants are always regulating water exchange from the land surface, even when they reach the limits of they ability to do so. Therefore, the actual land surface response to a change in VPD will always me more negative than if the plants are not included in the physics (PET). 
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \includegraphics[width=20pc]{./fig05.pdf}
 \caption{Sources of variability for the sign term. Top: sign term as a function of VPD, with $\sigma$ held fixed at 1. The observed range of VPD for each PFT is also shown below the x-axis. Line extent corresponds to 5th and 95th percentiles, while stars denote the location of the 25th, 50th, and 75th percentiles.
@@ -305,7 +305,7 @@ Within each PFT, the scaling term variability is controlled both by environmenta
 
 To summarize, variability between PFTs is mostly controlled by systematic differences in aerodynamic conductance, due to differences in surface roughness between each PFT and wind conditions. In contrast, variability within PFT is also controlled by temperature, through Clausius-Clapeyron. But, aerodynamic conductance variability generally impacts the scaling term more than temperature, even within PFT.
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \includegraphics[width=\textwidth]{./fig04b.pdf}
 \caption{Primary sources of variability for the scaling term, as a function of PFT. Note the change in axis scale for each plot. The 5th-95th percentile range of temperature is plotted at the 5th, 25th, 50th, 75th, and 95th percentiles of aerodynamic conductance, as observed for each PFT's sites.}
@@ -367,7 +367,7 @@ While the stomatal conductance $g_a$ has a large impact on the magnitude of the 
 
 In general Figures \ref{agu_fig} and \ref{real} match our expectations. Our $\sigma$-based method of uncertainty propagation blurs the idealized expectations the most for GRA and CRO. We therefore have the most confidence in our conclusion based on Equation \ref{d_et} for PFTs CSH, DBF, and ENF, as the sign of the derivative with uncertainty included matches (to leading order) the story when $\sigma$ is held fixed.
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \includegraphics[width=\textwidth]{./agu_fig.pdf}
 \caption{Comparison of the sign term with model uncertainty included (box plots) to the sign term as calculated with simplifying assumptions (blue line).}
@@ -375,14 +375,14 @@ In general Figures \ref{agu_fig} and \ref{real} match our expectations. Our $\si
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \centerline{\includegraphics[width=1.4\textwidth]{./fig06.png}}
 \caption{Scatter plots of $\frac{\partial \; ET}{\partial \; VPD}$. Each row is a different PFT, and each column is a different quantity related to $\frac{\partial \; ET}{\partial \; VPD}$, as labeled: Column 1: $\frac{\partial \; ET}{\partial \; VPD}$; Column 2: $\frac{\partial \; ET}{\partial \; VPD}$ normalized by $g_a$; Column 3: $\frac{\partial \; ET}{\partial \; VPD}$ with $\sigma$ held fixed at 1; and Column 4: $\frac{\partial \; ET}{\partial \; VPD}$ normalized by $g_a$ and with $\sigma$ held fixed. Please note differences in the colorbar scale.}
 \label{real}
 \end{figure}
 
-% \begin{figure}[h]
+% \begin{figure}[!p]
 % \centering
 % \includegraphics[width=\textwidth]{./fig06b.png}
 % \caption{****alternate Fig 06****  Scatter plots of $\frac{\partial \; ET}{\partial \; VPD}$. Each row is a different PFT, and each column is a different quantity related to $\frac{\partial \; ET}{\partial \; VPD}$, as labeled. If I end up using this, I could also draw on the curve of $VPD_{crit}$ with $\overline{\frac{\text{LAI}}{\text{LAI$_{ref}$}}}$. }
@@ -398,11 +398,11 @@ If we view $\sigma \cdot uWUE$ as, in addition to a measure of uncertainty, a sh
 
 Indeed, for all PFTs, there is some slight dependence of $\sigma \cdot uWUE$ on SWC, especially at low SWC (Figure \ref{swc}). The portion of observations for which our theory is biased by SWC-limitations varies by PFT, due to the nonlinear threshold at which soil moisture availability limits plant function. For CRO and DBF, soil water content only matters for about the lowest 5\% of observations (each box is 5\% of observations in Figure \ref{swc}). And, CRO, relative to DBF, has a very weak dependence on soil moisture, which is reflective of the high likelihood that CRO sites are optimally irrigated and not water stressed. For ENF, systematic SWC-induced biases in $\sigma \cdot uWUE$ emerge in about the lowest 30\% of SWC conditions. In crontast to ENF, CRO, and DBF, for GRA the relationship between $\sigma \cdot uWUE$ and SWC is more linear and affects a greater portion of observations; about 60\% of observations. Clearly, for GRA soil water frequently impacts plant function and alters ET response, and our theory is limited. It is therefore not suprising that our theory tested poorly againt the data for GRA, relative to ENF, DBF, and GRA (Section \ref{testing}). For all other PFTs occurence of soil mosture impacts was rare enough to not manifest itself in bulk statistics and plots\footnote{note that interpreting the soil moisture dependence for CSH is difficult as their are only two sites for that PFT. So systematic soil moisture relationshps are not apparent in Figure \ref{swc}, but instead blurred by the superposition of the two sites. We argue taht the soil moisture dependence is still there, but we don't have enough statistcs to comment on it}.
 
-The observed dependence of $\sigma \cdot uWUE$ on SWC for GRA would explain the deficiencies of our theory compared to the observations in Section \ref{testing}, specifically the trend back towards negative soil moisture at high VPD. Aforementioned feedbacks between the land surface and the atmosphere, which are not accounted for due to our focus on the one-way response of the land surface to atmospheric conditions, would cause high VPD to be correlated with low SWC \citep[][]{Getine_2016, Berg_2016}. So, at high VPD observations of low SWC are more likely, and this low SWC causes a lower uWUE (ZHOU ET AL **). The lower uWUE at low SWC/high VPD then leads to the observed downturn towards decreasing ET with increasing VPD, and the deviation between our theory (based on a constant uWUE assumption) and observations.
+The observed dependence of $\sigma \cdot uWUE$ on SWC for GRA would explain the deficiencies of our theory compared to the observations in Section \ref{testing}, specifically the trend back towards negative soil moisture at high VPD. Aforementioned feedbacks between the land surface and the atmosphere, which are not accounted for due to our focus on the one-way response of the land surface to atmospheric conditions, would cause high VPD to be correlated with low SWC \citep[][]{Gentine_2016, Berg_2016}. So, at high VPD observations of low SWC are more likely, and this low SWC causes a lower uWUE (ZHOU ET AL **). The lower uWUE at low SWC/high VPD then leads to the observed downturn towards decreasing ET with increasing VPD, and the deviation between our theory (based on a constant uWUE assumption) and observations.
 
 To summarize, our theory is limited by its inability to account for soil water impacts on land surface response, and feedbacks between SWC and VPD. Fortunately, for most PFTs SWC's effect on ET is relatively rare (<30\% of observations) and does not manifest itself in the majority of observations and bulk statistics. However, for GRA SWC has a strong effect decreasing water use efficiency for the majority of the observations. Soil moisture effects explain the deficiencies of our theory in Section \ref{testing}, particularly for GRA.
 
-\begin{figure}[h]
+\begin{figure}[!p]
 \centering
 \includegraphics[width=\textwidth]{./swc_boxplot.pdf}
 \caption{$\sigma \cot uWUE$ as a function of PFT and SWC. Each boxplot represents 5\% of all observations.}
@@ -431,7 +431,7 @@ This work used eddy covariance data acquired and shared by the FLUXNET community
 \bibliography{references.bib}
 % \input{vpd_et_paper.bbl}
 
-\listofchanges
+% \listofchanges
 
 \end{document}
 

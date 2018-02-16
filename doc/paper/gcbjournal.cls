@@ -11,8 +11,9 @@
   %*                                                              *%
   %****************************************************************%
 
-\ProvidesClass{agujournal}
-              [08/06/2016]
+%%% modified by adam massmann for GCB 2/16/2018
+\ProvidesClass{gcbjournal}
+              [02/16/2018]
 
 %% SEARCH BELOW FOR THE NUMBER TO FIND PARTICULAR MACRO GROUP
 
@@ -695,6 +696,7 @@ Corresponding author: #1,
 \renewcommand{\thefigure}{\arabic{figure}}
 
 \def\fps@figure{tbp} % position figure at top, bottom, or on its own page
+% \def\fps@figure{!ht} % position figure at top, bottom, or on its own page
 \def\ftype@figure{1} % used for placing float in page
 \def\ext@figure{lof} % send info to .lof file
 \def\fnum@figure{\figurename~~\thefigure} % \figurename, defined above,
@@ -1055,7 +1057,7 @@ width0pt\relax}\\*\noindent\ignorespaces}
 
 %% Set bibliography style: This brings in agufull08.bst to format
 %% bibliography when using BibTeX.
-\bibliographystyle{agufull08}
+\bibliographystyle{gcb}
 
 %% In case you want to enter bib entries without using bibtex
 \def\references{\thebibliography{}\item[]}
@@ -1250,13 +1252,6 @@ changenum\the\refchangenumber\endcsname{Replaced: [#1]
 \RaggedRight
 \fi
 \endinput
-
-
-
-
-
-
-
 
 
 
