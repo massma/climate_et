@@ -72,6 +72,7 @@
 
 %% Line numbering
 \RequirePackage{lineno}
+\renewcommand\linenumberfont{\normalfont\rmfamily\small}
 %% add more space between text and number:
 \advance\linenumbersep 12pt
 
@@ -127,7 +128,7 @@
   %% Running head normally uses \textwidth as its width so that a change
   %% in \hsize in text will not change width of running head or feet.
 
-\textwidth 5.5in
+\textwidth 5.75in
 
   %% Comment
   %% \voffset moves the printed page up or down on the physical page.
@@ -374,7 +375,7 @@
 %% When \ifdraft is true it will make the baselineskip = \draftskip
 
 \newcount\draftskip
-\draftskip=20
+\draftskip=24
 
 \newcommand{\@ptsize}{}
 
@@ -411,7 +412,7 @@
    \let\@listi\@listI}
 \normalsize
 
-\newcommand\bignormalsize{\@setfontsize\bignormalsize{10.5pt}{12}}
+\newcommand\bignormalsize{\@setfontsize\bignormalsize{12.5pt}{12}}
 
 \newcommand\small{%
 \ifdraft
@@ -646,12 +647,12 @@ Corresponding author: #1,
                                    {\bignormalsize\bfseries\boldmath}}
 
 \newcommand\subsection{\@startsection{subsection}{2}{\parindent}%
-                                   {\ifdraft 12pt\else 8pt\fi}%
+                                   {\ifdraft 14pt\else 8pt\fi}%
                                    {1sp}%
                                    {\normalfont\bf\boldmath}}
 
 \newcommand\subsubsection{\@startsection{subsubsection}{3}{\parindent}%
-                                   {\ifdraft 12pt\else 8pt\fi}%
+                                   {\ifdraft 14pt\else 8pt\fi}%
                                    {1sp}%
                                    {\normalfont\itshape\bfseries}}
 
