@@ -17,12 +17,6 @@ PLOT_TALK = False
 
 PLOT_PET = False
 
-name_dict = {'CRO': 'crops',\
-             'DBF': 'deciduous forest',
-             'ENF': 'evergreen forest',
-             'GRA': 'grass',
-             'CSH': 'shrub (closed)'}
-
 paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
                r'- \frac{\gamma c_s }{1.6 \; R\; uWUE  }'\
                r'\left( \frac{2 g_1 + \sqrt{D}}'\
@@ -32,8 +26,7 @@ if PLOT_TALK:
   fontsize=14
 
 
-
-I = 5
+I = 6
 def pft_leaf(_df, axs):
   """takes df and plots both halves of product in term 2"""
   global I
@@ -59,61 +52,61 @@ def pft_leaf(_df, axs):
               np.ones(ptiles.shape)*I, 'k*', markersize=markersize)
   vpd_crit = et_min_vpd(mean_row, uwue=uwue)
   axs[1].plot([vpd_crit], [I], 'k|', markersize=15, mew=3)
-  axs[-1].plot(np.ones(vpd.shape)*I, vpd)
-  axs[-1].plot(np.ones(ptiles.shape)*I, ptiles, 'k*')
+  # axs[-1].plot(np.ones(vpd.shape)*I, vpd)
+  # axs[-1].plot(np.ones(ptiles.shape)*I, ptiles, 'k*')
 
   uwue = np.linspace(_df.uwue.quantile(q=0.05), _df.uwue.quantile(q=0.95))
   vpd = mean_row.vpd
   et_min = et_min_vpd(mean_row, uwue=uwue)
-  axs[2].plot(uwue/mean_row.uwue_zhou, et_min,\
-              label=r"PFT = %s, uWUE$\cdot\overline\sigma$=%4.2f, g1=%4.1f"\
-              % (_df.pft.iloc[0],\
-                 mean_row.uwue, _df.g1.iloc[0]))
-  ptiles = np.array([_df.uwue.quantile(q=_p/100.)\
-                     for _p in [25., 50., 75.]])
-  axs[3].plot(uwue/mean_row.uwue_zhou, np.ones(uwue.shape)*I)
-  axs[3].plot(ptiles/mean_row.uwue_zhou, np.ones(ptiles.shape)*I, 'k*')
+  # axs[2].plot(uwue/mean_row.uwue_zhou, et_min,\
+  #             label=r"PFT = %s, uWUE$\cdot\overline\sigma$=%4.2f, g1=%4.1f"\
+  #             % (_df.pft.iloc[0],\
+  #                mean_row.uwue, _df.g1.iloc[0]))
+  # ptiles = np.array([_df.uwue.quantile(q=_p/100.)\
+  #                    for _p in [25., 50., 75.]])
+  # axs[3].plot(uwue/mean_row.uwue_zhou, np.ones(uwue.shape)*I)
+  # axs[3].plot(ptiles/mean_row.uwue_zhou, np.ones(ptiles.shape)*I, 'k*')
   I -= 1
   return
 
 fig = plt.figure()
-fig.set_figheight(fig.get_figheight()*2.5)
-_axs = [fig.add_subplot(2, 1, i+1) for i in range(2)]
+fig.set_figheight(fig.get_figheight()*1.25)
+_axs = [fig.add_subplot(1, 1, i+1) for i in range(1)]
 axs = []
 for _ax in _axs:
   divider = make_axes_locatable(_ax)
   axs.append(_ax)
-  axs.append(divider.append_axes("bottom", size="20%", pad=0.0, sharex=_ax))
-axs.append(divider.append_axes("left", size="20%", pad=0.0, sharey=axs[2]))
-I = 5
+  axs.append(divider.append_axes("bottom", size="25%", pad=0.0, sharex=_ax))
+# axs.append(divider.append_axes("left", size="20%", pad=0.0, sharey=axs[2]))
+I = 6
 
-for pft in ['CRO', 'DBF', 'GRA', 'ENF', 'CSH']:
+for pft in ['CRO', 'DBF', 'EBF', 'ENF', 'GRA', 'CSH']:
   _df = df.loc[df.pft == pft, :]
   pft_leaf(_df, axs)
 
 axs[1].set_xlabel('VPD', fontsize=fontsize)
-axs[3].set_xlabel('$\sigma$')
+#axs[3].set_xlabel('$\sigma$')
 axs[0].set_ylabel(paren_string, fontsize=fontsize)
 axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=linewidth)
 if PLOT_PET:
   axs[0].plot(axs[0].get_xlim(), [d_calc.CP/287.0, d_calc.CP/287.0],\
               'm--', linewidth=dashedlinewidth, label='PET')
-plt.setp(axs[2].get_yticklabels(), visible=False)
-axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
-axs[2].set_title(r'VPD$_{crit}$'\
-                 r' (where $\frac{\partial \; ET}{\partial \; D} = 0$)')
-axs[2].set_ylim([0., 4000.])
-axs[1].set_ylim([0.5,5.5])
-axs[3].set_ylim([0.5,5.5])
+# plt.setp(axs[2].get_yticklabels(), visible=False)
+#axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
+# axs[2].set_title(r'VPD$_{crit}$'\
+#                  r' (where $\frac{\partial \; ET}{\partial \; D} = 0$)')
+# axs[2].set_ylim([0., 4000.])
+axs[1].set_ylim([0.5,6.5])
+# axs[3].set_ylim([0.5,5.5])
 axs[1].get_yaxis().set_visible(False)
-axs[3].get_yaxis().set_visible(False)
-axs[-1].set_xlim([0.5,5.5])
-axs[-1].get_xaxis().set_visible(False)
+#axs[3].get_yaxis().set_visible(False)
+#axs[-1].set_xlim([0.5,5.5])
+#axs[-1].get_xaxis().set_visible(False)
 
-axs[2].text(0.35, 250., r'$\frac{\partial \; ET}{\partial \; D} < 0$',\
-            fontsize=15)
-axs[2].text(1.4, 3500., r'$\frac{\partial \; ET}{\partial \; D} > 0$',\
-            fontsize=15)
+# axs[2].text(0.35, 250., r'$\frac{\partial \; ET}{\partial \; D} < 0$',\
+#             fontsize=15)
+# axs[2].text(1.4, 3500., r'$\frac{\partial \; ET}{\partial \; D} > 0$',\
+#             fontsize=15)
 
 if not PLOT_PET:
   axs[0].set_ylim((-1.8058955891452384, 0.87408219563044132))

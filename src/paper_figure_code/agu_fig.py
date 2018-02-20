@@ -21,7 +21,8 @@ PLOT_TALK = True
 
 name_dict = {'CRO': 'Crops',\
              'DBF': 'Deciduous Forest',
-             'ENF': 'Evergreen Forest',
+             'EBF': 'Evergreen Broadleaf Forest',
+             'ENF': 'Evergreen Needleleaf Forest',
              'GRA': 'Grass',
              'CSH': 'Shrub (closed)'}
 
@@ -95,9 +96,9 @@ os.system('pdfjam %s/DBF_box.pdf %s/ENF_box.pdf %s/CSH_box.pdf '\
           % tuple(['../../doc/shared_figs']*4))
 os.system('pdfcrop --margins 10 %s %s'\
           % tuple(['../../doc/shared_figs/first-column.pdf']*2))
-os.system('pdfjam %s/CRO_box.pdf %s/GRA_box.pdf '\
+os.system('pdfjam %s/EBF_box.pdf %s/CRO_box.pdf %s/GRA_box.pdf '\
           '--nup 1x3 --no-landscape --outfile %s/second-column.pdf'\
-          % tuple(['../../doc/shared_figs']*3))
+          % tuple(['../../doc/shared_figs']*4))
 os.system('pdfcrop --margins 10 %s %s'\
           % tuple(['../../doc/shared_figs/second-column.pdf']*2))
 os.system('pdfjam %s %s '\

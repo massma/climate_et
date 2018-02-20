@@ -102,9 +102,9 @@ def load_file(filename):
     data_out['uwue_zhou'] = WUE.loc[pft, 'u_wue_yearly']
     data_out['uwue_zhou_std'] = WUE.loc[pft, 'u_wue_yearly_std']
   except KeyError:
-    print('Setting Zhou uWUE to NaN for PFT: %s' % pft)
-    data_out['uwue_zhou_std'] = np.nan
-    data_out['uwue_zhou'] = np.nan
+    print('Setting Zhou uWUE to 1.0 (proxy for NaN) for PFT: %s' % pft)
+    data_out['uwue_zhou_std'] = 1.0 #np.nan
+    data_out['uwue_zhou'] = 1.0 # np.nan
   data_out['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
   data_out = data_out.dropna()
   return data_out
