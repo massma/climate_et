@@ -167,8 +167,6 @@ def scatter_plot(_df, meta):
   plt.show(block=False)
   return
 
-
-
 def plot_wrapper(_df, meta):
   """takes a groupby _df and parses it to plot"""
   print(_df.shape)
@@ -219,8 +217,8 @@ def test_trend(_df, meta, fig=None):
   if meta['plot_type'] == 'simple':
     ax = fig.add_subplot(111)
     ax.scatter(_df[meta['x_var']], _df[meta['y_var']], s=8)
-    ax.set_xlabel(meta['x_var'])
-    ax.set_ylabel(meta['y_var'])
+    ax.set_xlabel(meta['x_label'])
+    ax.set_ylabel(meta['y_label'])
     ax.set_title('spearmanr = %f'\
                  % spearmanr(_df[meta['x_var']],\
                              _df[meta['y_var']]).correlation)
@@ -228,8 +226,12 @@ def test_trend(_df, meta, fig=None):
     # ax.set_ylim([0.,1.])
   else:
     g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
-                      xlim=meta['xlim'], ylim=meta['ylim'], stat_func=spearmanr)
-    g.set_axis_labels(meta['x_var'],meta['y_var'])
+                      xlim=meta['xlim'], ylim=meta['ylim'], stat_func=None,\
+                      gridsize=50)
+    spear = lambda a, b: spearmanr(a, b).correlation
+    g = g.annotate(spear, template="{stat}: {val:.2f}",
+                   stat="Spearman R", loc="upper right", fontsize=10)
+    g.set_axis_labels(meta['x_label'], meta['y_label'])
 
   if meta['full_ds']:
     util.test_savefig('%s/climate_et/scatters/%s_%s.png'\
@@ -252,10 +254,14 @@ def scatter_wrapper(df, meta):
     meta['plot_type'] = 'nan'
   if 'group' not in meta:
     meta['group'] = ''
+  if 'x_label' not in meta:
+    meta['x_label'] = meta['x_var']
+  if 'y_label' not in meta:
+    meta['y_label'] = meta['y_var']
   meta['full_ds'] = True
   test_trend(df, meta)
-  meta['full_ds'] = False
-  df.groupby('pft').apply(test_trend, meta)
+  # meta['full_ds'] = False
+  # df.groupby('pft').apply(test_trend, meta)
   return
 
 

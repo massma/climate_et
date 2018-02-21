@@ -19,13 +19,6 @@ PLOT_SERIES = False
 #below is to make slight changes for the talk
 PLOT_TALK = True
 
-name_dict = {'CRO': 'Crops',\
-             'DBF': 'Deciduous Forest',
-             'EBF': 'Evergreen Broadleaf Forest',
-             'ENF': 'Evergreen Needleleaf Forest',
-             'GRA': 'Grass',
-             'CSH': 'Shrub (closed)'}
-
 paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
                r'- \frac{\gamma c_s }{1.6 \; R\; \sigma \; uWUE  }'\
                r'\left( \frac{2 g_1 + \sqrt{VPD}}'\
@@ -70,9 +63,9 @@ def plot_box(_df):
   #_df.groupby(pd.cut(_df.vpd, bins=20)).apply(add_box, ax=ax)
   #_df.boxplot(column='sign', by=pd.cut(_df.vpd, bins=20), ax=ax)
   if (_df.pft.iloc[0] == 'ENF') | (_df.pft.iloc[0] == 'DBF')\
-     | (_df.pft.iloc[0] == 'CSH'):
+     | (_df.pft.iloc[0] == 'CRO'):
     ax.set_ylabel(paren_string, fontsize=fontsize)
-  if (_df.pft.iloc[0] == 'CSH') | (_df.pft.iloc[0] == 'GRA'):
+  if (_df.pft.iloc[0] == 'CRO') | (_df.pft.iloc[0] == 'GRA'):
     ax.set_xlabel('VPD (kPa)', fontsize=fontsize)
   ax.set_title(name_dict[_df.pft.iloc[0]], fontsize=fontsize+3)
   ax.plot(orig_xlim, [0., 0.], 'k--', linewidth=dashedlinewidth)
@@ -91,12 +84,12 @@ def plot_box(_df):
 #plot_box(_df)
 df.groupby('pft').apply(plot_box)
 
-os.system('pdfjam %s/DBF_box.pdf %s/ENF_box.pdf %s/CSH_box.pdf '\
+os.system('pdfjam %s/DBF_box.pdf %s/ENF_box.pdf %s/CRO_box.pdf '\
           '--nup 1x3 --no-landscape --outfile %s/first-column.pdf'\
           % tuple(['../../doc/shared_figs']*4))
 os.system('pdfcrop --margins 10 %s %s'\
           % tuple(['../../doc/shared_figs/first-column.pdf']*2))
-os.system('pdfjam %s/EBF_box.pdf %s/CRO_box.pdf %s/GRA_box.pdf '\
+os.system('pdfjam %s/EBF_box.pdf %s/CSH_box.pdf %s/GRA_box.pdf '\
           '--nup 1x3 --no-landscape --outfile %s/second-column.pdf'\
           % tuple(['../../doc/shared_figs']*4))
 os.system('pdfcrop --margins 10 %s %s'\

@@ -6,6 +6,7 @@ from shared_functions import *
 
 plt.close('all')
 
+importlib.reload(plot_tools)
 ### FIGURE 3 ###
 # joint distribution of lai and swc
 df['sigma'] = df['sigma'].copy()
@@ -15,6 +16,9 @@ meta['xlim'] = (0., 4000.)
 meta['plot_type'] = '' #'simple'
 meta['x_var'] = 'vpd'
 meta['y_var'] = 'sigma'
+meta['x_label'] = 'VPD (Pa)'
+meta['y_label'] = '$\sigma$'
+meta['pft_plot'] = False
 plot_tools.scatter_wrapper(df, meta)
 os.system('cp %s/climate_et/scatters/vpd_sigma.png '\
           '../../doc/paper/fig03.png'\

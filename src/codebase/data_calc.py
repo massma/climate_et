@@ -177,6 +177,7 @@ def all_diagnostics(_df):
   _df = _df.reset_index(drop=True)
   dfs = {'mean' : _df.groupby('pft').mean(),\
          'min' : _df.groupby('pft').min(),\
+         'median' : _df.groupby('pft').median(),\
          'max' : _df.groupby('pft').max(),\
          '5' : _df.groupby('pft').quantile(q=0.05),\
          '95' : _df.groupby('pft').quantile(q=0.95)}

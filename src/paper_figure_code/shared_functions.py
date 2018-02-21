@@ -27,7 +27,8 @@ with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
           mode='rb') as file:
   dfs = pickle.load(file)
 df = dfs['full']
-mean_df = dfs['mean']
+median_df = dfs['median']
+mean_df = dfs['median']
 
 def et_min_vpd(_df, uwue=None):
   """calculates theoretical vpd_crit as functoin of -df and lai"""
@@ -53,3 +54,9 @@ def d_et(_df):
   return d_calc.scaling(_df)*d_calc.sign(_df)
 
 
+name_dict = {'CRO': 'Crops',\
+             'DBF': 'Deciduous Forest',
+             'EBF': 'Evergreen Broadleaf Forest',
+             'ENF': 'Evergreen Needleleaf Forest',
+             'GRA': 'Grass',
+             'CSH': 'Shrub (closed)'}

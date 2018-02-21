@@ -4,30 +4,27 @@ This script makes fig 01 for the paper
 """
 from shared_functions import *
 
+symbols = ['o', 'v', '>', 's', '<', 'D']
+plt.close('all')
 def make_map(_df):
   """makes a map given a _df with Lat, Lon, and Cover"""
   pfts = _df.Cover_type.drop_duplicates()
   fig = plt.figure()
-  fig.set_figheight(fig.get_figheight()*4)
-  axs = [fig.add_subplot(4, 1, i+1) for i in range(4)]
-  xlims = [(-140., -50.), (-20., 40.), (10., 40), (110., 155.)]
-  ylims = [(15., 60.), (30., 70.), (-20., -10.), (-40., -10.)]
-  sizes = [24, 12, 40, 40]
-  for ax, xlim, ylim, size in zip(axs, xlims, ylims, sizes):
-    print(ylim)
-    print(xlim)
-    m = Basemap(projection='merc', llcrnrlat=ylim[0], urcrnrlat=ylim[1],\
-            llcrnrlon=xlim[0], urcrnrlon=xlim[1], lat_ts=np.mean(ylims),\
+  #fig.set_figheight(fig.get_figheight())
+  ax = fig.add_subplot(111)
+  m = Basemap(projection='merc', llcrnrlat=-40, urcrnrlat=70,\
+            llcrnrlon=-180, urcrnrlon=180, lat_ts=0.0,\
                 resolution='l', ax=ax)#res was l
-    m.drawcoastlines()
-    for pft in pfts:
-      print(pft)
+  #m.fillcontinents(color='grey',lake_color='white')
+  m.fillcontinents(alpha=0.3)
+  size = 10
 
-      _ds = _df.loc[(_df.Cover_type == pft), ['Latitude', 'Longitude']]
-      x, y = m(_ds.Longitude.values, _ds.Latitude.values)
-      ax.scatter(x, y, s=size, label=pft, alpha=1.)
-    # m.drawparallels(np.arange(-90.,120.,30.))
-    # m.drawmeridians(np.arange(0.,420.,60.))
+  for i,pft in enumerate(pfts):
+    print(pft)
+    _ds = _df.loc[(_df.Cover_type == pft), ['Latitude', 'Longitude']]
+    x, y = m(_ds.Longitude.values, _ds.Latitude.values)
+    ax.scatter(x, y, s=12, label=pft, alpha=1., marker=symbols[i])
+  ax.set_title('FLUXNET Sites')
   plt.legend(loc='best')
   plt.tight_layout()
   util.test_savefig('../../doc/paper/fig01.pdf')
