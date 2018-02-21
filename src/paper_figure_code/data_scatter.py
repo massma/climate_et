@@ -6,7 +6,7 @@ from shared_functions import *
 import time
 
 # mean_df is defined up at this level
-
+local_fontsize = fontsize+3
 ### Figure 6 ###
 # note below really takes a long time
 def d_et_uwue_fixed(_df):
@@ -34,8 +34,8 @@ def make_ax_plot(_ax, var, _df, meta):
   vmin = -vmax
 
   _df['var'] = var
-  _df = _df.assign(x_cut=pd.cut(_df['vpd'], 1000),\
-                   t_a_cut=pd.cut(_df['t_a'], 1000))
+  _df = _df.assign(x_cut=pd.cut(_df['vpd'], meta['nbins']),\
+                   t_a_cut=pd.cut(_df['t_a'], meta['nbins']))
   if meta['sample'] == 'sampled':
     grouped = _df.groupby(['x_cut', 't_a_cut']).apply(meshgrid_apply,\
                                                       sample=True)
@@ -68,13 +68,19 @@ def make_ax_plot(_ax, var, _df, meta):
   z = np.ma.masked_array(grouped.values, mask=np.isnan(grouped.values))
   color = _ax.pcolormesh(_x, _y, z, cmap=meta['cmap'],\
                          vmin=vmin, vmax=vmax)
-  _ax.set_xlabel('%s (Pa)' % 'vpd'.upper())
-  _ax.set_ylabel('T (C)')
-  _ax.set_title('PFT: %s; %s'\
-                % (str(_df['pft'].iloc[0]),\
-                   meta['title']))
+  if str(_df['pft'].iloc[0]) == 'GRA':
+    _ax.set_xlabel('%s (Pa)' % 'vpd'.upper(), fontsize=local_fontsize)
+  if meta['title'] ==  r'$\frac{\partial \; ET}{\partial \, VPD}$':
+    _ax.set_ylabel('T (C)', fontsize=local_fontsize)
+  # _ax.set_title('%s: %s'\
+  #               % (str(_df['pft'].iloc[0]),\
+  #                  meta['title']), fontsize=local_fontsize+3)
+  _ax.set_title('%s'\
+                % (name_dict[_df['pft'].iloc[0]]), fontsize=local_fontsize+3)
+  _ax.yaxis.set_tick_params(labelsize=local_fontsize-3)
+  _ax.xaxis.set_tick_params(labelsize=local_fontsize-3)
   cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
-  cbar.set_label(meta['title'])
+  cbar.set_label(meta['title'], fontsize=local_fontsize+3)
   y_lim = _ax.get_ylim()
   vpd_crit = et_min_vpd(mean_df.loc[_df.pft.iloc[0], :])
   _ax.plot(np.ones(2)*vpd_crit, np.array(y_lim), 'k-', linewidth=2.0)
@@ -126,6 +132,11 @@ start = time.time()
 plt.close('all')
 meta = {}
 meta['sample'] = '' # 'sampled'
+
+
+meta['nbins'] = 1000
+# much faster if bins smaller, useful for testing
+# meta['nbins'] = 10
 df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*vpd.png '\
           '../../doc/paper/data_scatter%s.png'\
