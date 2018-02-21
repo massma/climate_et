@@ -54,9 +54,27 @@ def d_et(_df):
   return d_calc.scaling(_df)*d_calc.sign(_df)
 
 
-name_dict = {'CRO': 'Crops',\
-             'DBF': 'Deciduous Forest',
-             'EBF': 'Evergreen Broadleaf Forest',
-             'ENF': 'Evergreen Needleleaf Forest',
-             'GRA': 'Grass',
-             'CSH': 'Shrub (closed)'}
+name_dict = {'CRO': 'Crops (CRO)',\
+             'DBF': 'Deciduous Forest (DBF)',
+             'EBF': 'Evergreen Broadleaf Forest (EBF)',
+             'ENF': 'Evergreen Needleleaf Forest (ENF)',
+             'GRA': 'Grass (GRA)',
+             'CSH': 'Closed Shrub (CSH)'}
+
+fontsize=16
+
+def custom_ylabel(_df, ax, label):
+  """labels y label for axis ordering"""
+  if (_df.pft.iloc[0] == 'ENF') | (_df.pft.iloc[0] == 'DBF')\
+     | (_df.pft.iloc[0] == 'CRO'):
+    ax.set_ylabel(label, fontsize=fontsize)
+  return
+
+def custom_xlabel(_df, ax, label):
+  """labels x label for axis ordering"""
+  if (_df.pft.iloc[0] == 'CRO') | (_df.pft.iloc[0] == 'GRA'):
+    ax.set_xlabel(label, fontsize=fontsize)
+  return
+
+pft_order = ['DBF', 'EBF', 'ENF', 'CSH', 'CRO', 'GRA',]
+

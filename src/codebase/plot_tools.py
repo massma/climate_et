@@ -234,7 +234,7 @@ def test_trend(_df, meta, fig=None):
     g.set_axis_labels(meta['x_label'], meta['y_label'])
 
   if meta['full_ds']:
-    util.test_savefig('%s/climate_et/scatters/%s_%s.png'\
+    util.test_savefig('%s/climate_et/scatters/%s_%s.pdf'\
                 % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
   elif meta['group'] == 'site':
     util.test_savefig('%s/climate_et/scatters/%s_%s_site/%s.png'\
