@@ -76,9 +76,11 @@ def r_a(_df):
   """
   returns atmospheric resistance in s/m,
   see pg 298, eq. 20.36  in Shuttleworth
-  implicit assumption that z0=z0h=z0m - changjie says maybe reduce factor 10
+  assumption that z0p=z0h=z0v=0.1z0[momentum]
+  see Pg 320 in Shuttleworth
   """
-  return np.log((_df['zmeas']-_df['d'])/_df['z0'])**2\
+  return np.log((_df['zmeas']-_df['d'])/_df['z0'])\
+    *np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
     /(K**2*_df['u_z'])
 
 def corrected_r_a(_df):
@@ -89,43 +91,99 @@ def corrected_r_a(_df):
   """
   ksit = 0.465 # point of continuity in the stability profiles for heat
 
-  # checked below from shuttleworth pg 292, should be good except t_a
-  # should be  virtual (as should flux).
+  # checked below from shuttleworth pg 292, should be good except 
+  # maybe t_a should be  virtual (as should flux)?
   _df['L'] = -_df['ustar']**3*CP*_df['rho_a']*(_df['t_a']+273.15)\
              /(K*G*_df['sensible'])
   _r_a = np.ones(_df['L'].shape)*np.nan
+  tempq = np.ones(_df['L'].shape)*np.nan
   neutral_idx = (np.absolute(_df['L']) <= 1.e-4)
   if _r_a[neutral_idx].size > 0.:
     _r_a[neutral_idx] = _df['r_a_uncorrected'][neutral_idx]
-    _df['ksi'] = (_df['zmeas']-_df['d'])/_df['L']
-    _df['ksi'][neutral_idx] = np.nan
+
+  _df['ksi'] = (_df['zmeas']-_df['d'])/_df['L']
+  _df['ksi'][neutral_idx] = np.nan
     #below could be way more efficient
-  _ = K/(np.log(-ksit*_df['L']/_df['z0'])\
+
+  # first ksi < -ksit
+  _ = K/(np.log(-ksit*_df['L']/_df['z0p'])\
          - psih(-ksit*np.ones(_df['L'].shape))\
-         + psih(_df['z0']/_df['L'])\
+         + psih(_df['z0p']/_df['L'])\
          + 0.8*((ksit)**(-0.333)-(-_df['ksi'])**(-0.333)))
   ksit_idx = (_df['ksi'] < -ksit)
-  _r_a[ksit_idx & (~neutral_idx)] = _[ksit_idx & (~neutral_idx)]
-  _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0'])\
+  tempq[ksit_idx & (~neutral_idx)] = _[ksit_idx & (~neutral_idx)]
+
+  # now else, ksi < 0
+  _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
          - psih(_df['ksi'])\
-         + psih(_df['z0']/_df['L']))
+         + psih(_df['z0p']/_df['L']))
   zero_idx = (_df['ksi'] < 0.)
-  _r_a[zero_idx & (~ksit_idx) & (~neutral_idx)] = _[zero_idx & (~ksit_idx)\
-                                                    & (~neutral_idx)]
-  _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0'])\
-         + 5.*_df['ksi']-5.*_df['z0']/_df['L'])
+  tempq[zero_idx & (~ksit_idx) & (~neutral_idx)] = _[zero_idx & (~ksit_idx)\
+                                                  & (~neutral_idx)]
+
+  # now else, else, ksi <=1
+  _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
+         + 5.*_df['ksi']-5.*_df['z0p']/_df['L'])
   one_idx = (_df['ksi'] <= 1.)
-  _r_a[one_idx & (~zero_idx) & (~ksit_idx)\
+  tempq[one_idx & (~zero_idx) & (~ksit_idx)\
        & (~neutral_idx)] = _[one_idx & (~zero_idx) & (~ksit_idx)\
                              & (~neutral_idx)]
-  _ = K/(np.log(_df['L']/_df['z0']) + 5. - 5.*_df['z0']/_df['L']\
+  # else, else, else
+  _ = K/(np.log(_df['L']/_df['z0p']) + 5. - 5.*_df['z0p']/_df['L']\
          + (5.*np.log(_df['ksi'])+_df['ksi']-1.))
-  _r_a[(~one_idx) & (~zero_idx) & (~ksit_idx)\
+  tempq[(~one_idx) & (~zero_idx) & (~ksit_idx)\
        & (~neutral_idx)] = _[(~one_idx) & (~zero_idx) & (~ksit_idx)\
                              & (~neutral_idx)]
-  _r_a[_r_a < 1.e-3] = 1.e-3
-  _r_a = 1./(_r_a*_df['ustar'])
+  tempq[tempq < 1.e-3] = 1.e-3
+  _r_a = 1./(tempq*_df['ustar'])
   return _r_a
+
+# def corrected_r_a(_df):
+#   """
+#   returns atmospehric resistsance in s/m, but requires vars ustar and
+#   heat flux (h) in _df, which might not be actually available many
+#   of times. should only gets called when ustar is in _df
+#   """
+#   ksit = 0.465 # point of continuity in the stability profiles for heat
+
+#   # checked below from shuttleworth pg 292, should be good except 
+#   # maybe t_a should be  virtual (as should flux)?
+#   _df['L'] = -_df['ustar']**3*CP*_df['rho_a']*(_df['t_a']+273.15)\
+#              /(K*G*_df['sensible'])
+#   _r_a = np.ones(_df['L'].shape)*np.nan
+#   neutral_idx = (np.absolute(_df['L']) <= 1.e-4)
+#   if _r_a[neutral_idx].size > 0.:
+#     _r_a[neutral_idx] = _df['r_a_uncorrected'][neutral_idx]
+#     _df['ksi'] = (_df['zmeas']-_df['d'])/_df['L']
+#     _df['ksi'][neutral_idx] = np.nan
+#     #below could be way more efficient
+#   _ = K/(np.log(-ksit*_df['L']/_df['z0p'])\
+#          - psih(-ksit*np.ones(_df['L'].shape))\
+#          + psih(_df['z0p']/_df['L'])\
+#          + 0.8*((ksit)**(-0.333)-(-_df['ksi'])**(-0.333)))
+#   ksit_idx = (_df['ksi'] < -ksit)
+#   _r_a[ksit_idx & (~neutral_idx)] = _[ksit_idx & (~neutral_idx)]
+#   _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
+#          - psih(_df['ksi'])\
+#          + psih(_df['z0p']/_df['L']))
+#   zero_idx = (_df['ksi'] < 0.)
+#   _r_a[zero_idx & (~ksit_idx) & (~neutral_idx)] = _[zero_idx & (~ksit_idx)\
+#                                                     & (~neutral_idx)]
+#   _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
+#          + 5.*_df['ksi']-5.*_df['z0p']/_df['L'])
+#   one_idx = (_df['ksi'] <= 1.)
+#   _r_a[one_idx & (~zero_idx) & (~ksit_idx)\
+#        & (~neutral_idx)] = _[one_idx & (~zero_idx) & (~ksit_idx)\
+#                              & (~neutral_idx)]
+#   _ = K/(np.log(_df['L']/_df['z0p']) + 5. - 5.*_df['z0p']/_df['L']\
+#          + (5.*np.log(_df['ksi'])+_df['ksi']-1.))
+#   _r_a[(~one_idx) & (~zero_idx) & (~ksit_idx)\
+#        & (~neutral_idx)] = _[(~one_idx) & (~zero_idx) & (~ksit_idx)\
+#                              & (~neutral_idx)]
+#   _r_a[_r_a < 1.e-3] = 1.e-3
+#   _r_a = 1./(_r_a*_df['ustar'])
+#   return _r_a
+
 
 def generate_vars(_df):
   """
@@ -144,16 +202,14 @@ def generate_vars(_df):
   _df['vpd'] = _df['e_s']*(1.-_df['rh']/100.)
 
   _df['d'] = 2./3.*_df['height'] #zero plain displacement
-    # roughness height, changjie emailed saying he use 1/10 of this for m/h
+  # roughness height,
   _df['z0'] = 0.1*_df['height']
-
+  # below is roughness height for latent and sensible heat (pg 320 Shuttleworth)
+  _df['z0p'] = 0.1*_df['z0']
 
   _df['r_a_uncorrected'] = r_a(_df)
-  _df['r_a_corrected'] = np.nan
-  _df.loc[~np.isnan(_df.ustar),\
-          'r_a_corrected'] = corrected_r_a(_df.loc[~np.isnan(_df.ustar), :])
-  _df['r_a'] = np.nanmax(np.vstack([_df['r_a_corrected'],\
-                                           _df['r_a_uncorrected']]), axis=0)
+  _df['r_a_corrected'] = corrected_r_a(_df)
+  _df['r_a'] = _df['r_a_corrected']
   _df['g_a'] = 1./_df['r_a']
   _df['t_a_k'] = _df['t_a'] + 273.15
   _df['r_net'] = _df['r_n'] - _df['g_flux']

@@ -28,7 +28,7 @@ with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
   dfs = pickle.load(file)
 df = dfs['full']
 median_df = dfs['median']
-mean_df = dfs['median']
+mean_df = dfs['mean']
 
 def et_min_vpd(_df, uwue=None):
   """calculates theoretical vpd_crit as functoin of -df and lai"""

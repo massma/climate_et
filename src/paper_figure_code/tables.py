@@ -41,6 +41,10 @@ test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
 
 print(test)
 
+
+print(mean_df.uwue)
+print(mean_df.uwue_zhou)
+
 # think below is jsut for reference for the series, but not used in paper
 # columns = []
 # for i in range(1, 5):

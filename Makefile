@@ -33,7 +33,7 @@ doc/paper/data_scatter.png : doc/paper/data_scatter.bak
 
 doc/paper/data_scatter.bak :
 	cd src/paper_figure_code && python3 data_scatter.py
-	cd doc/apaper && mv data_scatter.png data_scatter.bak
+	cd doc/paper && mv data_scatter.png data_scatter.bak
 
 paper : $(FIGURES) 
 	cd ./doc/paper && pdflatex vpd_et_paper && \

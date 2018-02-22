@@ -30,10 +30,25 @@ os.system('cp %s/climate_et/scatters/vpd_sigma.pdf '\
 
 # below added for agu, not currently sued in paper but could be
 # useful for supplemental material
+meta={}
+meta['plot_type'] = ''
 meta['x_var'] = 'e_s'
 meta['y_var'] = 'rh'
 meta['ylim'] = None
 meta['xlim'] = None
+plot_tools.scatter_wrapper(df, meta)
+os.system('cp %s/climate_et/scatters/e_s_rh.png '\
+          '../../doc/shared_figs/e_s_rh.png'\
+          % (os.environ['PLOTS']))
+
+meta={}
+meta['plot_type'] = ''
+meta['x_var'] = 'r_a_corrected'
+meta['y_var'] = 'r_a_uncorrected'
+meta['ylim'] = (0., 100.)
+meta['xlim'] = (0., 100.)
+meta['pft_plot'] = True
+
 plot_tools.scatter_wrapper(df, meta)
 os.system('cp %s/climate_et/scatters/e_s_rh.png '\
           '../../doc/shared_figs/e_s_rh.png'\
