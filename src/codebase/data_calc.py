@@ -3,6 +3,7 @@
 """
 This module calculates all diagnostics used in the paper
 """
+import time
 import numpy as np
 import codebase.data_prep as d_prep
 
@@ -17,25 +18,87 @@ R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
 G = 9.81 #gravity constant, m/s2
 
-def medlyn_kernel(_df, vpd):
+def medlyn_kernel(_df, vpd, g1=None):
   """calcs medlyn without g/c_s/1.6 multipliers"""
-  return 1.0+_df['g1']/np.sqrt(vpd)
+  if g1 is None:
+    g1 = _df['g1']
+  return 1.0+g1/np.sqrt(vpd)
 
-def bb_kernel(_df, vpd):
+def bb_kernel(_df, vpd, g1=None):
   """calcs kernel for ball-berry model"""
-  return (_df['g1b']*(1.0-vpd/_df['e_s']))/1.6
+  if g1 is None:
+    g1 = _df['g1b']
+  return (g1*(1.0-vpd/_df['e_s']))/1.6
 
-def uwue(_df, n=0.5, kernel=medlyn_kernel):
+def uwue(_df, n=0.5, kernel=medlyn_kernel, g1=None):
   """
   calcs uwue from _df with obs
-  note possible issue with c_a instead of c_s
+  note approx using c_a instead of c_s 
   """
   return -_df['g_a']*_df['gamma']*_df['c_a']\
     *_df['vpd']**n*_df['p_a']\
     /((_df['et_obs']*(_df['delta']+_df['gamma'])\
        -_df['delta']*_df['r_net']\
        -_df['g_a']*_df['rho_a']*CP*_df['vpd'])\
-      *1.6*R_STAR*_df['t_a_k']*(kernel(_df, vpd=_df['vpd'])))
+      *1.6*R_STAR*_df['t_a_k']*(kernel(_df, vpd=_df['vpd'], g1=g1)))
+
+def g1_medlyn(_df, uwue=None):
+  """
+  calcs g1 slope coefficent given data,
+  note currently only works with medlyn model
+  rather than all others
+  """
+  if uwue is None:
+    uwue = _df['uwue']
+  return (-_df['g_a']*_df['gamma']*_df['c_a']\
+    *np.sqrt(_df['vpd'])*_df['p_a']\
+    /((_df['et_obs']*(_df['delta']+_df['gamma'])\
+       -_df['delta']*_df['r_net']\
+       -_df['g_a']*_df['rho_a']*CP*_df['vpd'])\
+      *1.6*R_STAR*_df['t_a_k']*uwue)\
+      -1.0)*np.sqrt(_df['vpd'])
+
+def solve(initial_uwue, initial_g1, _df, convergence=0.01, max_iter=1000):
+  """claculates optimal uwue and g1, to some covergence,
+  which is given as a fraction of the intiial guess"""
+  print("for %s initial uwue guess is %f" % (_df.pft.iloc[0], initial_uwue))
+  print("for %s initial g1 guess is %f" % (_df.pft.iloc[0], initial_g1))
+  old_uwue_guess = initial_uwue
+  old_g1_guess = initial_g1
+  uwue_converge = convergence*initial_uwue
+  g1_converge = convergence*initial_g1
+  for i in range(max_iter):
+
+    uwue_s = uwue(_df, g1=old_g1_guess)
+    uwue_guess = np.nanmean(uwue_s)
+    g1_s = g1_medlyn(_df, uwue=np.mean([old_uwue_guess, uwue_guess]))
+    g1_guess = np.nanmean(g1_s)
+
+    # print("for iter %d uwue guess is %f" % (i, uwue_guess))
+    # print("for iter %d  g1 guess is %f" % (i, g1_guess))
+    if ((np.absolute(g1_guess-old_g1_guess) < g1_converge) & \
+        (np.absolute(uwue_guess-old_uwue_guess) < uwue_converge)):
+      print("Success! uwue guess is %f" % (uwue_guess))
+      print("Success! g1 guess is %f" % (g1_guess))
+      return np.mean([uwue_guess, old_uwue_guess]),\
+        np.mean([g1_guess, old_g1_guess])
+    old_uwue_guess = np.mean([uwue_guess, old_uwue_guess])
+    old_g1_guess = np.mean([g1_guess, old_g1_guess])
+  #raise ValueError("Solution did not converge")
+  print("error, solution did not converge, returning orig vals anyways")
+  print("guesses were: uwue: %f, g1: %f" % (uwue_guess, g1_guess))
+  return uwue_guess, g1_guess
+
+def pft_solve_wrapper(_df):
+  """designed to be called on groupby pft, calls solve"""
+  print("\n\n\n **** starting to work on pft %s ****" % _df.pft.iloc[0])
+  start = time.time()
+  _df['g1_lin'] = _df['g1'].copy()
+  uwue, g1 = solve(_df.uwue_zhou.iloc[0], _df.g1.iloc[0], _df)
+  print("time for pft %s was %d s" % (_df.pft.iloc[0], (time.time()-start)))
+  _df['uwue_fit'] = uwue
+  _df['g1'] = g1
+  return _df
 
 def clean_df(_df, var='uwue', vpd_thresh=10.0):
   """
@@ -152,6 +215,7 @@ def gpp_fixed_wrapper(_df, mean_df):
 
 def calc_sigma(_df):
   """calcualtes a sgima for variabiility"""
+  # _df['sigma'] = _df['uwue']/_df['uwue_fit'].iloc[0]
   _df['sigma'] = _df['uwue']/_df['uwue'].mean()
   return _df
 
@@ -163,6 +227,10 @@ def all_diagnostics(_df):
   _df['iwue'] = uwue(_df, n=1.0)
   _df = _df.groupby('pft').apply(clean_df)
   _df = _df.reset_index(drop=True)
+  # _df = _df.groupby('pft').apply(pft_solve_wrapper)
+  # _df = _df.reset_index(drop=True)
+  # recalc uwue with new fit g1
+  # _df['uwue'] = uwue(_df)
   _df['et'] = pm_et(_df)
   _df['scaling'] = scaling(_df)
   _df['sign'] = sign(_df)
@@ -170,8 +238,6 @@ def all_diagnostics(_df):
   _df['lai_pm'] = lai(_df)
   _df['et_pm_original'] = pm_et_orig(_df)
   _df['pet'] = pet(_df)
-  # below is measure of uncertainty, comaprison to zhou et al
-  # _df['sigma'] = _df['uwue']/_df['uwue_zhou']
   # no, do comparison to mean to set mean sigma = 1
   _df = _df.groupby('pft').apply(calc_sigma)
   _df = _df.reset_index(drop=True)

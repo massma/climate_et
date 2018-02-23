@@ -41,8 +41,8 @@ paper : $(FIGURES)
 	bibtex vpd_et_paper && pdflatex vpd_et_paper
 
 clean :
+	rm $(FIGURES) && \
 	cd doc/paper && rm ./*.aux ./*.log ./*.blg ./*.bbl vpd_et_paper.pdf
-	rm $(FIGURES)
 
 # below is if you don't want to regenerate figs
 clean-paper :
