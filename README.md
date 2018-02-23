@@ -14,3 +14,4 @@ The general direcory structure is:
 * dat/ - small data files used by code
 * doc/ - any papers or formal writing on this project (none yet)
 * etc/ - anything that doesn't fit into above, usually notes etc.
+
