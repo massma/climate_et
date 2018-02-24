@@ -161,7 +161,7 @@ def compare_et_wrapper(dfs):
   ax2 = fig.add_subplot(212)
   x = np.arange(len(pfts))
   for key in bias:
-    ax1.scatter(x, bias[key], label=key)
+    ax1.scatter(x, np.absolute(bias[key]), label=key)
     ax2.scatter(x, rmse[key], label=key)
   ax1.set_xticks([])
   ax1.set_ylabel('Bias (W/m2)')

@@ -86,7 +86,7 @@ def r_a(_df):
 def corrected_r_a(_df):
   """
   returns atmospehric resistsance in s/m, but requires vars ustar and
-  heat flux (h) in _df, which might not be actually available many
+  heat flux (sensible) in _df, which might not be actually available many
   of times. should only gets called when ustar is in _df
   """
   ksit = 0.465 # point of continuity in the stability profiles for heat
@@ -206,10 +206,10 @@ def generate_vars(_df):
   _df['z0'] = 0.1*_df['height']
   # below is roughness height for latent and sensible heat (pg 320 Shuttleworth)
   _df['z0p'] = 0.1*_df['z0']
-
   _df['r_a_uncorrected'] = r_a(_df)
+  # don't use corrected b/c circular, uses sensible flux and ustar from e-c meas
   _df['r_a_corrected'] = corrected_r_a(_df)
-  _df['r_a'] = _df['r_a_corrected']
+  _df['r_a'] = _df['r_a_uncorrected']
   _df['g_a'] = 1./_df['r_a']
   _df['t_a_k'] = _df['t_a'] + 273.15
   _df['r_net'] = _df['r_n'] - _df['g_flux']

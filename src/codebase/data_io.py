@@ -43,7 +43,10 @@ def add_atmos_dict(data_out, data):
   data_out['ustar'] = np.squeeze(data['USTAR']) #m/s
   data_out['p_a'] = np.squeeze(data['PA']*1000.) #Pa
   data_out['u_z'] = np.squeeze(data['WS']) # m/s
-  data_out['u_z'][data_out['u_z'] <= 0.] = np.nan
+  ## set u_z < 0.5 m/s to nan, cup anemometers can't resolve
+  ## low windspeeds (e.g. https://www.campbellsci.com/014a says
+  ## that 0.45 m/s is minimum resolvable threshold
+  data_out['u_z'][data_out['u_z'] <= 0.5] = np.nan
   if data['flag_Ca'] == 1:
     data_out['c_a'] = np.squeeze(data['Ca'])
   else:

@@ -12,8 +12,8 @@ importlib.reload(d_io)
 importlib.reload(d_prep)
 importlib.reload(d_calc)
 
-# df = d_io.load_mat_data()
-# df.to_pickle('%s/changjie/loaded_data.pkl' % os.environ['DATA'])
+df = d_io.load_mat_data()
+df.to_pickle('%s/changjie/loaded_data.pkl' % os.environ['DATA'])
 df = pd.read_pickle('%s/changjie/loaded_data.pkl' % os.environ['DATA'])
 print('pre-prep data shape:', df.shape)
 
@@ -22,7 +22,7 @@ print('pre-calc data shape:', prep_df.shape)
 df.to_pickle('%s/changjie/prepped_data.pkl' % os.environ['DATA'])
 importlib.reload(d_calc)
 dfs = d_calc.all_diagnostics(prep_df)
-prep_df = d_prep.generate_vars(df)
+#prep_df = d_prep.generate_vars(df)
 print('post-calc data shape:', dfs['full'].shape)
 
 with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
