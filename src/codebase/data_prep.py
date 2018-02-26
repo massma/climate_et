@@ -138,53 +138,6 @@ def corrected_r_a(_df):
   _r_a = 1./(tempq*_df['ustar'])
   return _r_a
 
-# def corrected_r_a(_df):
-#   """
-#   returns atmospehric resistsance in s/m, but requires vars ustar and
-#   heat flux (h) in _df, which might not be actually available many
-#   of times. should only gets called when ustar is in _df
-#   """
-#   ksit = 0.465 # point of continuity in the stability profiles for heat
-
-#   # checked below from shuttleworth pg 292, should be good except 
-#   # maybe t_a should be  virtual (as should flux)?
-#   _df['L'] = -_df['ustar']**3*CP*_df['rho_a']*(_df['t_a']+273.15)\
-#              /(K*G*_df['sensible'])
-#   _r_a = np.ones(_df['L'].shape)*np.nan
-#   neutral_idx = (np.absolute(_df['L']) <= 1.e-4)
-#   if _r_a[neutral_idx].size > 0.:
-#     _r_a[neutral_idx] = _df['r_a_uncorrected'][neutral_idx]
-#     _df['ksi'] = (_df['zmeas']-_df['d'])/_df['L']
-#     _df['ksi'][neutral_idx] = np.nan
-#     #below could be way more efficient
-#   _ = K/(np.log(-ksit*_df['L']/_df['z0p'])\
-#          - psih(-ksit*np.ones(_df['L'].shape))\
-#          + psih(_df['z0p']/_df['L'])\
-#          + 0.8*((ksit)**(-0.333)-(-_df['ksi'])**(-0.333)))
-#   ksit_idx = (_df['ksi'] < -ksit)
-#   _r_a[ksit_idx & (~neutral_idx)] = _[ksit_idx & (~neutral_idx)]
-#   _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
-#          - psih(_df['ksi'])\
-#          + psih(_df['z0p']/_df['L']))
-#   zero_idx = (_df['ksi'] < 0.)
-#   _r_a[zero_idx & (~ksit_idx) & (~neutral_idx)] = _[zero_idx & (~ksit_idx)\
-#                                                     & (~neutral_idx)]
-#   _ = K/(np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
-#          + 5.*_df['ksi']-5.*_df['z0p']/_df['L'])
-#   one_idx = (_df['ksi'] <= 1.)
-#   _r_a[one_idx & (~zero_idx) & (~ksit_idx)\
-#        & (~neutral_idx)] = _[one_idx & (~zero_idx) & (~ksit_idx)\
-#                              & (~neutral_idx)]
-#   _ = K/(np.log(_df['L']/_df['z0p']) + 5. - 5.*_df['z0p']/_df['L']\
-#          + (5.*np.log(_df['ksi'])+_df['ksi']-1.))
-#   _r_a[(~one_idx) & (~zero_idx) & (~ksit_idx)\
-#        & (~neutral_idx)] = _[(~one_idx) & (~zero_idx) & (~ksit_idx)\
-#                              & (~neutral_idx)]
-#   _r_a[_r_a < 1.e-3] = 1.e-3
-#   _r_a = 1./(_r_a*_df['ustar'])
-#   return _r_a
-
-
 def generate_vars(_df):
   """
   does calculations on data sructures

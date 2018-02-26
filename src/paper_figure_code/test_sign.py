@@ -51,19 +51,19 @@ def plot_box(_df):
   vpd = np.linspace(_df.vpd.quantile(q=0.05), _df.vpd.quantile(q=0.95))
   uwue = mean_row.uwue
   #\ uwue=mean_row.uwue_zhou),\
-  ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd),
+  ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd),
           'b-', linewidth=bluelinewidth)
-  ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd, uwue=(mean_row.uwue_zhou\
+  ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd, uwue=(mean_row.uwue_zhou\
                                               +mean_row.uwue_zhou_std)),\
           'b-', linewidth=1.0)
-  ax.plot(vpd/1.e3, d_calc.sign(mean_row, vpd=vpd,\
+  ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd,\
                                 uwue=(mean_row.uwue_zhou\
                                       -mean_row.uwue_zhou_std)),\
           'b-', linewidth=1.0)
   #_df.groupby(pd.cut(_df.vpd, bins=20)).apply(add_box, ax=ax)
   #_df.boxplot(column='sign', by=pd.cut(_df.vpd, bins=20), ax=ax)
   custom_ylabel(_df, ax, paren_string)
-  custom_xlabel(_df, ax, 'VPD (kPa)')
+  custom_xlabel(_df, ax, 'VPD (Pa)')
   ax.set_title(name_dict[_df.pft.iloc[0]], fontsize=fontsize+3)
   ax.plot(orig_xlim, [0., 0.], 'k--', linewidth=dashedlinewidth)
 

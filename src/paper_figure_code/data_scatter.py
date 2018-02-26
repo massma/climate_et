@@ -30,8 +30,10 @@ def meshgrid_apply(_df, column='var', sample=False):
 
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
-  vmax = meta['vmax']
-  vmin = -vmax
+  # vmax = meta['vmax']
+  # vmin = -vmax
+  vmax = None
+  vmin = None
 
   _df['var'] = var
   _df = _df.assign(x_cut=pd.cut(_df['vpd'], meta['nbins']),\
@@ -84,6 +86,11 @@ def make_ax_plot(_ax, var, _df, meta):
   y_lim = _ax.get_ylim()
   vpd_crit = et_min_vpd(mean_df.loc[_df.pft.iloc[0], :])
   _ax.plot(np.ones(2)*vpd_crit, np.array(y_lim), 'k-', linewidth=2.0)
+  xlim = [0.0, dfs['95'].loc[_df.pft.iloc[0], 'vpd']+100.0]
+  ylim = [dfs['5'].loc[_df.pft.iloc[0], 't_a']-1.0,\
+          dfs['95'].loc[_df.pft.iloc[0], 't_a']+1.0]
+  _ax.set_xlim(xlim)
+  _ax.set_ylim(ylim)
   return
 
 def scatter_plot_paper(_df, meta):
@@ -110,8 +117,8 @@ def scatter_plot_paper(_df, meta):
   axs = [fig.add_subplot(1, nplots, i+1) for i in range(nplots)]
 
   for ax, var, meta['title'] in zip(axs, _vars, titles):
-    meta['vmax'] = np.nanmax(np.absolute([var.mean() +  2.*var.std(),\
-                                          var.mean() - 2.*var.std()]))
+    meta['vmax'] = np.nanmax(np.absolute([var.mean() +  1.5*var.std(),\
+                                          var.mean() - 1.5*var.std()]))
     make_ax_plot(ax, var, _df, meta)
 
   plt.tight_layout()

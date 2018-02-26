@@ -14,6 +14,7 @@ import codebase.plot_tools as plot_tools
 import util
 import metcalcs as met
 import codebase.data_calc as d_calc
+import codebase.data_prep as d_prep
 import pickle
 
 mpl.use('Pdf')
@@ -76,5 +77,11 @@ def custom_xlabel(_df, ax, label):
     ax.set_xlabel(label, fontsize=fontsize)
   return
 
+# pft order for panel plots
 pft_order = ['DBF', 'EBF', 'ENF', 'CSH', 'CRO', 'GRA',]
+
+# for xlim on plots with vpd, et max
+vpd_max = dfs['95'].vpd.max() + 100.0
+vpd_xlim = [0., vpd_max]
+t_lims = [dfs['5'].t_a.min() - 1.0, dfs['95'].t_a.max() + 1.0]
 

@@ -25,6 +25,8 @@ paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
 if PLOT_TALK:
   fontsize=14
 
+# mask pft order from shared func to do top to bottom legnend
+pft_order = ['CRO', 'DBF', 'EBF', 'ENF', 'GRA', 'CSH']
 
 I = 6
 def pft_leaf(_df, axs):
@@ -87,29 +89,17 @@ for pft in pft_order:
 axs[1].set_xlabel('VPD', fontsize=fontsize)
 #axs[3].set_xlabel('$\sigma$')
 axs[0].set_ylabel(paren_string, fontsize=fontsize)
-axs[0].plot(axs[0].get_xlim(), [0., 0.], 'k--', linewidth=linewidth)
+axs[0].plot(vpd_xlim, [0., 0.], 'k--', linewidth=linewidth)
 if PLOT_PET:
-  axs[0].plot(axs[0].get_xlim(), [d_calc.CP/287.0, d_calc.CP/287.0],\
+  axs[0].plot(vpd_xlim, [d_calc.CP/287.0, d_calc.CP/287.0],\
               'm--', linewidth=dashedlinewidth, label='PET')
-# plt.setp(axs[2].get_yticklabels(), visible=False)
-#axs[-1].set_ylabel(r'VPD')#$_{ETmin}$')
-# axs[2].set_title(r'VPD$_{crit}$'\
-#                  r' (where $\frac{\partial \; ET}{\partial \; D} = 0$)')
-# axs[2].set_ylim([0., 4000.])
+
 axs[1].set_ylim([0.5,6.5])
-# axs[3].set_ylim([0.5,5.5])
 axs[1].get_yaxis().set_visible(False)
-#axs[3].get_yaxis().set_visible(False)
-#axs[-1].set_xlim([0.5,5.5])
-#axs[-1].get_xaxis().set_visible(False)
-
-# axs[2].text(0.35, 250., r'$\frac{\partial \; ET}{\partial \; D} < 0$',\
-#             fontsize=15)
-# axs[2].text(1.4, 3500., r'$\frac{\partial \; ET}{\partial \; D} > 0$',\
-#             fontsize=15)
-
-if not PLOT_PET:
-  axs[0].set_ylim((-1.8058955891452384, 0.87408219563044132))
+axs[0].set_xlim(vpd_xlim)
+axs[1].set_xlim(vpd_xlim)
+# if not PLOT_PET:
+#   axs[0].set_ylim((-1.8058955891452384, 0.87408219563044132))
 for ax in axs[:1]:
   h, l = ax.get_legend_handles_labels()
   if not PLOT_PET:

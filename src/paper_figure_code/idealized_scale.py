@@ -13,6 +13,10 @@ for key in ['gamma', 'delta', 'rho_a', 'g_a']:
         % (key, df[key].std(), df[key].mean(), df[key].std()/df[key].mean()))
 df['rho_like'] = df['p_a']/(273.15 + df['t_a'])
 
+# set lims
+ylim = [0.0, 0.6]
+xlim = t_lims
+
 def plot_scaling(_df, ax, savefig=False):
   """makes idealized plots of scaling as a function of g_a and T"""
   t_a = np.linspace(_df.t_a.quantile(q=0.05), _df.t_a.quantile(q=0.95))
@@ -25,7 +29,9 @@ def plot_scaling(_df, ax, savefig=False):
             % (g_a, int(percentile)))
   custom_xlabel(_df, ax, 'T (C)')
   custom_ylabel(_df, ax,\
-                r'($\frac{g_a \; P}{T(\Delta + \gamma)}$)')
+                r'($\frac{2 \; g_a \; P}{T(\Delta + \gamma)}$)')
+  ax.set_xlim(xlim)
+  ax.set_ylim(ylim)
   ax.set_title(name_dict[_df.pft.iloc[0]], fontsize=fontsize+3)
   plt.legend(loc='best', fontsize=10)
   if savefig:
