@@ -19,7 +19,7 @@ mean_df['d_et_bar'] = d_et(mean_df)
 mean_df['d_et_bar_std'] = np.absolute(mean_df['d_et_bar'])*std['vpd']
 mean_df['d_et_d_rn_bar_std'] = mean_df['delta']/\
                                (mean_df['delta'] + mean_df['gamma'])\
-                               *std['r_n']
+                               *std['r_net']
 mean_df['d_et_bar_norm'] = mean_df['d_et_bar_std']\
                            /std['et_obs']
 mean_df['total_var'] = np.sqrt(mean_df.d_et_bar_std**2\

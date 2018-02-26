@@ -30,11 +30,8 @@ def meshgrid_apply(_df, column='var', sample=False):
 
 def make_ax_plot(_ax, var, _df, meta):
   """makes an axis plot"""
-  # vmax = meta['vmax']
-  # vmin = -vmax
-  vmax = None
-  vmin = None
-
+  vmax = meta['vmax']
+  vmin = -vmax
   _df['var'] = var
   _df = _df.assign(x_cut=pd.cut(_df['vpd'], meta['nbins']),\
                    t_a_cut=pd.cut(_df['t_a'], meta['nbins']))
@@ -148,5 +145,9 @@ df.groupby('pft').apply(scatter_plot_paper, meta)
 os.system('convert -append %s/climate_et/paper_plots/scatter/*vpd.png '\
           '../../doc/paper/data_scatter%s.png'\
           % (os.environ['PLOTS'], meta['sample']))
+os.system('cp ../../doc/paper/data_scatter%s.png '\
+          '../../doc/paper/data_scatter%s.bak'
+          % (meta['sample'], meta['sample']))
+
 print('done with vpd, time was %f min' % ((time.time()-start)/60.))
 

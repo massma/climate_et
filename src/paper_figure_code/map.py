@@ -24,7 +24,7 @@ def make_map(_df):
     x, y = m(_ds.Longitude.values, _ds.Latitude.values)
     ax.scatter(x, y, s=12, label=pft, alpha=0.7,\
                marker=symbols[i], zorder=99999)
-  ax.set_title('FLUXNET2015 Sites with >4 Years Data')
+  ax.set_title('FLUXNET2015 Sites with $\geq4$ Years Data')
 
 
   plt.legend(loc='best')

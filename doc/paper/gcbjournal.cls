@@ -1058,7 +1058,9 @@ width0pt\relax}\\*\noindent\ignorespaces}
 
 %% Set bibliography style: This brings in agufull08.bst to format
 %% bibliography when using BibTeX.
-\bibliographystyle{gcb}
+% AGU uses APA style so should be good to go
+\bibliographystyle{agufull08}
+
 
 %% In case you want to enter bib entries without using bibtex
 \def\references{\thebibliography{}\item[]}
@@ -1111,9 +1113,9 @@ width0pt\relax}\\*\noindent\ignorespaces}
 
 %% Formats bibliography, this .sty file needs to be entered here
  \RequirePackage{natbib}
-
-%% When using NatBib, this sets brackets for citations:
-\renewcommand\NAT@open{[} \renewcommand\NAT@close{]}
+ 
+% %% When using NatBib, this sets brackets for citations:
+% \renewcommand\NAT@open{[} \renewcommand\NAT@close{]}
 
 %% end Bibliography, and References
 

@@ -38,8 +38,8 @@ def plot_box(_df):
     low = _df.vpd.quantile(q=ptile/100.)
     high = _df.vpd.quantile(q=ptile/100.+0.05)
     data.append(_df.sign[(_df.vpd > low) & (_df.vpd <= high)])
-    positions.append((low+high)*0.5/1.0e3)
-    widths.append((high-low)*0.8/1.0e3)
+    positions.append((low+high)*0.5)
+    widths.append((high-low)*0.8)
     labels.append('%4.0f' % positions[-1])
   ax.boxplot(x=data, positions=positions,\
              sym=(''), widths=widths, manage_xticks=False,\
@@ -53,13 +53,13 @@ def plot_box(_df):
   #\ uwue=mean_row.uwue_zhou),\
   ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd),
           'b-', linewidth=bluelinewidth)
-  ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd, uwue=(mean_row.uwue_zhou\
-                                              +mean_row.uwue_zhou_std)),\
-          'b-', linewidth=1.0)
-  ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd,\
-                                uwue=(mean_row.uwue_zhou\
-                                      -mean_row.uwue_zhou_std)),\
-          'b-', linewidth=1.0)
+  # ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd, uwue=(mean_row.uwue_zhou\
+  #                                             +mean_row.uwue_zhou_std)),\
+  #         'b-', linewidth=1.0)
+  # ax.plot(vpd, d_calc.sign(mean_row, vpd=vpd,\
+  #                               uwue=(mean_row.uwue_zhou\
+  #                                     -mean_row.uwue_zhou_std)),\
+  #         'b-', linewidth=1.0)
   #_df.groupby(pd.cut(_df.vpd, bins=20)).apply(add_box, ax=ax)
   #_df.boxplot(column='sign', by=pd.cut(_df.vpd, bins=20), ax=ax)
   custom_ylabel(_df, ax, paren_string)
