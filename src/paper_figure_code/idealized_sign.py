@@ -18,7 +18,7 @@ PLOT_TALK = False
 PLOT_PET = False
 
 paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
-               r'- \frac{\gamma c_s }{1.6 \; R\; uWUE  }'\
+               r'- \frac{\gamma c_a }{1.6 \; R\; uWUE  }'\
                r'\left( \frac{2 g_1 + \sqrt{D}}'\
                r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
 
