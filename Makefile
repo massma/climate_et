@@ -46,7 +46,8 @@ clean :
 
 # below is if you don't want to regenerate figs
 clean-paper :
-	cd doc/paper && rm ./*.aux ./*.log ./*.blg ./*.bbl vpd_et_paper.pdf
+	cd doc/paper && rm ./*.aux ./*.log ./*.blg ./*.bbl \
+	data_scatter.png vpd_et_paper.pdf
 
 # below is because scatter figure takes so long to make, we don't want
 # to always clean it

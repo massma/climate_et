@@ -113,9 +113,16 @@ def scatter_plot_paper(_df, meta):
 
   axs = [fig.add_subplot(1, nplots, i+1) for i in range(nplots)]
 
-  for ax, var, meta['title'] in zip(axs, _vars, titles):
-    meta['vmax'] = np.nanmax(np.absolute([var.mean() +  1.5*var.std(),\
-                                          var.mean() - 1.5*var.std()]))
+  for i, ax, var, meta['title'] in zip(range(len(_vars)), axs, _vars, titles):
+    ### set axis limits
+    # if ((i % 2) == 0):
+    #   j = 2
+    # else:
+    #   j = 3
+    # meta['vmax'] = np.nanmax(np.absolute([_vars[j].mean()+2.*_vars[j].std(),\
+    #                                       _vars[j].mean()-2.*_vars[j].std()]))
+    meta['vmax'] = np.nanmax(np.absolute([var.mean()+1.5*var.std(),\
+                                          var.mean()-1.5*var.std()]))
     make_ax_plot(ax, var, _df, meta)
 
   plt.tight_layout()

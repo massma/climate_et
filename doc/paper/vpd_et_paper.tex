@@ -49,7 +49,7 @@ The objective of the present manuscript is to evaluate the VPD dependence of ET,
 \label{methods}
 \subsection{Data}
 \label{data}
-We use both meteorological and eddy-covariance data from the FLUXNET2015 database,  all sites with at least four years of data (data available at \sloppy https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/ \sloppy). Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in the stomatal conductance model in the Methods section (Section \ref{methods}) are only published for six plant functional types (PFTs): crops (CRO), deciduous broadleaf forest (DBF), evergreed broadleaf forests (EBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 62 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig}.
+We use both meteorological and eddy-covariance data from the FLUXNET2015 database, including all sites with at least four years of data (data available at \sloppy https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/ \sloppy). Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in the stomatal conductance model in the Methods section (Section \ref{methods}) are only published for six plant functional types (PFTs): crops (CRO), deciduous broadleaf forest (DBF), evergreed broadleaf forests (EBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 62 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig}.
 
 \begin{figure}
 \centering
@@ -91,14 +91,14 @@ $e_s$  & saturation vapor pressure & Pa  & - \\
   $P$  & pressure & Pa  & - \\
 $\Delta$  & $\frac{\partial e_s}{\partial T}$ & Pa K$^{-1}$ & - \\
 $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \\
-  $g_a$  & aerodynamic conductance & m s$^{-1}$  & \makecell{\cite{Thom_1977} \\ \cite{Paulson_1970} \\ \cite{Beljaars_1991}} \\
+  $g_a$  & aerodynamic conductance & m s$^{-1}$  & ** Shuttleworth \\
   $\rho_a$  & air density & kg m$^{-3}$  & - \\
   $c_p$  & specific heat capacity of air at constant pressure & J K$^{-1}$ kg$^{-1}$ & - \\
   $VPD$  & vapor pressure deficit & Pa  & - \\
   $\gamma$  & psychometric constant & Pa K$^{-1}$   & - \\
   $g_s$  & stomatal conductance & m s$^{-1}$  & \cite{MEDLYN_2011} \\
   $g_{l-s}$  & leaf-scale stomatal conductance & mol m$^{-2}$ s$^{-1}$  & \cite{MEDLYN_2011} \\
-  $R*$ & universal gas constant & J mol$^{-1}$ K$^{-1}$ & - \\
+  $R$ & universal gas constant & J mol$^{-1}$ K$^{-1}$ & - \\
   $R_{air}$ & gas constant of air & J  K$^{-1}$ kg$^{-1}$ & - \\
   $LAI$ & leaf area index & -& - \\
   $\sigma$ & uncertainty parameter & -& - \\
@@ -138,7 +138,7 @@ The Medlyn model for stomatal conductance has been shown to behave very well acr
   \end{equation}
 \end{linenomath*}
 
-While Equation 3 can be used in PM (Equation 1), it will make analytical work with the function intractable because $A$, net CO$_2$ assimilation, is functionally related to ET itself. To remove the dependence of ET on $A$ we use fundamental semi-empirical results of \citet{Zhou_2015}, who showed that the underlying Water Use Efficiency ($uWUE$):
+While Equation 3 can be used in PM (Equation 1), it will make analytical work with the function intractable because $A$, net CO$_2$ assimilation rate, is functionally related to ET itself. To remove the dependence of ET on $A$ we use fundamental semi-empirical results of \citet{Zhou_2015}, who showed that the underlying Water Use Efficiency ($uWUE$):
 
 \begin{linenomath*}
   \begin{equation}
@@ -159,27 +159,29 @@ Note that $uWUE$ is fit on the ecosystem scale as in \citet{Zhou_2015}, so GPP i
 
 \begin{linenomath*}
   \begin{equation}
-    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R* \; 1.6\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
+    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
     \label{et}
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{et}, ET is explicitly a function of environmental variables and two plant-specific constants, the slope parameter ($g_1$), and $uWUE$, both reflecting water conservation strategy. The slope parameter is a leaf-scale term related to the willingness of stomata to trade water for CO$_2$ and to keep stomata open. $uWUE$ is semi-empirical ecosystem-scale constant related to how WUE changes with VPD (specifically $VPD^{-1/2}$). Is is also roughly proportional to physical constants:
+With Equation \ref{et}, ET is explicitly a function of environmental variables and two plant-specific constants, the slope parameter ($g_1$), and $uWUE$, both reflecting water conservation strategy. The slope parameter is a leaf-scale term related to the willingness of stomata to trade water for CO$_2$ and to keep stomata open. $uWUE$ is a semi-empirical ecosystem-scale constant related to how WUE changes with VPD (specifically $VPD^{-1/2}$). Is is also roughly proportional to physical constants:
 
 \[uWUE \appropto \sqrt{\frac{c_a - \Gamma}{1.6 \lambda}},\]
 
-where $\Gamma$ is the CO$_2$ compensation point \citep{Zhou_2014}. So uWUE is related to atmospheric CO$_2$ concentration and compensation point, and is inversely proportional to the marginal water cost of leaf carbon. Therefore, generally speaking, plants that are very willing to trade water for new growth will have lower $uWUE$ and higher $g_1$, and will be less water conservative (more likely to increase ET with increasing VPD). 
+where $\Gamma$ is the CO$_2$ compensation point \citep[Equation 5 in][]{Zhou_2014}. So uWUE is related to atmospheric CO$_2$ concentration and compensation point, and is inversely proportional to the marginal water cost of leaf carbon. 
 
-Given the eddy-covariance FLUXNET2015 data described in Section \ref{data}, every term in Equation \ref{et} is observed, except for the two parameters $g_1$, and $uWUE$, which have however been measured for the PFTs considered here \citep{Zhou_2015, Lin_2015}. However, eddy-covariance data are inherently noisy so we include a measure of uncertainty in our analysis. To account for both mean deviations of $uWUE$ and uncertainty, we introduce an uncertainty parameter $\sigma$ modifying $uWUE$:
+Given the eddy-covariance FLUXNET2015 data described in Section \ref{data}, every term in our new version of PM (Equation \ref{et}) is observed, except for the two parameters $g_1$, and $uWUE$. $g_1$ has been measured and reported for the PFTs considered here \citep{Lin_2015, Franks_2017}, and we fit $uWUE$ by calculating its expectation, given the model and FLUXNET2015 data.
+
+However, eddy-covariance data are inherently noisy so we include a measure of uncertainty in our analysis. To account for observational error, as well as model uncertainty (e.g. temporal and spatial variations of $uWUE$), we introduce an uncertainty parameter $\sigma$ modifying $uWUE$:
 
 \begin{linenomath*}
   \begin{equation}
-    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R* \; 1.6\; \sigma \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
+    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \sigma \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
     \label{et_sigma}
   \end{equation}
 \end{linenomath*}
 
-Now, from each FLUXNET2015 observation (i.e. for each semi-hourly data, at every time step) we can evaluate $\sigma$:
+Now, from each FLUXNET2015 observation (i.e. for each hourly observation at every time step) we can evaluate $\sigma$:
 
 \begin{linenomath*}
   \begin{equation}
@@ -188,16 +190,16 @@ Now, from each FLUXNET2015 observation (i.e. for each semi-hourly data, at every
   \end{equation}
 \end{linenomath*}
 
-Thus, with this uncertainty analysis we can evaluate departure from our theory in observations, as a departure of $\sigma$ from unity. The variability of $\sigma$ across sites and time provides a measure of uncertainty in our model, assumptions, as well as in the FLUXNET201 observations themselves. To correct for differences in sampling between \cite{Zhou_2015} and our data, we set uWUE such that $\overline{\sigma} = 1$. The variability of $\sigma$ then propagates through any uncertainty to our derivative of Equation \ref{et_sigma}:
+Thus, with this uncertainty analysis we can evaluate departure from our theory in observations, as a departure of $\sigma$ from unity. The variability of $\sigma$ across sites and time provides a measure of uncertainty in our model, assumptions, as well as in the FLUXNET201 observations themselves. The variability of $\sigma$ then propagates through any uncertainty to our derivative of Equation \ref{et_sigma}:
 
 \begin{linenomath*}
   \begin{equation}
-    \frac{\partial \;  ET}{\partial \; VPD} = \frac{2\; g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_a }{1.6 \; R*\; \sigma \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)
+    \frac{\partial \;  ET}{\partial \; VPD} = \frac{2\; g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_a }{1.6 \; R\; \sigma \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)
     \label{d_et}
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{d_et} we have an analytical framework for ecosystem response to atmospheric demand perturbations, in non extreme drought conditions. There are a few subtleties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately independent, which is supported by the data (not shown). 
+With Equation \ref{d_et} we have an analytical framework for ecosystem response to atmospheric demand perturbations, with an implicit assumption of non-extreme drought conditions. There are a few subtleties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately independent, which is supported by the data (not shown). 
 
 We note one final comment on our derivation which is relevant for drought indices. If we approximate $c_a$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015} and \citet{Lin_2015}. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface and would only require fitting of $uWUE$ and $g_1$, and can also account for changes in CO$_2$ concentration, contrary to typical drought indices such as the Palmer Drought Severity Index (PDSI) \citep{Swann_2016}.
 
