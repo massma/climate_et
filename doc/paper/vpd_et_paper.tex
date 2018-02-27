@@ -2,6 +2,8 @@
 \documentclass[draft,linenumbers]{gcbjournal}
 % \draftfalse
 \usepackage{makecell}
+\usepackage{multirow} %AM for tables
+\usepackage{booktabs}
 \drafttrue
 
 \journalname{Global Change Biology}
@@ -51,6 +53,30 @@ The objective of the present manuscript is to evaluate the VPD dependence of ET,
 \label{data}
 We use both meteorological and eddy-covariance data from the FLUXNET2015 database, including all sites with at least four years of data (data available at \sloppy https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/ \sloppy). Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in the stomatal conductance model in the Methods section (Section \ref{methods}) are only published for six plant functional types (PFTs): crops (CRO), deciduous broadleaf forest (DBF), evergreed broadleaf forests (EBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 62 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig}.
 
+\begin{table}
+  \caption{Plant functional types, their abbreviation, Medlyn coefficient (from \citet{Lin_2015}, via \citet{Franks_2017}) and caluclated uWUE. uWUE from \citet{Zhou_2015}, including the  observed standard deviation is shown for comparison. Note that uWUE from \citet{Zhou_2015} is calculated from a different set of sites, and that units are converted such that the quantities fit into Equations 1-8 with the variables in Table \ref{definitions}.}
+    \small
+\label{pft}
+\centering
+\begin{tabular}{l c c @{\qquad} c c}
+  \hline
+  \multirow{2}[3]{*}{Abbreviation} & \multirow{2}[3]{*}{PFT} & \multirow{2}[3]{*}{$g_1$ (Pa$^{0.5}$)} & \multicolumn{2}{c}{uWUE ($\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET])}  \\
+  \cmidrule{4-5}
+
+  & & & fitted & \citet{Zhou_2015} \\
+
+  \hline
+  DBF & deciduous broadleaf forest & 140.7 & 2.63 & 3.12 $\pm$ 0.52 \\
+  EBF & evergreen broadleaf forest & 130.3 & 2.56 &  N/A \\
+  ENF & evergreen needleleaf forest & 74.3 & 3.45 & 3.30 $\pm$ 0.91 \\
+  CRO & cropland & 183.1 & 2.27 & 3.80 $\pm$ 1.01 \\
+  CSH & closed shrub & 148.6 & 1.66 & 2.18 $\pm$ 0.44 \\
+  GRA & grassland (assumed C3) & 166.0 & 1.92 & 2.68 $\pm$ 0.61 \\
+\hline
+\end{tabular}
+\end{table}
+
+
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./map.pdf}
@@ -73,13 +99,15 @@ The Penman-Monteith equation \citep [hereafter PM,][]{Penman_1948, Monteith_1965
 \begin{linenomath*}
   \begin{equation}
     \label{orig_pen}
-    ET = \frac{\Delta R + g_a \rho_a c_p VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},
+    ET = \frac{\Delta R_{net} + g_a \rho_a c_p VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},
   \end{equation}
 \end{linenomath*}
-where $\Delta$ is the change in saturation vapor pressure with temperature, given by Clausius-Clapeyron ($\frac{d \; e_s}{d \; T}$), $R$ is the net radiation minus ground heat flux, $g_a$ is aerodynamic conductance, $\rho_a$ is air density, $c_p$ is specific heat of air at constant pressure, $\gamma$ is the psychometric constant, and $g_s$ is the stomatal conductance (Table 1).
+where $\Delta$ is the change in saturation vapor pressure with temperature, given by Clausius-Clapeyron ($\frac{d \; e_s}{d \; T}$), $R$ is the net radiation minus ground heat flux, $g_a$ is aerodynamic conductance, $\rho_a$ is air density, $c_p$ is specific heat of air at constant pressure, $\gamma$ is the psychometric constant, and $g_s$ is the stomatal conductance (Table \ref{definitions}).
 
 \begin{table}
-\caption{Definition of symbols and variables, with citation for calculation if applicable.}
+
+  \caption{Definition of symbols and variables, with citation for calculation if applicable.}
+  \label{definitions}
 \centering
 \small
 \begin{tabular}{l c c c}
@@ -90,14 +118,14 @@ $e_s$  & saturation vapor pressure & Pa  & - \\
   $T$  & temperature  & K & - \\
   $P$  & pressure & Pa  & - \\
 $\Delta$  & $\frac{\partial e_s}{\partial T}$ & Pa K$^{-1}$ & - \\
-$R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \\
-  $g_a$  & aerodynamic conductance & m s$^{-1}$  & ** Shuttleworth \\
+$R_{net}$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \\
+  $g_a$  & aerodynamic conductance & m s$^{-1}$  & \citet{Shuttleworth_2012} \\
   $\rho_a$  & air density & kg m$^{-3}$  & - \\
   $c_p$  & specific heat capacity of air at constant pressure & J K$^{-1}$ kg$^{-1}$ & - \\
   $VPD$  & vapor pressure deficit & Pa  & - \\
   $\gamma$  & psychometric constant & Pa K$^{-1}$   & - \\
-  $g_s$  & stomatal conductance & m s$^{-1}$  & \cite{MEDLYN_2011} \\
-  $g_{l-s}$  & leaf-scale stomatal conductance & mol m$^{-2}$ s$^{-1}$  & \cite{MEDLYN_2011} \\
+  $g_s$  & stomatal conductance & m s$^{-1}$  & \citet{MEDLYN_2011} \\
+  $g_{l-s}$  & leaf-scale stomatal conductance & mol m$^{-2}$ s$^{-1}$  & \citet{MEDLYN_2011} \\
   $R$ & universal gas constant & J mol$^{-1}$ K$^{-1}$ & - \\
   $R_{air}$ & gas constant of air & J  K$^{-1}$ kg$^{-1}$ & - \\
   $LAI$ & leaf area index & -& - \\
@@ -106,7 +134,6 @@ $R$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \
   $\lambda$ & marginal water cost of leaf carbon & mol H$_2$O mol$^{-1}$ CO$_2$ & - \\
   $\Gamma$ & CO$_2$ compensation point & - & - \\
   $\Gamma^*$ & CO$_2$ compensation point without dark respiration & - & - \\
-  
 \hline
 \end{tabular}
 \end{table}
@@ -159,7 +186,7 @@ Note that $uWUE$ is fit on the ecosystem scale as in \citet{Zhou_2015}, so GPP i
 
 \begin{linenomath*}
   \begin{equation}
-    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
+    ET = \frac{\Delta R_{net} + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
     \label{et}
   \end{equation}
 \end{linenomath*}
@@ -176,7 +203,7 @@ However, eddy-covariance data are inherently noisy so we include a measure of un
 
 \begin{linenomath*}
   \begin{equation}
-    ET = \frac{\Delta R + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \sigma \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
+    ET = \frac{\Delta R_{net} + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \sigma \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
     \label{et_sigma}
   \end{equation}
 \end{linenomath*}
@@ -185,7 +212,7 @@ Now, from each FLUXNET2015 observation (i.e. for each hourly observation at ever
 
 \begin{linenomath*}
   \begin{equation}
-\sigma = - \frac{g_a \gamma c_a \sqrt{VPD} L_v P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R - g_a \rho_a c_p VPD\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})},
+\sigma = - \frac{g_a \gamma c_a \sqrt{VPD} L_v P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R_{net} - g_a \rho_a c_p VPD\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})},
     \label{sigma}
   \end{equation}
 \end{linenomath*}
@@ -204,40 +231,19 @@ With Equation \ref{d_et} we have an analytical framework for ecosystem response 
 We note one final comment on our derivation which is relevant for drought indices. If we approximate $c_a$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015} and \citet{Lin_2015}. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface and would only require fitting of $uWUE$ and $g_1$, and can also account for changes in CO$_2$ concentration, contrary to typical drought indices such as the Palmer Drought Severity Index (PDSI) \citep{Swann_2016}.
 
 
-\begin{table}
-  \label{pft}
-\caption{Plant functional types, their abbreviation, Medlyn coefficient \citep[from ][]{Lin_2015}, and uWUE \citep[from ][]{Zhou_2015}. Note that units are converted such that the quantities fit into Equations 1-8 with the variables in Table 1.}
-\centering
-\begin{tabular}{l c c c}
-  \hline
-  Abbreviation & PFT & $g_1$ (Pa$^{0.5}$) & uWUE ($\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET])  \\
-  \hline
-  CRO & cropland & 183.1 & 3.80 \\
-  CSH & closed shrub & 148.6 & 2.18 \\
-  DBF & deciduous broadleaf forest & 140.7 & 3.12 \\
-  ENF & evergreen needleleaf forest & 74.3 & 3.30 \\
-  GRA & grassland (C3) & 166.0 & 2.68 \\
-\hline
-\multicolumn{2}{l}{$^{a}$Footnote text here.}
-\end{tabular}
-\end{table}
 
 
 \section{Results}
 \label{results}
 
-By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) contains all model and observational uncertainties. For an observation that perfectly matches our model and constant uWUE assumption $\sigma$ will be one. Therefore, for our assumptions and framework to be reasonable $\sigma$ should be close to 1. Figure \ref{joint_vpd_sigma} presents the histogram of calculated $\sigma$s with outliers removed (lowest and highest 5\% percent). All remaining $\sigma$ values are close to unity (i.e. $O(1)$), which provides further confidence in the model framework and in the data quality.
+By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) contains all model and observational uncertainties. For an observation that perfectly matches our model and constant uWUE assumption $\sigma$ will be one. Therefore, for our assumptions and framework to be reasonable $\sigma$ should be close to 1. An additional concern is that $\sigma$ may in fact be correlated with $VPD$, in which case the dependence would need to be accounted for when taking the derivative. Fortunately, there is a very weak dependence of $\sigma$ on VPD in their joint distrubution, and $\sigma$ is indeed close to unity i.e. $O(1)$ (Figure \ref{joint_vpd_sigma}). Given this weak dependence and the distribution of $\sigma$ we have confidence in our model framework and the data quality.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./joint_vpd_sigma.pdf}
-\caption{The joint distribution of $VPD$ and $\sigma$. $\sigma$ has only a weak dependence on $VPD$.}
+\caption{The joint distribution of $VPD$ and $\sigma$, with outliers removed (defined as lowest and highest 5\% of $\sigma$). $\sigma$ has only a weak dependence on $VPD$, and $\sigma$ is $O(1)$ for the bulk of thte observations.}
 \label{joint_vpd_sigma}
 \end{figure}
-
-
-An additional concern is that $\sigma$ may in fact be correlated with $VPD$, in which case the dependence would need to be accounted for when taking the derivative. However, the joint distribution of $\sigma$ and VPD shows that $\sigma$ is very weakly a function of VPD (Figure \ref{joint_vpd_sigma}). Given this weak dependence, we argue that Equation \ref{d_et} is a valid approximation for ET response to $VPD$.
-
 
 Before calculating the sensitivity of ET to VPD, we will consider the functional form of Equation \ref{d_et}. There are two main terms: a ``scaling'' term, which modifies the magnitude but not the sign of the ET response to VPD  ($\frac{\partial \; ET}{\partial \; VPD}$):
 
@@ -251,38 +257,41 @@ and a ``sign'' term, which determines whether ET increases or decreases with VPD
   \label{sign}
   \frac{c_p}{R_{air}} - \frac{\gamma c_a }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right).
 \end{equation}
-All variables are positive, so the relative magnitude between the first term and the second term in Equation \ref{sign} will determine whether ET increases or decreases with increasing VPD. If the second term is larger then the plant control dominates and ET decreases with increasing VPD. However, if the first term is larger, then atmospheric demand dominates and ET increases with increasing VPD. 
+All variables are positive, so the relative magnitude between the first term and the second term in the sign term (Equation \ref{sign}) will determine whether ET increases or decreases with increasing VPD. If the second term is larger then the plant control dominates and ET decreases with increasing VPD. However, if the first term is larger, then atmospheric demand dominates and ET increases with increasing VPD. 
 
 \subsection{Functional Form of the Sign Term}
 \label{sign_term}
-First, we explore the variables within the sign term to gain better intuition on the driver of either the increase or reduction of ET with VPD. CO$_2$ concentration ($c_a$) and the psychometric constant ($\gamma$) are relatively constant over the dataset considered here so that the variability is dominated by $\sigma$ and $VPD$. $uWUE$ could vary with soil moisture but has been shown to be relatively constant except in very dry soil conditions  (ZHOU ET AL, LIN ET AL ** ??)\explain{Pierre, which Zhou and Lin citations were you referring to that show that uWUE changes with very dry soil conditions?}. We thus further assume that the soil is not too dry so that $uWUE$ can be approximated as a constant (within PFT). This then means that the sign term only depends on VPD for a given PFT and is approximately just a function of $VPD$. We can further determine a critical threshold separating an increase from a decrease in ET, i.e. the threshold $VPD_{crit}$ such as the derivative vanishes $\frac{\partial \; ET}{\partial \; VPD} = 0$:
+First, we explore the variables within the sign term to gain better intuition on the driver of either the increase or reduction of ET with VPD. CO$_2$ concentration ($c_a$) and the psychometric constant ($\gamma$) are relatively constant over the dataset considered here so that the variability is dominated by $\sigma$ and $VPD$. $uWUE$ could vary with soil moisture but has been shown to be relatively constant \citep{Zhou_2015}. This then means that the sign term only depends on VPD for a given PFT and is approximately just a function of $VPD$. We can further determine a critical threshold separating an increase from a decrease in ET, i.e. the threshold $VPD_{crit}$ such as the derivative vanishes $\frac{\partial \; ET}{\partial \; VPD} = 0$:
 \small
 \begin{linenomath*}
   \begin{equation}
-VPD_{crit} = \frac{R_{air}}{4 c_p} \left( \frac{\gamma c_a}{1.6\; R \; \overline{\sigma} uWUE} + \sqrt{\frac{\gamma c_a}{1.6\; R \; \overline{\sigma} uWUE}\left( \frac{\gamma c_a}{1.6\; R \; \overline{\sigma} uWUE} + 8 g_1 \frac{c_p}{R_{air}}\right)} - 4 g_1 \frac{c_p}{R_{air}} \right)
+VPD_{crit} = \frac{R_{air}}{4 c_p} \left( \frac{\gamma c_a}{1.6\; R \;  uWUE} + \sqrt{\frac{\gamma c_a}{1.6\; R \;  uWUE}\left( \frac{\gamma c_a}{1.6\; R \;  uWUE} + 8 g_1 \frac{c_p}{R_{air}}\right)} - 4 g_1 \frac{c_p}{R_{air}} \right)
 \label{vpd_min_et}
   \end{equation}
 \end{linenomath*}
 \normalsize
 We note that $VPD_{crit}$ mostly depends on the PFT parameters $uWUE$ and $g_1$ but only vary weakly with climate as most other parameters related to the environment are nearly constant. The value of $VPD_{crit}$ for each PFT is shown in Table \ref{vpd_crit}. For any values of $VPD$ less than $VPD_{crit}$, ET will thus decrease with increasing VPD ($\frac{\partial \; ET}{\partial \; VPD} < 0$), and for values of $VPD$ greater than $VPD_{crit}$, ET will increase with increasing VPD ($\frac{\partial \; ET}{\partial \; VPD} > 0$). In other words, ecosystems regulate and mitigate evaporative losses up to the VPD limit, $VPD_{crit}$, above which atmospheric demand is just too high to be entirely compensated by stomatal and ecosystem regulation. We note however that even though ET increases again above the critical threshold, $VPD_{crit}$, ET is still much lower that potential evaporation as stomata are still strongly regulating vapor fluxes tot he atmosphere. Indeed, even in the absence of soil pore evaporation, stomata do not shut down entirely at very high VPD so that ET does not go to zero, because stomata are still slightly open to perform some photosynthesis \citep{Ball_1987, Leuning_1990, MEDLYN_2011}. In addition, upward xylem transport is necessary to maintain phloem transport, as well as nutrient transport and thus carbon allocation \citep{De_2013, Nikinmaa_2013, Ryan_2014}.
 
+
+
 \begin{table}  
-\caption{Values of $VPD_{crit}$, where $\frac{\partial \; ET}{\partial \; VPD} = 0$, evaluated at PFT average values for $R_{air}$, $\sigma$, $\gamma$, and $c_a$. For reference, these values are also provided CITE TABLE. For values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive. \textbf{**** this statistics are dated, need to update***}}
+\caption{Values of $VPD_{crit}$, where $\frac{\partial \; ET}{\partial \; VPD} = 0$, evaluated at PFT average values for $R_{air}$, $\gamma$, and $c_a$. PFT-specific constants ($g_1$, uWUE) are provided in Table \ref{pft}. For values of $VPD$ less than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be negative, and for values of $VPD$ greater than $VPD_{crit}$, $\frac{\partial \; ET}{\partial \; VPD}$ will be positive.}
 \centering
-\begin{tabular}{l c c c c c c}
+\begin{tabular}{l c c c c c}
   \hline
-  PFT & $R_{air}$ & $c_a$ (ppm) & $\gamma$ &  uWUE    & \textbf{$VPD_{crit}$ (Pa)} \\
+  PFT & $R_{air}$ & $c_a$ (ppm) & $\gamma$  & \textbf{$VPD_{crit}$ (Pa)} \\
   \hline
-  CRO &  288.680920 & 372.567691& 65.351523& 2.602873&  \textbf{133.165438} \\
-  CSH &   289.067152& 381.593622& 67.613172& 2.175278& \textbf{4439.564212} \\
-  DBF &   288.624437& 377.449849& 63.421812& 2.746393&  \textbf{888.773243} \\
-  ENF &  288.183849& 377.676463& 61.559242& 4.015362&  \textbf{978.084845} \\
-  GRA &  288.425651& 377.264645& 61.598768& 2.281074& \textbf{1141.630778} \\
+CRO & 288.6 & 376.0 & 65.2 &   \textbf{936.6} \\
+CSH & 289.0 & 383.6 & 67.5 & \textbf{12852.5} \\
+DBF & 288.6 & 379.5 & 63.6 &  \textbf{1266.6} \\
+EBF & 288.4 & 368.5 & 61.6 &  \textbf{1454.8} \\
+ENF & 288.28 & 379.8 & 61.0 &  \textbf{1853.7} \\
+GRA & 288.4 & 378.0 & 61.0 &  \textbf{3261.1} \\
 \hline
-\multicolumn{2}{l}{$^{a}$Footnote text here.}
 \end{tabular}
 \label{vpd_crit}
 \end{table}
+
 
 Differences in $VPD_{crit}$ are exclusively determined by $uWUE$ and the slope parameter ($g_1$) related to the plant functional type. A larger $uWUE$ means a smaller $VPD_{crit}$, and an ET response to increases VPD that is more likely to be positive. At first glance this result is somewhat counterintuitive; we expect that plants with a higher water use effiency would be more water conservative. However, in reality $uWUE$ determines how $WUE$ changes with VPD:
 
@@ -293,7 +302,7 @@ So, plants with a higher $uWUE$ will have a greater \textit{decrease} in ecosyst
 
 A tendency towards increasing ET response with increasing VPD can also be caused by a high slope parameter ($g_1$), characteristic of plants that at the leaf scale are more willing to trade water for stomata opening. Plants that are less conservative will be thus be more likely to increase ET with increasing VPD. Both the aforementioned effects (large $uWUE$, $g_1$) can amplify each other, and generally conspire to shift the sign term towards a positive value for a given PFT.
 
-This effect of $uWUE$ and $g1$ on the sign term is most apparent by comparing two extreme PFTs: water intensive CRO and water conservative CSH. CRO has a high slope parameter ($g_1 = 183.1 \, Pa^{1/2}$) compared to CSH ($g1 = 148.6 \, Pa^{1/2}$. It also has a slightly higher uWUE ($2.32$ -units-) compared to CSH ($uWUE=2.11$ -units-). \explain{MAYBE A DUMB QUESTION BUT CAN'T uWUE AND G1 BE ANALYTICALLY RELTED> I THINK AT LESAT YOU SHOULD MAKE CLEAR THAT UWUE IS AT THE ECOYSTEM SCALE (DID YOU FIT IT OR USED PUBLISHED DATA-I AM NOW CONFUSED)}. These differences in slope parameter cause opposite ET responses to changes in VPD between CRO and CSH. ET theoretically always increases with increasing VPD for the more water intensive CRO, while ET almost always decreases with increasing VPD for the more water conservative CSH (Figure \ref{idealized_sign}). CRO evolved or were bred to prioritize GPP and yield and are thus not water conservative. They are very willing to trade water for photosynthesis and productivity, despite changes in VPD, while CSH are very unwilling to trade water for more photosynthesis.
+This effect of $uWUE$ and $g1$ on the sign term is most apparent by comparing two extreme PFTs: water intensive crops (CRO) and water conservative closed shrub (CSH). CRO has high slope parameters and uWUE ($g_1 = 183.1$ Pa$^{1/2}$; $2.27$ $\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET]) compared to CSH ($g1 = 148.6 \, Pa^{1/2}$, $uWUE=1.66$ $\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET]). These differences in PFT parameters cause opposite ET responses to changes in VPD between CRO and CSH. ET theoretically always decreases with increasing VPD for the more water conservative CSH, while ET will frequently  increases with increasing VPD for the more water intensive CRO (Figure \ref{idealized_sign}). CRO evolved or were bred to prioritize GPP and yield and are thus not water conservative. They are very willing to trade water for photosynthesis and productivity, despite changes in VPD, while CSH are very unwilling to trade water for more photosynthesis.
 
 \begin{figure}
 \centering
@@ -305,11 +314,9 @@ Bottom: The location of the minima of ET, as a function of VPD and $\sigma$. Lin
 \end{figure}
 
 
-As expected, the slope parameter ($g_1$) is a primary determinant of the VPD dependence for the sign term shown in Figure \ref{idealized_sign}. Plants that are more conservative (small $g_1$) will tend to reduce ET with increasing VPD, and will be very effective at reducing ET, especially at low VPD. However, at very high VPD, gradients in vapor pressure at the leaf scale will be so strong that they will begin to dominate leaf-scale plant strategies of stomatal (partial) closure (parameterized with $g_1$). As a result, ET response will begin to asymptote towards its ecosystem-scale values irregardless of leaf-scale strategy and stomatal regulation (parameterized with $g_1$). Therefore, plants with a low $g_1$ will have the largest VPD dependence of ET response because the difference in ET response at low VPD (leaf stomatal response dominates) and high VPD (VPD gradient dominates) is largest. This is apparent in the strong VPD dependence of ENF, which has the lowest slope parameter ($g_1=74.31$), in Figure \ref{idealized_sign}.  
+As expected, the slope parameter ($g_1$) is a primary determinant of the VPD dependence for the sign term shown in Figure \ref{idealized_sign}. Plants that are more conservative (small $g_1$) will tend to reduce ET with increasing VPD, and will be very effective at reducing ET, especially at low VPD. However, at very high VPD, gradients in vapor pressure at the leaf scale will be so strong that they will begin to dominate leaf-scale plant strategies of stomatal (partial) closure (parameterized with $g_1$). As a result, ET response will begin to asymptote towards its ecosystem-scale values irregardless of leaf-scale strategy and stomatal regulation (parameterized with $g_1$). Therefore, plants with a low $g_1$ will have the largest VPD dependence of ET response because the difference in ET response at low VPD (leaf stomatal response dominates) and high VPD (VPD gradient dominates) is largest. This is apparent in the strong VPD dependence of ENF, which has the lowest slope parameter ($g_1=74.31$ Pa$^{1/2}$) (Figure \ref{idealized_sign}).
 
-To summarize our theoretical insights, Figure \ref{idealized_sign} and Table \ref{vpd_crit}, CROs are the least water conservative and have the strongest overall tendency to increase ET with increasing VPD, while CSH are the most water conservative and have the strongest tendency to decrease ET with increasing VPD.  ENF ($g_1 = 74.31$) has by far the largest VPD response dependence, while CRO ($g_1 = 183.1$) has the smallest VPD dependence. ENF are less willing to trade water for GPP, so the difference between the response at low VPD when leaf response dominates and high VPD when vapor pressure gradients dominate is much greater. CROs on the other hand have a more aggressive water use strategy and are more willing to trade water for photosynthesis, so the leaf scale response is much smaller, and the difference in ET response between low VPD and high VPD is relatively small.
-
-Figure \ref{idealized_sign} clearly shows, according to our theory, that for all PFTs except for crops there is frequent occurrence of a negative (plant dominating) ET response to increases in VPD. Therefore, plants are able in most atmospheric conditions to reduce ET in response to increased VPD and thus to reduce water loss. To better illustrate this, the ranges of observed environmental VPDs at the FLUXNET sites are plotted parallel to the x-axis. For CSH, VPD is always less than VPD$_{crit}$ so that the plant response dominates in typical environmental conditions, emphasizing the water conservative strategy of those plants. For CRO on the other hand, VPD is almost always higher than VPD$_{crit}$, emphasizing that those plants operate with an aggressive water usage strategy, are water intensive and were actually engineered for photosynthesis rather than water saving. For forests and grass, whether plant response or atmospheric demand dominates is more dependent on environmental conditions, with about half of the observed VPD less than VPD$_{crit}$, i.e. in conditions where plant response dominates. It is also important to note that even when atmospheric demand dominates, ET response to VPD is still far smaller than it would be for potential evaporation $\partial PET/\partial VPD$, i.e. atmospheric demand only, emphasizing that there is still a strong regulation of evaporative flux by stomata and though the plant xylem. The sign term in this case would just be a constant ($\frac{c_p}{R_{air}} \approx 3.5$), which is far larger than any part of the curves for any PFT. This highlights the deficiencies of PET's ability to capture land response to changes in atmospheric dryness (VPD). Plants are always regulating water exchange from the land surface, even when they reach the limits of they ability to do so. Therefore, the actual land surface response to a change in VPD will always me more negative than if the plants are not included in the physics (PET). 
+To summarize our theoretical insights (Figure \ref{idealized_sign} and Table \ref{vpd_crit}), CROs are the least water conservative and have the strongest overall tendency to increase ET with increasing VPD, while CSH are the most water conservative and have the strongest tendency to decrease ET with increasing VPD.  ENF ($g_1 = 74.31$ Pa$^{1/2}$) has by far the largest VPD response dependence, while CRO ($g_1 = 183.1$ Pa$^{1/2}$) has the smallest VPD dependence. Figure \ref{idealized_sign} clearly shows, according to our theory, that for all PFTs except for crops there is frequent occurrence of a negative (plant dominating) ET response to increases in VPD. Therefore, plants are able in most atmospheric conditions to reduce ET in response to increased VPD and thus to reduce water loss. To better illustrate this, the ranges of observed environmental VPDs at the FLUXNET sites are plotted parallel to the x-axis. For CSH, VPD is always less than VPD$_{crit}$ (off scale) so that the plant response dominates in typical environmental conditions, emphasizing the water conservative strategy of those plants. For CRO on the other hand, VPD is higher than VPD$_{crit}$ for more than 50\% of observations, emphasizing that those plants operate with an aggressive water usage strategy, are water intensive and were actually engineered for photosynthesis rather than water saving. For forests and grass,  more than half of the observed VPD are less than VPD$_{crit}$, i.e. in conditions where plant response dominates. It is also important to note that even when atmospheric demand dominates, ET response to VPD is still far smaller than it would be for potential evaporation $\partial PET/\partial VPD$, i.e. atmospheric demand only, emphasizing that there is still a strong regulation of evaporative flux by stomata and though the plant xylem. The sign term in the PET case would just be a constant ($\frac{c_p}{R_{air}} \approx 3.5$), which is far larger than any part of the curves for any PFT. This highlights the deficiencies of PET's ability to capture land response to changes in atmospheric dryness (VPD). Plants are always regulating water exchange from the land surface, even when they reach the limits of they ability to do so. Therefore, the actual land surface response to a change in VPD will always me more negative than if the plants are not included in the physics (PET). 
 
 
 \subsection{Functional Form of the Scaling Term}

@@ -77,6 +77,8 @@ def custom_xlabel(_df, ax, label):
     ax.set_xlabel(label, fontsize=fontsize)
   return
 
+mean_df['vpd_crit'] = et_min_vpd(mean_df)
+
 # pft order for panel plots
 pft_order = ['DBF', 'EBF', 'ENF', 'CSH', 'CRO', 'GRA',]
 
