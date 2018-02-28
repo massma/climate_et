@@ -20,7 +20,7 @@ print(mean_df.loc[:, ['g1', 'uwue', 'uwue_zhou', 'uwue_zhou_std']])
 
 
 #### Table 2, pft tables
-print('\n\n******TABLE 1*****')
+print('\n\n******TABLE 3*****')
 print(mean_df.loc[:, ['r_moist', 'c_a', 'gamma', 'vpd_crit']])
 
 std = df.groupby('pft').std()
@@ -35,20 +35,16 @@ mean_df['total_var'] = np.sqrt(mean_df.d_et_bar_std**2\
                                +mean_df.d_et_d_rn_bar_std**2)
 mean_df['d_et_bar_norm_total'] = mean_df['d_et_bar_std']\
                            /mean_df['total_var']
-
+mean_df['et_std'] = std['et_obs']
 counts = df.groupby('pft').apply(frequency)
 
-print('\n mean d_et\n', mean_df.d_et)
-print('\n d_et(mean)\n', mean_df.d_et_bar)
-print('\n mean d_et *std vpd\nn', mean_df['d_et_bar_std'])
-print('\n mean d_et / rad\n', mean_df['d_et_bar_norm'])
-print('\n portion d_et < 0 \n',\
-      counts)
 mean_df['counts'] = counts
-test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
-                       'd_et_bar_norm', 'd_et_bar_norm_total', 'counts']]
+# test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
+#                        'd_et_bar_norm', 'counts']]
 
-print(test)
+
+print('\n\n******TABLE 4******')
+print(mean_df.loc[:, ['d_et', 'd_et_bar', 'counts']])
 
 
 print(mean_df.uwue)
