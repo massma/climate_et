@@ -7,6 +7,7 @@ import time
 
 # mean_df is defined up at this level
 local_fontsize = fontsize+3
+
 ### Figure 6 ###
 # note below really takes a long time
 def d_et_uwue_fixed(_df):
@@ -67,22 +68,21 @@ def make_ax_plot(_ax, var, _df, meta):
   z = np.ma.masked_array(grouped.values, mask=np.isnan(grouped.values))
   color = _ax.pcolormesh(_x, _y, z, cmap=meta['cmap'],\
                          vmin=vmin, vmax=vmax)
-  if str(_df['pft'].iloc[0]) == 'GRA':
-    _ax.set_xlabel('%s (Pa)' % 'vpd'.upper(), fontsize=local_fontsize)
-  if meta['title'] ==  r'$\frac{\partial \; ET}{\partial \, VPD}$':
-    _ax.set_ylabel('T (C)', fontsize=local_fontsize)
-  # _ax.set_title('%s: %s'\
-  #               % (str(_df['pft'].iloc[0]),\
-  #                  meta['title']), fontsize=local_fontsize+3)
+
+  custom_xlabel(_df, _ax, '%s (Pa)' % 'vpd'.upper())
+  custom_ylabel(_df, _ax, 'T (C)')
   _ax.set_title('%s'\
-                % (name_dict[_df['pft'].iloc[0]]), fontsize=local_fontsize+3)
-  _ax.yaxis.set_tick_params(labelsize=local_fontsize-3)
-  _ax.xaxis.set_tick_params(labelsize=local_fontsize-3)
+                % (name_dict[_df['pft'].iloc[0]]), fontsize=local_fontsize)
+  # _ax.yaxis.set_tick_params(labelsize=local_fontsize-3)
+  # _ax.xaxis.set_tick_params(labelsize=local_fontsize-3)
   cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
-  cbar.set_label(meta['title'], fontsize=local_fontsize+3)
+  
+  if ((_df.pft.iloc[0] == 'EBF') | (_df.pft.iloc[0] == 'CSH')\
+      | (_df.pft.iloc[0] == 'GRA')):
+    cbar.set_label(meta['title'], fontsize=local_fontsize)
   y_lim = _ax.get_ylim()
-  vpd_crit = et_min_vpd(mean_df.loc[_df.pft.iloc[0], :])
-  _ax.plot(np.ones(2)*vpd_crit, np.array(y_lim), 'k-', linewidth=2.0)
+  # vpd_crit = et_min_vpd(mean_df.loc[_df.pft.iloc[0], :])
+  # _ax.plot(np.ones(2)*vpd_crit, np.array(y_lim), 'k-', linewidth=2.0)
   xlim = [0.0, dfs['95'].loc[_df.pft.iloc[0], 'vpd']+100.0]
   ylim = [dfs['5'].loc[_df.pft.iloc[0], 't_a']-1.0,\
           dfs['95'].loc[_df.pft.iloc[0], 't_a']+1.0]
@@ -94,48 +94,17 @@ def scatter_plot_paper(_df, meta):
   """
   creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
   """
-  nplots = 4
   meta['size'] = 1
   meta['cmap'] = 'RdBu'
+  meta['title'] = r'$\frac{\partial \; ET}{\partial \, VPD}$ '\
+                  'W m$^{-2}$ Pa$^{-1}$'
 
-  fig = plt.figure()
-  fig.set_figwidth(fig.get_figwidth()*nplots)
+  var = _df['d_et']
 
-  titles = [r'$\frac{\partial \; ET}{\partial \, VPD}$',\
-            r'$\frac{\partial \; ET}{g_a \partial \, VPD}$',\
-            r'$\frac{\partial \; ET}{\partial \, VPD}(\overline{\sigma})$',\
-            r'$\frac{\partial \; ET}{g_a \partial \, VPD}'\
-            r'(\overline{\sigma})$']
-  _vars = [_df['d_et'],\
-           _df['d_et']/_df['g_a'],\
-           _df['d_et_uwue_fixed'],\
-           _df['d_et_uwue_fixed']/_df['g_a']]# ,\
-
-  axs = [fig.add_subplot(1, nplots, i+1) for i in range(nplots)]
-
-  for i, ax, var, meta['title'] in zip(range(len(_vars)), axs, _vars, titles):
-    ### set axis limits
-    # if ((i % 2) == 0):
-    #   j = 2
-    # else:
-    #   j = 3
-    # meta['vmax'] = np.nanmax(np.absolute([_vars[j].mean()+2.*_vars[j].std(),\
-    #                                       _vars[j].mean()-2.*_vars[j].std()]))
-    meta['vmax'] = np.nanmax(np.absolute([var.mean()+1.5*var.std(),\
+  meta['vmax'] = np.nanmax(np.absolute([var.mean()+1.5*var.std(),\
                                           var.mean()-1.5*var.std()]))
-    make_ax_plot(ax, var, _df, meta)
+  make_ax_plot(meta['ax'], var, _df, meta)
 
-  plt.tight_layout()
-
-  fname = '%s/climate_et/paper_plots/scatter/%s_vpd.png'\
-          % (os.environ['PLOTS'], _df.pft.iloc[0])
-
-  try:
-    plt.savefig(fname)
-  except FileNotFoundError:
-    os.system('mkdir -p %s' % '/'.join(fname.split('/')[:-1]))
-    plt.savefig(fname)
-  plt.show(block=False)
   return
 
 start = time.time()
@@ -144,17 +113,24 @@ plt.close('all')
 meta = {}
 meta['sample'] = '' # 'sampled'
 
-
-meta['nbins'] = 1000
 # much faster if bins smaller, useful for testing
-# meta['nbins'] = 10
-df.groupby('pft').apply(scatter_plot_paper, meta)
-os.system('convert -append %s/climate_et/paper_plots/scatter/*vpd.png '\
-          '../../doc/paper/data_scatter%s.png'\
-          % (os.environ['PLOTS'], meta['sample']))
-os.system('cp ../../doc/paper/data_scatter%s.png '\
-          '../../doc/paper/data_scatter%s.bak'
-          % (meta['sample'], meta['sample']))
+meta['nbins'] = 1000
+
+def scatter_wrapper(_df):
+  """wrapper that groups by pft and does scaling plot"""
+  fig = plt.figure()
+  fig.set_figheight(fig.get_figheight()*3)
+  fig.set_figwidth(fig.get_figwidth()*2)
+  for i, pft in enumerate(pft_order):
+    print(pft)
+    meta['ax'] = fig.add_subplot(3, 2, i+1)
+    scatter_plot_paper(_df.loc[(_df.pft==pft), :], meta)
+    print('time: %f s' % (time.time() - start))
+  plt.tight_layout()
+  plt.savefig('../../doc/paper/data_scatter.png')
+  return
+
+scatter_wrapper(df)
 
 print('done with vpd, time was %f min' % ((time.time()-start)/60.))
 
