@@ -21,7 +21,7 @@ The general directory structure is:
 2) make data
 3) make paper
 
-Note that the scripts expect two environmental variables that you will need to set: PLOTS and DATA , which point to arbitrary directories (plots are where misc. plots are saved, and data is where data is loaded from). You will also need to download a folder of input data provided by my collaborator Changjie Lin, available at https://drive.google.com/open?id=1in-enaDWRMwgGLEeceo0-POnmWDwT8RL , and put it in a directory $DATA/changjie/ . Sometimes CU doesn't let outside users access our Google drive folders despite our sharing settings, so if you have problems shoot me an email and I can send the data that way. The scripts might also need some directory structure within $PLOTS to successfully save files, so watch for any errors about saving figures; I'll try and check this and update the instructions at some point.
+Note that the scripts expect two environmental variables that you will need to set: PLOTS and DATA , which point to arbitrary directories (plots are where misc. plots are saved, and data is where data is loaded from). You will also need to download input data provided by my collaborator Changjie Lin, available at http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz , and extract it into a directory $DATA/changjie/ .  The scripts might also need some directory structure within $PLOTS to successfully save files, so watch for any errors about saving figures; I'll try and check this and update the instructions at some point.
 
 Various latex packages and utilities are required, and below are the details of my python environment used during this project, although note that not all packages listed are required.
 
