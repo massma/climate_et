@@ -155,7 +155,7 @@ def compare_et_wrapper(dfs):
     for key in bias:
       bias[key].append(_bias[key])
       rmse[key].append(_rmse[key])
-  # dfs['full'].groupby('pft').apply(compare_et, dfs['mean'])
+  # dfs['full'].groupbymake('pft').apply(compare_et, dfs['mean'])
   fig = plt.figure()
   ax1 = fig.add_subplot(211)
   ax2 = fig.add_subplot(212)
