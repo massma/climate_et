@@ -1,0 +1,3 @@
+Using an analytical framework, we show that evapotranspiration (ET) response to increasing vapor pressure deficit (VPD) is negative for most environmental conditions and plant functional types at 62 FLUXNET sites across the globe. Stomatal closure and plant physiological response counteracts increases in atmospheric demand associated with rising VPD. Plants evolved for arid environments, which prioritize water conservation (e.g. shrubs), are characterized by strong negative ET responses to VPD, while plants evolved or bred to prioritize primary production over water conservation (e.g. crops), are characterized by more positive ET responses to VPD.
+
+
