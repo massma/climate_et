@@ -30,7 +30,7 @@
 
 
 \begin{abstract}
-  Increases to vapor pressure deficit (VPD) and atmospheric demand for water are expected with rising CO$_2$. While increased evapotranspiration (ET) in response to increased atmospheric demand seems intuitive, plants are capable of reducing ET in response to increased VPD by closing their stomata, in an effot to conserve water. Here we examine which effect dominates response to increasing VPD: atmospheric demand and increases in ET, or plant physiological response (stomata closure) and decreases in ET. We use Penman-Monteith, combined with semi-empirical optimal stomatal regulation theory and underlying water use efficiency, to develop a theoretical framework for understanding how ET responds to increases in VPD.
+  Increases to vapor pressure deficit (VPD) and atmospheric demand for water are expected with rising atmospheric CO$_2$. While increased evapotranspiration (ET) in response to increased atmospheric demand seems intuitive, plants are capable of reducing ET in response to increased VPD by closing their stomata, in an effort to conserve water. Here we examine which effect dominates response to increasing VPD: atmospheric demand and increases in ET, or plant physiological response (stomata closure) and decreases in ET. We use Penman-Monteith, combined with semi-empirical optimal stomatal regulation theory and underlying water use efficiency, to develop a theoretical framework for understanding how ET responds to increases in VPD.
   The theory suggests that for most environmental conditions and plant types, plant physiological response dominates and ET decreases with increasing VPD. Plants that are evolved or bred to prioritize primary production over water conservation (e.g. crops) exhibit a higher likelihood of atmospheric demand-driven response (ET increasing). However for forest, grass, and shrub plant types, ET more frequently decreases than increases with rising VPD. Therefore, we may expect reductions in ET due to CO$_2$-induced increases in VPD. This work serves as an example of the utility of our simplified framework for disentangling land-atmosphere feedbacks at multiple scales, including the characterization of ET response in an atmospherically drier, enriched CO$_2$ world. 
  
 \end{abstract}
@@ -55,7 +55,7 @@ The objective of the present manuscript is to evaluate the VPD dependence of ET,
 We use both meteorological and eddy-covariance data from the FLUXNET2015 database, including all sites with at least four years of data (data available at \sloppy https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/ \sloppy). Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in the stomatal conductance model in the Methods section (Section \ref{methods}) are only published for six plant functional types (PFTs): crops (CRO), deciduous broadleaf forest (DBF), evergreen broadleaf forests (EBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 62 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig}.
 
 \begin{table}
-  \caption{Plant functional types, their abbreviation, Medlyn coefficient (from \citet{Lin_2015}, via \citet{Franks_2017}) and calculated uWUE. uWUE from \citet{Zhou_2015}, including the  observed standard deviation is shown for comparison. Note that uWUE from \citet{Zhou_2015} is calculated from a different set of sites, and that units are converted such that the quantities fit into Equations 1-8 with the variables in Table \ref{definitions}.}
+  \caption{Plant functional types, their abbreviation, Medlyn coefficient (from \citet{Lin_2015}, via \citet{Franks_2017}), and calculated uWUE. uWUE from \citet{Zhou_2015}, including the  observed standard deviation is shown for comparison. Note that uWUE from \citet{Zhou_2015} is calculated from a different set of sites, and that units are converted such that the quantities work with Equations 1-8 with the variables defined Table \ref{definitions}.}
     \small
 \label{pft}
 \centering
@@ -81,7 +81,7 @@ We use both meteorological and eddy-covariance data from the FLUXNET2015 databas
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./map.pdf}
-\caption{Plant functional type and location of sites used in analysis. ***\textbf{This is just  a placeholder for now, I am currently fixing it***}}
+\caption{Plant functional type and location of FLUXNET2015 sites used in this analysis.}
 \label{map_fig}
  \end{figure}
 
@@ -106,8 +106,7 @@ The Penman-Monteith equation \citep [hereafter PM,][]{Penman_1948, Monteith_1965
 where $\Delta$ is the change in saturation vapor pressure with temperature, given by Clausius-Clapeyron ($\frac{d \; e_s}{d \; T}$), $R_{net}$ is the net radiation minus ground heat flux, $g_a$ is aerodynamic conductance, $\rho_a$ is air density, $c_p$ is specific heat of air at constant pressure, $\gamma$ is the psychometric constant, and $g_s$ is the stomatal conductance (Table \ref{definitions}).
 
 \begin{table}
-
-  \caption{Definition of symbols and variables, with citation for calculation if applicable.}
+  \caption{Definition of symbols and variables, with citation for how values are calculated, if applicable.}
   \label{definitions}
 \centering
 \small
@@ -242,7 +241,7 @@ By construction, the variability in the $\sigma$ term (Equation \ref{sigma}) con
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./joint_vpd_sigma.pdf}
-\caption{The joint distribution of $VPD$ and $\sigma$, with outliers removed (defined as lowest and highest 5\% of $\sigma$). $\sigma$ has only a weak dependence on $VPD$, and $\sigma$ is $O(1)$ for the bulk of thte observations.}
+\caption{The joint distribution of $VPD$ and $\sigma$, with outliers removed (defined as lowest and highest 5\% of $\sigma$). $\sigma$ exhibits a weak dependence on $VPD$, and $\sigma$ is $O(1)$ for the bulk of the observations.}
 \label{joint_vpd_sigma}
 \end{figure}
 
@@ -308,9 +307,7 @@ This effect of uWUE and $g1$ on the sign term is most apparent by comparing two 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./idealized_sign.pdf}
-\caption{Sources of variability for the sign term. Top: sign term as a function of VPD, with $\sigma$ held fixed at 1. The observed range of VPD for each PFT is also shown below the x-axis. Line extent corresponds to 5th and 95th percentiles, while stars denote the location of the 25th, 50th, and 75th percentiles.
-
-Bottom: The location of the minima of ET, as a function of VPD and $\sigma$. Lines and stars denote the distribution of VPD and $\sigma$ next to each axis, following the same percentiles as above. \textbf{***I think I'm going to remove the bottom plot: its discussion didn't fit in well with the text, and the box plots test inclusion of uncertainty***}}
+\caption{The functional form of the sign term, with $\sigma$ held fixed at 1, and all terms except VPD set to PFT averages. For comparison, the observed range of VPD for each PFT is plotted below the x-axis. Stars denote 25th, 50th, and 75th percentiles, and the range of the line spans the 5th-95th percentiles of observed VPD. Vertical black lines denote the location of $VPD_{crit}$ for each PFT, with the exception of CSH, for which $VPD_{crit}$ is off-scale.}
 \label{idealized_sign}
 \end{figure}
 
@@ -336,7 +333,7 @@ The control of the scaling term variability between PFTs by aerodynamic conducta
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./idealized_scale.pdf}
-\caption{Primary sources of variability for the scaling term, as a function of PFT. Note the change in axis scale for each plot. The 5th-95th percentile range of temperature is plotted at the 5th, 25th, 50th, 75th, and 95th percentiles of aerodynamic conductance, as observed for each PFT's sites.}
+\caption{Primary sources of variability for the scaling term, as a function of PFT. The 5th-95th percentile range of temperature is plotted at the 5th, 25th, 50th, 75th, and 95th percentiles of aerodynamic conductance, as observed for each PFT.}
 \label{scale_vary}
 \end{figure}
 
@@ -378,7 +375,7 @@ We now compare more sophisticated distributions of the observed response to our 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./test_sign.pdf}
-\caption{Comparison of the sign term with model uncertainty included (box plots) to the sign term as calculated with simplifying assumptions (blue line).}
+\caption{Comparison of the sign term with model uncertainty included (box plots) to the sign term as calculated with simplifying assumptions (blue line, as in Figure \ref{idealized_sign}). Each box plot corresponds to 5\% of the data, and the 5-95\% range of VPD is plotted.}
 \label{test_sign}
 \end{figure}
 
@@ -401,7 +398,7 @@ Most of the results presented so far focus on the sign term, so now we turn to o
 \begin{figure}
 \centering
 \centerline{\includegraphics[width=\textwidth]{./data_scatter.png}}
-\caption{Scatter plots of observed $\frac{\partial \; ET}{\partial \; VPD}$, including $\sigma$ variability, as a function of PFT. Please note differences in the colorbar scale.}
+\caption{Scatter plots of observed $\frac{\partial \; ET}{\partial \; VPD}$, including $\sigma$ variability, as a function of PFT, temperature and VPD. Please note differences in the colorbar scale.}
 \label{data_scatter}
 \end{figure}
 
@@ -423,7 +420,7 @@ Indeed, for all PFTs, there is some slight dependence of $\sigma \cdot uWUE$ on 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./swc_boxplot.pdf}
-\caption{$\sigma \cdot uWUE$ as a function of PFT and SWC. Each boxplot represents 5\% of all observations.}
+\caption{$\sigma \cdot uWUE$ as a function of PFT and SWC. Each box plot represents 5\% of all observations.}
 \label{swc_boxplot}
 \end{figure}
 
@@ -443,7 +440,7 @@ Lastly, our paper builds important intuition for how plants will respond to glob
 
 
 \acknowledgments
-This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices. This material is based upon work supported by the National Science Foundation Graduate Research Fellowship under Grant No. DGE 16-44869.
+This work used eddy covariance data acquired and shared by the FLUXNET community, including these networks: AmeriFlux, AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont, ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC, OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance data processing and harmonization was carried out by the European Fluxes Database Cluster, AmeriFlux Management Project, and Fluxdata project of FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux offices. This material is based upon work supported by the National Science Foundation Graduate Research Fellowship under Grant No. DGE 16-44869. All code and data used in this analysis, including those used to generate the figures and tables, is publicly available at https://github.com/massma/climate\_et.
 
 
 \bibliography{references.bib}
