@@ -567,7 +567,7 @@ Corresponding author: #1,
                 \hss\@textsuperscript{\normalfont\@thefnmark}}##1}\footnote{#1}\
 		}}
 
-\def\keypoints{\vskip24pt\vskip1sp\subsection*{Key Points:}
+  \def\keypoints{\vskip24pt\vskip1sp\subsection*{Keywords:}
 \begin{itemize}}
 \def\endkeypoints{\end{itemize}}
 
