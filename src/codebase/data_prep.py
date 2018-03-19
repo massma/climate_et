@@ -4,7 +4,6 @@ This module does all calculations of variables needed for
 the rest of the analysis, e.g. delta, saturation vapor pressure,
 etc.
 """
-import metcalcs as met
 import numpy as np
 
 #geophysical constats
@@ -17,6 +16,20 @@ R_AIR = .0289645 # mean kg/mol dry air
 R_STAR = 8.3144598 #J /mol/K
 R_DRY = 287.058
 G = 9.81 #gravity constant, m/s2
+
+def vapor_pres(t_c):
+    """returns vaoor pressure in hectopascall"""
+    """Flatau et al 1992"""
+    p = [6.11583699,\
+         .444606896,\
+         .143177157e-1,\
+         .264224321e-3,\
+         .299291081e-5,\
+         .203154182e-7,\
+         .702620698e-10,\
+         .379534310e-13,\
+         -.321582393e-15]
+    return np.polyval(p[::-1], t_c)
 
 def delta(_df):
   """calculates delta in Pa/C, from shuttleworth equation 2.18"""
@@ -37,7 +50,7 @@ def rho_air(_df):
 
 def sat_vapor_press(_df):
   """returns asturation vapor pressure"""
-  return met.vapor_pres(_df['t_a'])*VP_FACTOR
+  return vapor_pres(_df['t_a'])*VP_FACTOR
 
 def psim(ksi):
   """

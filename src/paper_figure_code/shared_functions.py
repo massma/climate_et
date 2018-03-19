@@ -12,7 +12,6 @@ from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import codebase.plot_tools as plot_tools
 import util
-import metcalcs as met
 import codebase.data_calc as d_calc
 import codebase.data_prep as d_prep
 import pickle

@@ -8,11 +8,11 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import metcalcs as met
 import seaborn as sns
 import resource
 from scipy.stats import spearmanr
 import util
+import vapor_pres from codebase.data_io
 # import matplotlib as mpl
 # mpl.rcParams.update(mpl.rcParamsDefault)
 
@@ -63,9 +63,9 @@ def make_ax_plot(_ax, var, _df, meta):
                       vmin=vmin, vmax=vmax)
   if (meta['x_axis'] == 'vpd'):
     t_a = np.linspace(_df['t_a'].min(),_df['t_a'].max(), 200.)
-    test = met.vapor_pres(t_a)*100.*(1. - 0.90)
+    test = vapor_pres(t_a)*100.*(1. - 0.90)
     _ax.plot(test, t_a, 'k-')
-    test = met.vapor_pres(t_a)*100.*(1. - 0.2)
+    test = vapor_pres(t_a)*100.*(1. - 0.2)
     _ax.plot(test, t_a, 'k-')
   _ax.set_xlabel(meta['x_axis'])
   _ax.set_ylabel('T')

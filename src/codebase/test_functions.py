@@ -69,9 +69,10 @@ def plot_et_curve(mean_row, min_row, max_row, index, _df):
   # sns.jointplot(_df.vpd, _df.et_obs, kind='hex')
   # plt.savefig('%s/joint_plt_%s.png' % (PLOTDIR, index))
   # print('sns plot time was %f s' % (time.time()-start))
-  vpd = np.linspace(min_row.vpd, max_row.vpd)
-  et = pm_et(mean_row, vpd=vpd)
-  et_orig = pm_et_orig(mean_row, vpd=vpd)
+  #vpd = np.linspace(min_row.vpd, max_row.vpd)
+  vpd = np.linspace(100., 10000.)
+  et = pm_et(max_row, vpd=vpd)
+  et_orig = pm_et_orig(max_row, vpd=vpd)
   # et_iwue = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue, n=1.0)
   # et_iwue_bb = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue_bb,\
   #                 n=1.0, kernel=bb_kernel)

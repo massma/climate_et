@@ -191,6 +191,7 @@ def pm_et_orig(_df, vpd=None, gpp=None, lai=None):
           /(_df['delta']+_df['gamma']\
             *(1.0 + _df['g_a']/(lai*medlyn(_df, vpd=vpd, gpp=gpp))))
 
+
 def pet(_df, vpd=None):
   """caluclates pet"""
   if vpd is None:
