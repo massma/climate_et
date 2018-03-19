@@ -83,6 +83,7 @@ def r_a(_df):
     *np.log((_df['zmeas']-_df['d'])/_df['z0p'])\
     /(K**2*_df['u_z'])
 
+
 def corrected_r_a(_df):
   """
   returns atmospehric resistsance in s/m, but requires vars ustar and
@@ -138,6 +139,21 @@ def corrected_r_a(_df):
   _r_a = 1./(tempq*_df['ustar'])
   return _r_a
 
+def solve_g1_2017(_df):
+  """solves for g1 using original PM and obs uwue"""
+  gs_invert = _df['g_a']*_df['et_obs']*_df['gamma']\
+    /(_df['delta']*_df['r_net']\
+      +_df['g_a']*_df['p_a']*CP*_df['vpd']/(_df['t_a_k']*_df['r_moist'])\
+      -_df['et_obs']*(_df['gamma']+_df['delta'])) # m/s
+  return (gs_invert*_df['p_a']*_df['c_a']\
+    /(R_STAR*_df['t_a_k']*1.6*_df['gpp_obs']) - 1.0)*np.sqrt(_df['vpd'])
+
+def solved_medlyn(_df):
+  """simple wrapper to set g1 to calc'd median,
+  following medlyn 2017"""
+  _df['g1'] = _df['g1_2017'].median()
+  return _df
+
 def generate_vars(_df):
   """
   does calculations on data sructures
@@ -166,6 +182,10 @@ def generate_vars(_df):
   _df['g_a'] = 1./_df['r_a']
   _df['t_a_k'] = _df['t_a'] + 273.15
   _df['r_net'] = _df['r_n'] - _df['g_flux']
+  # use medlyn 2017 formulation for ecosystem-scale g1
+  _df['g1_2017'] = solve_g1_2017(_df)
+  _df = _df.groupby('pft').apply(solved_medlyn)
+  _df = _df.reset_index(drop=True)
   if 'c_a' not in _df:
     raise ValueError('c_a not loaded!!!!')
   return _df
