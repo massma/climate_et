@@ -12,7 +12,7 @@ import seaborn as sns
 import resource
 from scipy.stats import spearmanr
 import util
-import vapor_pres from codebase.data_io
+from codebase.data_prep import vapor_pres
 # import matplotlib as mpl
 # mpl.rcParams.update(mpl.rcParamsDefault)
 
