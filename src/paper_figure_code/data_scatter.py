@@ -4,7 +4,7 @@ This script makes fig 6
 """
 from shared_functions import *
 import time
-
+mpl.rcParams.update(small_ax_params)
 # mean_df is defined up at this level
 local_fontsize = fontsize+3
 
@@ -76,9 +76,8 @@ def make_ax_plot(_ax, var, _df, meta):
   # _ax.yaxis.set_tick_params(labelsize=local_fontsize-3)
   # _ax.xaxis.set_tick_params(labelsize=local_fontsize-3)
   cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
-  
-  if ((_df.pft.iloc[0] == 'EBF') | (_df.pft.iloc[0] == 'CSH')\
-      | (_df.pft.iloc[0] == 'GRA')):
+  if ((_df.pft.iloc[0] == 'MF') | (_df.pft.iloc[0] == 'WSA')\
+      | (_df.pft.iloc[0] == 'SAV')):
     cbar.set_label(meta['title'], fontsize=local_fontsize)
   y_lim = _ax.get_ylim()
   # vpd_crit = et_min_vpd(mean_df.loc[_df.pft.iloc[0], :])
@@ -90,7 +89,7 @@ def make_ax_plot(_ax, var, _df, meta):
   _ax.set_ylim(ylim)
   return
 
-def scatter_plot_paper(_df, meta):
+def scatter_plot_paper(_df, ax, meta):
   """
   creates scatter of derivatives wrt to VPD, assumes Delta(vpd) = 1.0 Pa
   """
@@ -103,7 +102,7 @@ def scatter_plot_paper(_df, meta):
 
   meta['vmax'] = np.nanmax(np.absolute([var.mean()+1.5*var.std(),\
                                           var.mean()-1.5*var.std()]))
-  make_ax_plot(meta['ax'], var, _df, meta)
+  make_ax_plot(ax, var, _df, meta)
 
   return
 
@@ -116,21 +115,7 @@ meta['sample'] = '' # 'sampled'
 # much faster if bins smaller, useful for testing
 meta['nbins'] = 1000
 
-def scatter_wrapper(_df):
-  """wrapper that groups by pft and does scaling plot"""
-  fig = plt.figure()
-  fig.set_figheight(fig.get_figheight()*3)
-  fig.set_figwidth(fig.get_figwidth()*2)
-  for i, pft in enumerate(pft_order):
-    print(pft)
-    meta['ax'] = fig.add_subplot(3, 2, i+1)
-    scatter_plot_paper(_df.loc[(_df.pft==pft), :], meta)
-    print('time: %f s' % (time.time() - start))
-  plt.tight_layout()
-  plt.savefig('../../doc/paper/data_scatter.png')
-  return
-
-scatter_wrapper(df)
+panel_wrapper(df, scatter_plot_paper, "data_scatter.png", args=(meta,))
 
 print('done with vpd, time was %f min' % ((time.time()-start)/60.))
 

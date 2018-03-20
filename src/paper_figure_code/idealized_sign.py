@@ -26,7 +26,7 @@ if PLOT_TALK:
   fontsize=14
 
 # mask pft order from shared func to do top to bottom legnend
-pft_order = ['CRO', 'DBF', 'EBF', 'ENF', 'GRA', 'CSH']
+pft_order = ['CRO', 'DBF', 'EBF', 'MF', 'ENF', 'GRA', 'SAV', 'WSA',  'CSH']
 
 I = 6
 def pft_leaf(_df, axs):

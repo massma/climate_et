@@ -192,11 +192,11 @@ print(mean_df.uwue_zhou)
 # import codebase.plot_tools as plot_tools
 # df.groupby('pft').apply(plot_tools.histogram, meta)
 
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
-# for g1, uwue, label in zip(mean_df.g1, mean_df.uwue, mean_df.index):
-#   ax.scatter(g1, uwue, label=label)
-# ax.set_xlabel('g1')
-# ax.set_ylabel('uwue')
-# plt.legend(loc='best')
-# plt.savefig('%s/climate_et/g1_uwue_relationship.png' % os.environ['PLOTS'])
+fig = plt.figure()
+ax = fig.add_subplot(111)
+for g1, uwue, label in zip(mean_df.g1, mean_df.uwue, mean_df.index):
+  ax.scatter(g1, uwue, label=label)
+ax.set_xlabel('g1')
+ax.set_ylabel('uwue')
+plt.legend(loc='best')
+plt.savefig('%s/climate_et/g1_uwue_relationship.png' % os.environ['PLOTS'])

@@ -35,7 +35,7 @@ def test_et_model(_df):
 def test_et_models(_df):
   """calcs histograms of c.v for all models"""
   plt.close('all')
-  for name in ['uwue', 'uwue_bb', 'iwue_bb', 'iwue']:
+  for name in ['uwue', 'iwue']: #['uwue', 'uwue_bb', 'iwue_bb', 'iwue']:
     plt.figure()
     sns.distplot(_df[name]/_df[name].mean())
     plt.xlabel("cv - %s" % name) #"(calc'ed uwue)/(zhou's uwue)")

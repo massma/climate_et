@@ -3,7 +3,7 @@
 This script makes all figs for the paper
 """
 from shared_functions import *
-
+mpl.rcParams.update(small_ax_params)
 ### note mean_df defined at this level)
 
 ### FIGURE 4 ###
@@ -38,17 +38,5 @@ def plot_scaling(_df, ax, savefig=False):
     plt.savefig('../../doc/paper/idealized_scale.pdf')
   return
 
-def scaling_wrapper(_df):
-  """wrapper that groups by pft and does scaling plot"""
-  fig = plt.figure()
-  fig.set_figheight(fig.get_figheight()*3)
-  fig.set_figwidth(fig.get_figwidth()*2)
-  for i, pft in enumerate(pft_order):
-    print(pft)
-    ax = fig.add_subplot(3, 2, i+1)
-    plot_scaling(_df.loc[(_df.pft==pft), :], ax)
-  plt.tight_layout()
-  plt.savefig('../../doc/paper/idealized_scale.pdf')
-  return
 
-scaling_wrapper(df)
+panel_wrapper(df, plot_scaling, "idealized_scale.pdf")

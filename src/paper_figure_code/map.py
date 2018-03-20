@@ -4,7 +4,7 @@ This script makes fig 01 for the paper
 """
 from shared_functions import *
 
-symbols = ['o', 'v', '>', 's', '<', 'D']
+symbols = ['o', 'v', '>', 's', '<', 'D', 'X', 'P', '8']
 plt.close('all')
 def make_map(_df):
   """makes a map given a _df with Lat, Lon, and Cover"""

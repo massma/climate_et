@@ -18,6 +18,13 @@ import pickle
 
 mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
+small_ax_params = mpl.rcParamsDefault
+# increase tick label size
+label_size = 14
+small_ax_params['xtick.labelsize'] = label_size
+small_ax_params['ytick.labelsize'] = label_size
+
+
 importlib.reload(util)
 importlib.reload(plot_tools)
 importlib.reload(d_calc)
@@ -45,7 +52,6 @@ def et_min_vpd(_df, uwue=None):
       sqrt_vpd = np.nan
   return sqrt_vpd**2
 
-
 def get_pft(_df):
   return _df['pft'].iloc[0]
 
@@ -53,13 +59,15 @@ def d_et(_df):
   """returns d et/d vpd given _df"""
   return d_calc.scaling(_df)*d_calc.sign(_df)
 
-
 name_dict = {'CRO': 'Crops (CRO)',\
              'DBF': 'Deciduous Forest (DBF)',
              'EBF': 'Evergreen Broadleaf Forest (EBF)',
              'ENF': 'Evergreen Needleleaf Forest (ENF)',
              'GRA': 'Grass (GRA)',
-             'CSH': 'Closed Shrub (CSH)'}
+             'CSH': 'Closed Shrub (CSH)',
+             'WSA': 'Woody Savannah (WSA)',
+             'MF': 'Mixed Forest (MF)',
+             'SAV': 'Savannah (SAV)'}
 
 fontsize=16
 
@@ -72,17 +80,30 @@ def custom_ylabel(_df, ax, label):
 
 def custom_xlabel(_df, ax, label):
   """labels x label for axis ordering"""
-  if (_df.pft.iloc[0] == 'CRO') | (_df.pft.iloc[0] == 'GRA'):
+  if (_df.pft.iloc[0] == 'CRO') | (_df.pft.iloc[0] == 'GRA')\
+     | (_df.pft.iloc[0] == 'SAV'):
     ax.set_xlabel(label, fontsize=fontsize)
   return
 
 mean_df['vpd_crit'] = et_min_vpd(mean_df)
 
 # pft order for panel plots
-pft_order = ['DBF', 'EBF', 'ENF', 'CSH', 'CRO', 'GRA',]
+pft_order = ['DBF', 'EBF', 'MF', 'ENF', 'CSH', 'WSA', 'CRO', 'GRA', 'SAV']
 
 # for xlim on plots with vpd, et max
 vpd_max = dfs['95'].vpd.max() + 100.0
 vpd_xlim = [0., vpd_max]
 t_lims = [dfs['5'].t_a.min() - 1.0, dfs['95'].t_a.max() + 1.0]
 
+def panel_wrapper(_df, function, name, args=()):
+  """wrapper that groups by pft and does plot defined by function"""
+  fig = plt.figure()
+  fig.set_figheight(fig.get_figheight()*3)
+  fig.set_figwidth(fig.get_figwidth()*3)
+  for i, pft in enumerate(pft_order):
+    print(pft)
+    ax = fig.add_subplot(3, 3, i+1)
+    function(_df.loc[(_df.pft==pft), :], ax, *args)
+  plt.tight_layout()
+  plt.savefig('../../doc/paper/%s' % name)
+  return

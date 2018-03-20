@@ -6,13 +6,14 @@ from shared_functions import *
 import seaborn as sns
 import importlib
 
+mpl.rcParams.update(small_ax_params)
 linewidth=2.5
 boxprops = {'linewidth' : 1.5}
 medianprops = {'linewidth' : 2.5}
 
-dashedlinewidth=1.4
+dashedlinewidth = 1.4
 
-bluelinewidth=3.0
+bluelinewidth = 3.0
 # below is whether to plot taylor series approximation
 PLOT_SERIES = False
 #below is to make slight changes for the talk
@@ -23,12 +24,9 @@ paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
                r'\left( \frac{2 g_1 + \sqrt{VPD}}'\
                r'{2 (g_1 + \sqrt{VPD})^2}\right)\right)$'
 
-def plot_box(_df):
+def plot_box(_df, ax):
   """makes a box plot"""
   mean_row = mean_df.loc[_df.pft.iloc[0], :]
-  plt.close('all')
-  fig = plt.figure()
-  ax = fig.add_subplot(111)
   ptiles = np.arange(5.0, 91.0, 5.0)
   positions = []
   labels = []
@@ -79,22 +77,4 @@ def plot_box(_df):
 
 #_df = df.iloc[:1000, :].copy()
 #plot_box(_df)
-df.groupby('pft').apply(plot_box)
-
-os.system('pdfjam %s/DBF_box.pdf %s/ENF_box.pdf %s/CRO_box.pdf '\
-          '--nup 1x3 --no-landscape --outfile %s/first-column.pdf'\
-          % tuple(['../../doc/shared_figs']*4))
-os.system('pdfcrop --margins 10 %s %s'\
-          % tuple(['../../doc/shared_figs/first-column.pdf']*2))
-os.system('pdfjam %s/EBF_box.pdf %s/CSH_box.pdf %s/GRA_box.pdf '\
-          '--nup 1x3 --no-landscape --outfile %s/second-column.pdf'\
-          % tuple(['../../doc/shared_figs']*4))
-os.system('pdfcrop --margins 10 %s %s'\
-          % tuple(['../../doc/shared_figs/second-column.pdf']*2))
-os.system('pdfjam %s %s '\
-          '--nup 2x1 --no-landscape --outfile %s/test_sign.pdf'\
-          % ('../../doc/shared_figs/first-column.pdf',\
-             '../../doc/shared_figs/second-column.pdf',\
-             '../../doc/paper/'))
-os.system('pdfcrop --margins 10 %s %s'\
-          % tuple(['../../doc/paper/test_sign.pdf']*2))
+panel_wrapper(df, plot_box, "test_sign.pdf")

@@ -96,11 +96,11 @@ def load_file(filename):
     data_out['g1'] = WUE_MEDLYN.loc[pft, 'g1M']
     data_out['g1b'] = WUE_MEDLYN.loc[pft, 'g1b']
   except KeyError:
-    data_out['g1'] = np.nan
-    data_out['g1b'] = np.nan
+    data_out['g1'] = 1.0 #np.nan
+    data_out['g1b'] = 1.0 #np.nan
     print('error, no medlyn coeffieent for %s, pft: %s, setting to none'\
           % (filename, pft))
-    return None
+    #return None
   try:
     data_out['uwue_zhou'] = WUE.loc[pft, 'u_wue_yearly']
     data_out['uwue_zhou_std'] = WUE.loc[pft, 'u_wue_yearly_std']

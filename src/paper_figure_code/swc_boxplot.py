@@ -5,7 +5,7 @@ This script makes box plot figures for code
 from shared_functions import *
 import seaborn as sns
 import importlib
-
+mpl.rcParams.update(small_ax_params)
 linewidth=2.5
 boxprops = {'linewidth' : 1.5}
 medianprops = {'linewidth' : 2.5}
@@ -65,22 +65,10 @@ def plot_box(_df, ax=None, pft=False):
                   % (os.environ['PLOTS'], _df.pft.iloc[0], _df.site.iloc[0]))
   return
 
-def scaling_wrapper(_df):
-  """wrapper that groups by pft and does scaling plot"""
-  fig = plt.figure()
-  fig.set_figheight(fig.get_figheight()*3)
-  fig.set_figwidth(fig.get_figwidth()*2)
-  for i, pft in enumerate(pft_order):
-    print(pft)
-    ax = fig.add_subplot(3, 2, i+1)
-    plot_box(_df.loc[(_df.pft==pft), :], ax=ax, pft=True)
-  plt.tight_layout()
-  plt.savefig('../../doc/paper/swc_boxplot.pdf')
-  return
 
 #_df = df.iloc[:1000, :].copy()
 #plot_box(_df)
 #df.groupby('site').apply(plot_box)
 # df.groupby('pft').apply(plot_box, pft=True)
-scaling_wrapper(df)
+panel_wrapper(df, plot_box, "swc_boxplot.pdf", args=(True,))
 
