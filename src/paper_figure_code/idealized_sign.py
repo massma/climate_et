@@ -28,7 +28,7 @@ if PLOT_TALK:
 # mask pft order from shared func to do top to bottom legnend
 pft_order = ['CRO', 'DBF', 'EBF', 'MF', 'ENF', 'GRA', 'SAV', 'WSA',  'CSH']
 
-I = 6
+I = 9
 def pft_leaf(_df, axs):
   """takes df and plots both halves of product in term 2"""
   global I
@@ -72,21 +72,21 @@ def pft_leaf(_df, axs):
   return
 
 fig = plt.figure()
-fig.set_figheight(fig.get_figheight()*1.25)
+fig.set_figheight(fig.get_figheight()*1.35)
 _axs = [fig.add_subplot(1, 1, i+1) for i in range(1)]
 axs = []
 for _ax in _axs:
   divider = make_axes_locatable(_ax)
   axs.append(_ax)
-  axs.append(divider.append_axes("bottom", size="25%", pad=0.0, sharex=_ax))
+  axs.append(divider.append_axes("bottom", size="35%", pad=0.0, sharex=_ax))
 # axs.append(divider.append_axes("left", size="20%", pad=0.0, sharey=axs[2]))
-I = 6
+I = 9
 
 for pft in pft_order:
   _df = df.loc[df.pft == pft, :]
   pft_leaf(_df, axs)
 
-axs[1].set_xlabel('VPD', fontsize=fontsize)
+axs[1].set_xlabel('VPD (Pa)', fontsize=fontsize)
 #axs[3].set_xlabel('$\sigma$')
 axs[0].set_ylabel(paren_string, fontsize=fontsize)
 axs[0].plot(vpd_xlim, [0., 0.], 'k--', linewidth=linewidth)
@@ -94,7 +94,7 @@ if PLOT_PET:
   axs[0].plot(vpd_xlim, [d_calc.CP/287.0, d_calc.CP/287.0],\
               'm--', linewidth=dashedlinewidth, label='PET')
 
-axs[1].set_ylim([0.5,6.5])
+axs[1].set_ylim([0.5,9.5])
 axs[1].get_yaxis().set_visible(False)
 axs[0].set_xlim(vpd_xlim)
 axs[1].set_xlim(vpd_xlim)

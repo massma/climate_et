@@ -47,7 +47,7 @@ We can use intuition about plant water conservation strategy to hypothesize abou
 
 The objective of the present manuscript is to evaluate the VPD dependence of ET, in non-extreme soil drought conditions. The goal of this paper is to use reasonable approximations as a tool to develop intuition for plant response to atmospheric drying. This intuition will aid interpretation of observations and full complexity models. In the past, similiar approaches were used to understand interactions between stomatal conductance, evapotranspiration and the environment \citep[e.g.,][]{Jarvis_1986, Mcnaughton_1991}. However, at the time researchers' understandng of the form of VPD's effect on plant physiology was limited, so they could not explore the sensitivity of ET to VPD, including VPD's effect on stomatal conductance and plant function.
 
-Recent results have drastically improved our understanding of VPD's impact on physiology. \citet{MEDLYN_2011} developed a model for leaf-scale stomatal conductance ($g_s$), including VPD response, by combining an optimal photosynthesis theory \citep{Farquhar_1980, Katul_2010} with an empirical approach, and extended use of this model to the ecosystem scale in \citet{Medlyn_2017}. Additionally, \citet{Zhou_2014} demonstrated that a quantity $uWUE$ ($\frac{GPP\; \sqrt{vpd}}{ET}$) properly captures a constant relationship between GPP, ET, and VPD over a diurnal cycle. uWUE is also remarkably well conserved in the growing season across space and time, within a PFT \citep{Zhou_2015}. These results provide novell tools to examine how ET varies in response to VPD, while explicitly including VPD's effect on stoamtal conductance for the first time. In this manuscript, we leverage these tools to derive the theoretical response of ET to VPD using a Penman Monteith framework. Our theory is validated and tested at multiple eddy-covariance stations spanning various climates and plant functional types. 
+Recent results have drastically improved our understanding of VPD's impact on physiology. \citet{MEDLYN_2011} developed a model for leaf-scale stomatal conductance ($g_s$), including VPD response, by combining an optimal photosynthesis theory \citep{Farquhar_1980, Katul_2010} with an empirical approach, and extended use of this model to the ecosystem scale in \citet{Medlyn_2017}. Additionally, \citet{Zhou_2014} demonstrated that a quantity underlying water use efficiency $\left(uWUE = \frac{GPP\; \sqrt{VPD}}{ET}\right)$ properly captures a constant relationship between GPP, ET, and VPD over a diurnal cycle. uWUE is also remarkably well conserved in the growing season across space and time, within a PFT \citep{Zhou_2015}. These results provide novell tools to examine how ET varies in response to VPD, while explicitly including VPD's effect on stoamtal conductance for the first time. In this manuscript, we leverage these tools to derive the theoretical response of ET to VPD using a Penman Monteith framework. Our theory is validated and tested at multiple eddy-covariance stations spanning various climates and plant functional types. 
 
 \section{Materials and Methods}
 \label{methods}
@@ -68,7 +68,7 @@ We use both meteorological and eddy-covariance data from the FLUXNET2015 databas
   & & & fitted & \citet{Zhou_2015} \\
 
   \hline
-\input{table_1}
+\input{pft_params}
   \hline
 \end{tabular}
 \end{table}
@@ -277,12 +277,7 @@ noting that $VPD_{crit}$ mostly depends on the PFT parameters uWUE and $g_1$, an
   \hline
   PFT & $R_{air}$ & $c_a$ (ppm) & $\gamma$  & \textbf{$VPD_{crit}$ (Pa)} \\
   \hline
-CRO & 288.6 & 376.0 & 65.2 &   \textbf{936.6} \\
-CSH & 289.0 & 383.6 & 67.5 & \textbf{12852.5} \\
-DBF & 288.6 & 379.5 & 63.6 &  \textbf{1266.6} \\
-EBF & 288.4 & 368.5 & 61.6 &  \textbf{1454.8} \\
-ENF & 288.28 & 379.8 & 61.0 &  \textbf{1853.7} \\
-GRA & 288.4 & 378.0 & 61.0 &  \textbf{3261.1} \\
+  \input{vpd_crit.tex}
 \hline
 \end{tabular}
 \label{vpd_crit}
@@ -327,8 +322,8 @@ $\Delta$'s presence in the scaling term also matches physical intuition. $\Delta
 The control of the scaling term variability between PFTs by aerodynamic conductance is confirmed by data (Figure \ref{scale_vary}). Differences between PFT are almost entirely due to differences in aerodynamic conductance, rather than differences in observed temperature ranges. The scaling term for the tree PFTs (DBF, EBF, ENF) is generally about double the scaling terms for the other PFTs which have lower surface roughness and generally smaller aerodynamic conductance.
 
 \begin{figure}
-\centering
-\includegraphics[width=\textwidth]{./idealized_scale.pdf}
+%\centering
+\centerline{\includegraphics[width=1.4\textwidth]{./idealized_scale.pdf}}
 \caption{Primary sources of variability for the scaling term, as a function of PFT. The 5th-95th percentile range of temperature is plotted at the 5th, 25th, 50th, 75th, and 95th percentiles of aerodynamic conductance, as observed for each PFT.}
 \label{scale_vary}
 \end{figure}
@@ -349,12 +344,7 @@ In this section we consider direct observations of ET response with eddy-covaria
   \hline
 PFT & $\overline{\frac{\partial \; ET}{\partial \; VPD}}$ & $\frac{\partial \; ET}{\partial \; VPD}\left(\overline{env}\right)$ & fraction $\frac{\partial \; ET}{\partial \; VPD} < 0.$ \\
   \hline
-  CRO & -0.05 & 0.008 &  0.533 \\
-  DBF & -0.10 & -0.013 &  0.609 \\
-  EBF & -0.13 & -0.037 &  0.666 \\
-  GRA & -0.07 & -0.024 &  0.694 \\
-  ENF & -0.17 & -0.081 &  0.740 \\
-  CSH & -0.29 & -0.224 &  0.973 \\
+  \input{stats.tex}
   \hline
 \end{tabular}
   \label{stats}
@@ -370,7 +360,7 @@ We now compare more sophisticated distributions of the observed response to our 
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{./test_sign.pdf}
+\centerline{\includegraphics[width=1.4\textwidth]{./test_sign.pdf}}
 \caption{Comparison of the sign term with model uncertainty included (box plots) to the sign term as calculated with simplifying assumptions (blue line, as in Figure \ref{idealized_sign}). Each box plot corresponds to 5\% of the data, and the 5-95\% range of VPD is plotted.}
 \label{test_sign}
 \end{figure}
@@ -393,7 +383,7 @@ Most of the results presented so far focus on the sign term, so now we turn to o
 
 \begin{figure}
 \centering
-\centerline{\includegraphics[width=\textwidth]{./data_scatter.png}}
+\centerline{\includegraphics[width=1.4\textwidth]{./data_scatter.png}}
 \caption{Scatter plots of observed $\frac{\partial \; ET}{\partial \; VPD}$, including $\sigma$ variability, as a function of PFT, temperature and VPD. Please note differences in the colorbar scale.}
 \label{data_scatter}
 \end{figure}
@@ -415,7 +405,7 @@ Indeed, for all PFTs, there is some slight dependence of $\sigma \cdot uWUE$ on 
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{./swc_boxplot.pdf}
+\centerline{\includegraphics[width=1.4\textwidth]{./swc_boxplot.pdf}}
 \caption{$\sigma \cdot uWUE$ as a function of PFT and SWC. Each box plot represents 5\% of all observations.}
 \label{swc_boxplot}
 \end{figure}

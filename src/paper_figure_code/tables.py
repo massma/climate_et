@@ -13,6 +13,10 @@ def frequency(_df):
   """return fraction fos amples d_et < 0"""
   return _df.d_et[_df.d_et < 0.].count() / _df.d_et.count()
 
+counts = df.groupby('pft').apply(frequency)
+mean_df['counts'] = counts
+
+pft_order = mean_df.sort_values('counts').index
 
 #### Table 1, pft tables
 print('\n\n******TABLE 1*****')
@@ -21,8 +25,8 @@ print(mean_df.loc[:, ['g1', 'uwue', 'uwue_zhou', 'uwue_zhou_std']])#,\
                       #'g1-dot-uwue']])
 def write_table_1(_df):
   """write output of table 1"""
-  fh = open("../../doc/paper/table_1.tex", "w")
-  for pft in _df.index:
+  fh = open("../../doc/paper/pft_params.tex", "w")
+  for pft in pft_order:
     row = _df.loc[pft, :]
     if (row.uwue_zhou == 1.0) & (row.uwue_zhou_std == 1.0):
       fh.write("%s & %s & %.2f & %.2f & N/A \\\\ \n"
@@ -35,11 +39,27 @@ def write_table_1(_df):
                   np.round(row.uwue_zhou_std, 2)))
 
   fh.close()
+  return
 
 write_table_1(mean_df)
 
 #### Table 2, pft tables
 print('\n\n******TABLE 3*****')
+def write_table_2(_df):
+  """write output of table 1"""
+  fh = open("../../doc/paper/vpd_crit.tex", "w")
+  for pft in pft_order:
+    row = _df.loc[pft, :]
+    fh.write("%s & %.1f & %.1f & %.1f & \\textbf{%.1f}  \\\\ \n"
+             % (pft,  np.round(row.r_moist, 1),
+                np.round(row.c_a, 1), np.round(row.gamma, 1),
+                np.round(row.vpd_crit, 1)))
+
+  fh.close()
+  return
+
+write_table_2(mean_df)
+
 print(mean_df.loc[:, ['r_moist', 'c_a', 'gamma', 'vpd_crit']])
 
 std = df.groupby('pft').std()
@@ -55,9 +75,6 @@ mean_df['total_var'] = np.sqrt(mean_df.d_et_bar_std**2\
 mean_df['d_et_bar_norm_total'] = mean_df['d_et_bar_std']\
                            /mean_df['total_var']
 mean_df['et_std'] = std['et_obs']
-counts = df.groupby('pft').apply(frequency)
-
-mean_df['counts'] = counts
 
 
 # test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
@@ -66,10 +83,22 @@ mean_df['counts'] = counts
 
 print('\n\n******TABLE 4******')
 print(mean_df.loc[:, ['d_et', 'd_et_bar', 'counts']])
+def write_table_3(_df):
+  """write output of table 1"""
+  fh = open("../../doc/paper/stats.tex", "w")
+  for pft in pft_order:
+    row = _df.loc[pft, :]
+    fh.write("%s & %.3f & %.3f & %.3f \\\\ \n"
+             % (pft,  np.round(row.d_et, 3),
+                np.round(row.d_et_bar, 3), np.round(row.counts, 3)))
 
+  fh.close()
+  return
 
-print(mean_df.uwue)
-print(mean_df.uwue_zhou)
+write_table_3(mean_df)
+
+# print(mean_df.uwue)
+# print(mean_df.uwue_zhou)
 
 # think below is jsut for reference for the series, but not used in paper
 # columns = []

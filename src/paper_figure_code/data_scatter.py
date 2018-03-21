@@ -100,8 +100,8 @@ def scatter_plot_paper(_df, ax, meta):
 
   var = _df['d_et']
 
-  meta['vmax'] = np.nanmax(np.absolute([var.mean()+1.5*var.std(),\
-                                          var.mean()-1.5*var.std()]))
+  meta['vmax'] = np.nanmax(np.absolute([var.mean()+1.0*var.std(),\
+                                          var.mean()-1.0*var.std()]))
   make_ax_plot(ax, var, _df, meta)
 
   return
