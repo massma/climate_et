@@ -16,8 +16,27 @@ def frequency(_df):
 
 #### Table 1, pft tables
 print('\n\n******TABLE 1*****')
-print(mean_df.loc[:, ['g1', 'uwue', 'uwue_zhou', 'uwue_zhou_std']])
+mean_df['g1-dot-uwue'] = mean_df.g1*mean_df.uwue
+print(mean_df.loc[:, ['g1', 'uwue', 'uwue_zhou', 'uwue_zhou_std']])#,\
+                      #'g1-dot-uwue']])
+def write_table_1(_df):
+  """write output of table 1"""
+  fh = open("../../doc/paper/table_1.tex", "w")
+  for pft in _df.index:
+    row = _df.loc[pft, :]
+    if (row.uwue_zhou == 1.0) & (row.uwue_zhou_std == 1.0):
+      fh.write("%s & %s & %.2f & %.2f & N/A \\\\ \n"
+               % (pft, name_dict[pft][:-5], np.round(row.g1, 2),
+                  np.round(row.uwue, 2)))
+    else:
+      fh.write("%s & %s & %.2f & %.2f & %.2f $\pm$ %.2f \\\\ \n"
+               % (pft, name_dict[pft][:-5], np.round(row.g1, 2),
+                  np.round(row.uwue, 2), np.round(row.uwue_zhou, 2),
+                  np.round(row.uwue_zhou_std, 2)))
 
+  fh.close()
+
+write_table_1(mean_df)
 
 #### Table 2, pft tables
 print('\n\n******TABLE 3*****')
@@ -39,6 +58,8 @@ mean_df['et_std'] = std['et_obs']
 counts = df.groupby('pft').apply(frequency)
 
 mean_df['counts'] = counts
+
+
 # test = mean_df.loc[:, ['d_et', 'd_et_bar', 'd_et_bar_std',\
 #                        'd_et_bar_norm', 'counts']]
 
