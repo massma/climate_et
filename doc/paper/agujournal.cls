@@ -71,6 +71,7 @@
 
 %% Line numbering
 \RequirePackage{lineno}
+\renewcommand\linenumberfont{\normalfont\rmfamily\footnotesize}
 %% add more space between text and number:
 \advance\linenumbersep 12pt
 

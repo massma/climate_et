@@ -39,40 +39,20 @@
 
 Vapor pressure deficit (VPD) is expected to rise over continents in the future due to the combination of increased temperature and, depending on region, decreased relative humidity \citep{Byrne_2013}. Increases in VPD increase the atmospheric demand for evapotranspirated water \citep{Penman_1948, Monteith_1965}, but also stress plant stomata \citep{Leuning_1990, MEDLYN_2011}.
 
-The opposing effects of increased atmospheric demand and higher stomatal stress lead to two possible perspectives for how evapotranspiration (ET) responds to shifts in VPD. The first, a hydrometeorological perspective, is that higher VPD increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies \citep[e.g.,][]{Heim_2002, Scheff_2015}, typically only quantifies changes in atmospheric demand and fails to account for ecosystem response \citep{Swann_2016}. In reality, plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to partially close in response to increased atmospheric dryness \citep{Farquhar_1978, Ball_1987, Leuning_1990, MEDLYN_2011}. This leads to a plant physiology perspective, in which an increase in VPD, particularly in well-watered soil conditions, may actually correspond to a decrease in ET because of stomatal closure.  In other words, the  question ``When does VPD drive or reduce ET?'' can be related to whether plant regulation or atmospheric demand dominates ET response.
+The opposing effects of increased atmospheric demand and higher stomatal stress lead to two possible perspectives for how evapotranspiration (ET) responds to shifts in VPD. The first, a hydrometeorological perspective, is that higher VPD increases atmospheric demand for water from the land surface, and this drives an increase in evapotranspiration (ET). This perspective is particularly relevant because potential evapotranspiration (PET), which is used in many drought indices and hydrometeorological studies \citep[e.g.,][]{Heim_2002, Scheff_2015}, typically only quantifies changes in atmospheric demand and fails to account for ecosystem response \citep{Swann_2016}. In reality, plants' stomata have evolved to optimally regulate the exchange of water and carbon, and tend to partially close in response to increased atmospheric dryness \citep{Farquhar_1978, Ball_1987, Leuning_1990, MEDLYN_2011}. This leads to a plant physiology perspective, in which an increase in VPD, particularly in well-watered soil conditions, may actually correspond to a decrease in ET because of stomatal closure \citep[e.g.][]{Rigden_2017}.  In other words, the  question ``When does VPD drive or reduce ET?'' can be related to whether plant regulation or atmospheric demand dominates ET response.
 
 The ET response to changes in VPD alters water partitioning between the soil and atmosphere. If plant response reduces ET with atmospheric drying then soil moisture will be better conserved. This would seem a sensible evolutionary strategy to cope with aridity. If stomata were fully passive \citep [similar to soil pores, e.g. ][]{Or_2013}, increased atmospheric aridity would strongly reduce soil moisture \citep{Berg_2017}. In turn, this would further increase aridity as low soil moisture levels increase the Bowen ratio, and cause increased temperature and atmospheric drying \citep[][]{Bouchet_1963, Morton_1965, Brutsaert_1999, Ozdogan_2006, Salvucci_2013, Gentine_2016, Berg_2016}. This however would not seem to be a sensible strategy for plants from an evolutionary standpoint.
 
-We can use intuition about plant water conservation strategy to hypothesize about ET response to changes in VPD. Plants that evolved to conserve water, such as arid shrubs, should be more likely to reduce ET with increasing VPD, and plants that have evolved or have been engineered to care little about water, such as crops, will be more likely to increase ET with increasing VPD. Atmospheric conditions must matter as well. At the ecosystem scale, there are limits to plant water conservation strategies. As atmospheric demand for water (VPD) increases, ecosystems should begin to reach their water conservation limits and might not be able to entirely limit ET flux to the atmosphere. At this stage any further increase in VPD will most likely drive a (limited) increase in ET, because the increase in atmospheric demand for water overwhelms the limited plant response to conserve water.
+We can use intuition about plant water conservation strategy to hypothesize about ET response to changes in VPD. Plants and ecosystems that evolved to conserve water, such as arid shrubs or savannah, should be more likely to reduce ET with increasing VPD, and plants that have evolved or have been engineered to care little about water, such as crops, will be more likely to increase ET with increasing VPD. Atmospheric conditions must matter as well. At the ecosystem scale, there are limits to plant water conservation strategies. As atmospheric demand for water (VPD) increases, ecosystems should begin to reach their water conservation limits and might not be able to entirely limit ET flux to the atmosphere. At this stage any further increase in VPD will most likely drive a (limited) increase in ET, because the increase in atmospheric demand for water overwhelms the limited plant response to conserve water.
 
-The objective of the present manuscript is to evaluate the VPD dependence of ET, in non-extreme soil drought conditions. The goal of this paper is to use reasonable approximations as a tool to develop intuition for plant response to atmospheric drying. This intuition will aid interpretation of observations and full complexity models. In the past, similiar approaches were used to understand interactions between stomatal conductance, evapotranspiration and the environment \citep[e.g.,][]{Jarvis_1986, Mcnaughton_1991}. However, at the time researchers' understandng of the form of VPD's effect on plant physiology was limited, so they could not explore the sensitivity of ET to VPD, including VPD's effect on stomatal conductance and plant function.
+The objective of the present manuscript is to use reasonable approximations as a tool to develop intuition for plant response to atmospheric drying and evaluate the VPD dependence of ET. This intuition will aid interpretation of observations, full complexity models, and facilitate the disentanglement of complex land-atmosphere feedbacks. In the past, similiar approaches were used to understand interactions between stomatal conductance, evapotranspiration and the environment \citep[e.g.,][]{Jarvis_1986, Mcnaughton_1991}. However, at the time researchers' understandng of the form of VPD's effect on plant physiology was limited, so they could not explore the sensitivity of ET to VPD, including VPD's effect on stomatal conductance and plant function.
 
 Recent results have drastically improved our understanding of VPD's impact on physiology. \citet{MEDLYN_2011} developed a model for leaf-scale stomatal conductance ($g_s$), including VPD response, by combining an optimal photosynthesis theory \citep{Farquhar_1980, Katul_2010} with an empirical approach, and extended use of this model to the ecosystem scale in \citet{Medlyn_2017}. Additionally, \citet{Zhou_2014} demonstrated that a quantity underlying water use efficiency $\left(uWUE = \frac{GPP\; \sqrt{VPD}}{ET}\right)$ properly captures a constant relationship between GPP, ET, and VPD over a diurnal cycle. uWUE is also remarkably well conserved in the growing season across space and time, within a PFT \citep{Zhou_2015}. These results provide novell tools to examine how ET varies in response to VPD, while explicitly including VPD's effect on stoamtal conductance for the first time. In this manuscript, we leverage these tools to derive the theoretical response of ET to VPD using a Penman Monteith framework. Our theory is validated and tested at multiple eddy-covariance stations spanning various climates and plant functional types. 
 
 \section{Materials and Methods}
-\label{methods}
 \subsection{Data}
 \label{data}
-We use both meteorological and eddy-covariance data from the FLUXNET2015 database, including all sites with at least four years of data (data available at \sloppy https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/ \sloppy). Each site's plant functional type (PFT) was classified using the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}. The physical constants used in the stomatal conductance model in the Methods section (Section \ref{methods}) are only published for six plant functional types (PFTs): crops (CRO), deciduous broadleaf forest (DBF), evergreen broadleaf forests (EBF), evergreen needleleaf forest (ENF), grass (GRA), and closed shrub (CSH) (see Table \ref{pft}). There are 62 sites with these plant functional types, and their location is shown in  Figure \ref{map_fig}.
-
-\begin{table}
-  \caption{Plant functional types, their abbreviation, Medlyn coefficient (from \citet{Lin_2015}, via \citet{Franks_2017}), and calculated uWUE. uWUE from \citet{Zhou_2015}, including the  observed standard deviation is shown for comparison. Note that uWUE from \citet{Zhou_2015} is calculated from a different set of sites, and that units are converted such that the quantities work with Equations 1-8 with the variables defined Table \ref{definitions}.}
-    \small
-\label{pft}
-\centering
-\begin{tabular}{l c c @{\qquad} c c}
-  \hline
-  \multirow{2}[3]{*}{Abbreviation} & \multirow{2}[3]{*}{PFT} & \multirow{2}[3]{*}{$g_1$ (Pa$^{0.5}$)} & \multicolumn{2}{c}{uWUE ($\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET])}  \\
-  \cmidrule{4-5}
-
-  & & & fitted & \citet{Zhou_2015} \\
-
-  \hline
-\input{pft_params}
-  \hline
-\end{tabular}
-\end{table}
-
+We use both meteorological and eddy-covariance data from the FLUXNET2015 database (data available at \sloppy https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/ \sloppy), including all sites with at least four years of data and observations of the variables described in the methods section (Section \ref{methods}). Seventy-three sites met these requirements, and were grouped into nine plant functional types (PFT) according to the International Geosphere-Biosphere Programme vegetation classification scheme \citep{Loveland_1999}: cropland (CRO), grass (GRA), deciduous broadleaf forest (DBF), evergreen broadlead forest (EBF), evergreen needleleaf forest (ENF), mixed forest (MF), closed shrub (CSH), savannah (SAV), and woody savannah (WSA) (site locations in Figure \ref{map_fig}).
 
 \begin{figure}
 \centering
@@ -81,14 +61,13 @@ We use both meteorological and eddy-covariance data from the FLUXNET2015 databas
 \label{map_fig}
  \end{figure}
 
-
 The purpose of this study is to examine ecosystem response to atmospheric drying, focusing on the growing season. To accomplish this, we filter and quality control the data using a similar procedure as \cite{Zhou_2015}:
 \begin{itemize}
 \item Only measured or highest (``good'') quality gapfilled data, according to quality control flags, are used.
 \item To isolate the growing season, we only use days in which the average Gross Primary Productivity (GPP) exceeds 10\% of the observed 95th percentile of GPP for a given site. GPP is calculated using the nighttime respiration partitioning method.
 \item We remove days with rain and the day following to avoid issues with rain interception and sensor saturation at high relative humidity (\cite{MEDLYN_2011}).
 \end{itemize}
-Additionally, as in \citet{Lin_2018}, we restrict data to the daytime, which is identified when downwelling shortwave radiation is greater than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W m$^{-2}$. To reduce the chance of sensor saturation at high relative humidity, we remove all time steps for which VPD is less than .01 kPa, and to reduce errors at low windspeeds we remove all periods with wind magnitudes less than 0.5 m s$^{-1}$. Timesteps with negative observed GPP or ET are also removed, and we aggregate half hourly data to hourly averages to reduce noise \citep{Lin_2018}. After these quality control procedures, 335,939 upscaled hourly observations remain. 
+Additionally, as in \citet{Lin_2018}, we restrict data to the daytime, which is identified when downwelling shortwave radiation is greater than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W m$^{-2}$. To reduce the chance of sensor saturation at high relative humidity, we remove all time steps for which VPD is less than .01 kPa, and to reduce errors at low windspeeds we remove all periods with wind magnitudes less than 0.5 m s$^{-1}$. Timesteps with negative observed GPP or ET are also removed, and we aggregate half hourly data to hourly averages to reduce noise \citep{Lin_2018}. After these quality control procedures, 434,765 upscaled hourly observations remain. 
 
 \subsection{Methods}
 \label{methods}
@@ -139,29 +118,50 @@ $R_{net}$  & net radiation at land surface minus ground heat flux & W m$^{-2}$  
 
 \begin{linenomath*}
   \begin{equation}
-  g_{l-s} = g_0 + 1.6 \left(1 + \frac{g_1}{\sqrt{VPD}}\right) \frac{A}{c_a}
+  g_{s-leaf} = g_0 + 1.6 \left(1 + \frac{g_{1-leaf}}{\sqrt{VPD}}\right) \frac{A}{c_a}
   \end{equation}
 \end{linenomath*}
-Where $g_1$ is a leaf-scale ``slope'' parameter, A is the net CO$_2$ assimilation rate, and $c_a$ is the atmospheric CO$_2$ concentration at the leaf surface. \cite{MEDLYN_2011} relate the slope parameter ($g_1$) to physical parameters as:
+Where $g_{1-leaf}$ is a leaf-scale ``slope'' parameter, A is the net CO$_2$ assimilation rate, and $c_a$ is the atmospheric CO$_2$ concentration at the leaf surface. \cite{MEDLYN_2011} relate the slope parameter ($g_{1-leaf}$) to physical parameters as:
 \begin{linenomath*}
   \label{slope}
   \begin{equation}
-  g_1 = \sqrt{\frac{3 \, \Gamma^* \, \lambda}{1.6}},\footnote{Note this expression has units of of (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to Pa$^{1/2}$ using the ideal gas law.}
+  g_{1-leaf} = \sqrt{\frac{3 \, \Gamma^* \, \lambda}{1.6}},\footnote{Note this expression has units of of (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to Pa$^{1/2}$ using the ideal gas law.}
   \end{equation}
 \end{linenomath*}
 
-where $\Gamma^*$ is the CO$_2$ compensation point for photosynthesis (without dark respiration), and $\lambda$ is the marginal water cost of leaf carbon ($\frac{\partial \; \text{transpiration}}{\partial \; A}$). So, $g_1$ is a leaf-scale term reflecting the tradeoff of water for carbon uptake and growth. The higher $g_1$, the more open the stomata and the more they release water in exchange for carbon.
+where $\Gamma^*$ is the CO$_2$ compensation point for photosynthesis (without dark respiration), and $\lambda$ is the marginal water cost of leaf carbon ($\frac{\partial \; \text{transpiration}}{\partial \; A}$). So, $g_{1-leaf}$ is a leaf-scale term reflecting the tradeoff of water for carbon uptake and growth. The higher $g_{1-leaf}$, the more open the stomata and the more they release water in exchange for carbon.
 
-The Medlyn model for stomatal conductance has been shown to behave very well across PFTs \citep[][]{Lin_2015}, and can be  adapted to the ecosystem scale by multiplying $g_{l-s}$ by leaf area index (LAI) and converting units to m s$^{-1}$ with the ideal gas law:
+
+The Medlyn model for stomatal conductance has been shown to behave very well across PFTs \citep[][]{Lin_2015}, and has been successfully adopted to ecosystem scale analysis in \citet{Medlyn_2017}. In units of m s$^{-1}$, the ecosystem scale stomatal conductance is:
 
 \begin{linenomath*}
   \begin{equation}
-    g_s = \text{LAI} \frac{R \,T}{P} \left( g_0 + 1.6 \left(1 + \frac{g_1}{\sqrt{VPD}}\right) \frac{A}{c_a}\right)
+    g_s = \frac{R \,T}{P} \; 1.6 \left(1 + \frac{g_1}{\sqrt{VPD}}\right) \frac{GPP}{c_a},
       \label{medlyn}
   \end{equation}
 \end{linenomath*}
 
-While Equation 3 can be used in PM (Equation 1), it will make analytical work with the function intractable because $A$, net CO$_2$ assimilation rate, is functionally related to ET itself. To remove the dependence of ET on $A$ we use fundamental semi-empirical results of \citet{Zhou_2015}, who showed that the underlying Water Use Efficiency (uWUE):
+where GPP is the ecoysystem scale gross primary production, and $g_1$ is an ecosystem scale analogue to $g_{1-leaf}$. We solve for $g_1$ following \citet{Medlyn_2017} (Equation 5), and take the median $g_1$ value to be representative of each PFT (Table \ref{pft}).
+
+\begin{table}
+  \caption{Plant functional types, their abbreviation, calculated Medlyn coefficient, and calculated uWUE. uWUE from \citet{Zhou_2015}, including the  observed standard deviation is shown for comparison. Note that uWUE from \citet{Zhou_2015} is calculated from a different set of sites, and that units are converted such that the quantities work with Equations 1-8 and the variables defined Table \ref{definitions}.}
+    \small
+\label{pft}
+\centering
+\begin{tabular}{l c c @{\qquad} c c}
+  \hline
+  \multirow{2}[3]{*}{Abbreviation} & \multirow{2}[3]{*}{PFT} & \multirow{2}[3]{*}{$g_1$ (Pa$^{0.5}$)} & \multicolumn{2}{c}{uWUE ($\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET])}  \\
+  \cmidrule{4-5}
+
+  & & & fitted & \citet{Zhou_2015} \\
+
+  \hline
+\input{pft_params}
+  \hline
+\end{tabular}
+\end{table}
+
+While Equation 3 can be used in PM (Equation 1), it will make analytical work with the function intractable because $GPP$ is functionally related to ET itself. Additionally, a perturbation to VPD should induce a physiological plant response that will alter GPP and cause an indirect change in stomatal conductance, in addition to the direct effect of VPD in Equation \ref{medlyn}. Therefore, in order to derive the response of ET to VPD, we must account for the functional relationship between GPP, ET, and VPD and its effect on stomatal conductance. We can use aforementioned semi-empirical results of \citet{Zhou_2015} as a tool to approach this problem. \citet{Zhou_2015}, showed that the underlying Water Use Efficiency (uWUE):
 
 \begin{linenomath*}
   \begin{equation}
@@ -169,7 +169,8 @@ While Equation 3 can be used in PM (Equation 1), it will make analytical work wi
     \label{uwue}
   \end{equation}
 \end{linenomath*}
-is relatively constant across time and moisture conditions within a plant functional type. If, following \citet{Lin_2015}, we approximate $g_0$ as $0$ (i.e. we neglect cuticular and epidermal losses - a reasonable assumption except in very dry conditions), we can use uWUE to remove the $A$ dependence from $g_s$ in a way that makes the PM equation analytically tractable:
+
+is relatively constant across time and moisture conditions within a plant functional type, and correctly captures a constant relationship between GPP, ET and VPD over a diurnal cycle \citep{Zhou_2014}. We can use uWUE to remove the $GPP$ dependence from $g_s$ in a way that makes the PM equation analytically tractable:
 
 \begin{linenomath*}
   \begin{equation}
@@ -178,7 +179,7 @@ is relatively constant across time and moisture conditions within a plant functi
   \end{equation}
 \end{linenomath*}
 
-Note that uWUE is fit on the ecosystem scale as in \citet{Zhou_2015}, so GPP in Equation \ref{uwue} is really $A \cdot \text{LAI}$. This leads to the cancellation of LAI in the step from Equation \ref{medlyn} to Equation \ref{new_g_s}. Plugging Equation \ref{new_g_s} into Equation \ref{orig_pen} and rearranging gives a new explicit expression for PM, in which dependence on $A$ is removed:
+Plugging Equation \ref{new_g_s} into Equation \ref{orig_pen} and rearranging gives a new explicit expression for PM, in which dependence on $GPP$ is removed:
 
 \begin{linenomath*}
   \begin{equation}
@@ -187,13 +188,13 @@ Note that uWUE is fit on the ecosystem scale as in \citet{Zhou_2015}, so GPP in 
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{et}, ET is explicitly a function of environmental variables and two plant-specific constants, the slope parameter ($g_1$), and uWUE, both reflecting water conservation strategy. The slope parameter is a leaf-scale term related to the willingness of stomata to trade water for CO$_2$ and to keep stomata open. uWUE is a semi-empirical ecosystem-scale constant related to how WUE changes with VPD (specifically $VPD^{-1/2}$). Is is also roughly proportional to physical constants:
+With Equation \ref{et} we have derived for the first time, using recent results \citep[][]{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017}, ET explicitly as function of environmental variables and two plant-specific constants, the slope parameter ($g_1$), and uWUE, both reflecting water conservation strategy. The slope parameter is related to the willingness of stomata to trade water for CO$_2$ and to keep stomata open. uWUE is a semi-empirical ecosystem-scale constant related to how WUE changes with VPD (specifically $VPD^{-1/2}$). Is is also roughly proportional to physical constants:
 
 \[uWUE \appropto \sqrt{\frac{c_a - \Gamma}{1.6 \lambda}},\]
 
 where $\Gamma$ is the CO$_2$ compensation point \citep[Equation 5 in][]{Zhou_2014}. So uWUE is related to atmospheric CO$_2$ concentration and compensation point, and is inversely proportional to the marginal water cost of leaf carbon. 
 
-Given eddy-covariance FLUXNET2015 data (Section \ref{data}), every term in our new version of PM (Equation \ref{et}) is observed, except for the two parameters $g_1$, and uWUE. $g_1$ has been measured and reported for the PFTs considered here \citep{Lin_2015, Franks_2017}, and we fit uWUE by calculating its expectation, given the model and FLUXNET2015 data.
+Given eddy-covariance FLUXNET2015 data (Section \ref{data}), every term in our new version of PM (Equation \ref{et}) is observed, except for uWUE, which we fit by calculating its expectation, given the model and FLUXNET2015 data.
 
 However, eddy-covariance data are inherently noisy so we include a measure of uncertainty in our analysis. To account for observational error, as well as model uncertainty (e.g. temporal and spatial variations of uWUE), we introduce an uncertainty parameter $\sigma$ modifying uWUE:
 
@@ -222,12 +223,9 @@ Thus, with this uncertainty analysis we can evaluate departure from our theory i
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{d_et} we have an analytical framework for ecosystem response to atmospheric demand perturbations, with an implicit assumption of non-extreme drought conditions. There are a few subtleties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately independent, which is supported by the data (not shown). 
+With Equation \ref{d_et} we have an analytical framework for ecosystem response to atmospheric demand perturbations, with an implicit assumption of non-extreme drought conditions associated with our constant $uWUE$ assumption (e.g. we might expect $uWUE$ to decrease in extreme drought). There are a few subtleties to taking the derivative in Equation \ref{d_et}: $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while taking the derivative we evaluate $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET} {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD} \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH} \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$ fixed}}$. $RH$ and $e_s$ are assumed to be approximately independent, which is supported by the data (not shown). 
 
-We note one final comment on our derivation which is relevant for drought indices. If we approximate $c_a$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published in \citet{Zhou_2015} and \citet{Lin_2015}. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface and would only require fitting of uWUE and $g_1$, and can also account for changes in CO$_2$ concentration, contrary to typical drought indices such as the Palmer Drought Severity Index (PDSI) \citep{Swann_2016}.
-
-
-
+We note one final comment on our derivation which is relevant for drought indices. If we approximate $c_a$ at a global mean CO$_2$ concentration, then the RHS of Equation \ref{et} is fully defined using commonly available weather station data and the constants published here. This makes Equation \ref{et} a useful alternative to PET in drought indices and hydrometeorological analysis for vegetated surfaces. Equation \ref{et} better reflects the physics of water exchange at the land surface and would only require fitting of uWUE and $g_1$, and can also account for changes in CO$_2$ concentration (assuming some relationship between $\lambda$ and [CO$_2$]), contrary to typical drought indices such as the Palmer Drought Severity Index (PDSI) \citep{Swann_2016}.
 
 \section{Results}
 \label{results}
