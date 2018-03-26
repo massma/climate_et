@@ -72,17 +72,21 @@ name_dict = {'CRO': 'Crops (CRO)',\
 
 
 
-def custom_ylabel(_df, ax, label, fontsize=fontsize):
+def custom_ylabel(pft, ax, label, fontsize=fontsize):
   """labels y label for axis ordering"""
-  if (_df.pft.iloc[0] == 'ENF') | (_df.pft.iloc[0] == 'DBF')\
-     | (_df.pft.iloc[0] == 'CRO'):
+  if not isinstance(pft, str):
+    pft = pft.pft.iloc[0]
+  if (pft == 'ENF') | (pft == 'DBF')\
+     | (pft == 'CRO'):
     ax.set_ylabel(label, fontsize=fontsize)
   return
 
-def custom_xlabel(_df, ax, label, fontsize=fontsize):
+def custom_xlabel(pft, ax, label, fontsize=fontsize):
   """labels x label for axis ordering"""
-  if (_df.pft.iloc[0] == 'CRO') | (_df.pft.iloc[0] == 'GRA')\
-     | (_df.pft.iloc[0] == 'SAV'):
+  if not isinstance(pft, str):
+    pft = pft.pft.iloc[0]
+  if (pft == 'CRO') | (pft == 'GRA')\
+     | (pft == 'SAV'):
     ax.set_xlabel(label, fontsize=fontsize)
   return
 
