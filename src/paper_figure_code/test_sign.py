@@ -60,8 +60,8 @@ def plot_box(_df, ax):
   #         'b-', linewidth=1.0)
   #_df.groupby(pd.cut(_df.vpd, bins=20)).apply(add_box, ax=ax)
   #_df.boxplot(column='sign', by=pd.cut(_df.vpd, bins=20), ax=ax)
-  custom_ylabel(_df, ax, paren_string)
-  custom_xlabel(_df, ax, 'VPD (Pa)')
+  custom_ylabel(_df, ax, paren_string, fontsize=small_ax_fontsize)
+  custom_xlabel(_df, ax, 'VPD (Pa)', fontsize=small_ax_fontsize)
   ax.set_title(name_dict[_df.pft.iloc[0]], fontsize=fontsize+3)
   ax.plot(orig_xlim, [0., 0.], 'k--', linewidth=dashedlinewidth)
 

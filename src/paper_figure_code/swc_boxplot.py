@@ -2,6 +2,7 @@
 """
 This script makes box plot figures for code
 """
+from matplotlib.ticker import FuncFormatter
 from shared_functions import *
 import seaborn as sns
 import importlib
@@ -13,7 +14,8 @@ medianprops = {'linewidth' : 2.5}
 dashedlinewidth=1.4
 
 bluelinewidth=3.0
-
+xlim = {'WSA' : [0.00, 0.0225],
+        'SAV' : [0.002, 0.0073]}
 def plot_box(_df, ax=None, pft=False):
   """makes a box plot"""
   if ax is None:
@@ -51,9 +53,11 @@ def plot_box(_df, ax=None, pft=False):
     ax.set_title('Site: %s, PFT: %s'\
                  % (_df.site.iloc[0], _df.pft.iloc[0]),\
                  fontsize=fontsize+3)
-
+  if _df.pft.iloc[0] in xlim:
+    _xlims = xlim[_df.pft.iloc[0]]
+    ax.set_xlim(_xlims)
+    ax.xaxis.set_ticks(np.round(np.linspace(_xlims[0], _xlims[1], 4), 4))
   # ax.set_ylim(ylim)
-
   # ax.set_xlim(orig_xlim)
   if savefig:
     plt.tight_layout()

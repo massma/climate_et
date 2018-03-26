@@ -69,8 +69,8 @@ def make_ax_plot(_ax, var, _df, meta):
   color = _ax.pcolormesh(_x, _y, z, cmap=meta['cmap'],\
                          vmin=vmin, vmax=vmax)
 
-  custom_xlabel(_df, _ax, '%s (Pa)' % 'vpd'.upper())
-  custom_ylabel(_df, _ax, 'T (C)')
+  custom_xlabel(_df, _ax, '%s (Pa)' % 'vpd'.upper(), fontsize=small_ax_fontsize)
+  custom_ylabel(_df, _ax, 'T (C)', fontsize=small_ax_fontsize)
   _ax.set_title('%s'\
                 % (name_dict[_df['pft'].iloc[0]]), fontsize=local_fontsize)
   # _ax.yaxis.set_tick_params(labelsize=local_fontsize-3)
@@ -78,7 +78,7 @@ def make_ax_plot(_ax, var, _df, meta):
   cbar = plt.colorbar(color, ax=_ax)# , ax=_ax2)
   if ((_df.pft.iloc[0] == 'MF') | (_df.pft.iloc[0] == 'WSA')\
       | (_df.pft.iloc[0] == 'SAV')):
-    cbar.set_label(meta['title'], fontsize=local_fontsize)
+    cbar.set_label(meta['title'], fontsize=small_ax_fontsize)
   y_lim = _ax.get_ylim()
   # vpd_crit = et_min_vpd(mean_df.loc[_df.pft.iloc[0], :])
   # _ax.plot(np.ones(2)*vpd_crit, np.array(y_lim), 'k-', linewidth=2.0)
