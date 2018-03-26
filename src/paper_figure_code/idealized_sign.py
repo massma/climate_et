@@ -45,7 +45,7 @@ def pft_leaf(_df, axs):
     p = axs[0].plot(vpd, d_calc.sign(mean_row, vpd=vpd, uwue=uwue),\
                     label="%s: $uWUE$=%4.2f, g1=%4.1f"\
                     % (_df.pft.iloc[0],\
-                       uwue,  _df.g1.iloc[0]))
+                       np.round(uwue, 2),  np.round(_df.g1.iloc[0], 1)))
 
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])

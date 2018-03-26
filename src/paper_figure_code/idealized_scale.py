@@ -25,15 +25,16 @@ def plot_scaling(_df, ax, savefig=False):
   for percentile in [5., 25., 50., 75., 95.][::-1]:
     g_a = _df.g_a.quantile(q=percentile/100.)
     scale = d_calc.scaling(mean_df.loc[_df.pft.iloc[0]], t_a=t_a, g_a=g_a)
-    ax.plot(t_a, scale, label='$g_a$ = %5.3f (%dth percentile)'\
+    ax.plot(t_a, scale, label='$g_a$ = %5.3f (%dth p-tile)'\
             % (g_a, int(percentile)))
-  custom_xlabel(_df, ax, 'T (C)')
+  custom_xlabel(_df, ax, 'T (C)', fontsize=small_ax_fontsize)
   custom_ylabel(_df, ax,\
-                r'($\frac{2 \; g_a \; P}{T(\Delta + \gamma)}$)')
+                r'($\frac{2 \; g_a \; P}{T(\Delta + \gamma)}$)',\
+                fontsize=small_ax_fontsize+4)
   ax.set_xlim(xlim)
   ax.set_ylim(ylim)
   ax.set_title(name_dict[_df.pft.iloc[0]], fontsize=fontsize+3)
-  plt.legend(loc='best', fontsize=10)
+  plt.legend(loc='best', fontsize=fontsize-2)
   if savefig:
     plt.savefig('../../doc/paper/idealized_scale.pdf')
   return

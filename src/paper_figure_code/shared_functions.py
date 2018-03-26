@@ -23,7 +23,8 @@ small_ax_params = mpl.rcParamsDefault
 label_size = 14
 small_ax_params['xtick.labelsize'] = label_size
 small_ax_params['ytick.labelsize'] = label_size
-
+small_ax_fontsize = 19
+fontsize=16
 
 importlib.reload(util)
 importlib.reload(plot_tools)
@@ -69,16 +70,16 @@ name_dict = {'CRO': 'Crops (CRO)',\
              'MF': 'Mixed Forest (MF)',
              'SAV': 'Savannah (SAV)'}
 
-fontsize=16
 
-def custom_ylabel(_df, ax, label):
+
+def custom_ylabel(_df, ax, label, fontsize=fontsize):
   """labels y label for axis ordering"""
   if (_df.pft.iloc[0] == 'ENF') | (_df.pft.iloc[0] == 'DBF')\
      | (_df.pft.iloc[0] == 'CRO'):
     ax.set_ylabel(label, fontsize=fontsize)
   return
 
-def custom_xlabel(_df, ax, label):
+def custom_xlabel(_df, ax, label, fontsize=fontsize):
   """labels x label for axis ordering"""
   if (_df.pft.iloc[0] == 'CRO') | (_df.pft.iloc[0] == 'GRA')\
      | (_df.pft.iloc[0] == 'SAV'):
