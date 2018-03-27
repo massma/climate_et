@@ -6,49 +6,27 @@ import matplotlib.pyplot as plt
 import numpy as np
 from shared_functions import *
 
-def plot_second_derivative(row, ax, d2_func, zero_func):
+pft_order = ['CSH', 'MF', 'SAV', 'ENF',\
+             'EBF', 'WSA', 'DBF',  'CRO', 'GRA']
+
+
+def plot_second_derivative(row, ax, zero_func):
   """
   given a fucntion for second derivative, makes a plot
   vpd on x axis wue power on y axis
   """
-  if row.shape[0] == 1:
-    row = row.iloc[0]
-  else:
-    raise ValueError("Something other than row passed to second deriv.",\
-                     row.shape)
-  w_power = np.linspace(0.5, 1.0)
+
   _vpd = np.linspace(dfs['5'].loc[row.pft, 'vpd'],\
                      dfs['95'].loc[row.pft, 'vpd'])
-
-  _vpd, _w_power = np.meshgrid(_vpd, w_power)
-  # note should probably have g1 units move with g1 power
-  #zvar = function(_w_power, _vpd, row.g1)
-  zvar = d2_func(_w_power, row.g_a, row.p_a, row.t_a_k, d_calc.CP, _vpd,\
-                 row.r_moist, row.gamma, row.delta, row.r_n,\
-                 row.c_a, d_calc.R_STAR, row.uwue, row.g1, 1.6)
-
-  vmax = 1.e-5 #1000.0#1.0*zvar.std()+zvar.mean()
-  # vmax = 1000.0#1.0*zvar.std()+zvar.mean()
-  color = ax.contourf(_vpd, _w_power, zvar, cmap='Greys',\
-                        vmin=-vmax, vmax=vmax)
-
-
-  _vpd = np.linspace(dfs['5'].loc[row.pft, 'vpd'],\
-                    dfs['95'].loc[row.pft, 'vpd'])
   def temp_f(vpd):
     return zero_func(row.g_a, row.p_a, row.t_a_k, d_calc.CP, vpd,\
                    row.r_moist, row.gamma, row.delta, row.r_n,\
                    row.c_a, d_calc.R_STAR, row.uwue, row.g1, 1.6)
-  _w_power = [temp_f(vpd)+0.01 for vpd in _vpd]
-  ax.plot(_vpd, _w_power)
+  _w_power = [temp_f(vpd) for vpd in _vpd]
+  ax.plot(_vpd, _w_power,\
+          label="%s"\
+          % row.pft)
 
-  custom_xlabel(row.pft, ax, 'VPD (Pa)', fontsize=small_ax_fontsize)
-  custom_ylabel(row.pft, ax, 'WUE VPD power', fontsize=small_ax_fontsize)
-
-  # ax.set_xlabel('VPD')
-  # ax.set_ylabel('WUE VPD power')
-  ax.set_title(name_dict[row.pft],\
-               fontsize=fontsize+3)
 
   return
 
@@ -91,18 +69,22 @@ sign_func = lambdify([wue_power, vpd, g_1], sign_terms)
 
 # plot_second_derivative(sign_func, 'medlyn')
 mean_df['pft'] = mean_df.index
-df_function = lambdify([wue_power, g_a, p, t, cp, vpd, r_air, gamma,\
-                        delta, r, c_s, r_star, uwue, g_1, onesix],\
-                       d2_vpd)
-# panel_wrapper(mean_df, plot_second_derivative, "concave.pdf",\
-#               args=(df_function,))
+zeros = solve(d2_vpd, wue_power)
+uwue_n_zeros = lambdify([g_a, p, t, cp, vpd, r_air, gamma,\
+                    delta, r, c_s, r_star, uwue, g_1, onesix],\
+                   zeros[2])
+fig = plt.figure()
+ax = fig.add_subplot(111)
+for pft in pft_order:
+  plot_second_derivative(mean_df.loc[pft, :], ax, uwue_n_zeros)
+ax.set_xlabel('VPD (Pa)', fontsize=fontsize)
+ax.set_ylabel('WUE VPD power', fontsize=fontsize)
+ax.set_ylim([0.5, 1.0])
+plt.legend(loc="best")
+ax.text(2500., 0.9, 'Concave Down', horizontalalignment='center',\
+        verticalalignment='center', fontdict={'fontsize' : 25})
 
-exponent_vpd = solveset(d2_vpd, wue_power)
+ax.text(2500., 0.55, 'Concave Up', horizontalalignment='center',\
+        verticalalignment='center', fontdict={'fontsize' : 25})
 
-test = solve(d2_vpd, wue_power)
-test2 = lambdify([g_a, p, t, cp, vpd, r_air, gamma,\
-                 delta, r, c_s, r_star, uwue, g_1, onesix],\
-                 test[2])
-
-panel_wrapper(mean_df, plot_second_derivative, "concave.pdf",\
-              args=(df_function, test2,))
+plt.savefig("../../doc/paper/concave.pdf")
