@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from shared_functions import *
 
-def plot_second_derivative(row, ax, d2_func):
+def plot_second_derivative(row, ax, d2_func, zero_func):
   """
   given a fucntion for second derivative, makes a plot
   vpd on x axis wue power on y axis
@@ -19,6 +19,7 @@ def plot_second_derivative(row, ax, d2_func):
   w_power = np.linspace(0.5, 1.0)
   _vpd = np.linspace(dfs['5'].loc[row.pft, 'vpd'],\
                      dfs['95'].loc[row.pft, 'vpd'])
+
   _vpd, _w_power = np.meshgrid(_vpd, w_power)
   # note should probably have g1 units move with g1 power
   #zvar = function(_w_power, _vpd, row.g1)
@@ -30,6 +31,17 @@ def plot_second_derivative(row, ax, d2_func):
   # vmax = 1000.0#1.0*zvar.std()+zvar.mean()
   color = ax.contourf(_vpd, _w_power, zvar, cmap='Greys',\
                         vmin=-vmax, vmax=vmax)
+
+
+  _vpd = np.linspace(dfs['5'].loc[row.pft, 'vpd'],\
+                    dfs['95'].loc[row.pft, 'vpd'])
+  def temp_f(vpd):
+    return zero_func(row.g_a, row.p_a, row.t_a_k, d_calc.CP, vpd,\
+                   row.r_moist, row.gamma, row.delta, row.r_n,\
+                   row.c_a, d_calc.R_STAR, row.uwue, row.g1, 1.6)
+  _w_power = [temp_f(vpd)+0.01 for vpd in _vpd]
+  ax.plot(_vpd, _w_power)
+
   custom_xlabel(row.pft, ax, 'VPD (Pa)', fontsize=small_ax_fontsize)
   custom_ylabel(row.pft, ax, 'WUE VPD power', fontsize=small_ax_fontsize)
 
@@ -82,6 +94,15 @@ mean_df['pft'] = mean_df.index
 df_function = lambdify([wue_power, g_a, p, t, cp, vpd, r_air, gamma,\
                         delta, r, c_s, r_star, uwue, g_1, onesix],\
                        d2_vpd)
-panel_wrapper(mean_df, plot_second_derivative, "concave.pdf",\
-              args=(df_function,))
+# panel_wrapper(mean_df, plot_second_derivative, "concave.pdf",\
+#               args=(df_function,))
 
+exponent_vpd = solveset(d2_vpd, wue_power)
+
+test = solve(d2_vpd, wue_power)
+test2 = lambdify([g_a, p, t, cp, vpd, r_air, gamma,\
+                 delta, r, c_s, r_star, uwue, g_1, onesix],\
+                 test[2])
+
+panel_wrapper(mean_df, plot_second_derivative, "concave.pdf",\
+              args=(df_function, test2,))
