@@ -19,8 +19,8 @@ PLOT_PET = False
 
 paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
                r'- \frac{\gamma c_a }{1.6 \; R\; uWUE  }'\
-               r'\left( \frac{2 g_1 + \sqrt{D}}'\
-               r'{2 (g_1 + \sqrt{D})^2}\right)\right)$'
+               r'\left( \frac{2 g_1 + \sqrt{VPD}}'\
+               r'{2 (g_1 + \sqrt{VPD})^2}\right)\right)$'
 
 if PLOT_TALK:
   fontsize=14
@@ -46,7 +46,7 @@ def pft_leaf(_df, axs):
                     label="%s: $uWUE$=%4.2f, g1=%4.1f"\
                     % (_df.pft.iloc[0],\
                        np.round(uwue, 2),  np.round(_df.g1.iloc[0], 1)))
-
+ 
   ptiles = np.array([_df.vpd.quantile(q=_p/100.)\
                      for _p in [25., 50., 75.]])
   axs[1].plot(vpd, np.ones(vpd.shape)*I, linewidth=linewidth)

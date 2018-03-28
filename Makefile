@@ -1,6 +1,7 @@
 FIGURES = doc/paper/idealized_scale.pdf doc/paper/idealized_sign.pdf \
 	doc/paper/joint_vpd_sigma.pdf doc/paper/map.pdf \
-	doc/paper/swc_boxplot.pdf doc/paper/test_sign.pdf doc/paper/data_scatter.png
+	doc/paper/swc_boxplot.pdf doc/paper/test_sign.pdf doc/paper/data_scatter.png \
+doc/paper/concave.pdf
 .PHONY: data clean figure-all paper clean-bak clean-paper
 
 # you'll need to rerun data if you make any changes to the analysis script
@@ -27,6 +28,9 @@ doc/paper/swc_boxplot.pdf :
 
 doc/paper/test_sign.pdf :
 	cd src/paper_figure_code && python3 test_sign.py
+
+doc/paper/concave.pdf :
+	cd src/paper_figure_code && python3 concave.py
 
 doc/paper/data_scatter.png : doc/paper/data_scatter.bak
 	cd doc/paper && cp data_scatter.bak data_scatter.png
