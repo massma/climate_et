@@ -154,20 +154,94 @@ ax2 = ax.twiny()
 n = np.linspace(0.5, 0.99)
 for i, norm in enumerate(normed):
   func = lambdify([wue_power], norm)
-  ax.plot([func(_) for _ in n], n, label="sol'n %i-2" % i)
-  #ax2.plot([func(_) for _ in n], (n*mean_df.g1.mean())**2, label="sol'n %i" % i)
+  # ax.plot([func(_) for _ in n], n, label="sol'n %i-2" % i)
+  ax.plot([(func(_)*mean_df.g1.mean())**2 for _ in n], n, label="sol'n %i" % i)
 ax.set_ylabel("VPD Exponent (n)")
-ax.set_xlabel(r"$0 \leq \frac{VPD^n}{g_1} \leq 1$")
-ax.plot(np.ones(n.shape), n, 'k--')
-ax.plot(np.zeros(n.shape), n, 'k--')
-ax.set_xlim([0., 1.0])
+ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$")
+ax.set_xlim([0., 4000.0])
 ax.set_ylim([0.5, 1.0])
 def un_normalized(normalized):
   """transform vpd**n/g1 to vpd, assuming n=0.5 and g1=100"""
   return np.round((normalized*mean_df.g1.mean())**2, 0)
+def normalized(unnormalized):
+  """inverse of un-normalized"""
+  return np.round(np.sqrt(unnormalized)/mean_df.g1.mean(), 3)
 ticks = ax.get_xticks()
 ax2.set_xticks(ticks)
-ax2.set_xticklabels(un_normalized(ticks))
-# ax2.set_xlim([0.0, (1.0*mean_df.g1.mean())**2])
-ax2.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$")
+ax2.set_xticklabels(normalized(ticks))
+ax2.set_xlabel(r"$\frac{VPD^n}{g_1}$")
 plt.savefig('./temp.png')
+
+
+
+
+et_true = (delta*r\
+           +g_a*p/t\
+           *(cp*vpd/r_air\
+             -gamma*c_s*vpd**(1/2)\
+             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**wue_power))))\
+             /(delta + gamma)
+d_vpd = diff(et_true, vpd)
+d2_vpd = simplify(diff(d_vpd, vpd))
+soln = solve(d2_vpd.subs((vpd**wue_power + g_1), x), x)
+normed = [sol/g_1 - 1 for sol in soln]
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax2 = ax.twiny()
+n = np.linspace(0.5, 0.99)
+for i, norm in enumerate(normed):
+  func = lambdify([wue_power], norm)
+  # ax.plot([func(_) for _ in n], n, label="sol'n %i-2" % i)
+  ax.plot([(func(_)*mean_df.g1.mean())**2 for _ in n], n, label="sol'n %i" % i)
+ax.set_ylabel("VPD Exponent (n)")
+ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$")
+ax.set_xlim([0., 4000.0])
+ax.set_ylim([0.5, 1.0])
+def un_normalized(normalized):
+  """transform vpd**n/g1 to vpd, assuming n=0.5 and g1=100"""
+  return np.round((normalized*mean_df.g1.mean())**2, 0)
+def normalized(unnormalized):
+  """inverse of un-normalized"""
+  return np.round(np.sqrt(unnormalized)/mean_df.g1.mean(), 3)
+ticks = ax.get_xticks()
+ax2.set_xticks(ticks)
+ax2.set_xticklabels(normalized(ticks))
+ax2.set_xlabel(r"$\frac{VPD^n}{g_1}$")
+plt.savefig('./temp_2.png')
+
+
+
+et_true = (delta*r\
+           +g_a*p/t\
+           *(cp*vpd/r_air\
+             -gamma*c_s*vpd**wue_power\
+             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**(1/2)))))\
+             /(delta + gamma)
+d_vpd = diff(et_true, vpd)
+d2_vpd = simplify(diff(d_vpd, vpd))
+soln = solve(d2_vpd.subs((vpd**0.5 + g_1), x), x)
+normed = [sol/g_1 - 1 for sol in soln]
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax2 = ax.twiny()
+n = np.linspace(0.5, 0.99)
+for i, norm in enumerate(normed):
+  func = lambdify([wue_power], norm)
+  # ax.plot([func(_) for _ in n], n, label="sol'n %i-2" % i)
+  ax.plot([(func(_)*mean_df.g1.mean())**2 for _ in n], n, label="sol'n %i" % i)
+ax.set_ylabel("VPD Exponent")
+ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$")
+ax.set_xlim([0., 4000.0])
+ax.set_ylim([0.5, 1.0])
+def un_normalized(normalized):
+  """transform vpd**n/g1 to vpd, assuming n=0.5 and g1=100"""
+  return np.round((normalized*mean_df.g1.mean())**2, 0)
+def normalized(unnormalized):
+  """inverse of un-normalized"""
+  return np.round(np.sqrt(unnormalized)/mean_df.g1.mean(), 3)
+ticks = ax.get_xticks()
+ax2.set_xticks(ticks)
+ax2.set_xticklabels(normalized(ticks))
+ax2.set_xlabel(r"$\frac{VPD^n}{g_1}$")
+plt.savefig('./temp_3.png')
+
