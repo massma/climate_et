@@ -122,7 +122,8 @@ ax.text(2500., 0.9, 'Concave Down', horizontalalignment='center',\
 ax.text(2500., 0.55, 'Concave Up', horizontalalignment='center',\
         verticalalignment='center', fontdict={'fontsize' : 25})
 
-plt.savefig("../../doc/paper/concave.pdf")
+#plt.savefig("../../doc/paper/concave.pdf")
+plt.savefig("./temp.png")
 
  
 def print_range(name, func):
@@ -138,110 +139,79 @@ def print_range(name, func):
 # print_range("second", second)
 # print_range("third", third)
 
-et_true = (delta*r\
-           +g_a*p/t\
-           *(cp*vpd/r_air\
-             -gamma*c_s*vpd**wue_power\
-             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**wue_power))))\
-             /(delta + gamma)
-d_vpd = diff(et_true, vpd)
-d2_vpd = simplify(diff(d_vpd, vpd))
-soln = solve(d2_vpd.subs((vpd**wue_power + g_1), x), x)
-normed = [sol/g_1 - 1 for sol in soln]
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax2 = ax.twiny()
-n = np.linspace(0.5, 0.99)
-for i, norm in enumerate(normed):
-  func = lambdify([wue_power], norm)
-  # ax.plot([func(_) for _ in n], n, label="sol'n %i-2" % i)
-  ax.plot([(func(_)*mean_df.g1.mean())**2 for _ in n], n, label="sol'n %i" % i)
-ax.set_ylabel("VPD Exponent (n)")
-ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$")
-ax.set_xlim([0., 4000.0])
-ax.set_ylim([0.5, 1.0])
 def un_normalized(normalized):
   """transform vpd**n/g1 to vpd, assuming n=0.5 and g1=100"""
   return np.round((normalized*mean_df.g1.mean())**2, 0)
 def normalized(unnormalized):
   """inverse of un-normalized"""
   return np.round(np.sqrt(unnormalized)/mean_df.g1.mean(), 3)
-ticks = ax.get_xticks()
-ax2.set_xticks(ticks)
-ax2.set_xticklabels(normalized(ticks))
-ax2.set_xlabel(r"$\frac{VPD^n}{g_1}$")
-plt.savefig('./temp.png')
 
-
-
-
-et_true = (delta*r\
+ets = []
+ets.append( (delta*r\
            +g_a*p/t\
            *(cp*vpd/r_air\
              -gamma*c_s*vpd**(1/2)\
              /(r_star*onesix*sigma*uwue*(1+g_1/vpd**wue_power))))\
-             /(delta + gamma)
-d_vpd = diff(et_true, vpd)
-d2_vpd = simplify(diff(d_vpd, vpd))
-soln = solve(d2_vpd.subs((vpd**wue_power + g_1), x), x)
-normed = [sol/g_1 - 1 for sol in soln]
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax2 = ax.twiny()
-n = np.linspace(0.5, 0.99)
-for i, norm in enumerate(normed):
-  func = lambdify([wue_power], norm)
-  # ax.plot([func(_) for _ in n], n, label="sol'n %i-2" % i)
-  ax.plot([(func(_)*mean_df.g1.mean())**2 for _ in n], n, label="sol'n %i" % i)
-ax.set_ylabel("VPD Exponent (n)")
-ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$")
-ax.set_xlim([0., 4000.0])
-ax.set_ylim([0.5, 1.0])
-def un_normalized(normalized):
-  """transform vpd**n/g1 to vpd, assuming n=0.5 and g1=100"""
-  return np.round((normalized*mean_df.g1.mean())**2, 0)
-def normalized(unnormalized):
-  """inverse of un-normalized"""
-  return np.round(np.sqrt(unnormalized)/mean_df.g1.mean(), 3)
-ticks = ax.get_xticks()
-ax2.set_xticks(ticks)
-ax2.set_xticklabels(normalized(ticks))
-ax2.set_xlabel(r"$\frac{VPD^n}{g_1}$")
-plt.savefig('./temp_2.png')
-
-
-
-et_true = (delta*r\
+             /(delta + gamma))
+ets.append((delta*r\
            +g_a*p/t\
            *(cp*vpd/r_air\
              -gamma*c_s*vpd**wue_power\
              /(r_star*onesix*sigma*uwue*(1+g_1/vpd**(1/2)))))\
-             /(delta + gamma)
-d_vpd = diff(et_true, vpd)
-d2_vpd = simplify(diff(d_vpd, vpd))
-soln = solve(d2_vpd.subs((vpd**0.5 + g_1), x), x)
-normed = [sol/g_1 - 1 for sol in soln]
+             /(delta + gamma))
+ets.append( (delta*r\
+           +g_a*p/t\
+           *(cp*vpd/r_air\
+             -gamma*c_s*vpd**wue_power\
+             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**wue_power))))\
+             /(delta + gamma))
+subs = [(vpd**wue_power+g_1), (vpd**(1/2) + g_1), (vpd**wue_power+g_1)]
+labels = ["WUE n fixed, m varying", "WUE n varying, m fixed",\
+          "WUE n varying, m varying"]
+
+
+def gen_func(start_func, subs_func):
+  """generates a lambdified function for plotting, 
+  given a starting function and a subsititute function"""
+  d_vpd = diff(start_func, vpd)
+  d2_vpd = simplify(diff(d_vpd, vpd))
+  soln = solve(d2_vpd.subs(subs_func, x), x)
+  normed = [lambdify([wue_power], sol/g_1-1) for sol in soln]
+  return normed
+
+def plot_curve(ax, normed, label):
+  """plots the curve, given normlaized func"""
+  n = np.linspace(0.5, 0.99)
+  
+  ax.plot([(normed[0](_)*mean_df.g1.mean())**2 for _ in n], n, label=label)
+  return ax
+
+
+plt.close('all')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax2 = ax.twiny()
-n = np.linspace(0.5, 0.99)
-for i, norm in enumerate(normed):
-  func = lambdify([wue_power], norm)
-  # ax.plot([func(_) for _ in n], n, label="sol'n %i-2" % i)
-  ax.plot([(func(_)*mean_df.g1.mean())**2 for _ in n], n, label="sol'n %i" % i)
-ax.set_ylabel("VPD Exponent")
-ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$")
+for et, sub, label in zip(ets, subs, labels):
+  normed = gen_func(et, sub)
+  ax = plot_curve(ax, normed, label)
+ax.set_ylabel("VPD Exponent", fontsize=fontsize)
+ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$ and m=1/2",\
+              fontsize=fontsize)
 ax.set_xlim([0., 4000.0])
 ax.set_ylim([0.5, 1.0])
-def un_normalized(normalized):
-  """transform vpd**n/g1 to vpd, assuming n=0.5 and g1=100"""
-  return np.round((normalized*mean_df.g1.mean())**2, 0)
-def normalized(unnormalized):
-  """inverse of un-normalized"""
-  return np.round(np.sqrt(unnormalized)/mean_df.g1.mean(), 3)
 ticks = ax.get_xticks()
 ax2.set_xticks(ticks)
 ax2.set_xticklabels(normalized(ticks))
-ax2.set_xlabel(r"$\frac{VPD^n}{g_1}$")
-plt.savefig('./temp_3.png')
+# ax2.set_xlabel(r"$\frac{VPD^m}{g_1}$         ", fontsize=fontsize)
+ax2.set_xlabel(r"VPD$^m$/g$_1$", fontsize=fontsize)
+ax.text(1050., 0.95, 'Concave Down', horizontalalignment='center',\
+        verticalalignment='top', fontdict={'fontsize' : 22})
+
+ax.text(2750., 0.53, 'Concave Up', horizontalalignment='center',\
+        verticalalignment='bottom', fontdict={'fontsize' : 22})
+
+ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.6))
+# plt.tight_layout()
+plt.savefig("../../doc/paper/concave.pdf")
+
 
