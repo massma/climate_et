@@ -19,6 +19,7 @@ meta['y_var'] = 'sigma'
 meta['x_label'] = 'VPD (Pa)'
 meta['y_label'] = '$\sigma$'
 meta['pft_plot'] = False
+meta['fontsize'] = single_ax_fontsize+3
 plot_tools.scatter_wrapper(df, meta)
 os.system('cp %s/climate_et/scatters/vpd_sigma.pdf '\
           '../../doc/paper/joint_vpd_sigma.pdf'\

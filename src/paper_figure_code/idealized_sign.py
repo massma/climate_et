@@ -6,7 +6,6 @@ from shared_functions import *
 
 # mean_df defined her at module-level
 
-fontsize=10
 
 linewidth=2.5
 dashedlinewidth=3.0
@@ -21,9 +20,6 @@ paren_string = r'$\left(\frac{ c_p}{R_{air}} '\
                r'- \frac{\gamma c_a }{1.6 \; R\; uWUE  }'\
                r'\left( \frac{2 g_1 + \sqrt{VPD}}'\
                r'{2 (g_1 + \sqrt{VPD})^2}\right)\right)$'
-
-if PLOT_TALK:
-  fontsize=14
 
 # mask pft order from shared func to do top to bottom legnend
 pft_order = ['CRO', 'DBF', 'EBF', 'MF', 'ENF', 'GRA', 'SAV', 'WSA',  'CSH']
@@ -86,9 +82,9 @@ for pft in pft_order:
   _df = df.loc[df.pft == pft, :]
   pft_leaf(_df, axs)
 
-axs[1].set_xlabel('VPD (Pa)', fontsize=fontsize)
+axs[1].set_xlabel('VPD (Pa)', fontsize=single_ax_fontsize)
 #axs[3].set_xlabel('$\sigma$')
-axs[0].set_ylabel(paren_string, fontsize=fontsize)
+axs[0].set_ylabel(paren_string, fontsize=single_ax_fontsize)
 axs[0].plot(vpd_xlim, [0., 0.], 'k--', linewidth=linewidth)
 if PLOT_PET:
   axs[0].plot(vpd_xlim, [d_calc.CP/287.0, d_calc.CP/287.0],\
@@ -103,7 +99,7 @@ axs[1].set_xlim(vpd_xlim)
 for ax in axs[:1]:
   h, l = ax.get_legend_handles_labels()
   if not PLOT_PET:
-    ax.legend(h, l, loc='best', fontsize=fontsize)
+    ax.legend(h, l, loc='best', fontsize=single_ax_fontsize-4)
 # plt.legend(loc='best')
 plt.tight_layout()
 if PLOT_TALK:

@@ -25,6 +25,8 @@ small_ax_params['xtick.labelsize'] = label_size
 small_ax_params['ytick.labelsize'] = label_size
 small_ax_fontsize = 19
 fontsize=16
+single_ax_fontsize = 14
+
 
 importlib.reload(util)
 importlib.reload(plot_tools)

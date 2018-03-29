@@ -217,8 +217,8 @@ def test_trend(_df, meta, fig=None):
   if meta['plot_type'] == 'simple':
     ax = fig.add_subplot(111)
     ax.scatter(_df[meta['x_var']], _df[meta['y_var']], s=8)
-    ax.set_xlabel(meta['x_label'])
-    ax.set_ylabel(meta['y_label'])
+    ax.set_xlabel(meta['x_label'], fontsize=meta['fontsize'])
+    ax.set_ylabel(meta['y_label'], fontsize=meta['fontsize'])
     ax.set_title('spearmanr = %f'\
                  % spearmanr(_df[meta['x_var']],\
                              _df[meta['y_var']]).correlation)
@@ -231,7 +231,8 @@ def test_trend(_df, meta, fig=None):
     spear = lambda a, b: spearmanr(a, b).correlation
     g = g.annotate(spear, template="{stat}: {val:.2f}",
                    stat="Spearman R", loc="upper right", fontsize=10)
-    g.set_axis_labels(meta['x_label'], meta['y_label'])
+    g.set_axis_labels(meta['x_label'], meta['y_label'],\
+                      fontsize=meta['fontsize'])
 
   if meta['full_ds']:
     util.test_savefig('%s/climate_et/scatters/%s_%s.pdf'\
@@ -258,6 +259,8 @@ def scatter_wrapper(df, meta):
     meta['x_label'] = meta['x_var']
   if 'y_label' not in meta:
     meta['y_label'] = meta['y_var']
+  if 'fontsize' not in meta:
+    meta['fontsize'] = None
   meta['full_ds'] = True
   test_trend(df, meta)
   # meta['full_ds'] = False

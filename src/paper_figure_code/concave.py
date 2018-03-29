@@ -6,25 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from shared_functions import *
 
-pft_order = ['CSH', 'MF', 'SAV', 'ENF',\
-             'EBF', 'WSA', 'DBF',  'CRO', 'GRA']
-
 plt.close('all')
-def plot_second_derivative(row, ax, zero_func):
-  """
-  given a fucntion for second derivative, makes a plot
-  vpd on x axis wue power on y axis
-  """
-
-  # _vpd = np.linspace(dfs['5'].loc[row.pft, 'vpd'],\
-  #                    dfs['95'].loc[row.pft, 'vpd'])
-  _vpd = np.linspace(10., 4000.)
-  _w_power = [zero_func(vpd, row.g1) for vpd in _vpd]
-  print(np.nanmin(_w_power))
-  ax.plot(_vpd, _w_power,\
-          label="%s: g1: %5.1f"\
-          % (row.pft, np.round(row.g1, 1)))
-  return
 
 init_printing()
 # init rad
@@ -36,109 +18,6 @@ gamma, c_s, r_star, uwue, g_1, onesix = symbols('gamma c_s R* uWUE g_1 1.6')
 
 vpd, delta = symbols('VPD Delta')
 
-# powers
-wue_power = symbols('n')
-
-et_true = (delta*r\
-           +g_a*p/t\
-           *(cp*vpd/r_air\
-             -gamma*c_s*vpd**wue_power\
-             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**(1/2)))))\
-             /(delta + gamma)
-et_pm = (delta*r + g_a*p/(t*r_air)*cp*vpd)/(delta+gamma*(1+g_a/g_s))
-et = symbols('ET')
-rhs = et_pm.subs(g_s, r_star*t/p*onesix*(1+ g_1/vpd**(1/2))\
-                 *sigma*uwue*et/(c_s*vpd**wue_power))
-
-# step 1
-lhs = et*(delta+gamma*(1+g_a/(r_star*t/p*onesix*(1+ g_1/vpd**(1/2))\
-                 *sigma*uwue*et/(c_s*vpd**wue_power))))
-rhs = rhs*(delta+gamma*(1+g_a/(r_star*t/p*onesix*(1+ g_1/vpd**(1/2))\
-                 *sigma*uwue*et/(c_s*vpd**wue_power))))
-
-# step 2
-lhs = simplify(lhs - g_a*gamma/(r_star*t/p*onesix*(1+ g_1/vpd**(1/2))\
-                 *sigma*uwue/(c_s*vpd**wue_power)))
-rhs = rhs - g_a*gamma/(r_star*t/p*onesix*(1+ g_1/vpd**(1/2))\
-                 *sigma*uwue/(c_s*vpd**wue_power))
-
-#step 3
-lhs = lhs/(delta + gamma)
-rhs = rhs/(delta + gamma)
-
-#check
-
-if simplify(rhs-et_true) == 0:
-  et = et_true
-else:
-  raise ValueError("Algebra error somewhere")
-
-def sgn(expr):
-  """crudely returns the sign term given the d_et derivative"""
-  sign = expr*t*(delta+gamma)/(p*g_a)
-  neg = sign- cp/r_air
-  coll = collect(neg, (c_s*gamma/(1.6*r_star*sigma*uwue*onesix)))
-  return coll
-
-d_vpd = diff(et, vpd)
-# d_vpd = diff(et, e_s)+diff(et, rh)
-sign = sgn(d_vpd)
-d2_vpd = diff(d_vpd, vpd)
-# d2_vpd = diff(d_vpd, e_s) + diff(d_vpd, rh)
-et
-vpd
-simple_second = simplify(d2_vpd)
-sign_terms = simple_second\
-             *(r_star*t*vpd**6*uwue*(delta + gamma)*(vpd**(1/2)+g_1)**3)
-sign_terms = simplify(sign_terms\
-                      /(p*vpd**(wue_power+1/2+4)*c_s*g_a*gamma))
-# sign_func = lambdify([wue_power, vpd, g_1], sign_terms)
-
-# plot_second_derivative(sign_func, 'medlyn')
-mean_df['pft'] = mean_df.index
-zeros = solve(d2_vpd, wue_power)
-first = zeros[0]# this solution unphysical, n = complex infinity/log(VPD)
-second = zeros[1] # this solution unphysical,-0.5 <= n <= 0
-third = zeros[2] # this solutions is physically reasonable, with 0.5 <= n <= 1
-uwue_n_zeros = lambdify([vpd,  g_1],\
-                        third)
-
-d2_uwue = simple_second.subs(wue_power, 1/2)
-zeros_uwue = solve(d2_uwue, g_1)
-
-fig = plt.figure()
-ax = fig.add_subplot(111)
-for pft in pft_order:
-  plot_second_derivative(mean_df.loc[pft, :], ax, uwue_n_zeros)
-ax.set_xlabel('VPD (Pa)', fontsize=fontsize)
-ax.set_ylabel(r'WUE VPD power ($\frac{GPP \cdot VPD^n}{ET}$)',\
-              fontsize=fontsize)
-ax.set_ylim([0.5, 1.0])
-ax.set_xlim([0.0, 4000.])
-plt.legend(loc="best")
-ax.text(2500., 0.9, 'Concave Down', horizontalalignment='center',\
-        verticalalignment='center', fontdict={'fontsize' : 25})
-
-ax.text(2500., 0.55, 'Concave Up', horizontalalignment='center',\
-        verticalalignment='center', fontdict={'fontsize' : 25})
-
-#plt.savefig("../../doc/paper/concave.pdf")
-plt.savefig("./temp.png")
-
- 
-def print_range(name, func):
-  """prints out limits of function"""
-  print("\n****%s solution****" % name, func)
-  print("limit of uwue n as g1 to infinity: ", simplify(limit(func, g_1, oo)))
-  print("limit of uwue n as g1 to zero: ", simplify(limit(func, g_1, 0)))
-  print("limit of uwue n as vpd to infinity: ", simplify(limit(func, vpd, oo)))
-  print("limit of uwue n as vpd to zero: ", simplify(limit(func, vpd, 0)))
-  return
-
-# print_range("first", first)
-# print_range("second", second)
-# print_range("third", third)
-
 def un_normalized(normalized):
   """transform vpd**n/g1 to vpd, assuming n=0.5 and g1=100"""
   return np.round((normalized*mean_df.g1.mean())**2, 0)
@@ -146,46 +25,46 @@ def normalized(unnormalized):
   """inverse of un-normalized"""
   return np.round(np.sqrt(unnormalized)/mean_df.g1.mean(), 3)
 
-ets = []
-ets.append( (delta*r\
+n, m = symbols('n m')
+et = (delta*r\
            +g_a*p/t\
            *(cp*vpd/r_air\
-             -gamma*c_s*vpd**(1/2)\
-             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**wue_power))))\
-             /(delta + gamma))
-ets.append((delta*r\
-           +g_a*p/t\
-           *(cp*vpd/r_air\
-             -gamma*c_s*vpd**wue_power\
-             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**(1/2)))))\
-             /(delta + gamma))
-ets.append( (delta*r\
-           +g_a*p/t\
-           *(cp*vpd/r_air\
-             -gamma*c_s*vpd**wue_power\
-             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**wue_power))))\
-             /(delta + gamma))
-subs = [(vpd**wue_power+g_1), (vpd**(1/2) + g_1), (vpd**wue_power+g_1)]
-# labels = ["WUE n fixed, m varying", "WUE n varying, m fixed",\
-#           "WUE n varying, m varying"]
+             -gamma*c_s*vpd**n\
+             /(r_star*onesix*sigma*uwue*(1+g_1/vpd**m))))\
+             /(delta + gamma)
+d_vpd = diff(et, vpd)
+d2_vpd = simplify(diff(d_vpd, vpd))
+soln = solve(d2_vpd.subs((vpd**m + g_1), x), x)
+soln = [sol/g_1 - 1 for sol in soln] # equals vpd**m/g1
+print("\n")
+for sol in soln:
+  pprint(sol, use_unicode=True)
+
+fh = open("../../doc/paper/d2_solutions.tex", "w")
+fh.write("\\begin{equation}\n")
+fh.write("\\frac{\\partial^2 \; ET}{\\partial \\; VPD^2} = 0 "\
+         "\\quad \\forall \\quad")
+fh.write("%s%s%s" % ("\\frac{VPD^m}{g1} = ", latex(soln[0]), "\n"))
+fh.write("\\end{equation}\n")
+fh.close()
+
+### test
+substitutes = [{n : 1/2, m : m}, {n : n, m : 1/2}, {n : m, m : m}]
+solve_vars = [m, n, m]
 labels = ["n=1/2, m varying", "n varying, m=1/2",\
           "n=m, both vary"]
 
 
-def gen_func(start_func, subs_func):
-  """generates a lambdified function for plotting, 
+def gen_func(substitute, solve_var, soln):
+  """generates a lambdified function for plotting,
   given a starting function and a subsititute function"""
-  d_vpd = diff(start_func, vpd)
-  d2_vpd = simplify(diff(d_vpd, vpd))
-  soln = solve(d2_vpd.subs(subs_func, x), x)
-  normed = [lambdify([wue_power], sol/g_1-1) for sol in soln]
-  return normed
+  subbed = [lambdify([solve_var], sol.subs(substitute)) for sol in soln]
+  return subbed
 
-def plot_curve(ax, normed, label):
+def plot_curve(ax, subbed, label):
   """plots the curve, given normlaized func"""
-  n = np.linspace(0.5, 0.99)
-  
-  ax.plot([(normed[0](_)*mean_df.g1.mean())**2 for _ in n], n, label=label)
+  n = np.linspace(0.5, 0.9999999) # singlulatity at 1
+  ax.plot([(subbed[0](_)*mean_df.g1.mean())**2 for _ in n], n, label=label)
   return ax
 
 
@@ -193,27 +72,28 @@ plt.close('all')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax2 = ax.twiny()
-for et, sub, label in zip(ets, subs, labels):
-  normed = gen_func(et, sub)
-  ax = plot_curve(ax, normed, label)
-ax.set_ylabel("VPD Exponent", fontsize=fontsize)
+for sub, solve_var, label in zip(substitutes, solve_vars, labels):
+  subbed = gen_func(sub, solve_var, soln)
+  ax = plot_curve(ax, subbed, label)
+ax.set_ylabel(r"VPD Exponent (m: $\frac{g_1}{VPD^m}$, "\
+              r"n: $\frac{GPP}{ET}VPD^n$)", fontsize=single_ax_fontsize)
 ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$ and m=1/2",\
-              fontsize=fontsize)
+              fontsize=single_ax_fontsize)
 ax.set_xlim([0., 4000.0])
 ax.set_ylim([0.5, 1.0])
 ticks = ax.get_xticks()
 ax2.set_xticks(ticks)
 ax2.set_xticklabels(normalized(ticks))
-# ax2.set_xlabel(r"$\frac{VPD^m}{g_1}$         ", fontsize=fontsize)
-ax2.set_xlabel(r"VPD$^m$/g$_1$", fontsize=fontsize)
+# ax2.set_xlabel(r"$\frac{VPD^m}{g_1}$         ", fontsize=single_ax_fontsize)
+ax2.set_xlabel(r"VPD$^m$/g$_1$", fontsize=single_ax_fontsize)
 ax.text(1050., 0.95, 'Concave Down', horizontalalignment='center',\
         verticalalignment='top', fontdict={'fontsize' : 22})
-
 ax.text(2750., 0.53, 'Concave Up', horizontalalignment='center',\
         verticalalignment='bottom', fontdict={'fontsize' : 22})
-
-ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.6))
+ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.6),
+          fontsize=single_ax_fontsize-4)
 # plt.tight_layout()
 plt.savefig("../../doc/paper/concave.pdf")
+
 
 
