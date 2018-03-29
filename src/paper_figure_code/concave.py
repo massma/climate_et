@@ -166,8 +166,10 @@ ets.append( (delta*r\
              /(r_star*onesix*sigma*uwue*(1+g_1/vpd**wue_power))))\
              /(delta + gamma))
 subs = [(vpd**wue_power+g_1), (vpd**(1/2) + g_1), (vpd**wue_power+g_1)]
-labels = ["WUE n fixed, m varying", "WUE n varying, m fixed",\
-          "WUE n varying, m varying"]
+# labels = ["WUE n fixed, m varying", "WUE n varying, m fixed",\
+#           "WUE n varying, m varying"]
+labels = ["n=1/2, m varying", "n varying, m=1/2",\
+          "n=m, both vary"]
 
 
 def gen_func(start_func, subs_func):
