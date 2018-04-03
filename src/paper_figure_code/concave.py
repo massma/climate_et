@@ -44,7 +44,7 @@ fh = open("../../doc/paper/d2_solutions.tex", "w")
 fh.write("\\begin{equation}\n")
 fh.write("\\frac{\\partial^2 \; ET}{\\partial \\; VPD^2} = 0 "\
          "\\quad \\forall \\quad")
-fh.write("%s%s%s" % ("\\frac{VPD^m}{g1} = ", latex(soln[0]), "\n"))
+fh.write("%s%s%s" % ("\\frac{VPD^m}{g1} = ", latex(soln[0]), ".\n"))
 fh.write("\\label{curves}\n")
 fh.write("\\end{equation}\n")
 fh.close()
