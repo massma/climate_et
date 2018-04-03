@@ -45,6 +45,7 @@ fh.write("\\begin{equation}\n")
 fh.write("\\frac{\\partial^2 \; ET}{\\partial \\; VPD^2} = 0 "\
          "\\quad \\forall \\quad")
 fh.write("%s%s%s" % ("\\frac{VPD^m}{g1} = ", latex(soln[0]), "\n"))
+fh.write("\\label{curves}\n")
 fh.write("\\end{equation}\n")
 fh.close()
 
@@ -75,9 +76,9 @@ ax2 = ax.twiny()
 for sub, solve_var, label in zip(substitutes, solve_vars, labels):
   subbed = gen_func(sub, solve_var, soln)
   ax = plot_curve(ax, subbed, label)
-ax.set_ylabel(r"VPD Exponent (m: $\frac{g_1}{VPD^m}$, "\
+ax.set_ylabel(r"VPD Exponent (m: $\frac{g_*}{VPD^m}$, "\
               r"n: $\frac{GPP}{ET}VPD^n$)", fontsize=single_ax_fontsize)
-ax.set_xlabel(r"VPD (Pa), assuming g1=110 Pa$^{0.5}$ and m=1/2",\
+ax.set_xlabel(r"VPD (Pa), assuming g$_*$=110 Pa$^{0.5}$ and m=1/2",\
               fontsize=single_ax_fontsize)
 ax.set_xlim([0., 4000.0])
 ax.set_ylim([0.5, 1.0])
@@ -85,7 +86,7 @@ ticks = ax.get_xticks()
 ax2.set_xticks(ticks)
 ax2.set_xticklabels(normalized(ticks))
 # ax2.set_xlabel(r"$\frac{VPD^m}{g_1}$         ", fontsize=single_ax_fontsize)
-ax2.set_xlabel(r"VPD$^m$/g$_1$", fontsize=single_ax_fontsize)
+ax2.set_xlabel(r"VPD$^m$/g$_*$", fontsize=single_ax_fontsize)
 ax.text(1050., 0.95, 'Concave Down', horizontalalignment='center',\
         verticalalignment='top', fontdict={'fontsize' : 22})
 ax.text(2750., 0.53, 'Concave Up', horizontalalignment='center',\
@@ -96,4 +97,18 @@ ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.6),
 plt.savefig("../../doc/paper/concave.pdf")
 
 
+
+plt.figure()
+x = np.linspace(300.0, 4000.)
+for m in np.linspace(0.5, 1.0, 10):
+  plt.plot(x, -m*2.8*x**(-m-1), label="m=%5.2f" % m)
+plt.legend(loc="best")
+plt.savefig("./temp.png")
+
+plt.figure()
+x = np.linspace(300.0, 4000.)
+for m in np.linspace(0.5, 1.0, 10):
+  plt.plot(x, 2.8*x**(-m), label="m=%5.2f" % m)
+plt.legend(loc="best")
+plt.savefig("./temp_2.png")
 
