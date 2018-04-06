@@ -6,37 +6,37 @@ doc/paper/concave.pdf
 
 # you'll need to rerun data if you make any changes to the analysis script
 data :
-	cd ./src && python3 analysis.py
+	cd ./src && python analysis.py
 
 figure-all :
-	cd ./src/paper_figure_code && python3 runall.py
+	cd ./src/paper_figure_code && python runall.py
 
 doc/paper/idealized_scale.pdf :
-	cd src/paper_figure_code && python3 idealized_scale.py
+	cd src/paper_figure_code && python idealized_scale.py
 
 doc/paper/idealized_sign.pdf :
-	cd src/paper_figure_code && python3 idealized_sign.py
+	cd src/paper_figure_code && python idealized_sign.py
 
 doc/paper/joint_vpd_sigma.pdf :
-	cd src/paper_figure_code && python3 joint_vpd_sigma.py
+	cd src/paper_figure_code && python joint_vpd_sigma.py
 
 doc/paper/map.pdf :
-	cd src/paper_figure_code && python3 map.py
+	cd src/paper_figure_code && python map.py
 
 doc/paper/swc_boxplot.pdf :
-	cd src/paper_figure_code && python3 swc_boxplot.py
+	cd src/paper_figure_code && python swc_boxplot.py
 
 doc/paper/test_sign.pdf :
-	cd src/paper_figure_code && python3 test_sign.py
+	cd src/paper_figure_code && python test_sign.py
 
 doc/paper/concave.pdf :
-	cd src/paper_figure_code && python3 concave.py
+	cd src/paper_figure_code && python concave.py
 
 doc/paper/data_scatter.png : doc/paper/data_scatter.bak
 	cd doc/paper && cp data_scatter.bak data_scatter.png
 
 doc/paper/data_scatter.bak :
-	cd src/paper_figure_code && python3 data_scatter.py
+	cd src/paper_figure_code && python data_scatter.py
 	cd doc/paper && mv data_scatter.png data_scatter.bak
 
 paper : $(FIGURES) 
