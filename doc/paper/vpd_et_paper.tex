@@ -38,7 +38,7 @@
 \begin{abstract}
   Increasing vapor pressure deficit increases atmospheric demand for
   water, and vapor pressure deficit is expected to rise with
-  increasing CO$_2$. While increased evapotranspiration (ET) in
+  increasing greenhouse gases. While increased evapotranspiration (ET) in
   response to increased atmospheric demand seems intuitive, plants are
   capable of reducing ET in response to increased VPD by closing their
   stomata, in an effort to conserve water. Here we examine which
@@ -109,13 +109,14 @@ standpoint. As a counterpoint, one may argue that increases in ET with
 increasing VPD could increase the likelihood of precipitation
 \citep[e.g.,][]{Findell_2011}. However, increases in ET do not always
 guarantee an increased likelihood of precipitation, which depending on
-environmental conditions could cause a decrease in the likelihood
-of precipitation \citep[][]{Gentine_2013}. Furthermore, any increases
-in precipitation are likely to be non-local, such that plants giving
-up water to the atmosphere are not guaranteed to reap the benefits of
-water returned from the atmosphere to the soil. Using this logic, from
-an ecosystem evolutionary perspective, water stored in soil is worth
-much more than the chance of water returned as precipitation.
+environmental conditions could cause a decrease in the likelihood of
+precipitation \citep[][]{Gentine_2013}. Furthermore, any increases in
+precipitation are likely to be non-local, such that plants giving up
+water to the atmosphere are not guaranteed to reap the benefits of
+water returned from the atmosphere to the soil. Using this subjective
+logic, from an ecosystem evolutionary perspective, water stored in
+soil seems to be worth much more than the chance of water returned as
+precipitation.
 
 We can use intuition about plant water conservation strategy to
 hypothesize about ET response to changes in VPD. Plants and ecosystems
@@ -146,23 +147,25 @@ sensitivity of ET to VPD, including VPD's effect on stomatal
 conductance and plant function.
 
 Recent results have drastically improved our understanding of VPD's
-impact on physiology. \citet{MEDLYN_2011} developed a model for
-leaf-scale stomatal conductance ($g_s$), including VPD response, by
-combining an optimal photosynthesis theory \citep{Farquhar_1980,
-  Katul_2010} with an empirical approach, and extended use of this
-model to the ecosystem scale in \citet{Medlyn_2017}. Additionally,
-\citet{Zhou_2014} demonstrated that a quantity underlying water use
-efficiency $\left(uWUE = \frac{GPP\; \sqrt{VPD}}{ET}\right)$ properly
-captures a constant relationship between GPP, ET, and VPD over a
-diurnal cycle. uWUE is also remarkably well conserved in the growing
-season across space and time, within a PFT \citep{Zhou_2015}. These
-results provide novel tools to examine how ET varies in response to
-VPD, while explicitly including VPD's effect on stomatal conductance
-for the first time. In this manuscript, we leverage these tools to
-derive the theoretical response of ET to VPD using a Penman Monteith
-framework. Our theory is validated and tested at multiple
-eddy-covariance stations spanning various climates and plant
-functional types.
+impact on physiology, especially at the leaf
+level. \citet{MEDLYN_2011} developed a model for leaf-scale stomatal
+conductance ($g_s$), including VPD response, by combining an optimal
+photosynthesis theory \citep{Farquhar_1980, Katul_2010} with an
+empirical approach, and extended use of this model to the ecosystem
+scale in \citet{Medlyn_2017}. Additionally, \citet{Zhou_2014}
+demonstrated that a quantity underlying water use efficiency
+$\left(uWUE = \frac{GPP\; \sqrt{VPD}}{ET}\right)$ properly captures a
+constant relationship between GPP, ET, and VPD over a diurnal cycle at
+the ecosystem scale. uWUE is also remarkably well conserved in the
+growing season across space and time, within a PFT
+\citep{Zhou_2015}. These results provide novel tools to examine how ET
+varies in response to VPD, while explicitly including VPD's effect on
+stomatal conductance for the first time. In this manuscript, we
+leverage these tools to derive the theoretical one-way response of ET
+to VPD with other environmental variables properly controlled for,
+i.e. we take the partial derivative of ET with respect to VPD. Our
+theory is validated and tested at multiple eddy-covariance stations
+spanning various climates and plant functional types.
 
 \section{Materials and Methods}
 \subsection{Data}
@@ -317,7 +320,7 @@ of m s$^{-1}$, the ecosystem scale stomatal conductance is:
 where GPP is the ecosystem scale gross primary production, and $g_1$
 is an ecosystem scale analogue to $g_{1-leaf}$. We solve for $g_1$
 following \citet{Medlyn_2017} (Equation 5), and take the median $g_1$
-value to be representative of each PFT (Table \ref{pft}).
+value to be representative of each PFT instead of the mean to avoid extra weighting of rare outliers (Table \ref{pft}).
 
 \begin{table}
   \caption{Plant functional types, their abbreviation, calculated
@@ -365,9 +368,12 @@ Efficiency (uWUE):
 
 is relatively constant across time and moisture conditions within a
 plant functional type, and correctly captures a constant relationship
-between GPP, ET and VPD over a diurnal cycle \citep{Zhou_2014}. We can
-use uWUE to remove the $GPP$ dependence from $g_s$ in a way that makes
-the PM equation analytically tractable:
+between GPP, ET and VPD over a diurnal cycle \citep{Zhou_2014}. The
+theoretical derivation of the square root VPD dependence in $uWUE$
+leverages the same asumptions used in \cite{MEDLYN_2011} to derive the
+square-root VPD dependence of the stomatal conductace model (Equation
+\ref{medlyn}).  We can use uWUE to remove the $GPP$ dependence from
+$g_s$ in a way that makes the PM equation analytically tractable:
 
 \begin{linenomath*}
   \begin{equation}
@@ -387,15 +393,16 @@ dependence on $GPP$ is removed:
   \end{equation}
 \end{linenomath*}
 
-With Equation \ref{et} we have derived for the first time, using
-recent results \citep[][]{MEDLYN_2011, Zhou_2014, Zhou_2015,
-  Medlyn_2017}, ET explicitly as function of environmental variables
-and two plant-specific constants, the slope parameter ($g_1$), and
-uWUE, both reflecting water conservation strategy. The slope parameter
-is related to the willingness of stomata to trade water for CO$_2$ and
-to keep stomata open. uWUE is a semi-empirical ecosystem-scale
-constant related to how WUE changes with VPD (specifically
-$VPD^{-1/2}$). It is also roughly proportional to physical constants:
+By accounting for photosythesis changes in ecosystem conductace, with
+Equation \ref{et} we have derived for the first time, using recent
+results \citep[][]{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017}, ET
+explicitly as function of environmental variables and two
+plant-specific constants, the slope parameter ($g_1$), and uWUE, both
+reflecting water conservation strategy. The slope parameter is related
+to the willingness of stomata to trade water for CO$_2$ and to keep
+stomata open. uWUE is a semi-empirical ecosystem-scale constant
+related to how WUE changes with VPD (specifically $VPD^{-1/2}$). It is
+also roughly proportional to physical constants:
 
 \[uWUE \appropto \sqrt{\frac{c_a - \Gamma}{1.6 \lambda}},\]
 
@@ -461,42 +468,37 @@ $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET}
 independent, which is supported by the data (not shown).
 
 This derivation relied either implicitly or explicitly on several
-assumptions. First, the underlying theory used to derive Equations
-\ref{leaf_medlyn} and \ref{medlyn} rely on an implicit assumption that
-$ET=g_s \cdot VPD$; physically this implies that leaves are perfectly
+assumptions. First, we assume that VPD at the leaf surface is the same as VPD at measurement height; physically this implies that leaves are perfectly
 coupled to the atmosphere. In reality, for some conditions and plant
 types the leaves can become decoupled from the boundary layer
 \citep{De_2017, Medlyn_2017}. Given our focus on the growing season,
 which is usually characterized by relatively high insolation inducing
-instability and convective boundary layers, we would
-expect the surface to be generally well coupled. Additionally, by following
-\citet{Medlyn_2017}'s method for calculating ecosystem scale $g_1$
-using PM,
-we have stronger confidence that surface coupling is represented
-within our framework, even if it is not represented in the underlying
-theory used to develop stomatal conductance ($g_s$). An additional
-assumption in the formulation of $uWUE$
-\citep{Zhou_2014, Zhou_2015} and
-\citet{Medlyn_2017}'s stomatal conductance model is that
-direct soil evaporation (E) contributions to ET remain
-small relative to transpiration (T). This should be more true during the growing season. However, some plant types allow for systematically larger
-contributions of ``E'' in ET, particularly those with less dense
-canopies and smaller absolute amounts of transpiration. We therefore
-might expect that the theory will be most applicable to forest PFTs,
-which will be most strongly coupled to the boundary layer due to
-larger surface roughness, and will also generally have the highest
-ratios of transpiration to evaporation. Finally, for the goal of
-developing PFT-wide intuition, we assume that $g_1$ and $uWUE$ are
-constant in space and time. Both quantities have been shown to be well
-conserved over space and time within a PFT relative to inter-PFT
-variability. However, we would expect them to vary somewhat with
-environmental conditions including soil water content, temperature, and
-with intra-PFT plant-specific characteristics like wood density for
-tree PFTs \citep{Lin_2015}. Given these strong assumptions made with
-the goal of understanding broad, leading order plant behaviors, we
-take the extra care of including and analyzing uncertainty (Section
-\ref{testing}) and examining sensitivity to the exponent of the VPD
-response, which is derived using assumptions that $ET=g_s \cdot VPD$ (Section
+instability and convective boundary layers, we would expect the
+surface to be generally well coupled. An
+additional assumption in the formulation of $uWUE$ \citep{Zhou_2014,
+  Zhou_2015} and \citet{Medlyn_2017}'s stomatal conductance model is
+that direct soil evaporation (E) contributions to ET remain small
+relative to transpiration (T). This should be more true during the
+growing season. The ratio of E to T may increase immediately after
+rainfall events due to high soil moisture and ponding, but VPD is
+generally low anyways during these times. However, some plant types
+allow for systematically larger contributions of E in ET,
+particularly those with sparse canopies and smaller relative amounts
+of transpiration. We therefore might expect that the theory will be
+most applicable to forest PFTs, which will be most strongly coupled to
+the boundary layer due to larger surface roughness, and will also
+generally have the highest ratios of transpiration to
+evaporation. Finally, for the goal of developing PFT-wide intuition,
+we assume that $g_1$ and $uWUE$ are constant in space and time. Both
+quantities have been shown to be well conserved over space and time
+within a PFT relative to inter-PFT variability. However, we would
+expect them to vary somewhat with environmental conditions including very low
+soil water content, temperature, and with intra-PFT plant-specific
+characteristics like wood density for tree PFTs
+\citep{Lin_2015}. Given these strong assumptions made with the goal of
+understanding broad, leading order plant behaviors, we take the extra
+care of including and analyzing uncertainty (Section \ref{testing})
+and examining sensitivity to the exponent of the VPD response (Section
 \ref{functional_form}).
 
 We note one final comment on our derivation which is relevant for
@@ -510,9 +512,10 @@ exchange at the land surface and would only require fitting of uWUE
 and $g_1$, and can also account for changes in CO$_2$ concentration
 (assuming some relationship between $\lambda$ and [CO$_2$]), contrary
 to typical drought indices such as the Palmer Drought Severity Index
-(PDSI) \citep{Swann_2016}. Lastly, all code and data used in this
-analysis, including those used to generate the figures and tables, are
-publicly available at https://github.com/massma/climate\_et.
+(PDSI) \citep{Swann_2016, Lemordant_2016, Lemordant_2018}. Lastly, all
+code and data used in this analysis, including those used to generate
+the figures and tables, are publicly available at
+https://github.com/massma/climate\_et.
 
 \section{Results}
 \label{results}
@@ -854,8 +857,8 @@ in the distribution of environmental VPD (e.g. SAV and WSA grow in
 more arid climates, Figure \ref{idealized_sign}). In general the bulk
 statistics match our theoretical expectations well, with the caveat
 that inclusion of uncertainty shifts crops towards a slightly more
-negative response, and shifts many of the other PFTs, which still
-exhibit a high frequency of negative ET response, towards more frequent
+negative response to VPD, and shifts many of the other PFTs, which still
+exhibit a high frequency of negative ET response to VPD, towards more frequent
 occurrence of positive ET response than the theory and Figure
 \ref{idealized_sign} would suggest. The bulk statistics motivate a
 more thorough examination of the structure of uncertainty and more
