@@ -926,13 +926,14 @@ functional form of the sign term (Figure
 the variables in the sign term must change at extreme VPD (upper
 10-20\%). The most likely candidate is $uWUE$, which we have assumed
 constant to meet our goal of developing intuition for leading order
-behavior, but might be expected to decrease at extremely low SWC,
-which should be correlated with high VPD. The theory for EBF exhibits
-similar limitations as for ENF, WSA, and SAV, except a larger
-portion of observations are biased negative as compared to the theory
-($\approx$ 35\%, Figure \ref{test_sign}). However, in general, and
-specifically for non-extreme VPD (VPD < $\approx$70-90th percentiles), the theory matches the observations
-for the tree and savannah plant types.
+behavior, but might be expected to decrease at extremely low SWC, and should be correlated with high VPD in very dry environments
+through sensible heating increases \citep{Gentine_2016}. The theory
+for EBF exhibits similar limitations as for ENF, WSA, and SAV, except
+a larger portion of observations are biased negative as compared to
+the theory ($\approx$ 35\%, Figure \ref{test_sign}). However, in
+general, and specifically for non-extreme VPD (VPD < $\approx$70-90th
+percentiles), the theory matches the observations for the tree and
+savannah plant types well.
 
 The theory for GRA suffers from similar, but much more severe,
 limitations as for CRO, WSA, and SAV. GRA observations are
@@ -974,8 +975,7 @@ moisture). To focus on general behavior and develop intuition for
 PFT-scale response, we have ignored these sources of variability in
 the present analysis. However, any site-specific or temporal plant
 functional variability that can be conceptualized with shifts to $g_1$
-and $uWUE$ can be analyzed with our framework. This opens a door to a
-myriad future analysis in which plant behavior in anomalous conditions
+and $uWUE$ can be analyzed with our framework. This opens a door to future analyses in which plant behavior in anomalous conditions
 can be explained and analyzed using Equation \ref{et}.
 
 % It is useful to also compare our theory, the observed uncertainty in
@@ -1035,9 +1035,9 @@ the most water conservative, with a strong negative response. DBF,
 EBF, ENF, MF, SAV and WSA are also water conservative, but show some
 occurrence of positive ET response to VPD, particularly at higher
 observed VPD, as the theory predicts. GRA, while generally water
-conservative, does not match the theory, with increasing frequency of
+conservative, does not match the theory well, with increasing frequency of
 \textit{negative} response at high VPD. This is as expected, given
-discussion in Section \ref{testing}.
+previous discussion on how we might expect more inter-site and inter-year variability for GRA (Section \ref{testing}).
 
 Figure \ref{data_scatter} also includes the impact of the scaling
 term. For a given VPD, the magnitude of ET response does not vary
@@ -1101,7 +1101,7 @@ in Figure \ref{swc_boxplot}). And, CRO, relative to DBF, has a very
 weak dependence on soil moisture, which is reflective of the high
 likelihood that CRO sites are optimally irrigated and not water
 stressed, suggesting that observed departures from the theory for CRO
-are due to other factors (i.e. photosynthesis pathway) than soil
+are due to other factors (i.e. different photosynthesis pathways; C3/C4) than soil
 moisture. For ENF, EBF, SAV, and WSA, systematic SWC-induced biases in
 $\sigma \cdot uWUE$ emerge in about the lowest 20-30\% of SWC
 conditions, although large variability in the SWC-$\sigma \cdot uWUE$
@@ -1145,7 +1145,7 @@ leads to the observed downturn towards decreasing ET with increasing
 VPD, and the deviation between our theory (based on a constant uWUE
 assumption) and observations. It is also perhaps not coincidental that
 the portion of $\sigma \cdot uWUE$ affected by low soil moisture
-observations is similar to the portion of observations that to not
+observations is similar to the portion of observations that do not
 match our theory at high VPD. Indeed, this may suggest that for all PFTs
 except for GRA, coupling and feedbacks between SWC, VPD and plant
 function are relatively rare. 
@@ -1169,15 +1169,15 @@ function, SWC, and VPD.
 
 The theory described in Section \ref{sign_term} indicates that for a
 given $uWUE$ and $g_1$, the ET dependence on VPD should be concave
-upward. In other words, there should be some local minima in ET at a
+upward, which is confirmed by eddy covariance data cross most PFTs. In other words, there should be some local minimum in ET at a
 critical VPD$_{crit}$, assuming the scaling and plant terms  (e.g. aerodynamic
 conductance, $\Delta$, $g_1$ and $uWUE$) are held fixed. This result warrants further
 investigation, because to our knowledge no one has derived the
 theoretical ecosystem-scale relationship between ET and VPD while
-controlling for environmental conditions. In particular, from
+controlling for other environmental conditions. In particular, from
 personal communication, there is an apparent lack of consensus over
 whether the shape of the ET-VPD curve should be concave upward (our
-result) or concave downward. Given that understanding the ET-VPD
+result) or concave downward in the absence of dramatic water stress. Given that understanding the ET-VPD
 relationship of the one-way plant response is fundamental to
 hypothesizing about any feedbacks between the land surface and the
 atmosphere, we analyze why our derived ET-VPD relationship is concave
@@ -1189,7 +1189,7 @@ both the stomatal conductance model and $uWUE$ based on the assumption
 that stomata behave to maximize carbon gain while minimizing water
 loss, which observations also generally support \citep{Lloyd_1991,
   MEDLYN_2011, Lin_2015, Zhou_2014, Zhou_2015, Medlyn_2017}. However,
-some purely empirical results which fit the exponent of the VPD
+some purely empirical results that fit the exponent of the VPD
 dependence to data have shown that it may vary slightly from 1/2,
 suggesting that stomata, as well as ecosystem-scale quantities based
 on stomata theory, may not always function optimally \citep{Zhou_2015,
@@ -1214,7 +1214,9 @@ the relationship between VPD, GPP, and ET \citep{MEDLYN_2011,
 and are what allowed us to derive an explicit ET expression for the
 first time (Equation \ref{et}), we will analyze if and how assumptions
 about the exponent of the VPD dependence impacts the shape of the
-ET-VPD dependence. By introducing $n$ and $m$ we can free our stomatal
+ET-VPD dependence. This analysis is also important to understand whether the choice of stomatal conductance model alters the fundamental behavior of the ET-VPD relatioships, as many commonly used models  utilize a VPD exponent other than the 1/2 suggested by optimal theory \citep[e.g. ][ which uses an exponent of 1]{Leuning_1990}.
+
+By introducing $n$ and $m$ we can free our stomatal
 conductance model from assumptions about VPD dependence:
 \begin{linenomath*}
   \begin{equation}
@@ -1228,7 +1230,7 @@ of units $VPD^m$. To determine how the exponent $n$ and $m$ alter the
 shape of the ET-VPD dependence we find the roots of the second
 derivative of ET, using Equation \ref{m_n} for stomatal conductance
 ($g_s$, with respect to VPD: \input{d2_solutions.tex} With this
-result we've defined the family of curves separating concave up from
+result we have defined the family of curves separating concave up from
 concave down ET solutions (Figure \ref{concave}). These curves are
 only functions of the exponent of the VPD dependence and a quantity we
 call non-dimensional VPD ($VPD^m/g*$). Several important
@@ -1293,7 +1295,7 @@ stomata response is asymptoting towards full closure would cause a
 concave up ET-VPD curve, which is matched by the theory. In short,
 plant response becomes more limited as VPD increases, while
 atmospheric demand monotonically increases with VPD, leading to the
-intuitive result that atmospheric demand dominates plant response when
+ result that atmospheric demand dominates plant response when
 atmospheric demand is high.
 
 This analysis allows us to understand the theoretical shape of the ET
@@ -1370,7 +1372,7 @@ VPD dependence, which we currently believe is 1/2 \citep{MEDLYN_2011,
   Zhou_2014}. Our results are applicable to understanding the impact
 of  expected increases in VPD
 induced by global change.  Plant physiological responses to direct
-CO$_2$ effects \citep[e.g.,][]{Swann_2016} receives more attention
+CO$_2$ effects \citep[e.g.,][]{Swann_2016, Lemordant_2018} receives more attention
 than physiological response to indirect effects like increased
 VPD. Here, we provide broad PFT-focused results showing a likely
 decrease in ET in response to positive VPD perturbations (atmospheric
