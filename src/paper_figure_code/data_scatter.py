@@ -68,7 +68,10 @@ def make_ax_plot(_ax, var, _df, meta):
   z = np.ma.masked_array(grouped.values, mask=np.isnan(grouped.values))
   color = _ax.pcolormesh(_x, _y, z, cmap=meta['cmap'],\
                          vmin=vmin, vmax=vmax)
-
+  if _df.pft.iloc[0] == 'DBF':
+    yticks = np.arange(10, 31, 5)
+    _ax.set_yticks(yticks)
+    _ax.set_yticklabels(['%2.0f' % y for y in yticks])
   custom_xlabel(_df, _ax, '%s (Pa)' % 'vpd'.upper(), fontsize=small_ax_fontsize)
   custom_ylabel(_df, _ax, 'T (C)', fontsize=small_ax_fontsize)
   _ax.set_title('%s'\
