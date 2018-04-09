@@ -1,0 +1,53 @@
+\documentclass[10pt,stdletter,dateno]{newlfm}
+\usepackage{kpfonts}
+
+\widowpenalty=1000
+\clubpenalty=1000
+
+\newlfmP{headermarginskip=20pt}
+\newlfmP{sigsize=50pt}
+\newlfmP{dateskipafter=20pt}
+\newlfmP{addrfromphone}
+\newlfmP{addrfromemail}
+\PhrPhone{Phone}
+\PhrEmail{Email}
+
+\addrfrom{%
+    \today\\[10pt]
+    Department of Earth and Environmental Engineering\\
+    Columbia University\\
+    500 West 120th Street, Mailcode: 4711\\
+    New York, NY 10027
+}
+\phonefrom{206-919-1364}
+\emailfrom{akm2203@columbia.edu}
+
+\addrto{%
+Dr. X. Lee\\
+Editor-in-Chief\\
+Agricultural and Forest Meteorology\\
+Yale University
+New Haven, CT}
+
+\greetto{Dear Dr. Lee,}
+
+\begin{document}
+\begin{newlfm}
+
+  We are pleased to submit our manuscript ``When does vapor pressure deficit drive or reduce evapotranspiration?'' for consideration for publication in the \textit{Journal of Agricultural and Forest Meteorology}. This research is particularly relevant now, given that vapor pressure deficit (VPD) is expected to increase as greenhouse gas concenration increases, but current research across ecology, climate, and meteorology exhibits a range of views on whether these increases in VPD drive increases in ET (atmospheric demand dominates response) or decreases in ET (plant response dominates).
+
+  We show that for the majority of plant types and environmental conditions ET decreases with increasing VPD, suggesting that plant water conservation response to increasing VPD overwhelms the increase in atmospheric demand. However more water intensive ecosystems (e.g. crops) are more likely to allow increases to ET with increasing VPD than water conservative ecosystems (e.g. shrubs, savannah).
+
+  While deriving these results, we developed a novel new analytical framework for calculating ET as a function of environmental variables. By leveraging recent results on the relatioship between ET, VPD and gross primary production [\textit{Zhou et al.}, 2014, 2015], for the first time we explicitly account for changes in photosythesis associated with changes in VPD. This approach reveals that a consequence of recently proposed optimal stomatal conductance theory [\textit{Medlyn et al.}, 2011, 2017] is that the ET-VPD curve is concave upward. That is, ET decreases with increasing VPD up until some ecosystem-specific VPD threshold, after which plant response cannot fully cancel increases in atmospheric demand (VPD) and further increases in VPD result in increases to ET. Furthermore, the fundamental shape of the ET-VPD curve could shift from concave up to concave down if one used pre-\textit{Medlyn et al.} 2011 stomatal conductance theory.
+
+  A previous version of this manuscript was rejected from \textit{Global Change Biology}. The current version of the manuscript is greatly improved based on reviewers' comments; we applied recent results [\textit{Medlyn et al.} 2017] to extend our analysis to 3 more plant types, we added more clear explanation of our simplifying assumptions and their consequences for interpreting results, and we included a section showing how the concave up nature of the ET-VPD curve is a direct result of optimal stomatal conductance theory. This last addition was motivated by a reviewer's comment that the shape of the ET-VPD curve should be concave downward. The reviewer provided a generated figure instead of a citation to support this assertion, and we have not been able to locate a clear citation showing that the ecosystem-scale one-way plant response to a VPD perturbation, with environmenal conditions controlled for, should be concave downward. We have to assume the reviewer's figure is based on some other theory than the currently proposed state of the art optimal stomatal conductance theory. This interaction highlights for us the importance of publishing this manuscript, as experienced researchers in land-atmosphere feedbacks and coupling have apparent divergent [yet strong] opinions on the shape of the one-way ET-VPD curve, which is fundamental to disentangling much more complex feedbacks between the land surface and the atmosphere. We believe it is crucial for the community to see that the shape of the ET-VPD curve is dependent on cutting-edge stomatal conductance theory.
+
+  Thank you very much for your time and consideration of this manuscript.
+  
+\closing{Sincerely,\\
+%\fromsig{\includegraphics[scale=1]{signature.jpg}} \\
+\fromname{Adam Massmann}
+}
+
+\end{newlfm}
+\end{document}
