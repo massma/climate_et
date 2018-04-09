@@ -1,5 +1,5 @@
 % 11/23/2015
-\documentclass[draft,linenumbers]{agujournal}
+\documentclass[draft,linenumbers]{afmjournal}
 % \draftfalse
 \usepackage{makecell} \usepackage{multirow} %AM for tables
 \usepackage{booktabs} \drafttrue
@@ -30,8 +30,7 @@
 
 \begin{keypoints}
 \item ecohydrology, evapotranspiration, aridity, vapor pressure
-  deficit, Clausius-Clapeyron relation, plant physiology, stomatal
-  response
+  deficit, plant physiology, stomatal response
 \end{keypoints}
 
 
@@ -150,7 +149,7 @@ Recent results have drastically improved our understanding of VPD's
 impact on physiology, especially at the leaf
 level. \citet{MEDLYN_2011} developed a model for leaf-scale stomatal
 conductance ($g_s$), including VPD response, by combining an optimal
-photosynthesis theory \citep{Farquhar_1980, Katul_2010} with an
+photosynthesis theory \citep{Cowan_1977} with an
 empirical approach, and extended use of this model to the ecosystem
 scale in \citet{Medlyn_2017}. Additionally, \citet{Zhou_2014}
 demonstrated that a quantity underlying water use efficiency
@@ -261,7 +260,7 @@ constant, and $g_s$ is the stomatal conductance (Table
                                    & \citet{Medlyn_2017} \\
     $g_{1-leaf}$  & leaf-scale slope parameter & Pa$^{0.5}$
                                    & \citet{MEDLYN_2011} \\
-    $g_{1}$  & ecosystem-scale slope parameter & Pa$^{0.5}$ & \citet{MEDLYN_2017} \\
+    $g_{1}$  & ecosystem-scale slope parameter & Pa$^{0.5}$ & \citet{Medlyn_2017} \\
     $R$ & universal gas constant & J mol$^{-1}$ K$^{-1}$ & - \\
     $R_{air}$ & gas constant of air & J  K$^{-1}$ kg$^{-1}$ & - \\
     $\sigma$ & uncertainty parameter & -& - \\
@@ -374,7 +373,7 @@ theoretical derivation of the square root VPD dependence in $uWUE$
 leverages the same asumptions used in \cite{MEDLYN_2011} to derive the
 square-root VPD dependence of the stomatal conductace model (Equation
 \ref{medlyn}).  We can use uWUE to remove the $GPP$ dependence from
-$g_s$ in a way that makes the PM equation analytically tractable:
+$g_s$ in a way that makes PM analytically tractable:
 
 \begin{linenomath*}
   \begin{equation}
@@ -469,38 +468,38 @@ $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET}
 independent, which is supported by the data (not shown).
 
 This derivation relied either implicitly or explicitly on several
-assumptions. First, we assume that VPD at the leaf surface is the same as VPD at measurement height; physically this implies that leaves are perfectly
-coupled to the atmosphere. In reality, for some conditions and plant
-types the leaves can become decoupled from the boundary layer
-\citep{De_2017, Medlyn_2017}. Given our focus on the growing season,
-which is usually characterized by relatively high insolation inducing
-instability and convective boundary layers, we would expect the
-surface to be generally well coupled. An
-additional assumption in the formulation of $uWUE$ \citep{Zhou_2014,
-  Zhou_2015} and \citet{Medlyn_2017}'s stomatal conductance model is
-that direct soil evaporation (E) contributions to ET remain small
-relative to transpiration (T). This should be more true during the
-growing season. The ratio of E to T may increase immediately after
-rainfall events due to high soil moisture and ponding, but VPD is
-generally low anyways during these times. However, some plant types
-allow for systematically larger contributions of E in ET,
-particularly those with sparse canopies and smaller relative amounts
-of transpiration. We therefore might expect that the theory will be
-most applicable to forest PFTs, which will be most strongly coupled to
-the boundary layer due to larger surface roughness, and will also
-generally have the highest ratios of transpiration to
-evaporation. Finally, for the goal of developing PFT-wide intuition,
-we assume that $g_1$ and $uWUE$ are constant in space and time. Both
-quantities have been shown to be well conserved over space and time
-within a PFT relative to inter-PFT variability. However, we would
-expect them to vary somewhat with environmental conditions including very low
-soil water content, temperature, and with intra-PFT plant-specific
-characteristics like wood density for tree PFTs
-\citep{Lin_2015}. Given these strong assumptions made with the goal of
-understanding broad, leading order plant behaviors, we take the extra
-care of including and analyzing uncertainty (Section \ref{testing})
-and examining sensitivity to the exponent of the VPD response (Section
-\ref{functional_form}).
+assumptions. First, we assume that VPD at the leaf surface is the same
+as VPD at measurement height; physically this implies that leaves are
+perfectly coupled to the atmosphere. In reality, for some conditions
+and plant types the leaves can become decoupled from the boundary
+layer \citep{De_2017, Medlyn_2017}. Given our focus on the growing
+season, which is usually characterized by relatively high insolation
+inducing instability and convective boundary layers, we would expect
+the surface to be generally well coupled. An additional assumption in
+the formulation of $uWUE$ \citep{Zhou_2014, Zhou_2015} and
+\citet{Medlyn_2017}'s stomatal conductance model is that direct soil
+evaporation (E) contributions to ET remain small relative to
+transpiration (T). This should be more true during the growing
+season. The ratio of E to T may increase immediately after rainfall
+events due to high soil moisture and ponding, but VPD is generally low
+anyways during these times. However, some plant types allow for
+systematically larger contributions of E in ET, particularly those
+with sparse canopies and smaller relative amounts of transpiration. We
+therefore might expect that the theory will be most applicable to
+forest PFTs, which will be most strongly coupled to the boundary layer
+due to larger surface roughness, and will also generally have the
+highest ratios of transpiration to evaporation. Finally, for the goal
+of developing PFT-wide intuition, we assume that $g_1$ and $uWUE$ are
+constant in space and time. Both quantities have been shown to be well
+conserved over space and time within a PFT relative to inter-PFT
+variability. However, we would expect them to vary somewhat with
+environmental conditions including very low soil water content,
+temperature, and with intra-PFT plant-specific characteristics like
+wood density for tree PFTs \citep{Lin_2015}. Given these strong
+assumptions made with the goal of understanding broad, leading order
+plant behaviors, we take the extra care of including and analyzing
+uncertainty (Section \ref{testing}) and examining sensitivity to the
+exponent of the VPD response (Section \ref{functional_form}).
 
 We note one final comment on our derivation which is relevant for
 drought indices. If we approximate $c_a$ at a global mean CO$_2$
@@ -602,7 +601,7 @@ ecosystems regulate and mitigate evaporative losses up to the VPD
 limit, $VPD_{crit}$, above which atmospheric demand is just too high
 to be entirely compensated by stomatal and ecosystem regulation. We
 note however that even though ET increases again above the critical
-threshold, $VPD_{crit}$, ET is still much lower that potential
+threshold, $VPD_{crit}$, ET is still much lower than potential
 evaporation as stomata are still strongly regulating vapor fluxes to
 the atmosphere. Indeed, even in the absence of soil pore evaporation,
 stomata do not shut down entirely at very high VPD so that ET does not
@@ -684,7 +683,7 @@ photosynthesis.
     below the x-axis. Stars denote 25th, 50th, and 75th percentiles,
     and the range of the line spans the 5th-95th percentiles of
     observed VPD. Vertical black lines denote the location of
-    $VPD_{crit}$ for each PFT, with the exception of CSH, for which
+    $VPD_{crit}$ for each PFT, with the exception of CSH and WSA, for which
     $VPD_{crit}$ is off-scale.}
   \label{idealized_sign}
 \end{figure}
@@ -718,7 +717,7 @@ increases in VPD. Therefore, plants are able in most atmospheric
 conditions to reduce ET in response to increased VPD and thus to
 reduce water loss. To better illustrate this, the ranges of observed
 environmental VPDs at the FLUXNET sites are plotted parallel to the
-x-axis. For CSH, VPD is always less than VPD$_{crit}$ (off scale) so
+x-axis. For CSH and WSA, VPD is always less than VPD$_{crit}$ (off scale) so
 that the plant response dominates in typical environmental conditions,
 emphasizing the water conservative strategy of those plants. For CRO
 on the other hand, VPD is higher than VPD$_{crit}$ for more than 50\%
@@ -753,7 +752,7 @@ soil-plant-atmosphere water budgeting. So we now more closely examine
 the terms that affect how the sign term is scaled:
 
 \begin{equation}
-  \frac{g_a \; P}{T(\Delta + \gamma)}:
+  \frac{g_a \; P}{T(\Delta + \gamma)}.
 \end{equation}
 
 $\frac{P}{T}$ is an air-density term, which varies little compared to
@@ -813,7 +812,7 @@ in surface roughness between each PFT, and possibly to a lesser extent
 wind conditions. In contrast, variability within PFT is also
 controlled by temperature, through Clausius-Clapeyron. But,
 aerodynamic conductance variability generally impacts the scaling term
-more than temperature, even within PFT.
+more than temperature, even within PFTs.
 
 \subsection{Bulk statistics of ET response to VPD}
 \label{stats_sec}
@@ -927,7 +926,7 @@ functional form of the sign term (Figure
 the variables in the sign term must change at extreme VPD (upper
 10-20\%). The most likely candidate is $uWUE$, which we have assumed
 constant to meet our goal of developing intuition for leading order
-behavior, but might be expected to decrease at extremely low SWC, and should be correlated with high VPD in very dry environments
+behavior, but might be expected to decrease at extremely low SWC. This extremely low SWC should be correlated with high VPD in very dry environments
 through sensible heating increases \citep{Gentine_2016}. The theory
 for EBF exhibits similar limitations as for ENF, WSA, and SAV, except
 a larger portion of observations are biased negative as compared to
@@ -1074,8 +1073,7 @@ conditions themselves increase VPD through land-atmosphere feedback
 \citep[][]{Bouchet_1963, Morton_1965, Brutsaert_1999, Ozdogan_2006,
   Salvucci_2013, Gentine_2016, Berg_2016}.
 
-We first note that in the data used low SWC conditions are very
-infrequent. Within our framework, any systematic bias due to the
+Within our framework, any systematic bias due to the
 failure to account for SWC's effects in very dry conditions should
 manifest itself in a functional relationship between $\sigma$, our
 uncertainty measure, and SWC, which is observed at the FLUXNET
@@ -1105,7 +1103,7 @@ stressed, suggesting that observed departures from the theory for CRO
 are due to other factors (i.e. different photosynthesis pathways; C3/C4) than soil
 moisture. For ENF, EBF, SAV, and WSA, systematic SWC-induced biases in
 $\sigma \cdot uWUE$ emerge in about the lowest 20-30\% of SWC
-conditions, although large variability in the SWC-$\sigma \cdot uWUE$
+conditions, although large variability in the SWC-$(\sigma \cdot uWUE)$
 relationship hampers interpretation for WSA. CSH presents a special
 case: the limited number of sites (2) preclude comment on the
 exact PFT-wide relationship.
@@ -1149,7 +1147,7 @@ the portion of $\sigma \cdot uWUE$ affected by low soil moisture
 observations is similar to the portion of observations that do not
 match our theory at high VPD. Indeed, this may suggest that for all PFTs
 except for GRA, coupling and feedbacks between SWC, VPD and plant
-function are relatively rare. 
+function are relatively rare. Future research will explore these relatively rare feedbacks in extreme conditions, which due to analytical intractablity will require more opaque numerical analysis of many more complex processes, including boundary layer growth and state and their relationship to surface layer coupling and free-tropospheric lapse rates and humidity.
 
 To summarize, our theory is limited by its inability to account for
 soil water impacts on land surface response, and feedbacks between SWC
@@ -1197,10 +1195,10 @@ on stomata theory, may not always function optimally \citep{Zhou_2015,
   Lin_2018}. Specifically with regards to $uWUE$, one would not expect
 that this ecosystem scale WUE quantity will respond to VPD exactly
 analogously to stomata. Direct soil evaporation's contributions to ET
-should shift the exponent of the VPD dependence, especially for
+should shift the exponent of the VPD dependence, especially at
 conditions of low GPP when we would expect a systematically larger
 portion of direct soil evaporation contributions to ET, because we
-would also expect lower amounts of transpiration. \citet{Zhou_2015}'s
+would also expect lower amounts of transpiration at low GPP. \citet{Zhou_2015}'s
 results corroborate this: they found a mean empirically fit
 exponential VPD dependence of 0.55, varying slightly from the
 theoretically optimal value of of 0.5 for AmeriFlux
@@ -1255,7 +1253,7 @@ relations reveal themselves from Equation \ref{curves}:
   \label{concave}
 \end{figure}
 
-\begin{enumerate}
+\begin{itemize}
   \item For optimal behavior (n, m = 1/2) the ET-VPD curve will be
     concave up regardless of the magnitude of the plant constants
     $g_1$ and $uWUE$. Therefore, the general concave up nature of our
@@ -1275,7 +1273,7 @@ relations reveal themselves from Equation \ref{curves}:
     the exact VPD dependence of stomatal conductance, and further
     reconciliation of empirical and theoretical stomatal and
     ecosystem behavior should be prioritized.
-\end{enumerate}
+\end{itemize}
 While it is possible that in the future some other form of
 VPD dependence is derived, at present \cite{MEDLYN_2011} and
 \cite{Zhou_2014} firmly established n=m=1/2 as the most likely
@@ -1365,7 +1363,7 @@ response is ignored (PET) or included (Equation \ref{et}).
 Lastly, our paper builds important intuition for how plants will
 respond to VPD perturbations. We show that given optimal stomatal
 function and fixed environmental conditions, the ET-VPD dependence is
-theoretically concave up, with ET increasing with increasing VPD as
+theoretically concave upward, with ET increasing with increasing VPD as
 VPD increases past some critical value (Table \ref{vpd_crit}). However
 future research should focus on fully understanding the form of
 stomatal VPD dependence, as this result is sensitive to the exponent of
