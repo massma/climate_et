@@ -28,7 +28,7 @@ def make_map(_df):
 
 
   plt.legend(loc='best')
-  plt.tight_layout()
+  # plt.tight_layout()
   util.test_savefig('../../doc/paper/map.pdf')
   return
 

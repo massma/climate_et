@@ -14,8 +14,9 @@ medianprops = {'linewidth' : 2.5}
 dashedlinewidth=1.4
 
 bluelinewidth=3.0
-xlim = {'WSA' : [0.00, 0.0225],
-        'SAV' : [0.002, 0.0073]}
+# xlim = {'WSA' : [0.00, 0.0225],
+#         'SAV' : [0.002, 0.0073]}
+
 def plot_box(_df, ax=None, pft=False):
   """makes a box plot"""
   if ax is None:
@@ -24,8 +25,8 @@ def plot_box(_df, ax=None, pft=False):
     savefig = True
   else:
     savefig = False
-  # exclude the last 5 percent b/c usually large
-  ptiles = np.arange(0.0, 91.0, 5.0)
+  # exclude the last 10 percent b/c usually large
+  ptiles = np.arange(0.0, 86.0, 5.0)
   positions = []
   labels = []
   data = []
@@ -53,10 +54,10 @@ def plot_box(_df, ax=None, pft=False):
     ax.set_title('Site: %s, PFT: %s'\
                  % (_df.site.iloc[0], _df.pft.iloc[0]),\
                  fontsize=fontsize+3)
-  if _df.pft.iloc[0] in xlim:
-    _xlims = xlim[_df.pft.iloc[0]]
-    ax.set_xlim(_xlims)
-    ax.xaxis.set_ticks(np.round(np.linspace(_xlims[0], _xlims[1], 4), 4))
+  # if _df.pft.iloc[0] in xlim:
+  #   _xlims = xlim[_df.pft.iloc[0]]
+  #   ax.set_xlim(_xlims)
+  #   ax.xaxis.set_ticks(np.round(np.linspace(_xlims[0], _xlims[1], 4), 4))
   # ax.set_ylim(ylim)
   # ax.set_xlim(orig_xlim)
   if savefig:

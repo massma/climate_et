@@ -298,12 +298,12 @@ of m s$^{-1}$, the ecosystem scale stomatal conductance is:
 where GPP is the ecosystem scale gross primary production, and $g_1$
 is an ecosystem scale analogue to $g_{1-leaf}$. We solve for $g_1$
 following \citet{Medlyn_2017} (Equation 5), and take the median $g_1$
-value to be representative of each PFT instead of the mean to avoid extra weighting of rare outliers (Table \ref{pft}).
+value to be representative of each PFT (Table \ref{pft}) instead of the mean to avoid extra weighting of rare outliers.
 
 \begin{table}
   \caption{Plant functional types, their abbreviation, calculated
     Medlyn coefficient, and calculated uWUE. uWUE from
-    \citet{Zhou_2015}, including the observed standard deviation is
+    \citet{Zhou_2015}, including the observed standard deviation, is
     shown for comparison. Note that uWUE from \citet{Zhou_2015} is
     calculated from a different set of sites, and that units are
     converted such that the quantities work with Equations 1-8 and the
@@ -348,8 +348,8 @@ is relatively constant across time and moisture conditions within a
 plant functional type, and correctly captures a constant relationship
 between GPP, ET and VPD over a diurnal cycle \citep{Zhou_2014}. The
 theoretical derivation of the square root VPD dependence in $uWUE$
-leverages the same asumptions used in \cite{MEDLYN_2011} to derive the
-square-root VPD dependence of the stomatal conductace model (Equation
+leverages the same assumptions used in \cite{MEDLYN_2011} to derive the
+square-root VPD dependence of the stomatal conductance model (Equation
 \ref{medlyn}).  We can use uWUE to remove the $GPP$ dependence from
 $g_s$ in a way that makes PM analytically tractable:
 
@@ -371,7 +371,7 @@ dependence on $GPP$ is removed:
   \end{equation}
 \end{linenomath*}
 
-By accounting for photosythesis changes in ecosystem conductace, with
+By accounting for photosynthesis changes in ecosystem conductance, with
 Equation \ref{et} we have derived for the first time, using recent
 results \citep[][]{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017}, ET
 explicitly as function of environmental variables and two
@@ -798,8 +798,7 @@ more than temperature, even within PFTs.
 In this section we consider direct observations of ET response with
 eddy-covariance data, while including uncertainty with the $\sigma$
 term (Section \ref{methods}). These observational results of ET
-response largely confirm our theoretical analysis, presented above
-(Table \ref{stats}). For all PFTs, mean ET response to increasing VPD
+response (Table \ref{stats}) largely confirm our theoretical analysis, presented in the previous sections. For all PFTs, mean ET response to increasing VPD
 is negative. However, ET response evaluated at the average of all
 variables (e.g. $\sigma$, $T$, $c_a$, $VPD$) is positive for CRO, and
 negative for all other PFTs. This difference in mean ET response as
@@ -1027,7 +1026,7 @@ communicated to the boundary layer. While $\Delta$ controls the
 efficiency of energy conversion to latent heat, it appears this is a
 second order term, relative to $g_a$, for scaling ET response.
 
-As in Figure \ref{test_sign}, Figure \ref{data_scatter} matches our
+As with Figure \ref{test_sign}, Figure \ref{data_scatter} matches our
 expectation based on simplified theory. The sign term is most strongly
 scaled by $g_a$, and in general the occurrence of positive ET response
 increases as VPD increases. The willingness with which a given plant type
@@ -1102,9 +1101,7 @@ statistics and figures.
   \centerline{\includegraphics[width=1.4\textwidth]{./swc_boxplot.pdf}}
   \caption{$\sigma \cdot uWUE$ as a function of PFT and SWC. Each box
     plot represents 5\% of all observations. Note that the highest
-    10\% of SWC observations were excluded from the WSA and SAV
-    figures, to better resolve high variability in narrow low-SWC bins
-    for those PFTs.}
+    10\% of SWC observations are excluded to better resolve variability in the much more narrow bins at lower SWC (e.g. SWC has long tails at high values).}
   \label{swc_boxplot}
 \end{figure}
 
@@ -1125,14 +1122,13 @@ the portion of $\sigma \cdot uWUE$ affected by low soil moisture
 observations is similar to the portion of observations that do not
 match our theory at high VPD. Indeed, this may suggest that for all PFTs
 except for GRA, coupling and feedbacks between SWC, VPD and plant
-function are relatively rare. Future research will explore these relatively rare feedbacks in extreme conditions, which due to analytical intractablity will require more opaque numerical analysis of many more complex processes, including boundary layer growth and state and their relationship to surface layer coupling and free-tropospheric lapse rates and humidity.
+function are relatively rare. Future research will explore these relatively rare feedbacks in extreme conditions, which due to analytical intractability will require more opaque numerical analysis of many more complex processes, including boundary layer growth and state and their relationship to surface layer coupling and free-tropospheric lapse rates and humidity.
 
 To summarize, our theory is limited by its inability to account for
 soil water impacts on land surface response, and feedbacks between SWC
 and VPD. Fortunately, for most PFTs SWC's effect on ET is relatively
 rare (<30\% of observations) and does not manifest itself in the
-majority of observations and bulk statistics. However, for GRA SWC has
-a strong effect decreasing water use efficiency for the majority of
+majority of observations and bulk statistics. However for GRA, SWC decreases water use efficiency for the majority of
 the observations. Soil moisture effects explain the deficiencies of
 our theory in Section \ref{testing}, particularly for GRA. By
 conceptualizing SWC effects as a change in $uWUE$ (and/or $g_1$), it
@@ -1146,7 +1142,7 @@ function, SWC, and VPD.
 
 The theory described in Section \ref{sign_term} indicates that for a
 given $uWUE$ and $g_1$, the ET dependence on VPD should be concave
-upward, which is confirmed by eddy covariance data cross most PFTs. In other words, there should be some local minimum in ET at a
+upward, which is confirmed by eddy covariance data across most PFTs. In other words, there should be some local minimum in ET at a
 critical VPD$_{crit}$, assuming the scaling and plant terms  (e.g. aerodynamic
 conductance, $\Delta$, $g_1$ and $uWUE$) are held fixed. This result warrants further
 investigation, because to our knowledge no one has derived the
@@ -1191,7 +1187,7 @@ the relationship between VPD, GPP, and ET \citep{MEDLYN_2011,
 and are what allowed us to derive an explicit ET expression for the
 first time (Equation \ref{et}), we will analyze if and how assumptions
 about the exponent of the VPD dependence impacts the shape of the
-ET-VPD dependence. This analysis is also important to understand whether the choice of stomatal conductance model alters the fundamental behavior of the ET-VPD relatioships, as many commonly used models  utilize a VPD exponent other than the 1/2 suggested by optimal theory \citep[e.g. ][ which uses an exponent of 1]{Leuning_1990}.
+ET-VPD dependence. This analysis is also important to understand whether the choice of stomatal conductance model alters the fundamental behavior of the ET-VPD relationships, as many commonly used models  utilize a VPD exponent other than the 1/2 suggested by optimal theory \citep[e.g. ][ which uses an exponent of 1]{Leuning_1990}.
 
 By introducing $n$ and $m$ we can free our stomatal
 conductance model from assumptions about VPD dependence:
@@ -1206,7 +1202,7 @@ where:
 of units $VPD^m$. To determine how the exponent $n$ and $m$ alter the
 shape of the ET-VPD dependence we find the roots of the second
 derivative of ET, using Equation \ref{m_n} for stomatal conductance
-($g_s$, with respect to VPD: \input{d2_solutions.tex} With this
+($g_s$), with respect to VPD: \input{d2_solutions.tex} With this
 result we have defined the family of curves separating concave up from
 concave down ET solutions (Figure \ref{concave}). These curves are
 only functions of the exponent of the VPD dependence and a quantity we
@@ -1218,7 +1214,7 @@ relations reveal themselves from Equation \ref{curves}:
   \centerline{\includegraphics[width=1\textwidth]{./concave.pdf}}
   \caption{ Solutions corresponding to inflection points between
     concave up and concave down ET-VPD curves (Equation \ref{curves})
-    for 3 specific scenarios. Solutions are defined in terms of a
+    for three specific scenarios. Solutions are defined in terms of a
     non-dimensional VPD ($VPD^m/g_*$), but to aide physical
     interpretation the horizontal axis is additionally provided in terms of dimensionalized VPD assuming $m=1/2$ and
     $g_*=110\; Pa^{1/2}$ (average of all PFT $g_1$). The vertical axis
