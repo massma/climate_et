@@ -1,4 +1,5 @@
-\input{def}
+\documentclass[12pt]{article}
+\input{def.tex}
 
 \begin{document}
 
@@ -16,9 +17,9 @@
 \maketitle
 
 \begin{abstract}
-  Increasing vapor pressure deficit increases atmospheric demand for  water, and vapor pressure deficit is expected to rise with  increasing greenhouse gases. While increased evapotranspiration (ET) in  response to increased atmospheric demand seems intuitive, plants are  capable of reducing ET in response to increased VPD by closing their  stomata, in an effort to conserve water. Here we examine which  effect dominates response to increasing VPD: atmospheric demand and  increases in ET, or plant physiological response (stomata closure)  and decreases in ET. We use Penman-Monteith, combined with  semi-empirical optimal stomatal regulation theory and underlying  water use efficiency, to develop a theoretical framework for  understanding how ET responds to increases in VPD.
+  Increasing vapor pressure deficit increases atmospheric demand for water, and vapor pressure deficit is expected to rise with increasing greenhouse gases. While increased evapotranspiration (ET) in response to increased atmospheric demand seems intuitive, plants are capable of reducing ET in response to increased VPD by closing their stomata, in an effort to conserve water. Here we examine which effect dominates response to increasing VPD: atmospheric demand and increases in ET, or plant physiological response (stomata closure) and decreases in ET. We use Penman-Monteith, combined with semi-empirical optimal stomatal regulation theory and underlying water use efficiency, to develop a theoretical framework for understanding how ET responds to increases in VPD.
 
-  The theory suggests that for most environmental conditions and plant  types, plant physiological response dominates and ET decreases with  increasing VPD. Plants that are evolved or bred to prioritize  primary production over water conservation (e.g. crops) exhibit a  higher likelihood of atmospheric demand-driven response (ET  increasing). However for forest, grass, savannah, and shrub plant  types, ET more frequently decreases than increases with rising  VPD. This work serves as an example of the utility of  our simplified framework for disentangling land-atmosphere feedbacks  at multiple scales, including the characterization of ET response in  an atmospherically drier, enriched CO$_2$ world. 
+ The theory suggests that for most environmental conditions and plant types, plant physiological response dominates and ET decreases with increasing VPD. Plants that are evolved or bred to prioritize primary production over water conservation (e.g. crops) exhibit a higher likelihood of atmospheric demand-driven response (ET increasing). However for forest, grass, savannah, and shrub plant types, ET more frequently decreases than increases with rising VPD. This work serves as an example of the utility of our simplified framework for disentangling land-atmosphere feedbacks at multiple scales, including the characterization of ET response in an atmospherically drier, enriched CO$_2$ world. 
 \end{abstract}
 
 \onehalfspacing
@@ -133,7 +134,7 @@ functional types.
 \label{data}
 We use both meteorological and eddy-covariance data from the
 FLUXNET2015 database (data available at \sloppy
-https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/ \sloppy),
+\url{https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/} \sloppy),
 including all sites with at least four years of data and observations
 of the variables described in the methods section (Section
 \ref{methods}). Seventy-three sites met these requirements, and were
@@ -302,7 +303,7 @@ value to be representative of each PFT (Table \ref{pft}) instead of the mean to 
                                      & & & fitted & \citet{Zhou_2015} \\
 
     \hline
-    \input{pft_params}
+    \input{pft_params.tex}
     \hline
   \end{tabular}
 \end{table}
@@ -476,7 +477,8 @@ to typical drought indices such as the Palmer Drought Severity Index
 (PDSI) \citep{Swann_2016, Lemordant_2016, Lemordant_2018}. Lastly, all
 code and data used in this analysis, including those used to generate
 the figures and tables, are publicly available at
-https://github.com/massma/climate\_et.
+\url{https://github.com/massma/climate\_et}.
+%\hyperref[https://github.com/massma/climate\_et]{https://github.com/massma/climate_et}.
 
 \section{Results and Discussion}
 \label{results}
@@ -891,7 +893,7 @@ through sensible heating increases \citep{Gentine_2016}. The theory
 for EBF exhibits similar limitations as for ENF, WSA, and SAV, except
 a larger portion of observations are biased negative as compared to
 the theory ($\approx$ 35\%, Figure \ref{test_sign}). However, in
-general, and specifically for non-extreme VPD (VPD < $\approx$70-90th
+general, and specifically for non-extreme VPD (VPD  $< \approx$70-90th
 percentiles), the theory matches the observations for the tree and
 savannah plant types well.
 
@@ -923,7 +925,7 @@ complexity and analytical opacity.
 While the above discussion shows that our theory has some limitations
 when applied to some PFTs, especially for grasslands, it does well for
 DBF, MF and CSH PFTs, and captures the response at non-extreme VPD
-(VPD < $\approx$ 70th-90th percentiles) for
+(VPD $< \approx$ 70th-90th percentiles) for
 ENF, EBF, CRO, WSA, and SAV. In general, the leading order behavior
 observed in the data is captured by the theory. Departures between our
 theory and observations, specifically at high VPD, could be explained
@@ -1110,7 +1112,7 @@ function are relatively rare. Future research will explore these relatively rare
 To summarize, our theory is limited by its inability to account for
 soil water impacts on land surface response, and feedbacks between SWC
 and VPD. Fortunately, for most PFTs SWC's effect on ET is relatively
-rare (<30\% of observations) and does not manifest itself in the
+rare ($<$30\% of observations) and does not manifest itself in the
 majority of observations and bulk statistics. However for GRA, SWC decreases water use efficiency for the majority of
 the observations. Soil moisture effects explain the deficiencies of
 our theory in Section \ref{testing}, particularly for GRA. By
@@ -1369,7 +1371,8 @@ offices. This material is based upon work supported by the National
 Science Foundation Graduate Research Fellowship under Grant No. DGE
 16-44869. All code and data used in this analysis, including those
 used to generate the figures and tables, are publicly available at
-https://github.com/massma/climate\_et.
+\url{https://github.com/massma/climate\_et}.
+%\hyperref[https://github.com/massma/climate\_et]{https://github.com/massma/climate_et}.
 
 \bibliography{references.bib}
 

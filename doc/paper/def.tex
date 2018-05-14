@@ -1,0 +1,137 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{setspace}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+\usepackage{color}
+\pagestyle{plain}
+
+% am additions
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{authblk}
+\usepackage{textcomp}
+\usepackage{hyperref}
+\RequirePackage{natbib}
+
+\bibliographystyle{agufull08}
+
+\def\acknowledgments{\vskip12pt\noindent{\bf
+Acknowledgments\vrule depth 6pt
+width0pt\relax}\\*\noindent\ignorespaces}
+
+\newcommand{\appropto}{\mathrel{\vcenter{
+      \offinterlineskip\halign{\hfil$##$\cr
+        \propto\cr\noalign{\kern2pt}\sim\cr\noalign{\kern-2pt}}}}}
+
+
+\textheight 9 true in
+\textwidth 6.5 true in
+\hoffset -0.5 true in
+\voffset -.75 true in
+ 
+\mathsurround=2pt  \parskip=2pt
+\def\crv{\cr\noalign{\vskip7pt}} 
+\def\a{\alpha } \def\b{\beta } \def\d{\delta } \def\D{\Delta } \def\e{\epsilon }
+\def\g{\gamma } \def\G{\Gamma} \def\k{\kappa} \def\l{\lambda } \def\L{\Lambda }
+\def\th{\theta } \def\Th{\Theta} \def\r{\rho} \def\o{\omega} \def\O{\Omega}
+\def\ve{\varepsilon} 
+
+\def\sA{{\cal A}} \def\sB{{\cal B}} \def\sC{{\cal C}} \def\sI{{\cal I}}
+\def\sR{{\cal R}} \def\sF{{\cal F}} \def\sG{{\cal G}} \def\sM{{\cal M}}
+\def\sT{{\cal T}} \def\sH{{\cal H}} \def\sD{{\cal D}} \def\sW{{\cal W}}
+\def\sL{{\cal L}} \def\sP{{\cal P}} \def\s{\sigma } \def\S{\Sigma}
+\def\sU{{\cal U}} \def\sV{{\cal V}} \def\sY{{\cal Y}}
+
+\def\gm{\gamma -1}
+\def\summ{\sum_{j=1}^4}
+
+\def\bb{{\bm b}} \def\yb{{\bm y}}
+\def\ub{{\bm u}}  \def\xb{{\bm x}} \def\vb{{\bm v}} \def\wb{{\bm w}}
+\def\omegab{{\bm \omega}} \def\rb{{\bm r}} \def\ib{{\bm i}} \def\jb{{\bm j}}
+\def\lb{{\bm l}} \def\kb{{\bm k}} \def\Ab{{\bm A}} \def\fb{{\bm f}} \def\Ub{{\bm U}}
+\def\Fb{{\bm F}} \def\nb{{\bm n}} \def\Db{{\bm D}} \def\eb{{\bm e}}
+\def\gb{{\bm g}}  \def\Gb{{\bm G}} \def\hb{{\bm h}} \def\Yb{{\bm Y}} \def\Rb{{\bm R}} 
+\def\Tb{{\bm T}}
+
+\def\As1{{\bf {\cal A}}_1}\def\DO{{\cal D}_0} \def\UO{{\cal U}_0}
+\def\ie{{\it{i.e.}}}
+
+\def\ubbar{{\bf {\bar{u}}}} \def\sbar{{\bar{\sigma }}} \def\ubar{{\bar{u}}}  
+\def\abar{{\bar{a}}} \def\vbar{{\bar{v}}}  \def\rbar{{\bar{\rho}}}
+\def\pbar{{\bar{p}}} \def\ebar{{\bar{e}}} \def\Tbar{{\bar{T}}}
+\def\bbar{{\bar{\beta}}} \def\Mbar{{\bar{M}}}  \def \sMbar{{\bar{\cal M}}}
+\def\Ebar{{\bar{E}}} \def\sMbar{{\bar{\cal M}}}
+\def\sPbar{{\bar{\cal P}}} \def\xbar{{\bar{x}}}
+
+\newcommand{\pdv}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\dv}[2]{\frac{d#1}{d#2}}
+\newcommand{\ord}[2]{#1^{(#2)}}
+\newcommand{\vct}[1]{\vec{#1}}
+
+ \newcommand{\bc}{\begin{center}}
+ \newcommand{\ec}{\end{center}}
+ 
+ \newcommand{\bq}{\begin{equation}}
+ \newcommand{\eq}{\end{equation}}
+ 
+ \newcommand{\beqs}{\begin{eqnarray}}
+ \newcommand{\eeqs}{\end{eqnarray}}
+ 
+ \newcommand{\beqa}{\begin{eqnarray*}}
+ \newcommand{\eeqa}{\end{eqnarray*}}
+ 
+ \newcommand{\ol}{\overline}
+ \newcommand{\ul}{\underline}
+ 
+ \newcommand{\dint}{{\int \!\! \int \!\!}}
+ \newcommand{\tint}{{\int \!\! \int \!\! \int \!\!}}
+ 
+ \newcommand{\bfig}{\begin{figure}}
+ \newcommand{\efig}{\end{figure}}
+ 
+ \newcommand{\cen}{\centering}
+ \newcommand{\n}{\noindent}
+ 
+ \newcommand{\btab}{\begin{table}}
+ \newcommand{\etab}{\end{table}}
+ 
+ \newcommand{\btbl}{\begin{tabular}}
+ \newcommand{\etbl}{\end{tabular}}
+ 
+ \newcommand{\bdes}{\begin{description}}
+ \newcommand{\edes}{\end{description}}
+ 
+ \newcommand{\benum}{\begin{enumerate}}
+ \newcommand{\eenum}{\end{enumerate}}
+ 
+ \newcommand{\bite}{\begin{itemize}}
+ \newcommand{\eite}{\end{itemize}}
+ 
+ \newcommand{\cle}{\clearpage}
+ \newcommand{\npg}{\newpage}
+ 
+ \newcommand{\bss}{\begin{singlespace}}
+ \newcommand{\ess}{\end{singlespace}}
+ 
+ \newcommand{\bhalf}{\begin{onehalfspace}}
+ \newcommand{\ehalf}{\end{onehalfspace}}
+ 
+ \newcommand{\bds}{\begin{doublespace}}
+ \newcommand{\eds}{\end{doublespace}}
+ 
+ \newcommand{\eps}{\mbox{$\epsilon$}} 
+ \newcommand{\stilde}{\mbox{$\tilde s$}} 
+ \newcommand{\shat}{\mbox{$\hat s$}} 
+
+ \newcommand{\blue}{\color{blue}}
+ \newcommand{\red}{\color{red}}
+ \newcommand{\magenta}{\color{magenta}}
+ \newcommand{\green}{\color{green}}
+ \newcommand{\nc}{\normalcolor}
+
+
+

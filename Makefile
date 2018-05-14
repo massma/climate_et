@@ -2,7 +2,14 @@ FIGURES = doc/paper/idealized_scale.pdf doc/paper/idealized_sign.pdf \
 	doc/paper/joint_vpd_sigma.pdf doc/paper/map.pdf \
 	doc/paper/swc_boxplot.pdf doc/paper/test_sign.pdf doc/paper/data_scatter.png \
 doc/paper/concave.pdf
-.PHONY: data clean figure-all paper clean-bak clean-paper
+
+ARXIV_FILES = doc/paper/ms.tex doc/paper/ms.bbl \
+	doc/paper/agufull08.bst doc/paper/def.tex 
+
+TABLES = doc/paper/pft_params.tex doc/paper/vpd_crit.tex \
+	doc/paper/stats.tex doc/paper/d2_solutions.tex
+
+.PHONY: data clean figure-all paper arxiv clearn-arxiv clean-bak clean-paper 
 
 # you'll need to rerun data if you make any changes to the analysis script
 data :
@@ -39,18 +46,34 @@ doc/paper/data_scatter.bak :
 	cd src/paper_figure_code && python data_scatter.py
 	cd doc/paper && mv data_scatter.png data_scatter.bak
 
-paper : $(FIGURES) 
+doc/paper/ms.bbl : doc/paper/vpd_et_paper.bbl
+	cp $< $@
+
+doc/paper/ms.tex : doc/paper/vpd_et_paper.tex
+	cp $< $@
+
+arxiv : doc/paper/arxiv-submission.tar
+
+clean-arxiv :
+	rm doc/paper/arxiv-submission.tar
+
+doc/paper/arxiv-submission.tar : $(FIGURES) $(ARXIV_FILES) $(TABLES)
+	tar -cvf $@ --transform 's?.*/??g' $^
+
+paper : doc/paper/vpd_et_paper.pdf
+
+doc/paper/vpd_et_paper.pdf : $(FIGURES)
 	cd ./doc/paper && pdflatex vpd_et_paper && \
 	bibtex vpd_et_paper && pdflatex vpd_et_paper && \
 	bibtex vpd_et_paper && pdflatex vpd_et_paper
 
 clean :
-	rm $(FIGURES) && \
-	cd doc/paper && rm ./*.aux ./*.log ./*.blg ./*.bbl vpd_et_paper.pdf
+	rm -f $(FIGURES) doc/paper/arxiv-submission.tar && \
+	cd doc/paper && rm -f ./*.aux ./*.log ./*.blg ./*.bbl vpd_et_paper.pdf
 
 # below is if you don't want to regenerate figs
 clean-paper :
-	cd doc/paper && rm ./*.aux ./*.log ./*.blg ./*.bbl \
+	cd doc/paper && rm -f ./*.aux ./*.log ./*.blg ./*.bbl \
 	data_scatter.png vpd_et_paper.pdf
 
 # below is because scatter figure takes so long to make, we don't want
