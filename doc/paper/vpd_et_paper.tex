@@ -1,10 +1,19 @@
-% 11/23/2015
-% \documentclass[draft,linenumbers]{afmjournal}
-\documentclass{article}
-% \draftfalse
+\input{def}
 \usepackage{makecell}
 \usepackage{multirow} %AM for tables
 \usepackage{booktabs}
+\usepackage{authblk}
+\usepackage{textcomp}
+
+\bibliographystyle{agufull08}
+\RequirePackage{natbib}
+\RequirePackage{graphicx}
+
+
+\def\acknowledgments{\vskip12pt\noindent{\bf
+Acknowledgments\vrule depth 6pt
+width0pt\relax}\\*\noindent\ignorespaces}
+
 % \drafttrue
 
 % \journalname{Agricultural and Forest Meteorology: When does VPD drive
@@ -19,17 +28,15 @@
 \title{When does vapor pressure deficit drive or reduce
   evapotranspiration?}
 
+\author[1]{Adam Massmann\thanks{Corresponding author: akm2203@columbia.edu}}
+\author[1]{Pierre Gentine}
+\author[1,2]{Changjie Lin}
 
-\authors{Adam Massmann\affil{a}, Pierre Gentine\affil{a}, Changjie
-  Lin\affil{a,b}}
-
-\affiliation{a}{Department of Earth and Environmental Engineering,
-  Columbia University, New York, NY 10027} \affiliation{b}{State Key
-  Laboratory of Hydroscience and Engineering, Department of Hydraulic
+\affil[1]{Department of Earth and Environmental Engineering, Columbia University, New York, NY 10027}
+\affil[2]{State Key Laboratory of Hydroscience and Engineering, Department of Hydraulic
   Engineering, Tsinghua University, Beijing, CN 100084}
 
-\correspondingauthor{Adam Massmann}{206-919-1364;
-  akm2203@columbia.edu}
+\maketitle
 
 \begin{abstract}
   Increasing vapor pressure deficit increases atmospheric demand for  water, and vapor pressure deficit is expected to rise with  increasing greenhouse gases. While increased evapotranspiration (ET) in  response to increased atmospheric demand seems intuitive, plants are  capable of reducing ET in response to increased VPD by closing their  stomata, in an effort to conserve water. Here we examine which  effect dominates response to increasing VPD: atmospheric demand and  increases in ET, or plant physiological response (stomata closure)  and decreases in ET. We use Penman-Monteith, combined with  semi-empirical optimal stomatal regulation theory and underlying  water use efficiency, to develop a theoretical framework for  understanding how ET responds to increases in VPD.
@@ -37,11 +44,7 @@
   The theory suggests that for most environmental conditions and plant  types, plant physiological response dominates and ET decreases with  increasing VPD. Plants that are evolved or bred to prioritize  primary production over water conservation (e.g. crops) exhibit a  higher likelihood of atmospheric demand-driven response (ET  increasing). However for forest, grass, savannah, and shrub plant  types, ET more frequently decreases than increases with rising  VPD. This work serves as an example of the utility of  our simplified framework for disentangling land-atmosphere feedbacks  at multiple scales, including the characterization of ET response in  an atmospherically drier, enriched CO$_2$ world. 
 \end{abstract}
 
-\begin{keypoints}
-\item ecohydrology, evapotranspiration, aridity, vapor pressure
-  deficit, plant physiology, stomatal response
-\end{keypoints}
-
+\onehalfspacing
 
 \section{Introduction}
 
@@ -166,7 +169,7 @@ savannah (SAV), and woody savannah (WSA) (site locations in Figure
 \ref{map_fig}).
 
 \begin{figure}
-  \centering \includegraphics[width=\textwidth]{./map.pdf}
+  \centering \includegraphics{./map.pdf}
   \caption{Plant functional type and location of FLUXNET2015 sites
     used in this analysis.}
   \label{map_fig}
@@ -203,12 +206,12 @@ control procedures, 434,765 upscaled hourly observations remain.
 The Penman-Monteith equation \citep [hereafter PM,][]{Penman_1948,
   Monteith_1965} estimates ET as a function of observable atmospheric
 variables and surface conductances:
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     \label{orig_pen}
     ET = \frac{\Delta R_{net} + g_a \rho_a c_p VPD}{\Delta + \gamma(1 + \frac{g_a}{g_s})},
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 where $\Delta$ is the change in saturation vapor pressure with
 temperature, given by Clausius-Clapeyron ($\frac{d \; e_s}{d \; T}$),
 $R_{net}$ is the net radiation minus ground heat flux, $g_a$ is
@@ -221,7 +224,7 @@ constant, and $g_s$ is the stomatal conductance (Table
   \caption{Definition of symbols and variables, with citation for how
     values are calculated, if applicable.}
   \label{definitions}
-  \centering \small
+  \centering \footnotesize
   \begin{tabular}{l c c c}
     \hline
     Variable & Description & Units & Citation \\
@@ -259,23 +262,23 @@ by combining an optimal photosynthesis theory \citep{Cowan_1977} with an empiric
 dependence of $g_s$ to VPD. This resulted in the following model for
 leaf-scale stomatal conductance:
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     g_{s-leaf} = g_0 + 1.6 \left(1 +
       \frac{g_{1-leaf}}{\sqrt{VPD}}\right) \frac{A}{c_a},
     \label{leaf_medlyn}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 where $g_{1-leaf}$ is a leaf-scale ``slope'' parameter, A is the net
 CO$_2$ assimilation rate, and $c_a$ is the atmospheric CO$_2$
 concentration at the leaf surface. \cite{MEDLYN_2011} relate the slope
 parameter ($g_{1-leaf}$) to physical parameters as:
-\begin{linenomath*}
+% \begin{linenomath*}
   \label{slope}
   \begin{equation}
     g_{1-leaf} = \sqrt{\frac{3 \, \Gamma^* \, \lambda}{1.6}},\footnote{Note this expression has units of of (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to Pa$^{1/2}$ using the ideal gas law.}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 where $\Gamma^*$ is the CO$_2$ compensation point for photosynthesis
 (without dark respiration), and $\lambda$ is the marginal water cost
@@ -291,12 +294,12 @@ very well across PFTs \citep[][]{Lin_2015}, and has been successfully
 adopted to ecosystem scale analysis in \citet{Medlyn_2017}. In units
 of m s$^{-1}$, the ecosystem scale stomatal conductance is:
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     g_s = \frac{R \,T}{P} \; 1.6 \left(1 + \frac{g_1}{\sqrt{VPD}}\right) \frac{GPP}{c_a},
     \label{medlyn}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 where GPP is the ecosystem scale gross primary production, and $g_1$
 is an ecosystem scale analogue to $g_{1-leaf}$. We solve for $g_1$
@@ -340,12 +343,12 @@ conductance. We can use aforementioned semi-empirical results of
 problem. \citet{Zhou_2015}, showed that  underlying Water Use
 Efficiency (uWUE):
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     uWUE = \frac{GPP \cdot \sqrt{VPD}}{ET}
     \label{uwue}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 is relatively constant across time and moisture conditions within a
 plant functional type, and correctly captures a constant relationship
@@ -356,23 +359,23 @@ square-root VPD dependence of the stomatal conductance model (Equation
 \ref{medlyn}).  We can use uWUE to remove the $GPP$ dependence from
 $g_s$ in a way that makes PM analytically tractable:
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     g_s = \frac{R \, T}{P} 1.6 \left(1 + \frac{g_1}{\sqrt{VPD}}\right) \frac{uWUE \; ET}{c_a \; \sqrt{VPD}}.
     \label{new_g_s}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 Plugging Equation \ref{new_g_s} into Equation \ref{orig_pen} and
 rearranging gives a new explicit expression for PM, in which
 dependence on $GPP$ is removed:
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     ET = \frac{\Delta R_{net} + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
     \label{et}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 By accounting for photosynthesis changes in ecosystem conductance, with
 Equation \ref{et} we have derived for the first time, using recent
@@ -403,22 +406,22 @@ error, as well as model uncertainty (e.g. temporal and spatial
 variations of uWUE and $g_1$), we introduce an uncertainty parameter
 $\sigma$ modifying uWUE:
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     ET = \frac{\Delta R_{net} + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \sigma \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
     \label{et_sigma}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 Now, from each FLUXNET2015 observation (i.e. for each hourly
 observation at every time step) we can evaluate $\sigma$:
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     \sigma = - \frac{g_a \gamma c_a \sqrt{VPD} L_v P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R_{net} - g_a \rho_a c_p VPD\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})},
     \label{sigma}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 Thus, with this uncertainty analysis we can evaluate departure from
 our theory in observations, as a departure of $\sigma$ from unity. The
@@ -428,12 +431,12 @@ observations themselves. The variability of $\sigma$ then propagates
 through any uncertainty to our partial derivative of Equation
 \ref{et_sigma} with respect to VPD:
 
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     \frac{\partial \;  ET}{\partial \; VPD} = \frac{2\; g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_a }{1.6 \; R\; \sigma \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)
     \label{d_et}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 
 With Equation \ref{d_et} we have an analytical framework for ecosystem
 response to atmospheric demand perturbations with environmental
@@ -516,7 +519,7 @@ distribution of $\sigma$ we have confidence in our model framework and
 the data quality.
 
 \begin{figure}
-  \centering \includegraphics[width=\textwidth]{./joint_vpd_sigma.pdf}
+  \centering \includegraphics{./joint_vpd_sigma.pdf}
   \caption{The joint distribution of $VPD$ and $\sigma$, with outliers
     removed (defined as lowest and highest 5\% of $\sigma$). $\sigma$
     exhibits a weak dependence on $VPD$, and $\sigma$ is $O(1)$ for
@@ -563,12 +566,12 @@ can further determine a critical threshold separating an increase from
 a decrease in ET, i.e. the threshold $VPD_{crit}$ such that the
 derivative vanishes $\frac{\partial \; ET}{\partial \; VPD} = 0$:
 \small
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     VPD_{crit} = \frac{R_{air}}{4 c_p} \left( \frac{\gamma c_a}{1.6\; R \;  uWUE} + \sqrt{\frac{\gamma c_a}{1.6\; R \;  uWUE}\left( \frac{\gamma c_a}{1.6\; R \;  uWUE} + 8 g_1 \frac{c_p}{R_{air}}\right)} - 4 g_1 \frac{c_p}{R_{air}} \right),
     \label{vpd_min_et}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 \normalsize noting that $VPD_{crit}$ mostly depends on the PFT
 parameters uWUE and $g_1$, and only varies weakly with climate as most
 other parameters related to the environment are nearly constant. The
@@ -657,7 +660,7 @@ VPD, while CSH are very unwilling to trade water for more
 photosynthesis.
 
 \begin{figure}
-  \centering \includegraphics[width=\textwidth]{./idealized_sign.pdf}
+  \centering \includegraphics{./idealized_sign.pdf}
   \caption{The functional form of the sign term, with $\sigma$ held
     fixed at 1, and all terms except VPD set to PFT averages. For
     comparison, the observed range of VPD for each PFT is plotted
@@ -769,7 +772,7 @@ MF, due to higher variability and surface roughness.
 
 \begin{figure}
   % \centering
-  \centerline{\includegraphics[width=1.4\textwidth]{./idealized_scale.pdf}}
+  \centerline{\includegraphics[width=1.2\textwidth]{./idealized_scale.pdf}}
   \caption{Primary sources of variability for the scaling term, as a
     function of PFT. The 5th-95th percentile range of temperature is
     plotted at the 5th, 25th, 50th, 75th, and 95th percentiles of
@@ -859,7 +862,7 @@ reproduces our theoretical analysis.
 
 \begin{figure}
   \centering
-  \centerline{\includegraphics[width=1.4\textwidth]{./test_sign.pdf}}
+  \centerline{\includegraphics[width=1.2\textwidth]{./test_sign.pdf}}
   \caption{Comparison of the sign term with model uncertainty included
     (box plots) to the sign term as calculated with simplifying
     assumptions (blue line, as in Figure \ref{idealized_sign}). Each
@@ -996,7 +999,7 @@ of PM introduces minimal error with its use of uWUE.
 
 \begin{figure}
   \centering
-  \centerline{\includegraphics[width=1.4\textwidth]{./data_scatter.png}}
+  \centerline{\includegraphics[width=1.2\textwidth]{./data_scatter.png}}
   \caption{Scatter plots of observed
     $\frac{\partial \; ET}{\partial \; VPD}$, including $\sigma$
     variability, as a function of PFT, temperature and VPD. Please
@@ -1101,7 +1104,7 @@ statistics and figures.
 
 \begin{figure}
   \centering
-  \centerline{\includegraphics[width=1.4\textwidth]{./swc_boxplot.pdf}}
+  \centerline{\includegraphics[width=1.2\textwidth]{./swc_boxplot.pdf}}
   \caption{$\sigma \cdot uWUE$ as a function of PFT and SWC. Each box
     plot represents 5\% of all observations. Note that the highest
     10\% of SWC observations are excluded to better resolve variability in the much more narrow bins at lower SWC (e.g. SWC has long tails at high values).}
@@ -1194,12 +1197,12 @@ ET-VPD dependence. This analysis is also important to understand whether the cho
 
 By introducing $n$ and $m$ we can free our stomatal
 conductance model from assumptions about VPD dependence:
-\begin{linenomath*}
+% \begin{linenomath*}
   \begin{equation}
     g_s = \frac{R \, T}{P} 1.6 \left(1 + \frac{g_*}{VPD^m}\right) \frac{*WUE \; ET}{c_a \; VPD^n},
     \label{m_n}
   \end{equation}
-\end{linenomath*}
+% \end{linenomath*}
 where:
 \[*WUE = \frac{GPP}{ET}VPD^n,\] and $g_*$ is a generic slope parameter
 of units $VPD^m$. To determine how the exponent $n$ and $m$ alter the
@@ -1377,7 +1380,7 @@ enriched CO$_2$ world.
 
 \acknowledgments This work used eddy covariance data acquired and
 shared by the FLUXNET community, including these networks: AmeriFlux,
-AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont,
+AfriFlux, AsiaFlknux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont,
 ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC,
 OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data
 are provided by ECMWF and processed by LSCE. The FLUXNET eddy
@@ -1390,8 +1393,6 @@ Science Foundation Graduate Research Fellowship under Grant No. DGE
 16-44869. All code and data used in this analysis, including those
 used to generate the figures and tables, are publicly available at
 https://github.com/massma/climate\_et.
-
-\cite{Zhou_2016}
 
 \bibliography{references.bib}
 
