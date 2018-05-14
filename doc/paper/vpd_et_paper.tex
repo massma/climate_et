@@ -1,27 +1,4 @@
 \input{def}
-\usepackage{makecell}
-\usepackage{multirow} %AM for tables
-\usepackage{booktabs}
-\usepackage{authblk}
-\usepackage{textcomp}
-
-\bibliographystyle{agufull08}
-\RequirePackage{natbib}
-\RequirePackage{graphicx}
-
-
-\def\acknowledgments{\vskip12pt\noindent{\bf
-Acknowledgments\vrule depth 6pt
-width0pt\relax}\\*\noindent\ignorespaces}
-
-% \drafttrue
-
-% \journalname{Agricultural and Forest Meteorology: When does VPD drive
-%   or reduce ET?}
-
-\newcommand{\appropto}{\mathrel{\vcenter{
-      \offinterlineskip\halign{\hfil$##$\cr
-        \propto\cr\noalign{\kern2pt}\sim\cr\noalign{\kern-2pt}}}}}
 
 \begin{document}
 
@@ -168,8 +145,8 @@ needleleaf forest (ENF), mixed forest (MF), closed shrub (CSH),
 savannah (SAV), and woody savannah (WSA) (site locations in Figure
 \ref{map_fig}).
 
-\begin{figure}
-  \centering \includegraphics{./map.pdf}
+\begin{figure}[h]
+  \centering \includegraphics[trim={0 3cm 0 3cm}, clip]{./map.pdf}
   \caption{Plant functional type and location of FLUXNET2015 sites
     used in this analysis.}
   \label{map_fig}
@@ -518,8 +495,8 @@ $\sigma$ is indeed close to unity i.e. $O(1)$ (Figure
 distribution of $\sigma$ we have confidence in our model framework and
 the data quality.
 
-\begin{figure}
-  \centering \includegraphics{./joint_vpd_sigma.pdf}
+\begin{figure}[h]
+  \centering\includegraphics[width=0.75\textwidth]{./joint_vpd_sigma.pdf}
   \caption{The joint distribution of $VPD$ and $\sigma$, with outliers
     removed (defined as lowest and highest 5\% of $\sigma$). $\sigma$
     exhibits a weak dependence on $VPD$, and $\sigma$ is $O(1)$ for
@@ -1217,7 +1194,7 @@ relations reveal themselves from Equation \ref{curves}:
 
 \begin{figure}
   \centering
-  \centerline{\includegraphics[width=1\textwidth]{./concave.pdf}}
+  \centerline{\includegraphics[width=0.75\textwidth]{./concave.pdf}}
   \caption{ Solutions corresponding to inflection points between
     concave up and concave down ET-VPD curves (Equation \ref{curves})
     for three specific scenarios. Solutions are defined in terms of a
