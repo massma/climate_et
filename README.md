@@ -2,13 +2,13 @@
 
 This is the repository for reproducing the (currently pre-printed) manuscript:
 
-Massmann, A., P. Gentine and C. Lin._When does vapor pressure deficit drive or reduce evapotranspiration?_ [arXiv:1805.05444](https://arxiv.org/abs/1805.05444).
+Massmann, A., P. Gentine and C. Lin. _When does vapor pressure deficit drive or reduce evapotranspiration?_ [arXiv:1805.05444](https://arxiv.org/abs/1805.05444).
 
 The general directory structure is:
 
 * src/ - all code
 * dat/ - small data files used by code
-* doc/ - any papers or formal writing on this project (none yet)
+* doc/ - any formal papers and presentations for the project 
 * etc/ - anything that doesn't fit into above, usually notes etc.
 
 ### Reproducing research:
