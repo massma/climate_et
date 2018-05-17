@@ -1,12 +1,8 @@
-## Overview ##
+## When does vapor pressure deficit drive or reduce ET? 
 
-The goal of this project is to test:
+This is the repository for reproducing the (currently pre-printed) manuscript:
 
-1. When is VPD a driver or reducer of ET?
-
-2. What will drive ET changes with climate? Previous studies (e.g. Jack Scheff's papers) used PET, but the story will be different with ET because of the ecosystem responses. For example, if you include temperature effect on the g<sub>sto</sub> term in Penman-Monteith you will see it cancel a lot of the CC scaling observed in PET. So in reality ET changes as a function of temperature might be more mild, but we need to test this (which is the purpose of this project).
-
-See informal notes in etc/ for more documentation on the genesis of this project.
+Massmann, A., P. Gentine and C. Lin._When does vapor pressure deficit drive or reduce evapotranspiration?_ [arXiv:1805.05444](https://arxiv.org/abs/1805.05444).
 
 The general directory structure is:
 
@@ -15,11 +11,12 @@ The general directory structure is:
 * doc/ - any papers or formal writing on this project (none yet)
 * etc/ - anything that doesn't fit into above, usually notes etc.
 
-### Reproducing research: ###
+### Reproducing research:
 
 1) make clean
 2) make data
 3) make paper
+4) make arxiv (if you want tarball submitted to arxiv)
 
 Note that the scripts expect two environmental variables that you will need to set: PLOTS and DATA , which point to arbitrary directories (plots are where misc. plots are saved, and data is where data is loaded from). You will also need to download processed [FLUXNET2015](https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/) data provided by my collaborator Changjie Lin, available at http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz , and extract it into a directory $DATA/changjie/ .  The scripts might also need some directory structure within $PLOTS to successfully save files, so watch for any errors about saving figures; I'll try and check this and update the instructions at some point.
 
