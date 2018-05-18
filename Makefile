@@ -49,7 +49,7 @@ doc/paper/data_scatter.bak :
 doc/paper/ms.bbl : doc/paper/vpd_et_paper.bbl
 	cp $< $@
 
-doc/paper/ms.tex : doc/paper/vpd_et_paper.tex
+doc/paper/ms.tex : doc/paper/vpd_et_paper_arxiv.tex
 	cp $< $@
 
 arxiv : doc/paper/arxiv-submission.tar
