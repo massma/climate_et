@@ -18,9 +18,9 @@ The general directory structure is:
 3) make paper
 4) make arxiv (if you want tarball submitted to arxiv)
 
-Note that the scripts expect two environmental variables that you will need to set: PLOTS and DATA , which point to arbitrary directories (plots are where misc. plots are saved, and data is where data is loaded from). You will also need to download processed [FLUXNET2015](https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/) data provided by my collaborator Changjie Lin, available at http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz , and extract it into a directory $DATA/changjie/ .  The scripts might also need some directory structure within $PLOTS to successfully save files, so watch for any errors about saving figures; I'll try and check this and update the instructions at some point.
+Note that the scripts expect two environmental variables that you will need to set: PLOTS and DATA , which point to arbitrary directories (plots are where misc. plots are saved, and data is where data is loaded from). The scripts might also need some directory structure within $PLOTS to successfully save files, so watch for any errors about saving figures; I'll try and check this and update the instructions at some point. You will also need to download processed [FLUXNET2015](https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/) data provided by my collaborator Changjie Lin, available at http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz , and extract it into a directory $DATA/changjie/ . It is extremely important that these data are only used for the purposes of reproducing this research, for two good reasons. First, FLUXNET data for new research should be optained from the FLUXNET website to insure that the data policy is followed and FLUXNET is aware of the downloads. Second, only a portion of the data in the tarball are actually used in the analysis, and any of the other variables may not be reliable, quality controlled, or correct.  
 
-Finally, if you run into any issues or bugs, please open an issue.
+Finally, if you run into any issues or bugs, please open an issue or shoot me an email. 
 
 python --version : Python 3.5.3
 

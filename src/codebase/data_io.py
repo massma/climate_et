@@ -9,6 +9,7 @@ import glob
 import pandas as pd
 import numpy as np
 import scipy.io as io
+import codebase.fluxnet_pycite.fluxnet_pycite as fluxcite
 
 LV = 2.5e6
 WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
@@ -33,6 +34,8 @@ SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        'Site_list_(canopy_height).csv' % os.environ['DATA'],\
                        delimiter=',')
 SITELIST.index = SITELIST.Site
+
+TIER1_DICT = fluxcite.load_tier1_dict()
 
 def add_atmos_dict(data_out, data):
   """generates an atmos dictionary"""
@@ -70,6 +73,18 @@ def gen_time(data):
   #time = np.datetime64()
   return datestr
 
+def site_name(filename):
+  """returns the site name given a mat filename"""
+  return ''.join(filename.split('/')[-1].split('.')[:-1])
+
+def tier1_test(filename):
+  """tests if a filename is tier 1"""
+  _site = site_name(filename).lower()
+  if _site in TIER1_DICT:
+    return True
+  else:
+    return False
+  
 def load_file(filename):
   """loads up a matlab file from changjie"""
   data = io.loadmat(filename)
@@ -108,14 +123,17 @@ def load_file(filename):
     print('Setting Zhou uWUE to 1.0 (proxy for NaN) for PFT: %s' % pft)
     data_out['uwue_zhou_std'] = 1.0 #np.nan
     data_out['uwue_zhou'] = 1.0 # np.nan
-  data_out['site'] = ''.join(filename.split('/')[-1].split('.')[:-1])
+
+  # check if site is Tier 2, if so drop it
+  data_out['site'] = site_name(filename)
   data_out = data_out.dropna()
   return data_out
 
 def load_mat_data():
   """loads all mat data provided by changjie, outputing dataframe"""
   filenames = glob.glob('%s/changjie/MAT_DATA/*.mat' % os.environ['DATA'])
-  data_list = [load_file(filename) for filename in filenames]
+  tier1_filenames = filter(tier1_test, filenames)
+  data_list = [load_file(filename) for filename in tier1_filenames]
   data_list = [df for df in data_list if df is not None]
   all_site_data = pd.concat(data_list)
   all_site_data = all_site_data.reset_index()

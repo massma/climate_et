@@ -9,7 +9,7 @@ ARXIV_FILES = doc/paper/ms.tex \
 PAPER_FILES = doc/paper/references.bib doc/paper/body.tex
 
 TABLES = doc/paper/pft_params.tex doc/paper/vpd_crit.tex \
-	doc/paper/stats.tex doc/paper/d2_solutions.tex
+	doc/paper/stats.tex doc/paper/d2_solutions.tex doc/paper/flux_sites.tex
 
 .PHONY: data clean figure-all paper arxiv clearn-arxiv clean-bak clean-paper 
 
@@ -48,6 +48,18 @@ doc/paper/data_scatter.bak : src/paper_figure_code/data_scatter.py
 	cd src/paper_figure_code && python3 data_scatter.py
 	cd doc/paper && mv data_scatter.png data_scatter.bak
 
+# note below sed's are to fix duplicate citations
+doc/paper/flux_sites.tex : src/paper_figure_code/tables.py \
+src/codebase/fluxnet_pycite/fluxnet_pycite.py
+	cd src/paper_figure_code && python3 tables.py
+	cd doc/paper && \
+	sed -i "s/{AU-Stp}/{AU-DaP}/" flux_sites.tex && \
+	sed -i "s/{CA-SF2}/{CA-SF1}/" flux_sites.tex && \
+	sed -i "s/{DE-Kli}/{DE-Gri}/" flux_sites.tex && \
+	sed -i "s/{US-AR2}/{US-AR1}/" flux_sites.tex && \
+	sed -i "s/{US-Ne3}/{US-Ne1}/" flux_sites.tex && \
+	sed -i "s/{US-Ne2}/{US-Ne1}/" flux_sites.tex
+
 arxiv : doc/paper/arxiv-submission.tar
 
 clean-arxiv :
@@ -65,9 +77,6 @@ doc/paper/ms.pdf : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/references.bib
 
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
-
-doc/paper/flux_sites.bib : src/paper_figure_code/tables.py
-	cd src/paper_figure_code && python3 tables.py
 
 doc/paper/vpd_et_paper_afm.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 	cd ./doc/paper && pdflatex vpd_et_paper_afm && \
