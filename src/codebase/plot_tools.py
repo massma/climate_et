@@ -11,12 +11,21 @@ import numpy as np
 import seaborn as sns
 import resource
 from scipy.stats import spearmanr
-import util
 from codebase.data_prep import vapor_pres
 # import matplotlib as mpl
 # mpl.rcParams.update(mpl.rcParamsDefault)
 
 resource.setrlimit(resource.RLIMIT_AS, (4000e6, 4000e6))
+
+def test_savefig(fname):
+  """tries to save a figure and makes a folder if it doesn't exist"""
+  try:
+    plt.savefig(fname)
+  except FileNotFoundError:
+    os.system('mkdir -p %s' % '/'.join(fname.split('/')[:-1]))
+    plt.savefig(fname)
+  return
+
 
 def split_df(_df):
   """
@@ -109,7 +118,7 @@ def soil_moisture_scatter(_df, meta):
           % (os.environ['PLOTS'], meta['folder_label'],\
              meta['var'], meta['log'], meta['x_axis'],
              str(_df['pft'][0]), meta['label'])
-  util.test_savefig(fname)
+  test_savefig(fname)
   plt.show(block=False)
   return
 
@@ -203,7 +212,7 @@ def histogram(_df, meta):
   else:
     ax.set_xlim([0.,2.5])
     outname = 'full_%s.png' % meta['var']
-  util.test_savefig('%s/climate_et/histogram/%s'\
+  test_savefig('%s/climate_et/histogram/%s'\
                     % (os.environ['PLOTS'], outname))
   return
 
@@ -235,15 +244,15 @@ def test_trend(_df, meta, fig=None):
                       fontsize=meta['fontsize'])
 
   if meta['full_ds']:
-    util.test_savefig('%s/climate_et/scatters/%s_%s.pdf'\
+    test_savefig('%s/climate_et/scatters/%s_%s.pdf'\
                 % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
   elif meta['group'] == 'site':
-    util.test_savefig('%s/climate_et/scatters/%s_%s_site/%s.png'\
+    test_savefig('%s/climate_et/scatters/%s_%s_site/%s.png'\
                  % (os.environ['PLOTS'], meta['x_var'],\
                     meta['y_var'],  _df['site'].iloc[0]))
     plt.title('pft: %s' % _df['pft'].iloc[0])
   else:
-    util.test_savefig('%s/climate_et/scatters/%s_%s/%s.png'\
+    test_savefig('%s/climate_et/scatters/%s_%s/%s.png'\
                 % (os.environ['PLOTS'], meta['x_var'],\
                    meta['y_var'],  _df['pft'].iloc[0]))
     plt.title('pft: %s' % _df['pft'].iloc[0])
@@ -272,7 +281,7 @@ def plot_height(_df):
   """plots up plant height to make sure it varies"""
   plt.figure()
   plt.plot(np.linspace(0.,100., _df.height.size), _df.height)
-  util.test_savefig('%s/climate_et/plant_height/%s.png'\
+  test_savefig('%s/climate_et/plant_height/%s.png'\
                % (os.environ['PLOTS'], _df.site.iloc[0]))
   return
 
@@ -293,7 +302,7 @@ def vpd_swc_dependence(_df, meta):
                     % (_df.site.iloc[0],  _df.pft.iloc[0],\
                        _df[meta['var']].mean()))
   plt.tight_layout()
-  util.test_savefig('%s/climate_et/scatters/triple_site_%s/%s_%s.png'\
+  test_savefig('%s/climate_et/scatters/triple_site_%s/%s_%s.png'\
                % (os.environ['PLOTS'], meta['var'],\
                   _df.pft.iloc[0], _df.site.iloc[0]))
   return

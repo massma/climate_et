@@ -2,21 +2,19 @@
 """
 This script makes all figs for the paper
 """
+import matplotlib as mpl
+mpl.use('Pdf')
 import os
 import importlib
 import pandas as pd
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import codebase.plot_tools as plot_tools
-import util
 import codebase.data_calc as d_calc
 import codebase.data_prep as d_prep
 import pickle
 
-mpl.use('Pdf')
 mpl.rcParams.update(mpl.rcParamsDefault)
 small_ax_params = mpl.rcParamsDefault
 # increase tick label size
@@ -28,11 +26,10 @@ fontsize=16
 single_ax_fontsize = 14
 
 
-importlib.reload(util)
 importlib.reload(plot_tools)
 importlib.reload(d_calc)
 
-# grab sites actually used in analysis
+
 with open('%s/changjie/diagnosed_data.pkl' % os.environ['DATA'],\
           mode='rb') as file:
   dfs = pickle.load(file)
@@ -114,3 +111,7 @@ def panel_wrapper(_df, function, name, args=()):
   plt.tight_layout()
   plt.savefig('../../doc/paper/%s' % name)
   return
+
+# grab sites actually used in analysis
+sites_used = df.loc[:, 'site'].drop_duplicates()
+
