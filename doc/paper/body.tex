@@ -106,19 +106,19 @@ functional types.
 \section{Materials and Methods}
 \subsection{Data}
 \label{data}
-We use both meteorological and eddy-covariance data from the
-FLUXNET2015 database (data available at \sloppy
+We use both meteorological and eddy-covariance data from the FLUXNET2015
+database (data available at \sloppy
 \url{https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/} \sloppy),
-including all sites with at least four years of data and observations
-of the variables described in the methods section (Section
-\ref{methods}). Seventy-three sites met these requirements, and were
-grouped into nine plant functional types (PFT) according to the
-International Geosphere-Biosphere Programme vegetation classification
-scheme \citep{Loveland_1999}: cropland (CRO), grass (GRA), deciduous
-broadleaf forest (DBF), evergreen broadleaf forest (EBF), evergreen
-needleleaf forest (ENF), mixed forest (MF), closed shrub (CSH),
-savannah (SAV), and woody savannah (WSA) (site locations and citations in Figure
-\ref{map_fig} and Appendex \ref{flux_sites}).
+including all Tier 1 sites with at least four years of data and
+observations of the variables described in the methods section (Section
+\ref{methods}). Sixty-six sites met these requirements, and were grouped
+into nine plant functional types (PFT) according to the International
+Geosphere-Biosphere Programme vegetation classification scheme
+\citep{Loveland_1999}: cropland (CRO), grass (GRA), deciduous broadleaf
+forest (DBF), evergreen broadleaf forest (EBF), evergreen needleleaf
+forest (ENF), mixed forest (MF), closed shrub (CSH), savannah (SAV), and
+woody savannah (WSA) (site locations and citations are in Figure
+\ref{map_fig} and Appendex \ref{flux_sites}, respectively).
 
 \begin{figure}[h]
   \centering \includegraphics[trim={0 3cm 0 3cm}, clip]{./map.pdf}
@@ -152,7 +152,7 @@ and to reduce errors at low windspeeds we remove all periods with wind
 magnitudes less than 0.5 m s$^{-1}$. Timesteps with negative observed
 GPP or ET are also removed, and we aggregate half hourly data to
 hourly averages to reduce noise \citep{Lin_2018}. After these quality
-control procedures, 434,765 upscaled hourly observations remain.
+control procedures, 400,983 upscaled hourly observations remain.
 
 \subsection{Methods}
 \label{methods}
@@ -1341,7 +1341,7 @@ are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance
 data processing and harmonization was carried out by the European Fluxes
 Database Cluster, AmeriFlux Management Project, and Fluxdata project of
 FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center,
-and the OzFlux, ChinaFlux and AsiaFlux offices. We would like to think
+and the OzFlux, ChinaFlux and AsiaFlux offices. We would like to thank
 Dr. Trevor Keenan for providing tools for citation of the FLUXNET2015
 dataset, available at
 \url{https://github.com/trevorkeenan/FLUXNET_citations}. This material is
@@ -1372,10 +1372,8 @@ tables, are publicly available at
     [1ex]
     \hline
   \end{longtable}
-
   \textsuperscript{1}  K{\"o}ppen Climate classification.
 \end{appendices}
-
 
 
 

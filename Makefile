@@ -65,8 +65,10 @@ arxiv : doc/paper/arxiv-submission.tar
 clean-arxiv :
 	rm doc/paper/arxiv-submission.tar
 
-doc/paper/arxiv-submission.tar : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/ms.pdf \
-	tar -cvf $@ --transform 's?.*/??g' $^ doc/paper/ms.bbl
+doc/paper/arxiv-submission.tar : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/ms.bbl \
+	tar -cvf $@ --transform 's?.*/??g' $^ 
+
+doc/paper/ms.bbl : doc/paper/ms.pdf
 
 paper : doc/paper/ms.pdf
 
