@@ -1,0 +1,3 @@
+[submodule "src/codebase/fluxnet_pycite"]
+	path = src/codebase/fluxnet_pycite
+	url = git@github.com:massma/fluxnet_pycite.git

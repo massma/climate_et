@@ -11,6 +11,11 @@ The general directory structure is:
 * doc/ - any formal papers and presentations for the project 
 * etc/ - anything that doesn't fit into above, usually notes etc.
 
+Note that you also need to initialize submodules:
+
+* ```git submodule init && git submodule update```
+* ```cd src/codebase/fluxnet_pycite && git submodule init && git submodule update```
+
 ### Reproducing research:
 
 1) make clean
