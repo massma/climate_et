@@ -14,7 +14,6 @@ The general directory structure is:
 Note that you also need to initialize submodules:
 
 * ```git submodule init && git submodule update```
-* ```cd src/codebase/fluxnet_pycite && git submodule init && git submodule update```
 
 ### Reproducing research:
 
