@@ -4,7 +4,7 @@ This script makes all figs for the paper
 """
 from shared_functions import *
 import scipy.optimize
-import codebase.fluxnet_pycite.fluxnet_pycite as fluxcite
+import codebase.FLUXNET_citations.F15T1_LaTeX.fluxnet_pycite as fluxcite
 
 importlib.reload(fluxcite)
 

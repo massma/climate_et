@@ -9,7 +9,7 @@ import glob
 import pandas as pd
 import numpy as np
 import scipy.io as io
-import codebase.fluxnet_pycite.fluxnet_pycite as fluxcite
+import codebase.FLUXNET_citations.F15T1_LaTeX.fluxnet_pycite as fluxcite
 
 LV = 2.5e6
 WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\

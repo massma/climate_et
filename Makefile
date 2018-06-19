@@ -50,7 +50,7 @@ doc/paper/data_scatter.bak : src/paper_figure_code/data_scatter.py
 
 # note below sed's are to fix duplicate citations
 doc/paper/flux_sites.tex : src/paper_figure_code/tables.py \
-src/codebase/fluxnet_pycite/fluxnet_pycite.py
+src/codebase/FLUXNET_citations/F15T1_LaTeX/fluxnet_pycite.py
 	cd src/paper_figure_code && python3 tables.py
 	cd doc/paper && \
 	sed -i "s/{AU-Stp}/{AU-DaP}/" flux_sites.tex && \
@@ -58,6 +58,7 @@ src/codebase/fluxnet_pycite/fluxnet_pycite.py
 	sed -i "s/{DE-Kli}/{DE-Gri}/" flux_sites.tex && \
 	sed -i "s/{US-AR2}/{US-AR1}/" flux_sites.tex && \
 	sed -i "s/{US-Ne3}/{US-Ne1}/" flux_sites.tex && \
+	sed -i "s/{AU-Rig}/{AU-Gin}/" flux_sites.tex && \
 	sed -i "s/{US-Ne2}/{US-Ne1}/" flux_sites.tex
 
 arxiv : doc/paper/arxiv-submission.tar
