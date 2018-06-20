@@ -1,0 +1,3 @@
+[submodule "src/codebase/FLUXNET_citations"]
+	path = src/codebase/FLUXNET_citations
+	url = git@github.com:trevorkeenan/FLUXNET_citations.git
