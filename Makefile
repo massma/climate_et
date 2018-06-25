@@ -3,15 +3,16 @@ FIGURES = doc/paper/idealized_scale.pdf doc/paper/idealized_sign.pdf \
 	doc/paper/swc_boxplot.pdf doc/paper/test_sign.pdf doc/paper/data_scatter.png \
 doc/paper/concave.pdf
 
-ARXIV_FILES = doc/paper/ms.tex \
+ARXIV_FILES = doc/paper/ms.tex doc/paper/abstract.tex \
 	doc/paper/agufull08.bst doc/paper/def.tex doc/paper/body.tex
 
-PAPER_FILES = doc/paper/references.bib doc/paper/body.tex
+PAPER_FILES = doc/paper/references.bib doc/paper/body.tex \
+doc/paper/abstract.tex doc/paper/vpd_et_paper_afm.tex
 
 TABLES = doc/paper/pft_params.tex doc/paper/vpd_crit.tex \
 	doc/paper/stats.tex doc/paper/d2_solutions.tex doc/paper/flux_sites.tex
 
-.PHONY: data clean figure-all paper arxiv clearn-arxiv clean-bak clean-paper 
+.PHONY: data clean figure-all paper arxiv clearn-arxiv clean-bak clean-paper
 
 # you'll need to rerun data if you make any changes to the analysis script
 data :
@@ -67,7 +68,7 @@ clean-arxiv :
 	rm doc/paper/arxiv-submission.tar
 
 doc/paper/arxiv-submission.tar : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/ms.bbl
-	tar -cvf $@ --transform 's?.*/??g' $^ 
+	tar -cvf $@ --transform 's?.*/??g' $^
 
 doc/paper/ms.bbl : doc/paper/ms.pdf
 
