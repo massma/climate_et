@@ -1,0 +1,78 @@
+% this is used for arkiv submissions
+\documentclass[12pt]{article}
+\input{def.tex}
+
+\begin{document}
+
+\title{When does vapor pressure deficit drive or reduce
+  evapotranspiration?}
+
+\author[1]{Adam Massmann\thanks{Corresponding author: akm2203@columbia.edu}}
+\author[1]{Pierre Gentine}
+\author[1,2]{Changjie Lin}
+
+\affil[1]{Department of Earth and Environmental Engineering, Columbia University, New York, NY 10027}
+\affil[2]{State Key Laboratory of Hydroscience and Engineering, Department of Hydraulic
+  Engineering, Tsinghua University, Beijing, CN 100084}
+
+\maketitle
+\begin{abstract}
+  \input{abstract}
+\end{abstract}
+
+\onehalfspacing
+
+\section{Introduction}
+
+\input{intro.tex}
+
+\input{body.tex}
+
+\section{Conclusions}
+
+\input{conclusions.tex}
+
+\acknowledgments This work used eddy covariance data acquired and shared
+by the FLUXNET community, including these networks: AmeriFlux, AfriFlux,
+AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont,
+ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC,
+OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data
+are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance
+data processing and harmonization was carried out by the European Fluxes
+Database Cluster, AmeriFlux Management Project, and Fluxdata project of
+FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center,
+and the OzFlux, ChinaFlux and AsiaFlux offices. We would like to thank
+Dr. Trevor Keenan for providing tools for citation of the FLUXNET2015
+dataset, available at
+\url{https://github.com/trevorkeenan/FLUXNET_citations}. This material is
+based upon work supported by the National Science Foundation Graduate
+Research Fellowship under Grant No. DGE 16-44869. All code and data used
+in this analysis, including those used to generate the figures and
+tables, are publicly available at \url{https://github.com/massma/climate\_et}
+
+\begin{appendices}
+  \section{FLUXNET2015 sites}\label{flux_sites}
+  % below taken adapted from Trevor Keenan's FLUXNET citations
+  % at github.com/trevorkeenan/FLUXNET_citations
+  Table A1: Metadata and citations for flux sites used in this analysis. All data are gathered from \url{www.fluxdata.org}, and citations are aggregated using tools available at \url{https://github.com/trevorkeenan/FLUXNET_citations}.
+  \begin{longtable}{l l l l l l l}
+    \hline
+    \textbf{Site} &
+    \textbf{PFT} &
+    \textbf{Lat} &
+    \textbf{Lon} &
+    \textbf{Clim\textsuperscript{1}} &
+    \textbf{Period} &
+    \textbf{References} \\
+    [0.5ex]
+    \hline
+    \input{flux_sites.tex}
+    [1ex]
+    \hline
+  \end{longtable}
+  \textsuperscript{1}  K{\"o}ppen Climate classification.
+\end{appendices}
+
+\bibliography{references.bib}
+
+\end{document}

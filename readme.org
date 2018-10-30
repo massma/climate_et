@@ -1,0 +1,50 @@
+#+startup: showall
+
+** When does vapor pressure deficit drive or reduce evapotranspiration?
+
+This is the repository for reproducing the (currently pre-printed) manuscript:
+
+Massmann, A., P. Gentine and C. Lin. /When does vapor pressure deficit
+drive or reduce evapotranspiration?/ [[https://arxiv.org/abs/1805.05444][arXiv:1805.05444]]
+
+The general directory structure is:
+
+- src/ - all code
+- dat/ - small data files used by code
+- doc/ - any formal papers and presentations for the project
+- etc/ - anything that doesn't fit into above, usually notes etc.
+
+** Prerequisites
+In order to reproduce the paper you will need:
+
+- pipenv and Python 3
+- wget
+- tar and gzip
+- GNUMake
+- Texlive
+
+** Reproducing research:
+
+1. ~make install~ : installs dependencies and creates some needed
+   directory structure
+2. ~make paper~ : does all analysis, makes all the figures, and
+   compiles the paper pdf. Note that this step also downloads about
+   400 MB of data from my collaborator Changjie, so it may take awhile
+   the first time you run it.
+3. ~make arxiv~ : (optional - if you want the tarball submitted to arxiv).
+
+If following these instructions does not work, please open an issue or
+send me an email. Reproduciblity is extremely important to me, so I am
+happy to take the time to figure out any problems, expecially because
+I have not actually tried these steps on any other computer than mine
+(so, for example, I might be missing some "prerequisites").
+
+Also, if you come across any bugs please open an issue or send me an
+email.
+
+** Questions and comments
+
+More genenerally, if you have any questions or comments on the paper
+or otherwise, please open an issue (preferred) or send me an
+email. Nothing would make me happier than this project starting some
+public discussion about science!
