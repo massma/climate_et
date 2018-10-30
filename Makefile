@@ -117,7 +117,7 @@ clean-bak :
 	rm doc/paper/data_scatter.bak
 
 install :
-	pipenv install
+	pipenv install && mkdir -p doc/shared_figs
 
 test :
 	echo ${PLOTS}
