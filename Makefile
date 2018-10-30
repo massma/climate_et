@@ -26,15 +26,6 @@ DATA = $(CURDIR)/dat
 dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA/ZA-Kru.mat src/FLUXNET_citations
 	cd ./src && pipenv run python analysis.py
 
-src/FLUXNET_citations : .gitmodules
-	git submodule init && git submodule update
-
-dat/changjie/MAT_DATA/ZA-Kru.mat : ${DATA}/changjie/vpd_data.tar.gz
-	cd ${DATA}/changjie && tar -xzvf vpd_data.tar.gz
-
-${DATA}/changjie/vpd_data.tar.gz :
-	cd ${DATA}/changjie && wget "http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz"
-
 figure-all :
 	cd ./src/paper_figure_code && pipenv run python runall.py
 
@@ -107,15 +98,24 @@ clean :
 # below is if you don't want to regenerate figs
 clean-paper :
 	cd doc/paper && rm -f ./*.aux ./*.log ./*.blg ./*.bbl \
-	data_scatter.png ms.pdf vpd_et_paper_afm.pdf
+	data_scatter.png ms.pdf vpd_et_paper_hess.pdf
 
 # below is because scatter figure takes so long to make, we don't want
 # to always clean it
 clean-bak :
 	rm doc/paper/data_scatter.bak
 
-install :
+install : src/FLUXNET_citations dat/changjie/MAT_DATA
 	pipenv install && mkdir -p doc/shared_figs
+
+src/FLUXNET_citations : .gitmodules
+	git submodule init && git submodule update
+
+dat/changjie/MAT_DATA : ${DATA}/changjie/vpd_data.tar.gz
+	cd ${DATA}/changjie && tar -xzvf vpd_data.tar.gz
+
+${DATA}/changjie/vpd_data.tar.gz :
+	cd ${DATA}/changjie && wget "http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz"
 
 test :
 	echo ${PLOTS}
