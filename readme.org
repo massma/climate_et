@@ -26,16 +26,17 @@ In order to reproduce the paper you will need:
 ** Reproducing research:
 
 1. ~make install~ : installs dependencies and creates some needed
-   directory structure
-2. ~make paper~ : does all analysis, makes all the figures, and
-   compiles the paper pdf. Note that this step also downloads about
-   400 MB of data from my collaborator Changjie, so it may take awhile
-   the first time you run it.
-3. ~make arxiv~ : (optional - if you want the tarball submitted to arxiv).
+   directory structure.  Note that this step also downloads about 400
+   MB of data from my collaborator Changjie, so it may take awhile.
+2. ~make paper~ : does all analysis, makes all the figures/tables, and
+   compiles the paper pdf (for submission to HESS) to ~doc/paper/vpd_et_paper_hess.pdf~.
+3. ~make arxiv~ : does all analysis and compiles the arXiv paper
+   to doc/paper/ms.pdf, including the actual ~.tar~ submission
+   (~doc/paper/arxiv-submission.tar~).
 
 If following these instructions does not work, please open an issue or
-send me an email. Reproduciblity is extremely important to me, so I am
-happy to take the time to figure out any problems, expecially because
+send me an email. Reproducibility is extremely important to me, so I am
+happy to take the time to figure out any problems, especially because
 I have not actually tried these steps on any other computer than mine
 (so, for example, I might be missing some "prerequisites").
 
@@ -44,7 +45,7 @@ email.
 
 ** Questions and comments
 
-More genenerally, if you have any questions or comments on the paper
+More generally, if you have any questions or comments on the paper
 or otherwise, please open an issue (preferred) or send me an
 email. Nothing would make me happier than this project starting some
 public discussion about science!
