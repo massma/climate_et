@@ -162,17 +162,11 @@ def scatter_plot(_df, meta):
   make_ax_plot(ax3, var, _df, meta)
 
   plt.tight_layout()
-  # plt.savefig('%s/climate_et/site_plots/%s_%s_vpd_debug.png'\
-  #             % (os.environ['PLOTS'], str(_df['pft'][0]), meta['site'],))
   fname = '%s/climate_et/%s%s_%s_%s_plots/%s_%s.png'\
           % (os.environ['PLOTS'], meta['var'], meta['folder_label'],\
              meta['log'], meta['x_axis'],
              str(_df['pft'][0]), meta['label'])
-  try:
-    plt.savefig(fname)
-  except FileNotFoundError:
-    os.system('mkdir %s' % '/'.join(fname.split('/')[:-1]))
-    plt.savefig(fname)
+  test_savefig(fname)
   plt.show(block=False)
   return
 
@@ -306,6 +300,3 @@ def vpd_swc_dependence(_df, meta):
                % (os.environ['PLOTS'], meta['var'],\
                   _df.pft.iloc[0], _df.site.iloc[0]))
   return
-
-
-
