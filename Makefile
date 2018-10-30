@@ -29,7 +29,7 @@ dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA
 	cd ./src && pipenv run python analysis.py
 
 dat/changjie/MAT_DATA : ${DATA}/changjie/vpd_data.tar.gz
-	cd ${DATA}/changjie && tar -xzvf $^
+	cd ${DATA}/changjie && tar -xzvf vpd_data.tar.gz
 
 ${DATA}/changjie/vpd_data.tar.gz :
 	cd ${DATA}/changjie && wget "http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz"
@@ -116,7 +116,7 @@ clean-bak :
 	rm doc/paper/data_scatter.bak
 
 install :
-	pipenv install
+	pipenv install && mkdir -p
 
 test :
 	echo ${PLOTS}

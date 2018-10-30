@@ -1,0 +1,2 @@
+This directory contains random plots not used in the analysis (mostly
+testing and verification at intermediate steps).
