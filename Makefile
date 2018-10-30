@@ -23,7 +23,7 @@ ALL_REQUIRE = dat/changjie/diagnosed_data.pkl
 PLOTS = $(CURDIR)/etc/plots
 DATA = $(CURDIR)/dat
 
-dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA/ZA-Kru.mat src/FLUXNET_citations
+dat/changjie/diagnosed_data.pkl : src/analysis.py
 	cd ./src && pipenv run python analysis.py
 
 figure-all :
