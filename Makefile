@@ -21,7 +21,7 @@ ALL_REQUIRE = dat/changjie/diagnosed_data.pkl
 .EXPORT_ALL_VARIABLES:
 # assumes that you run make from toplevel
 PLOTS = $(CURDIR)/etc/plots
-DATA = $(CURDIT)/dat
+DATA = $(CURDIR)/dat
 
 dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA src/FLUXNET_citations
 	cd ./src && pipenv run python analysis.py
