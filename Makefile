@@ -25,7 +25,7 @@ TOP := $(dir $(lastword $(MAKEFILE_LIST)))
 PLOTS = $(TOP)/etc/plots
 DATA = $(TOP)/dat
 
-dat/changjie/diagnosed_data.pkl : analysis.py dat/changjie/MAT_DATA
+dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA
 	cd ./src && pipenv run python analysis.py
 
 dat/changjie/MAT_DATA : ${DATA}/changjie/vpd_data.tar.gz
