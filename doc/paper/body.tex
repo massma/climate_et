@@ -272,12 +272,12 @@ observation at every time step) we can evaluate $\sigma$:
   \end{equation}
 % \end{linenomath*}
 
-Thus, with this uncertainty analysis we can evaluate departure from
+So, with this uncertainty analysis we can evaluate departure from
 our theory in observations, as a departure of $\sigma$ from unity. The
 variability of $\sigma$ across sites and time provides a measure of
 uncertainty in our model, assumptions, as well as in the FLUXNET2015
 observations themselves. The variability of $\sigma$ then propagates
-through any uncertainty to our partial derivative of Equation
+ any uncertainty through to our partial derivative of Equation
 \ref{et_sigma} with respect to VPD:
 
 % \begin{linenomath*}
@@ -338,13 +338,13 @@ We note one final comment on our derivation which is relevant for
 drought indices. If we approximate $c_a$ at a global mean CO$_2$
 concentration, then the RHS of Equation \ref{et} is fully defined
 using commonly available weather station data and the constants
-published here. This makes Equation \ref{et} a useful alternative to
+published here. This makes Equation \ref{et} useful in addition to
 PET in drought indices and hydrometeorological analysis for vegetated
 surfaces. Equation \ref{et} better reflects the physics of water
 exchange at the land surface and would only require fitting of uWUE
 and $g_1$, and can also account for changes in CO$_2$ concentration
-(assuming some relationship between $\lambda$ and [CO$_2$]), contrary
-to typical drought indices such as the Palmer Drought Severity Index
+(assuming some relationship between $\lambda$ and [CO$_2$]), which is missing
+in other drought indices such as the Palmer Drought Severity Index
 (PDSI) \citep{Swann_2016, Lemordant_2016, Lemordant_2018}. Lastly, all
 code and data used in this analysis, including those used to generate
 the figures and tables, are publicly available at
@@ -422,28 +422,30 @@ derivative vanishes $\frac{\partial \; ET}{\partial \; VPD} = 0$:
     \label{vpd_min_et}
   \end{equation}
 % \end{linenomath*}
-\normalsize noting that $VPD_{crit}$ mostly depends on the PFT
-parameters uWUE and $g_1$, and only varies weakly with climate as most
-other parameters related to the environment are nearly constant. The
-calculated value of $VPD_{crit}$ for each PFT is shown in Table
-\ref{vpd_crit}. For any values of $VPD$ less than $VPD_{crit}$, ET
-will decrease with increasing VPD
-($\frac{\partial \; ET}{\partial \; VPD} < 0$), and for values of
-$VPD$ greater than $VPD_{crit}$, ET will increase with increasing VPD
-($\frac{\partial \; ET}{\partial \; VPD} > 0$). In other words,
-ecosystems regulate and mitigate evaporative losses up to the VPD
-limit, $VPD_{crit}$, above which atmospheric demand is just too high
-to be entirely compensated by stomatal and ecosystem regulation. We
-note however that even though ET increases again above the critical
-threshold, $VPD_{crit}$, ET is still much lower than potential
-evaporation as stomata are still strongly regulating vapor fluxes to
-the atmosphere. Indeed, even in the absence of soil pore evaporation,
-stomata do not shut down entirely at very high VPD so that ET does not
-go to zero, because stomata are still slightly open to perform some
-photosynthesis \citep{Ball_1987, Leuning_1990, MEDLYN_2011}. In
-addition, upward xylem transport is necessary to maintain phloem
-transport, as well as nutrient transport and thus carbon allocation
-\citep{De_2013, Nikinmaa_2013, Ryan_2014}.
+  \normalsize
+
+  noting that $VPD_{crit}$ mostly depends on the PFT parameters uWUE
+  and $g_1$, and only varies weakly with climate as most other
+  parameters related to the environment are nearly constant. The
+  calculated value of $VPD_{crit}$ for each PFT is shown in Table
+  \ref{vpd_crit}. For any values of $VPD$ less than $VPD_{crit}$, ET
+  will decrease with increasing VPD
+  ($\frac{\partial \; ET}{\partial \; VPD} < 0$), and for values of
+  $VPD$ greater than $VPD_{crit}$, ET will increase with increasing
+  VPD ($\frac{\partial \; ET}{\partial \; VPD} > 0$). In other words,
+  ecosystems regulate and mitigate evaporative losses up to the VPD
+  limit, $VPD_{crit}$, above which atmospheric demand is just too high
+  to be entirely compensated by stomatal and ecosystem regulation. We
+  note however that even though ET increases again above the critical
+  threshold, $VPD_{crit}$, ET is still much lower than potential
+  evaporation as stomata are still strongly regulating vapor fluxes to
+  the atmosphere. However, even in the absence of soil pore
+  evaporation ET cannot go completely to zero at high VPD, because
+  stomata are still slightly open to perform some photosynthesis
+  \citep{Ball_1987, Leuning_1990, MEDLYN_2011}. In addition, upward
+  xylem transport is necessary to maintain phloem transport, as well
+  as nutrient transport and thus carbon allocation \citep{De_2013,
+    Nikinmaa_2013, Ryan_2014}.
 
 \begin{table}
   \caption{Values of $VPD_{crit}$, where
@@ -551,30 +553,28 @@ increases in VPD. Therefore, plants are able in most atmospheric
 conditions to reduce ET in response to increased VPD and thus to
 reduce water loss. To better illustrate this, the ranges of observed
 environmental VPDs at the FLUXNET sites are plotted parallel to the
-x-axis. For CSH and WSA, VPD is always less than VPD$_{crit}$ (off scale) so
-that the plant response dominates in typical environmental conditions,
-emphasizing the water conservative strategy of those plants. For CRO
-on the other hand, VPD is higher than VPD$_{crit}$ for more than 50\%
-of observations, emphasizing that those plants operate with an
-aggressive water usage strategy, are water intensive and were actually
-engineered for photosynthesis rather than water saving. For DBF, EBF,
-MF, GRA, and SAV more than half of the observed VPD are less than
-VPD$_{crit}$, i.e. in conditions where plant response dominates. SAV
-has a more water conservative response than the forest, grass, and
-crop plan types, but still responds by increasing ET with increasing
-VPD for about a quarter of observations, due to the high aridity (VPD)
-of the SAV ecoclimate. It is also important to note that for all PFTs,
-even when atmospheric demand dominates, ET response to VPD is still
-far more negative than it would be for potential evaporation
-$\partial PET/\partial VPD$, i.e. atmospheric demand only, emphasizing
-that there is still a strong regulation of evaporative flux by stomata
-and though the plant xylem. The sign term in the PET case would just
-be a constant ($\frac{c_p}{R_{air}} \approx 3.5$), which is far larger
-than any part of the curves for any PFT. This highlights the
-deficiencies of PET's ability to capture land response to changes in
-atmospheric dryness (VPD). Plants are always regulating water exchange
-from the land surface, even when they reach the limits of they ability
-to do so.
+x-axis. For CSH and WSA, VPD is always less than VPD$_{crit}$ (off
+scale) so that the plant response dominates in typical environmental
+conditions, emphasizing the water conservative strategy of those
+plants. For CRO on the other hand, VPD is higher than VPD$_{crit}$ for
+more than 50\% of observations, emphasizing that those plants operate
+with an aggressive water usage strategy, are water intensive and were
+actually engineered for photosynthesis rather than water saving. For
+DBF, EBF, MF, GRA, and SAV more than half of the observed VPD are less
+than VPD$_{crit}$, i.e. in conditions where plant response
+dominates. SAV has a more water conservative response than the forest,
+grass, and crop plan types, but still responds by increasing ET with
+increasing VPD for about a quarter of observations, due to the high
+aridity (VPD) of the SAV ecoclimate. It is also important to note that
+for all PFTs, even when atmospheric demand dominates, ET response to
+VPD is still far more negative than it would be for potential
+evaporation $\partial PET/\partial VPD$, i.e. atmospheric demand only,
+emphasizing that there is still a strong regulation of evaporative
+flux by stomata and though the plant xylem. The sign term in the PET
+case would just be a constant ($\frac{c_p}{R_{air}} \approx 3.5$),
+which is far larger than any part of the curves for any PFT. Plants
+are always regulating water exchange from the land surface, even when
+they reach the limits of they ability to do so.
 
 \subsection{Functional Form of the Scaling Term}
 \label{scale_term}
@@ -1092,7 +1092,7 @@ relations reveal themselves from Equation \ref{curves}:
     m$), whether the solution is concave up or concave down does not
     depend on $uWUE$.
   \item In general, increasing the exponent of VPD dependence
-    increases the likelihood of a concave up result. Additionally, as
+    increases the likelihood of a concave down result. Additionally, as
     the exponent of VPD dependence increases from the optimum value of
     1/2, whether the curve is concave upward or concave downward
     becomes a function of the plant specific slope parameter $g_*$,

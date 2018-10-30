@@ -14,7 +14,7 @@ r, sigma = symbols('r sigma')
 # init aero
 g_a, p, t, cp, r_air, x, g_s = symbols('g_a P T c_p R_air x g_s')
 # init plant
-gamma, c_s, r_star, uwue, g_1, onesix = symbols('gamma c_s R* uWUE g_1 1.6')
+gamma, c_s, r_star, uwue, g_1, onesix = symbols('gamma c_s R* uWUE g_* 1.6')
 
 vpd, delta = symbols('VPD Delta')
 
@@ -111,4 +111,3 @@ for m in np.linspace(0.5, 1.0, 10):
   plt.plot(x, 2.8*x**(-m), label="m=%5.2f" % m)
 plt.legend(loc="best")
 plt.savefig("./temp_2.png")
-
