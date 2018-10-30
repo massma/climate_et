@@ -32,9 +32,6 @@ doc/paper/idealized_sign.pdf : src/paper_figure_code/idealized_sign.py
 doc/paper/joint_vpd_sigma.pdf : src/paper_figure_code/joint_vpd_sigma.py
 	cd src/paper_figure_code && pipenv run python joint_vpd_sigma.py
 
-doc/paper/map.pdf : src/paper_figure_code/map.py
-	cd src/paper_figure_code && pipenv run python map.py
-
 doc/paper/swc_boxplot.pdf : src/paper_figure_code/swc_boxplot.py
 	cd src/paper_figure_code && pipenv run python swc_boxplot.py
 
