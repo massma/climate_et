@@ -4,7 +4,8 @@ FIGURES = doc/paper/idealized_scale.pdf doc/paper/idealized_sign.pdf \
 doc/paper/concave.pdf
 
 ARXIV_FILES = doc/paper/ms.tex doc/paper/abstract.tex \
-	doc/paper/agufull08.bst doc/paper/def.tex doc/paper/body.tex
+	doc/paper/agufull08.bst doc/paper/def.tex doc/paper/body.tex \
+	doc/paper/intro.tex doc/paper/conclusions.tex
 
 PAPER_FILES = doc/paper/references.bib doc/paper/body.tex \
 doc/paper/abstract.tex doc/paper/vpd_et_paper_hess.tex \
