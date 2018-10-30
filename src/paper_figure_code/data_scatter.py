@@ -3,6 +3,7 @@
 This script makes fig 6
 """
 from shared_functions import *
+from pdb import set_trace as bp
 import time
 mpl.rcParams.update(small_ax_params)
 # mean_df is defined up at this level
@@ -44,11 +45,9 @@ def make_ax_plot(_ax, var, _df, meta):
   grouped = grouped.reset_index()
   grouped.columns = ['x_cut', 't_a_cut', 'var']
   grouped = grouped.pivot('x_cut', 't_a_cut').transpose()
-  # print(grouped)
+  grouped = grouped.reset_index(level=0, drop=True)
   _xstr = grouped.columns.values
-  # print(_xstr)
-  _ystr = grouped.index.levels[1].values
-  # print(_ystr)
+  _ystr = grouped.index.values
   # add some x, y modifies here to just grab the appropriate edge
   _x = np.array([interval.left for interval in _xstr])
   _xmax = np.array([interval.right for interval in _xstr]).max()
@@ -121,4 +120,3 @@ meta['nbins'] = 1000
 panel_wrapper(df, scatter_plot_paper, "data_scatter.png", args=(meta,))
 
 print('done with vpd, time was %f min' % ((time.time()-start)/60.))
-
