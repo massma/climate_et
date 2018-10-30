@@ -25,8 +25,11 @@ TOP := $(dir $(lastword $(MAKEFILE_LIST)))
 PLOTS = $(TOP)/etc/plots
 DATA = $(TOP)/dat
 
-dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA
+dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA src/FLUXNET_citations
 	cd ./src && pipenv run python analysis.py
+
+src/FLUXNET_citations : .gitmodules
+	git submodule init && git submodule update
 
 dat/changjie/MAT_DATA : ${DATA}/changjie/vpd_data.tar.gz
 	cd ${DATA}/changjie && tar -xzvf vpd_data.tar.gz
