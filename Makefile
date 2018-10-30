@@ -14,43 +14,57 @@ doc/paper/intro.tex doc/paper/conclusions.tex
 TABLES = doc/paper/pft_params.tex doc/paper/vpd_crit.tex \
 	doc/paper/stats.tex doc/paper/d2_solutions.tex doc/paper/flux_sites.tex
 
-.PHONY: data clean figure-all paper arxiv clearn-arxiv clean-bak clean-paper install
+ALL_REQUIRE = dat/changjie/diagnosed_data.pkl
 
-# you'll need to rerun data if you make any changes to the analysis script
-data :
+.PHONY: clean figure-all paper arxiv clearn-arxiv clean-bak clean-paper install
+
+TOP := $(dir $(lastword $(MAKEFILE_LIST)))
+
+.EXPORT_ALL_VARIABLES:
+
+PLOTS = $(TOP)/etc/plots
+DATA = $(TOP)/dat
+
+dat/changjie/diagnosed_data.pkl : analysis.py dat/changjie/MAT_DATA
 	cd ./src && pipenv run python analysis.py
+
+dat/changjie/MAT_DATA : ${DATA}/changjie/vpd_data.tar.gz
+	cd ${DATA}/changjie && tar -xzvf $^
+
+${DATA}/changjie/vpd_data.tar.gz :
+	cd ${DATA}/changjie && wget "http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz"
 
 figure-all :
 	cd ./src/paper_figure_code && pipenv run python runall.py
 
-doc/paper/idealized_scale.pdf : src/paper_figure_code/idealized_scale.py
+doc/paper/idealized_scale.pdf : src/paper_figure_code/idealized_scale.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python idealized_scale.py
 
-doc/paper/idealized_sign.pdf : src/paper_figure_code/idealized_sign.py
+doc/paper/idealized_sign.pdf : src/paper_figure_code/idealized_sign.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python idealized_sign.py
 
-doc/paper/joint_vpd_sigma.pdf : src/paper_figure_code/joint_vpd_sigma.py
+doc/paper/joint_vpd_sigma.pdf : src/paper_figure_code/joint_vpd_sigma.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python joint_vpd_sigma.py
 
-doc/paper/swc_boxplot.pdf : src/paper_figure_code/swc_boxplot.py
+doc/paper/swc_boxplot.pdf : src/paper_figure_code/swc_boxplot.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python swc_boxplot.py
 
-doc/paper/test_sign.pdf : src/paper_figure_code/test_sign.py
+doc/paper/test_sign.pdf : src/paper_figure_code/test_sign.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python test_sign.py
 
-doc/paper/concave.pdf : src/paper_figure_code/concave.py
+doc/paper/concave.pdf : src/paper_figure_code/concave.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python concave.py
 
-doc/paper/data_scatter.png : doc/paper/data_scatter.bak
+doc/paper/data_scatter.png : doc/paper/data_scatter.bak $(ALL_REQUIRE)
 	cd doc/paper && cp data_scatter.bak data_scatter.png
 
-doc/paper/data_scatter.bak : src/paper_figure_code/data_scatter.py
+doc/paper/data_scatter.bak : src/paper_figure_code/data_scatter.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python data_scatter.py
 	cd doc/paper && mv data_scatter.png data_scatter.bak
 
 # note below sed's are to fix duplicate citations
 doc/paper/flux_sites.tex : src/paper_figure_code/tables.py \
-src/codebase/FLUXNET_citations/F15T1_LaTeX/fluxnet_pycite.py
+src/codebase/FLUXNET_citations/F15T1_LaTeX/fluxnet_pycite.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python tables.py
 	cd doc/paper && \
 	sed -i "s/{AU-Stp}/{AU-DaP}/" flux_sites.tex && \
@@ -103,3 +117,6 @@ clean-bak :
 
 install :
 	pipenv install
+
+test :
+	echo ${PLOTS}
