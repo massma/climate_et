@@ -1,0 +1,10 @@
+This is a directory where derived data from my collaborator, Changjie
+Lin, will be downloaded. These data were to big to host on github.
+
+It is extremely important that these data are only used for the
+purposes of reproducing this research, for two good reasons. First,
+FLUXNET data for new research should be optained from the FLUXNET
+website to insure that the data policy is followed and FLUXNET is
+aware of the downloads. Second, only a portion of the data in the
+tarball are actually used in the analysis, and any of the other
+variables may not be reliable, quality controlled, or correct.
