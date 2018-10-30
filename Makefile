@@ -7,7 +7,8 @@ ARXIV_FILES = doc/paper/ms.tex doc/paper/abstract.tex \
 	doc/paper/agufull08.bst doc/paper/def.tex doc/paper/body.tex
 
 PAPER_FILES = doc/paper/references.bib doc/paper/body.tex \
-doc/paper/abstract.tex doc/paper/vpd_et_paper_afm.tex
+doc/paper/abstract.tex doc/paper/vpd_et_paper_hess.tex \
+doc/paper/intro.tex doc/paper/conclusions.tex
 
 TABLES = doc/paper/pft_params.tex doc/paper/vpd_crit.tex \
 	doc/paper/stats.tex doc/paper/d2_solutions.tex doc/paper/flux_sites.tex
@@ -82,15 +83,15 @@ doc/paper/ms.pdf : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/references.bib
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
 
-doc/paper/vpd_et_paper_afm.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
-	cd ./doc/paper && pdflatex vpd_et_paper_afm && \
-	bibtex vpd_et_paper_afm && pdflatex vpd_et_paper_afm && \
-	bibtex vpd_et_paper_afm && pdflatex vpd_et_paper_afm
+doc/paper/vpd_et_paper_hess.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
+	cd ./doc/paper && pdflatex vpd_et_paper_hess && \
+	bibtex vpd_et_paper_hess && pdflatex vpd_et_paper_hess && \
+	bibtex vpd_et_paper_hess && pdflatex vpd_et_paper_hess
 
 clean :
 	rm -f $(FIGURES) doc/paper/arxiv-submission.tar && \
 	cd doc/paper && rm -f ./*.aux ./*.log ./*.blg ./*.bbl ms.pdf \
-	vpd_et_paper_afm
+	vpd_et_paper_hess
 
 # below is if you don't want to regenerate figs
 clean-paper :
