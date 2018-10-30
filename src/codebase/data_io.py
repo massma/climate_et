@@ -84,7 +84,7 @@ def tier1_test(filename):
     return True
   else:
     return False
-  
+
 def load_file(filename):
   """loads up a matlab file from changjie"""
   data = io.loadmat(filename)
