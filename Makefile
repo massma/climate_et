@@ -116,7 +116,7 @@ clean-bak :
 	rm doc/paper/data_scatter.bak
 
 install :
-	pipenv install && mkdir -p
+	pipenv install
 
 test :
 	echo ${PLOTS}
