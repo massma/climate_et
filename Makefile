@@ -23,13 +23,13 @@ ALL_REQUIRE = dat/changjie/diagnosed_data.pkl
 PLOTS = $(CURDIR)/etc/plots
 DATA = $(CURDIR)/dat
 
-dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA src/FLUXNET_citations
+dat/changjie/diagnosed_data.pkl : src/analysis.py dat/changjie/MAT_DATA/ZA-Kru.mat src/FLUXNET_citations
 	cd ./src && pipenv run python analysis.py
 
 src/FLUXNET_citations : .gitmodules
 	git submodule init && git submodule update
 
-dat/changjie/MAT_DATA : ${DATA}/changjie/vpd_data.tar.gz
+dat/changjie/MAT_DATA/ZA-Kru.mat : ${DATA}/changjie/vpd_data.tar.gz
 	cd ${DATA}/changjie && tar -xzvf vpd_data.tar.gz
 
 ${DATA}/changjie/vpd_data.tar.gz :
@@ -63,19 +63,6 @@ doc/paper/data_scatter.bak : src/paper_figure_code/data_scatter.py $(ALL_REQUIRE
 	cd src/paper_figure_code && pipenv run python data_scatter.py
 	cd doc/paper && mv data_scatter.png data_scatter.bak
 
-# note below sed's are to fix duplicate citations
-doc/paper/flux_sites.tex : src/paper_figure_code/tables.py \
-src/codebase/FLUXNET_citations/F15T1_LaTeX/fluxnet_pycite.py $(ALL_REQUIRE)
-	cd src/paper_figure_code && pipenv run python tables.py
-	cd doc/paper && \
-	sed -i "s/{AU-Stp}/{AU-DaP}/" flux_sites.tex && \
-	sed -i "s/{CA-SF2}/{CA-SF1}/" flux_sites.tex && \
-	sed -i "s/{DE-Kli}/{DE-Gri}/" flux_sites.tex && \
-	sed -i "s/{US-AR2}/{US-AR1}/" flux_sites.tex && \
-	sed -i "s/{US-Ne3}/{US-Ne1}/" flux_sites.tex && \
-	sed -i "s/{AU-Rig}/{AU-Gin}/" flux_sites.tex && \
-	sed -i "s/{US-Ne2}/{US-Ne1}/" flux_sites.tex
-
 arxiv : doc/paper/arxiv-submission.tar
 
 clean-arxiv :
@@ -95,6 +82,17 @@ doc/paper/ms.pdf : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/references.bib
 
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
+
+$(TABLES) : src/paper_figure_code/tables.py
+	cd src/paper_figure_code && pipenv run python tables.py
+	cd doc/paper && \
+	sed -i "s/{AU-Stp}/{AU-DaP}/" flux_sites.tex && \
+	sed -i "s/{CA-SF2}/{CA-SF1}/" flux_sites.tex && \
+	sed -i "s/{DE-Kli}/{DE-Gri}/" flux_sites.tex && \
+	sed -i "s/{US-AR2}/{US-AR1}/" flux_sites.tex && \
+	sed -i "s/{US-Ne3}/{US-Ne1}/" flux_sites.tex && \
+	sed -i "s/{AU-Rig}/{AU-Gin}/" flux_sites.tex && \
+	sed -i "s/{US-Ne2}/{US-Ne1}/" flux_sites.tex
 
 doc/paper/vpd_et_paper_hess.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 	cd ./doc/paper && pdflatex vpd_et_paper_hess && \
