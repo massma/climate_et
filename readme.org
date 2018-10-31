@@ -20,14 +20,15 @@ In order to reproduce the paper you will need:
 - pipenv and Python 3
 - wget
 - tar and gzip
-- GNUMake
+- GNU Make
 - Texlive
 
 ** Reproducing research:
 
-1. ~make install~ : installs dependencies and creates some needed
-   directory structure.  Note that this step also downloads about 400
-   MB of data from my collaborator Changjie, so it may take awhile.
+1. ~make install~ : installs dependencies, creates some needed
+   directory structure, and downloads data.  Note that this step
+   downloads about 400 MB of data from my collaborator Changjie, so it
+   may take awhile.
 2. ~make paper~ : does all analysis, makes all the figures/tables, and
    compiles the paper pdf (for submission to HESS) to ~doc/paper/vpd_et_paper_hess.pdf~.
 3. ~make arxiv~ : does all analysis and compiles the arXiv paper

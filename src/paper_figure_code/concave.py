@@ -14,7 +14,7 @@ r, sigma = symbols('r sigma')
 # init aero
 g_a, p, t, cp, r_air, x, g_s = symbols('g_a P T c_p R_air x g_s')
 # init plant
-gamma, c_s, r_star, uwue, g_1, onesix = symbols('gamma c_s R* uWUE g_* 1.6')
+gamma, c_s, r_star, uwue, g_1, onesix = symbols('gamma c_s R* uWUE g* 1.6')
 
 vpd, delta = symbols('VPD Delta')
 
@@ -44,7 +44,7 @@ fh = open("../../doc/paper/d2_solutions.tex", "w")
 fh.write("\\begin{equation}\n")
 fh.write("\\frac{\\partial^2 \; ET}{\\partial \\; VPD^2} = 0 "\
          "\\quad \\forall \\quad")
-fh.write("%s%s%s" % ("\\frac{VPD^m}{g1} = ", latex(soln[0]), ".\n"))
+fh.write("%s%s%s" % ("\\frac{VPD^m}{g*} = ", latex(soln[0]), ".\n"))
 fh.write("\\label{curves}\n")
 fh.write("\\end{equation}\n")
 fh.close()

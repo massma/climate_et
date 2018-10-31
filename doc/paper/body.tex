@@ -875,7 +875,7 @@ negative ET response. Water conservative ecosystems are highly effective
 at mitigating the effects of atmospheric demand, and can store water
 for later use by reducing ET in response to increasing VPD.
 
-\subsection{Limitations of theory - very dry soil moisture conditions}
+\subsection{Limitations of theory: very dry soil moisture conditions}
 \label{swc_section}
 In formulating our theory with Penman Monteith, we implicitly did not
 account for very dry soil moisture conditions. For the majority of
@@ -946,8 +946,8 @@ statistics and figures.
 
 The observed dependence of $\sigma \cdot uWUE$ on SWC for GRA would
 explain the deficiencies of our theory compared to the observations in
-Fig. \ref{idealized_sign}, specifically the trend back towards
-negative soil moisture at high VPD. Aforementioned feedbacks between
+Fig. \ref{test_sign}, specifically the trend back towards
+negative ET response at high VPD. Aforementioned feedbacks between
 the land surface and the atmosphere, which are not accounted for due
 to our focus on the one-way response of the land surface to
 atmospheric conditions, would cause high VPD to be correlated with low
@@ -976,7 +976,7 @@ moisture on plant response to VPD, and feedbacks between plant
 function, SWC, and VPD.
 
 \subsection{Functional form of ET dependence on VPD and its relation
-  to VPD dependence}
+  to the VPD exponent}
 \label{functional_form}
 
 The theory described in Sect. \ref{sign_term} indicates that for a
@@ -1032,12 +1032,12 @@ By introducing $n$ and $m$ we can free our stomatal
 conductance model from assumptions about VPD dependence:
 % \begin{linenomath*}
   \begin{equation}
-    g_s = \frac{R \, T}{P} 1.6 \left(1 + \frac{g_*}{VPD^m}\right) \frac{*WUE \; ET}{c_a \; VPD^n},
+    g_s = \frac{R \, T}{P} 1.6 \left(1 + \frac{g*}{VPD^m}\right) \frac{*WUE \; ET}{c_a \; VPD^n},
     \label{m_n}
   \end{equation}
 % \end{linenomath*}
 where:
-\[*WUE = \frac{GPP}{ET}VPD^n,\] and $g_*$ is a generic slope parameter
+\[*WUE = \frac{GPP}{ET}VPD^n,\] and $g*$ is a generic slope parameter
 of units $VPD^m$. To determine how the exponent $n$ and $m$ alter the
 shape of the ET-VPD dependence we find the roots of the second
 derivative of ET, using Eq. (\ref{m_n}) for stomatal conductance
