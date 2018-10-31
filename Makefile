@@ -48,6 +48,9 @@ dat/changjie/diagnosed_data.pkl : src/analysis.py
 figure-all :
 	cd ./src/paper_figure_code && pipenv run python runall.py
 
+doc/paper/map.pdf : doc/paper/map.pdf.bak
+	cp doc/paper/map.pdf.bak doc/paper/map.pdf
+
 doc/paper/idealized_scale.pdf : src/paper_figure_code/idealized_scale.py $(ALL_REQUIRE)
 	cd src/paper_figure_code && pipenv run python idealized_scale.py
 
