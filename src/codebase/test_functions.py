@@ -14,7 +14,7 @@ from codebase.data_calc import *
 plt.close('all')
 
 PLOTDIR = '%s/climate_et/test_plots' % os.environ['PLOTS']
-os.system('mkdir -p %s' PLOTDIR)
+os.system('mkdir -p %s' % PLOTDIR)
 
 def max_diff(quant1, quant2):
   """caclualte the maximuma boslute difference"""
