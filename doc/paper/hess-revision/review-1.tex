@@ -4,23 +4,23 @@
 Thank you very much for an excellent and very thoughtful
 review. Addressing your comments will greatly improve the
 manuscript. We agree with your comments, and think the manuscript
-could use substantial reframing and rewording to clarify how we are
+could use substantial re-framing and rewording to clarify how we are
 answering our research question, and how the answer may vary with
 climate and environmental factors.
 
 Just a quick general comment before addressing your specific
 comments. By including a lot of content on PFT-focused analysis we
-failed to communicate the major goal and scope of our project: we were
+failed to communicate the major goal and scope of our project: we are
 trying to characterize the response of ET to VPD, with all other
-environment variables held fixed. To accomplish this, we needed to
-formulate an explicit function of ET in terms of environemntal
-variabiles and parameters, where any parameters can be approximated as
+environment variables held fixed. To accomplish this, we need to
+formulate an explicit function of ET in terms of environmental
+variables and parameters, where any parameters can be approximated as
 constant with regards to some [arbitrary] VPD perturbation
 scenario. We will elaborate more below on why we used PFT-focused
 scenarios for much of our analysis. However, the goal of our
 manuscript was much more simple and fundamental: at a given place or
 time, if you introduce a perturbation to VPD, what is the immediate ET
-response (postive or negative)? Answering this question does not
+response (e.g. positive or negative)? Answering this question does not
 require the much stronger assertion that any parameters must be
 invariant within a given PFT.
 
@@ -34,7 +34,7 @@ our focus on PFT-analysis. We will remove that language from the
 manuscript, and add language to better communicate our results as
 reflections of the considerable within-PFT uncertainty.
 
-I think comparing the rankings of given PFT values for g$_1$ and uWUE
+We think comparing the rankings of given PFT values for g$_1$ and uWUE
 can be misleading, given the magnitude of the uncertainties
 involved. Most of our calculated values for uWUE are within one
 standard deviation of \cite{Zhou_2015}'s results, but these deviations
@@ -42,7 +42,7 @@ can result in some changes in the ordering of PFTs from high to low
 uWUE. The bigger problem in our eyes is that we made a mistake with
 some language suggesting within intra-PFT variability is less than
 inter-PFT variability, but clearly this is not the case. We will
-remove this language. These misinterpretation should not have made the
+remove this language. This misinterpretation should not have made the
 manuscript; we actually included \cite{Zhou_2015}'s results in Table 2
 to be transparent about the within-PFT uncertainties. g$_1$ values
 also exhibit considerable uncertainty, and again, while the relative
@@ -50,7 +50,7 @@ rankings of these values may change, they are all within observed
 ranges in \cite{Medlyn_2017}. We did not include these in Table 2
 because \cite{Medlyn_2017} does not provide the numerical values;
 however, we think it would be useful to provide estimates of these
-ranges form \cite{Medlyn_2017}'s figures in our Table 2.
+ranges from \cite{Medlyn_2017}'s figures in our Table 2.
 
 Regarding how to interpret g$_1$ and uWUE: we think the most best way
 is with established physical relations from \cite{MEDLYN_2011}
@@ -68,77 +68,81 @@ robust approximation for answering our research question (see
 discussion earlier in this comment). Additionally, a constant g$_1$
 approximation is used in many earth system models, so while it
 introduces considerable uncertainty, it also makes our framework
-useful for interpreting modelled vegetation response in ESMs and GCMs.
+useful for interpreting modeled vegetation response in ESMs and GCMs.
 
 We also agree with the comment that the best way to think of this is
-probabalistically. This is the most robust approach to dealing with
+probabilistically. This is the most robust approach to dealing with
 approximations - we introduce randomness to our variables and
-paramters to account for all of the physics that are not explicitly
+parameters to account for all of the physics that are not explicitly
 accounted for, as well as observational uncertainty. However, as far
-as I know we still have not developed a general, robust, and efficient
+as we know we still have not developed a general, robust, and efficient
 arithmetic for random variables. We could try and adapt a Bayesian
 model to this problem, but given the large amount of arithmetic
-invloved, fully incorporating a Bayesian represntation to every
+involved, fully incorporating a Bayesian representation to every
 variable in the analysis would be a very hard problem, and a
-significant research project in its own right. I think a good
+significant research project in its own right. We think a good
 compromise is to add language directing the reader to interpret our
-results more probabalistically, which we have already presented
-probablistically in the figures. For example, in Figure 5 the range
-of values in each plot represents a range of possible responses in the
-sign term. Some portion of this could be due to oveservational
-uncertainty, and others could be due to physical intra-PFT variations
-inducing changes in uWUE and/or g$_1$. It's also worth noting that our
-intra-PFT variability is greater than the inter-PFT
-variability. Again, we need to add language highlighting this, and its
-consistency with previous results. We included this uncertainty
-explicitly to be transparent.
+results more probabilistically, which we have already presented
+probabilistically in the figures. For example, in Figure 5 the range of
+values in each plot represents a range of possible responses in the
+sign term. Within this figure, it's worth noting that the intra-PFT
+variability is greater than the inter-PFT variability, which is
+consistent with some of the previous results you highlight. Again, we
+need to add language highlighting this, and its consistency with
+previous results. We included this variability and uncertainty
+explicitly to be transparent. A more difficult question is how much of
+this variability is due to observational and model error, and how much
+of it is due to climate and plant physiological variability (see
+Section 3.5).
 
 \subsection{Attribution to physiological responses}
 
-We do not want our analysis to be interpretted as an assertion that
+We do not want our analysis to be interpreted as an assertion that
 g$_1$ and uWUE are attributes of PFT only. We expect them to vary both
-within a PFT and across a PFT. Our primaty goal in using them was to
-develop an explict expression of ET as a function of environmental
-variables, and use this to assess the response to a change in VPD. We
-focused our analysis using PFTs because this is how it was framed in
-previous studies in our field, and specificically the studies used in
-our derivation \citep{Zhou_2014, Zhou_2015, Medlyn_2017}. We were
-thinking the PFT-focused analysis could be useful, especially given
-that climate models generally hold plant paramters fixed with respect
-to PFT, so long as we were transparent about the large uncertainties
-and problems with this approach (see Figure 5).
+within a PFT and across a PFT. Our primary goal in using g$_1$ and
+uWUE was to develop an explicit expression of ET as a function of
+environmental variables, and use this to assess the response to a
+change in VPD. We focused our analysis using PFTs because this is how
+it was framed in previous studies in the field, and specifically the
+studies used in our derivation \citep{Zhou_2014, Zhou_2015,
+  Medlyn_2017}. We were originally thinking the PFT-focused analysis
+could be useful, especially given that climate models generally hold
+plant parameters fixed with respect to PFT, so long as we were
+transparent about the large uncertainties and problems with this
+approach (see Figure 5).
 
-We agree with you, and think stating that any quantity is fixed within
-a PFT is hard to believe. Phenotypic variation and adaptation within a
-given specicies can be considerable (i.e. effecting $\lambda$, g$_1$,
-and uWUE), so it would be hard to say that anything would be constant
+We agree with you that stating that any quantity is fixed within a PFT
+is hard to believe. Phenotypic variation and adaptation within a given
+\textit{species} can be considerable (i.e. effecting $\lambda$, g$_1$, and
+uWUE), so it would be hard to say that anything would be constant
 within a PFT made up of many different diverse species. Both
-phenotypic variation as well as the species distirbution and dominant
+phenotypic variation as well as the species distribution and dominant
 PFT at a given location will all be strongly optimized in response to
 climate. In this sense, the distribution and evolution of local
 climate is a strong control on the local ecosystem structure and
-physiology of that ecosystem.
+physiology of a given ecosystem.
 
 What we need to communicate better is that a given ecosystem's state
-at a place or time controlls its response to a VPD perturbation. We
-are making an approximation that we can parameterize the effect of the
-ecoystems' state on VPD response with g$_1$ and uWUE. These quantities
+at a place or time controls its response to a VPD perturbation. We are
+making an approximation that we can parameterize the effect of the
+ecoystem's state on VPD response with g$_1$ and uWUE. These quantities
 can also vary due to soil moisture condition; the approximation we
-need to make to answer for our research question is that they are
-fixed with respect to a VPD perturbation. In this sense, we do not
-view the two statements: ``plants that are evolved to bred to
-prioritize primary production over water conservation (e.g., crops)
-exhibit a higher likelihood of atmospheric demand-driven response''
-and ``ecosystem types are responding in this way because they have, on
-the whole, been subjected to less soil water limitation (due to the
+need to make to answer our research question is that they are fixed
+with respect to a VPD perturbation. In this sense, we do not view the
+two statements: ``plants that are evolved to bred to prioritize
+primary production over water conservation (e.g., crops) exhibit a
+higher likelihood of atmospheric demand-driven response'' and
+``ecosystem types are responding in this way because they have, on the
+whole, been subjected to less soil water limitation (due to the
 non-negligible effects of irrigation?)'' as mutually exclusive. In
-fact, we view them as consistent with a view that crops and thier
-physiology (parameterized by g$_1$ and uWUE) exist in a given
-environment because they have not been subjected to soil water
-limitation, and they have a given response to VPD because of their
-physiology (which is a direct effect of the environment). In this way,
-climate and land surface state are causes of the VPD response through
-their effect on plant physiology (parameterized by g$_1$ and uWUE).
+fact, we view them as consistent with a view that crops and their
+physiology (parameterized by g$_1$ and uWUE) exist at a given time and
+place because they have not been subjected to soil water limitation,
+and they have a given response to VPD because of their physiology
+(which is a direct effect of the environment). In this way, climate
+and land surface state are causes of the VPD response both directly
+and through their effect on plant physiology (parameterized by g$_1$
+and uWUE).
 
 When writing this manuscript, there was definitely some internal
 tension and debate about how to frame the analysis and results. We
@@ -147,7 +151,7 @@ done (e.g. holding plant physiology fixed within a given PFT), or
 allow plant physiology terms to vary through time and space and look
 at the distribution of ET response to VPD (see Section 3.5). After
 re-examining the manuscript both after some time away from the
-problem and in light of your comments I think a strong argument could
+problem and in light of your comments we think a strong argument could
 be made that we made the wrong choice with respect to this focus. It
 may have made more sense to focus our analysis on the ET response more
 generally across space and time as ecosystem-scale plant physiology
@@ -169,73 +173,73 @@ and feedback.
   and models (e.g. ESMs and GCMs). We will add extensive language on
   the uncertainty and weaknesses of this approach, and reframe our
   conclusions to reflect his uncertainty.
-\item We instead alter our analysis to look at how VPD response
-  varies with climate-induced variations and general plan
-  physiological variability instead of just PFT variability that
-  poorly captures all of the observed variability in
-  response. Sections 3.1 - 3.2 would be replaced by analysis direcly
-  relating ET response to general climate and plant physiological
-  terms, rather than PFT-mean analysis. For example, the ``scaling
-  term'' analysis would be presented in terms of generic changes in
-  plant height and temperature, and the ``sign term'' analysis would
-  be framed by generic changes to g$_1$ and uWUE, as informed by
-  previous literature.
+\item We instead alter our analysis to look at how VPD response varies
+  with climate and general plant physiological variability, instead of
+  focussing only on PFT analysis that poorly captures all of the observed
+  variability in ET response. Sections 3.1 - 3.2 would be replaced by
+  analysis direcly relating ET response to general climate and plant
+  physiological terms, rather than PFT-mean analysis. For example, the
+  ``scaling term'' analysis would be presented in terms of generic
+  changes in plant height and temperature, and the ``sign term''
+  analysis would be framed by generic changes to g$_1$ and uWUE, as
+  informed by previous literature.
 \item This is the most extreme option in terms of modifying the
   manuscript. We significantly alter the manuscript and instead focus
   on just the general shape of the ET-VPD curve (with environmental
   variables held fixed). This was not discussed in the review, but one
   of our most noteworthy results is on the general shape of the ET-VPD
   curve being concave up, given an assumption of a square-root VPD
-  dependence of plant response. This result is independent of any
-  assumptions of uWUE and g$_1$, and to our knowledge it is first
-  derived curve of ecosystem response to VPD (see Section 3.7). It
-  also highlights the importance of discerning the exact exponent of
-  VPD dependence, as this alters the fundamental nature and shape of
-  the curve. Essentially, the manuscript would become just our
-  motivation and derivation, followed by Section 3.7 exploring the
-  consequences of the derivation for the shape of the VPD curve. This
-  alteration of the manuscript would likely result in more of a
-  technical note type paper, and we are hesitant to do this because we
-  think there is still a lot of useful information obtained by tying
-  our results to real-world scenarios (as in Options 1 and 2 above).
+  dependence of ET. This result is independent of any assumptions of
+  uWUE and g$_1$, and to our knowledge it is first derived curve of
+  ecosystem response to VPD (see Section 3.7). It also highlights the
+  importance of discerning the exact exponent of VPD dependence, as
+  this alters the fundamental nature and shape of the
+  curve. Essentially, the manuscript would become just our motivation
+  and derivation, followed by Section 3.7 exploring the consequences
+  of the derivation for the shape of the VPD curve. This alteration of
+  the manuscript would likely result in more of a technical note-type
+  paper, and we are hesitant to do this because we think there is
+  still a lot of useful information obtained by tying our results to
+  real-world scenarios (as in Options 1 and 2 above).
 \end{enumerate}
 
 Here we present some final minor comments and concerns on the
 technical details of our proposed changes to the manuscript, which are
-relevant to representing uncertainty and spatiotemporal variabiliy in
+relevant to representing uncertainty and spatiotemporal variability in
 uWUE \textit{and} g$_1$. In the original manuscript we used a single
-$\sigma$ term to represent this variability. We did this because there
-was changes in uWUE and g$_1$ induce a very similiar change in the ET
+$\sigma$ term to represent this variability. We did this because
+changes in uWUE and g$_1$ induce a very similar change in the ET
 solution, which made solving for independent $\sigma_{uWUE}$ and
-$\sigma_{g1}$ terms intractable, and represnting variability in both
-g$_1$ and uWUE difficult. We decided to hold g$_1$ fixed within a PFT
-for a two reasons: 1) ESMs and GCMs generally hold g$_1$ fixed, and 2)
-letting uWUE vary seemed more appropraite to represent specifically
-soil water variations on stomatal conductance, as $uWUE$ modifies
-stomatal conductance analgalously to how soil moisture factors modify
-a maximum stomatal conductance in land surface models (e.g. it is a
-multiplicative factor on the entire stomatal conductance
-term). Because uWUE and g$_1$ induce similar changes in ET, at least
-qualitatively we think that having a single $\sigma$ can at least
-represent some of the variability in both $uWUE$ and g$_1$. However,
-formally there is no explicit variability in the g$_1$ term. The
-discussion in this review rightly points out that based on previous
-results we do expect some variability in g$_1$ as well. So, an
-unresolved question is how important is it to the analysis and its
-interpretation to include an explicit g$_1$ variability term in
-addition to the exisiting $\sigma$ term. I'm including these comments
-to hopefully stimulate some discussion. I could imagine some timescale
-based approaches where we might be able to account for both the g$_1$
-and uWUE variability, for example by making assumptions over what time
-scale each quantity is fixed, and fitting based on that (e.g. g$_1$ is
-fixed for a given season, and uWUE is fixed for a given day). This
-approach might allow a tractable solution, and also could help us
-filter error and observational noise from ``true''  plant
-physiological and climatic variability in uWUE and g$_1$. The cost of
-all of this is a significant increase in the analysis and content of
-the paper, as well as some increased opacity to the methods.
+$\sigma_{g1}$ terms intractable at a given time and place, and
+representing variability in both g$_1$ and uWUE difficult. We decided
+to hold g$_1$ fixed within a PFT for a two reasons: 1) ESMs and GCMs
+generally hold g$_1$ fixed, and 2) letting uWUE vary seemed more
+appropriate to represent specifically soil water variations on
+stomatal conductance, as $uWUE$ modifies stomatal conductance
+analogously to how soil moisture factors modify a maximum stomatal
+conductance in land surface models (e.g. it is a multiplicative factor
+on the entire stomatal conductance term). Because uWUE and g$_1$
+induce similar changes in ET, at least qualitatively we think that
+having a single $\sigma$ can represent some of the variability in both
+$uWUE$ and g$_1$. However, formally there is no explicit variability
+in the g$_1$ term. The discussion in this review rightly points out
+that based on previous results we do expect some variability in g$_1$
+as well. So, an unresolved question is how important is it to the
+analysis and its interpretation to include an explicit g$_1$
+variability term in addition to the existing $\sigma$ term. We are
+including these comments to hopefully stimulate some discussion. We
+could imagine some timescale based approaches where we might be able
+to account for both the g$_1$ and uWUE variability, for example by
+making assumptions over what time scale each quantity is fixed, and
+fitting based on that (e.g. g$_1$ is fixed for a given season, and
+uWUE is fixed for a given day). This approach might allow a tractable
+solution, and also could help us filter error and observational noise
+from ``true'' plant physiological and climatic variability in uWUE and
+g$_1$. The cost of all of this is a significant increase in the
+analysis and content of the paper, as well as some increased opacity
+to the methods. Comments are welcome.
 
-Thank you again for the thoughtfull review. We hope it stimulates
+Thank you again for the thoughtful review. We hope it stimulates
 further discussion.
 
 \bibliography{references.bib}
