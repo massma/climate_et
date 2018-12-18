@@ -1,5 +1,61 @@
+\documentclass[12pt]{article}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{bm}
+% \usepackage{graphicx}
+% \usepackage{epstopdf}
+% \usepackage{xcolor}
+% \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+% \usepackage{color}
+% \pagestyle{plain}
+
+% \usepackage[
+% 	backend=biber,
+% 	url=false,
+% 	isbn=false,
+% 	doi=false,
+%         eprint=false,
+%         bibstyle=authoryear,
+%         style=authoryear,
+%         % style=numeric-comp,
+% 	% uniquename=false,
+% 	% uniquelist=false,
+% 	% firstinits=true,
+%  	natbib=true,
+% 	sorting=none,
+%         ]{biblatex}
+
+% \addbibresource{./references.bib}
+
 \RequirePackage{natbib}
 \bibliographystyle{agufull08}
+
+% Bib aliases
+\makeatletter
+\def\@citex[#1]#2{\leavevmode
+  \let\@citea\@empty
+  \@cite{\@for\@citeb:=#2\do
+    {\@citea\def\@citea{,\penalty\@m\ }%
+\edef\magic##1{\let##1\expandafter\noexpand\csname bibalias@\@citeb\endcsname}%
+\magic\tmp \ifx\tmp\relax\else \let\@citeb\tmp\fi
+     \edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+     \if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+     \@ifundefined{b@\@citeb}{\hbox{\reset@font\bfseries ?}%
+       \G@refundefinedtrue
+       \@latex@warning
+         {Citation `\@citeb' on page \thepage \space undefined}}%
+       {\@cite@ofmt{\csname b@\@citeb\endcsname}}}}{#1}}
+\def\bibalias#1#2{\expandafter\def\csname bibalias@#1\endcsname{#2}}
+\makeatother
+
+\title{Response to RC1 of ``When does vapor pressure deficit drive or
+  reduce evapotranspiration?''}
+
+\author{Adam Massmann, Pierre Gentine, and Changjie Lin}
+
+\date{December 17th, 2018}
+
+\begin{document}
 
 Thank you very much for an excellent and very thoughtful
 review. Addressing your comments will greatly improve the
@@ -105,7 +161,7 @@ uWUE was to develop an explicit expression of ET as a function of
 environmental variables, and use this to assess the response to a
 change in VPD. We focused our analysis using PFTs because this is how
 it was framed in previous studies in the field, and specifically the
-studies used in our derivation \citep{Zhou_2014, Zhou_2015,
+studies used in our derivation \cite{Zhou_2014, Zhou_2015,
   Medlyn_2017}. We were originally thinking the PFT-focused analysis
 could be useful, especially given that climate models generally hold
 plant parameters fixed with respect to PFT, so long as we were
@@ -243,4 +299,8 @@ to the methods. Comments are welcome.
 Thank you again for the thoughtful review. We hope it stimulates
 further discussion.
 
+
+% \printbibliography
 \bibliography{references.bib}
+
+\end{document}
