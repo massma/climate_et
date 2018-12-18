@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{xcolor}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+\usepackage{color}
+\pagestyle{plain}
+
+\RequirePackage{natbib}
+\bibliographystyle{agufull08}
+
+% Bib aliases
+\makeatletter
+\def\@citex[#1]#2{\leavevmode
+  \let\@citea\@empty
+  \@cite{\@for\@citeb:=#2\do
+    {\@citea\def\@citea{,\penalty\@m\ }%
+\edef\magic##1{\let##1\expandafter\noexpand\csname bibalias@\@citeb\endcsname}%
+\magic\tmp \ifx\tmp\relax\else \let\@citeb\tmp\fi
+     \edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+     \if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+     \@ifundefined{b@\@citeb}{\hbox{\reset@font\bfseries ?}%
+       \G@refundefinedtrue
+       \@latex@warning
+         {Citation `\@citeb' on page \thepage \space undefined}}%
+       {\@cite@ofmt{\csname b@\@citeb\endcsname}}}}{#1}}
+\def\bibalias#1#2{\expandafter\def\csname bibalias@#1\endcsname{#2}}
+\makeatother
+
+
+\begin{document}
+
+Thank you for a very thoughtful review; as in our response to RC1, we
+feel very lucky to have received such quality reviews.
+
+We read through your major and minor comments, and do not anticipate
+issues reconciling your minor comments for the final response after
+the discussion period. We will focus out response on your major
+comments, with the goal of opening the door to further discussion.
+
+Also please note our response to RC1, as some of the discussion there
+is relelvant to this response; particularly discussion on PFT-scale
+analysis \url{https://editor.copernicus.org/index.php/hess-2018-553-AC1.pdf?_mdl=msover_md&_jrl=13&_lcm=oc108lcm109w&_acm=get_comm_file&_ms=72556&c=153745&salt=17166479111051651323}.
+
+\section{Major comment (i)}
+
+One issue with analyses attempting to diagnose the ET response to VPD
+with pure data (i.e. using binned boxplots, as you suggest), is that
+ET varies strongly with both aerodynamic resistance and
+radiation. Simply binning by VPD or by site includes too many
+confounding factors to really diagnose what the attirbutable response
+is to VPD. This issue is really what motivated our analysis and makes
+it unique; by building an analytical framework based on confirmed
+results in the literatre (uWUE, Medlyn model, Penman-Monteith), we are
+able to formally deduce what the actual ET response is, with other
+environmental factors held fixed. This ``other environmental factors
+held fixed'' component is what is, in our mind, nearly impossible to
+deduce from pure data, because the environment is always changing and
+direct analogues are either impossible to find or result in too small
+of a sample size to form a meaningful conclusion. However, while we
+cannot assess our formulation of the derivative with respect to VPD,
+we can assess the actual model of ET, which includes all
+approximations we introudced (specifically uWUE). As a part of our
+analysis test suite we generated a figure of this comparison and
+reproduce it here (Figure \ref{rmse}). Apologies this is not a
+publication quality figure, but we wanted to get this response out
+sooner rather than later to stimulate discussion, especially as we are
+already behind because of the AGU Fall Meeting. This comparison is
+fair in the sense that by using uWUE we introduce an extra free
+parameter, so in the original PM model we introduce an extra free
+parameter modifying g$_s$ and fit it also for each given PFT. The
+introduction of the uWUE approximation does degrade the quality of the
+ET model relative to the original PM model. However, we expect this,
+as using uWUE is a simplification over using GPP directly, and may
+break down in extreme, limiting cases like VPD $\to$ 0. As
+a purpose-built model for assessing the ET response, we think the uWUE
+approach is justified. Essentially we are saying that to the degree we
+trust arithmetic, uWUE, Penman-Monteith, and the Medlyn stomatal
+conductance model, our evaluation of the derivative is robust.
+
+\begin{figure}[h]
+  \centering \includegraphics{./rmse_bias.png}
+  \caption{Mean bias and root mean squared error (RMSE) for three
+    different ET estimates, relative to FLUXNET-2015 observations:
+    original (original Penman-Monteith formulation, e.g. Equation 1 in
+    the manuscript, with Equation 4 providing g$_s$; uWUE (Equation 8
+    in the manuscript); iWUE (as in Equation 8, but if we had used
+    iWUE to remove GPP dependence rather than uWUE).}
+  \label{rmse}
+\end{figure}
+
+However, the discussion so far assumes that the variables in our model
+(Equation 8) do not change directly with VPD and we are free to
+evaluate the derivative. You bring up a very good example that we do
+not explictly consider: a change in VPD will induce a change in
+surface temperature, which will alter the net radiation term. We will
+definitely add language addressing this oversight. Ideally, we would
+incorporate that effect directly in Equation 8. We briefly tried to do
+this in time for this response, but difficulties deriving a diagnostic
+equation for temperature sabatoged the effort, and we do not want to
+delay the response further. We will continue to work on this for the
+final response phase. In the meantime, I think we can make some
+hand-wavy arguments in the interest of discussion as to what the
+effect would be. In the case where the aerodynamic and physiological
+ET response (which the manuscript does consider) increases with VPD,
+we would expect a decrease in surface temperature. This would induce
+an increase in net radiation, as OLR and ground heat flux
+decrease. This increase in net radation would induce a further
+increase in ET response. Granted, the net radiation perturbation would
+damp the decreased temperature response to the
+aerodynamic/physiological terms, but all of the signs of the change
+would stay the same. The converse is true for a decrease in ET with
+respect to VPD: surface temperature increases, OLR and ground heat
+flux increase, net radiation decreases, ET decreases. In this way, we
+believe the effects of VPD on radiation do not change the nature of
+the sign of the response, but could amplify the magnitude. Comments on
+this are incouraged, and we will work to include a more quantitative or
+rigorous analysis in the final response. Sometimes it is easy to trick
+onself with these types of qualitative arguments, particularly with
+complicated systems, so hopefully we have not presented faulty logic
+in our rush to make this response public.
+
+
+
+
+\end{document}
