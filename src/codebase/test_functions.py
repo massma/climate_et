@@ -99,6 +99,41 @@ def plot_et_curve(mean_row, min_row, max_row, index, _df):
   plt.savefig('%s/%s_et_vpd_curve_with_pm.png' % (PLOTDIR, index))
   return
 
+def plot_et_curve_onlyuWUE(mean_row, min_row, max_row, index, _df):
+  """plots the et curve given a row of df"""
+  # _df = _df.loc[(_df.pft == index)]
+  # start = time.time()
+  # plt.figure()
+  # sns.jointplot(_df.vpd, _df.et_obs, kind='hex')
+  # plt.savefig('%s/joint_plt_%s.png' % (PLOTDIR, index))
+  # print('sns plot time was %f s' % (time.time()-start))
+  vpd = np.linspace(min_row.vpd, max_row.vpd)
+  #vpd = np.linspace(100., 10000.)
+  et = pm_et(mean_row, vpd=vpd)
+  et_orig = pm_et_orig(mean_row, vpd=vpd)
+  et_iwue = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue, n=1.0)
+  # et_iwue_bb = pm_et(mean_row, vpd=vpd, uwue=mean_row.iwue_bb,\
+  #                 n=1.0, kernel=bb_kernel)
+  # et_bb = pm_et(mean_row, vpd=vpd, uwue=mean_row.uwue_bb,\
+  #                 n=0.5, kernel=bb_kernel)
+  plt.figure()
+  # start = time.time()
+  # _df = _df.loc[((_df.r_net > mean_row.r_net-2.0) &\
+  #                (_df.r_net < mean_row.r_net+2.0))]
+  # end = time.time()
+  # print('for pft %s, time to subset was %f s, and nobs was %d'\
+  #     % (index, (end-start), _df.shape[0]))
+  # plt.scatter(_df.vpd, _df.et_obs, s=4.0, c='m')
+  plt.plot(vpd, et, label='uWUE PM')
+  # plt.plot(vpd, et_bb, label='uWUE BB')
+  # plt.plot(vpd, et_iwue_bb, label='iWUE BB')
+  plt.legend(loc='best')
+  plt.title(index)
+  plt.xlabel('vpd (Pa')
+  plt.ylabel('et (w/m2)')
+  plt.savefig('%s/%s_et_vpd_curve.png' % (PLOTDIR, index))
+  return
+
 def get_bias(models, _df):
   """calcs bias for all three"""
   bias = {}
@@ -184,6 +219,10 @@ def run_all_tests(dfs):
   [plot_et_curve(dfs['mean'].loc[index],\
                  dfs['5'].loc[index],\
                  dfs['95'].loc[index], index, _df)\
+   for index in dfs['mean'].index]
+  [plot_et_curve_onlyuWUE(dfs['mean'].loc[index],\
+                          dfs['5'].loc[index],\
+                          dfs['95'].loc[index], index, _df)\
    for index in dfs['mean'].index]
   compare_et_wrapper(dfs)
   test_et_models(_df)
