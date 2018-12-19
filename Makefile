@@ -40,7 +40,7 @@ ${DATA}/changjie/vpd_data.tar.gz :
 
 
 # Full analysis (Changjie's data -> plot/table data)
-dat/changjie/diagnosed_data.pkl : src/analysis.py
+dat/changjie/diagnosed_data.pkl : src/analysis.py src/codebase/*.py
 	cd ./src && pipenv run python analysis.py
 
 

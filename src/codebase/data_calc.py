@@ -33,7 +33,7 @@ def bb_kernel(_df, vpd, g1=None):
 def uwue(_df, n=0.5, kernel=medlyn_kernel, g1=None):
   """
   calcs uwue from _df with obs
-  note approx using c_a instead of c_s 
+  note approx using c_a instead of c_s
   """
   return -_df['g_a']*_df['gamma']*_df['c_a']\
     *_df['vpd']**n*_df['p_a']\
@@ -191,6 +191,16 @@ def pm_et_orig(_df, vpd=None, gpp=None, lai=None):
           /(_df['delta']+_df['gamma']\
             *(1.0 + _df['g_a']/(lai*medlyn(_df, vpd=vpd, gpp=gpp))))
 
+def et_leaf(_df, vpd=None, gpp=None, lai=None):
+  """ecoystem as a leaf, no energy balance"""
+  if vpd is None:
+    vpd = _df['vpd']
+  if gpp is None:
+    gpp = _df['gpp_obs']
+  if lai is None:
+    lai = _df['lai_pm']
+  return 1./(1./_df['g_a']+1./(lai*medlyn(_df, vpd=vpd, gpp=gpp)))\
+    *_df['p_a']*CP*vpd/(_df['t_a_k']*_df['r_moist']*_df['gamma'])
 
 def pet(_df, vpd=None):
   """caluclates pet"""
