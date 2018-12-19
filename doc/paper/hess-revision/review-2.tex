@@ -9,6 +9,7 @@
 \usepackage{color}
 \pagestyle{plain}
 
+\graphicspath{../../../etc/plots/climate_et/test_plots}
 \RequirePackage{natbib}
 \bibliographystyle{agufull08}
 
@@ -83,27 +84,28 @@ conductance model, our evaluation of the derivative is robust.
 
 \begin{figure}[h]
   \centering \includegraphics{./rmse_bias.png}
-  \caption{Mean bias and root mean squared error (RMSE) for three
-    different ET estimates, relative to FLUXNET-2015 observations:
-    original (original Penman-Monteith formulation, e.g. Equation 1 in
-    the manuscript, with Equation 4 providing g$_s$; uWUE (Equation 8
-    in the manuscript); iWUE (as in Equation 8, but if we had used
-    iWUE to remove GPP dependence rather than uWUE).}
+  \caption{Mean bias (absolute value) and root mean squared error
+    (RMSE) for three different ET estimates, relative to FLUXNET-2015
+    observations: original (original Penman-Monteith formulation,
+    e.g. Equation 1 in the manuscript, with Equation 4 providing
+    g$_s$; uWUE (Equation 8 in the manuscript); iWUE (as in Equation
+    8, but if we had used iWUE to remove GPP dependence rather than
+    uWUE).}
   \label{rmse}
 \end{figure}
 
 However, the discussion so far assumes that the variables in our model
 (Equation 8) do not change directly with VPD and we are free to
-evaluate the derivative. You bring up a very good example that we do
-not explictly consider: a change in VPD will induce a change in
-surface temperature, which will alter the net radiation term. We will
+evaluate the derivative. You bring up a very good example that we did
+not consider: a change in VPD will induce a change in net radiation
+through surface tmperature that PM does not consider. We will
 definitely add language addressing this oversight. Ideally, we would
 incorporate that effect directly in Equation 8. We briefly tried to do
 this in time for this response, but difficulties deriving a diagnostic
 equation for temperature sabatoged the effort, and we do not want to
 delay the response further. We will continue to work on this for the
-final response phase. In the meantime, I think we can make some
-hand-wavy arguments in the interest of discussion as to what the
+final response phase. In the meantime, we think we can make some
+logic-based arguments in the interest of discussion as to what the
 effect would be. In the case where the aerodynamic and physiological
 ET response (which the manuscript does consider) increases with VPD,
 we would expect a decrease in surface temperature. This would induce
@@ -117,13 +119,118 @@ respect to VPD: surface temperature increases, OLR and ground heat
 flux increase, net radiation decreases, ET decreases. In this way, we
 believe the effects of VPD on radiation do not change the nature of
 the sign of the response, but could amplify the magnitude. Comments on
-this are incouraged, and we will work to include a more quantitative or
-rigorous analysis in the final response. Sometimes it is easy to trick
-onself with these types of qualitative arguments, particularly with
-complicated systems, so hopefully we have not presented faulty logic
-in our rush to make this response public.
+this are incouraged, and we will work to include a more quantitative
+and rigorous analysis in the final response. Sometimes it is easy to
+trick onself with these types of qualitative arguments, particularly
+with complicated systems, so hopefully we have not presented faulty
+logic in our rush to make this response public.
 
+\section{Major comment (ii)}
 
+Thank you for having an open mind about the concave up ET-VPD curve
+result and providing clear explanations of concerns about this result
+based on literature. Given the apparent controversy, we will
+definitely add more language connecting previous results, particularly
+at the leaf scale, with the presented results. Here we will informally
+elaborate in the interest of discussion.
 
+One of the primary differences between ecosystem scale assessments of
+ET (specifically using Penman Monteith) and experimental and modeling
+results of leaf scale response to VPD is that by taking an energy
+balance approach Penman Monteith accounts for changes in $e_{sat}(T)$
+at the surface induced by ET. To demonstrate this, compare Figure
+\ref{leaf} and Figure \ref{PM}. In Figure \ref{leaf} we apply a naive
+leaf scale approach to calculate ecosystem ET without the energy
+balance consideration introduced by PM. In this figure, the curve
+shows a concave downward shape, in direct analogy to leaf scale
+T. Once the effects of evaporation's thermodyanmics are included in
+the energy balance, the curve's shape is no longer concave
+downward. How these conceptual results translate to leaf scale
+experiments depends on the experimental setup
+\citep[e.g.,]{Rawson1988, Turner1984, Mott2013}; however generally
+chamber based leaf scale experiments do not preserve the energy
+balance relationships we expect for a free surface in a natural
+environment (sometimes intentionally by design). Additionally, we
+would like to note that a concave up result is not necesarily
+inconsistent with the statement ``transpiration at the leaf scale is
+mostly positive'' with VPD. Especially for plants in well watered
+environments like crops, the manuscript's ecosystem scale shape
+(Figure \ref{uWUE}) would not be out of place on the figures in
+\cite{Rawson1977} and \cite{Mott2007} for the range of VPD considered
+(Figure \ref{uWUE} compared to Fig. 2 in \cite{Rawson1977}, also
+Figure 7 in \cite{Mott2007}). However, the change in relative
+magnitudes are not similiar, and this effect can be traced partially
+to the effect of decreasing surface $e_{sat}(T)$ in response to
+increasing evapotranspiration. While not direcly considered here (or
+in the manuscript) we aslo think it is important to consider how plant
+physiology in the natural environment could vary from plants grown in
+well-watered conditions in experiments. It is not inconceivable that
+phenotypic variability and adaptation in response to water limitation
+could result in plants with different responses to those grown in a
+lab.
+
+The previous paragraph discussed the change in frame of reference
+induced by using PM to assess ecoystem scale ET rather than directly
+applying leaf scale logic in controlled experiments. However, our
+uWUE-based PM framework additionally accounts for changes in
+photosythesis induced by VPD. Discussion in \cite{Damour2010} (``The
+issue of co-regulation of g$_s$ and A$_{net}$'') provides some
+interesting background both on the general weaknesses of current
+stomatal theory, and specifically on the possible importance of resolving the
+effects of water stress on $A_{net}$ in stomatal conudctance. Given
+that the current state of the art in physically-derived theory has not
+converged on the proper way to account for changes in $A_{net}$ and
+$g_s$, we believe using the validated uWUE empiracle results
+\citep[e.g. Figure 3]{Zhou_2014} is a good approach to develop an
+estimate of ET response to VPD accounting for changes in
+photosythesis. This method of using an empricle result in the absence
+of a complete physical theory has been used often in science
+(e.g. turbulence) to increase our knowlege about a given systems'
+behavior, and we think it is well motivated here. However, that said
+it is important to add language and consideration on how introducing
+this empricism could alter interpretation of our results. In
+particular, while uWUE was developed using leaf scale photosythesis
+theory, it was validated with observations of a fully coupled
+land-atmosphere system. It captures a relatively consistent observed
+relationship between GPP, ET, and VPD as they vary. There is a chance
+that some of this relatioship could be due to feedbacks between the
+land and the atmosphere, even though the relationship was derived by
+leaf scale theory without feedbacks (e.g., if the assumptions behind
+the uWUE theory introduced ``real'' errors that were compensated for
+by feedbacks or ecosystem-scale physics in the observations).  Were
+this the case, then we introduced a conceptual impurity to the
+statement ``we are examining the one way response of ET to VPD.''
+But, given the theoretical motivations for uWUE we think the portion
+the relationship related to land-atmosphere feedbacks are likely
+small, if they exist at all, and regardless this approach is still an
+improvement over ignoring the documented effect of water stress on net
+photosythesis.
+
+Given the continued gaps in our ability to represent stomatal behavior
+\citep(Damour2010}, particulary for ecosystems in natural
+environments, we think it is hard to rule out our results. In the end,
+it comes down to the degree to which we trust our three tools: the
+Medlyn model, Penman-Monteith, and uWUE. To us these offered the most
+compete analytical approach to the problem at present. However, it's
+important to emphasize that we are not saying this is certainly
+correct, and to do so would be irresponsible given the continued
+development of stomatal theory and how it translates to the ecoystem
+scale. What is important is to recognize that something as fundamental
+as the shape of the ET-VPD curve is still very much an area of open
+research, and sensitive to the representation of plant physiology (of
+which there are many possibilities) in a given model or framework. We
+thank the reviewer for having an open mind and giving us a chance to
+elaborate; others in the community have rejected this result off-hand
+(or even ridiculed it), which reinforces for us the importance of
+demonstrating current uncertainty in VPD-ET relationships.
+
+Just a quick couple of final notes:
+
+We think that we miscommunicated with our (mis)use of ``plant physiology''
+throughout the manuscript, and will alter our language in the final
+review phase to be more precise. Many times when we refer to ``plant
+physiology'' we mean any effect (direct or indirect) of an ecosystem
+response, e.g. any behaviour that would not be observed over a wet or
+bare soil surface.
 
 \end{document}
