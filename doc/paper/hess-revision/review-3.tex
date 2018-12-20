@@ -1,0 +1,98 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+\usepackage{color}
+\pagestyle{plain}
+
+\graphicspath{{../../../etc/plots/climate_et/test_plots/}}
+
+\RequirePackage{natbib}
+\bibliographystyle{agufull08}
+
+\begin{document}
+
+Thank you for a very thoughtful review. This third review adds further
+to our feeling that we are extremely lucky to have received such
+quality reviews.
+
+We agree with your comments and will respond with some general views
+to open the door for further discussion in this discussion phase. We
+look forward to reconciling all reviews with a revised manuscript and
+formal response in the final response phase. Also of relevance to this
+review is our \href{https://editor.copernicus.org/index.php/hess-2018-553-AC1.pdf?_mdl=msover_md&_jrl=13&_lcm=oc108lcm109w&_acm=get_comm_file&_ms=72556&c=153745&salt=17166479111051651323}{
+  response to RC1}, which we will refer to as needed to avoid
+repeating content.
+
+\section{Soil moisture, uWUE and g$_1$}
+Environmental conditions, particularly soil moisture, will effect both
+uWUE and g$_1$ as you point out. Not accounting for this variability
+by using a PFT-focused analysis is problematic. We discuss this in
+\href{https://editor.copernicus.org/index.php/hess-2018-553-AC1.pdf?_mdl=msover_md&_jrl=13&_lcm=oc108lcm109w&_acm=get_comm_file&_ms=72556&c=153745&salt=17166479111051651323}{our
+  response to RC1}, specifically Sections 2 and 3, and think a strong
+argument could be made that we should have framed our analysis in
+terms of more general uWUE and g$_1$ variability instead of focusing
+primarily on PFT variability. If we let uWUE and g$_1$ vary in space
+and time, then we include a measure of soil moisture through its
+effect on uWUE and g$_1$. In this case, interpretation of our results
+relies on a less restrictive approximation that soil moisture
+conditions remain relatively fixed with respect to the VPD
+perturbation, which is consistent with the general interpretation of
+our results (e.g. we evaluate the ET response to VPD with
+other environmental conditions held fixed).
+
+There are also issues with only including uncertainty in uWUE. We
+discuss reasons for this approach in our response to
+\href{https://editor.copernicus.org/index.php/hess-2018-553-AC1.pdf?_mdl=msover_md&_jrl=13&_lcm=oc108lcm109w&_acm=get_comm_file&_ms=72556&c=153745&salt=17166479111051651323}{RC1}
+(specifically the final paragraph), and we think there may be some
+tractable approaches to representing uncertainty and variability in
+both uWUE and g$_1$ for the final manuscript.
+
+\section{Methods/Introduction}
+Adding the clarifications you suggest for the methods section will
+greatly improve the manuscript, as well as more thorough discussion in
+the introduction about what is known about the transpiration response to
+VPD. This is also discussed peripherally in our response to
+\href{https://editor.copernicus.org/index.php/hess-2018-553-RC2.pdf?_mdl=msover_md&_jrl=13&_lcm=oc108lcm109w&_acm=get_comm_file&_ms=72556&c=153384&salt=74148443849227084}{RC2}.
+
+\section{Results}
+Regarding the presentation of the results, we agree that in its current
+form the manuscript can be disorienting. Just discussing the sign of
+the derivative, and then discussing the magnitude (while including
+what the current manuscript refers to as the ``sign term'') seems to
+be a much cleaner approach, possibly also differentiating between
+environmental controls versus plant/canopy controls.
+
+In our response to RC1 we discussed a few revision approaches
+regarding the results, some of them including significant changes,
+which should help both with acknowledging g$_1$ and uWUE variability
+and streamlining the results. One example (``Option 2'') is to remove
+the PFT focus from the first portion of the results (Section 3.1-3.2;
+this could also go in Methods as you suggest), and instead focus
+generally on how changes in the environment (e.g. wind speed,
+temperature) and land surface terms (e.g. g$_1$, uWUE, canopy height)
+influence the ET response. Using a more sophisticated representation
+of uncertainty we could then present the distribution of
+observation-informed ET responses as a function of the model terms
+(g$_a$, uWUE, g$_1$, etc.), and finally tie all this to either PFTs or
+specific sites with maps of statistics from the distribution of model
+parameters and ET response. While this could add a lot of analysis and
+content to the paper, we think in the end it could streamline the
+results and their interpretation. Basically we would start with the
+idealized ET response as a function of parameters (no uncertainty), to
+the observed ET response as a function of parameters (with
+uncertainty), to how both the parameters and ET response (with
+uncertainty) map to specific sites, years and/or PFTs. Thoughts on
+this are welcome.
+
+We also acknowledge that we need to be more precise about some of our
+language (e.g. ``leading order behavior'', ``bit more variability''),
+and thank you for the other minor comments as well; fixing these will
+improve the manuscript.
+
+\end{document}
