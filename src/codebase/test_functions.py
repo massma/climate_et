@@ -87,15 +87,15 @@ def plot_et_curve(mean_row, min_row, max_row, index, _df):
   # print('for pft %s, time to subset was %f s, and nobs was %d'\
   #     % (index, (end-start), _df.shape[0]))
   # plt.scatter(_df.vpd, _df.et_obs, s=4.0, c='m')
-  plt.plot(vpd, et, label='uWUE PM')
-  plt.plot(vpd, et_orig, label='Mean GPP')
-  plt.plot(vpd, et_iwue, label='iWUE PM')
+  plt.plot(vpd, et, label='uWUE Penman Monteith')
+  plt.plot(vpd, et_orig, label='Original Penman Monteith')
+  # plt.plot(vpd, et_iwue, label='iWUE PM')
   # plt.plot(vpd, et_bb, label='uWUE BB')
   # plt.plot(vpd, et_iwue_bb, label='iWUE BB')
   plt.legend(loc='best')
   plt.title(index)
-  plt.xlabel('vpd (Pa')
-  plt.ylabel('et (w/m2)')
+  plt.xlabel('VPD (Pa)')
+  plt.ylabel('ET (W/m2)')
   plt.savefig('%s/%s_et_vpd_curve_with_pm.png' % (PLOTDIR, index))
   return
 
@@ -108,8 +108,8 @@ def plot_et_curve_onlyuWUE(mean_row, min_row, max_row, index, _df):
   plt.plot(vpd, et, label='uWUE PM')
   plt.legend(loc='best')
   plt.title(index)
-  plt.xlabel('vpd (Pa')
-  plt.ylabel('et (w/m2)')
+  plt.xlabel('VPD (Pa)')
+  plt.ylabel('ET (W/m2)')
   plt.savefig('%s/%s_et_vpd_curve_uWUE.png' % (PLOTDIR, index))
   return
 
@@ -121,8 +121,8 @@ def plot_et_curve_onlyPM(mean_row, min_row, max_row, index, _df):
   plt.plot(vpd, et_orig, label='Original Penman Monteith')
   plt.legend(loc='best')
   plt.title(index)
-  plt.xlabel('vpd (Pa')
-  plt.ylabel('et (w/m2)')
+  plt.xlabel('VPD (Pa)')
+  plt.ylabel('ET (W/m2)')
   plt.savefig('%s/%s_et_vpd_curve_PM.png' % (PLOTDIR, index))
   return
 
@@ -134,8 +134,8 @@ def plot_et_curve_onlyLeaf(mean_row, min_row, max_row, index, _df):
   plt.plot(vpd, leaf, label=r'leaf ET=$\frac{\rho c_p}{\gamma (r_a + r_s)} VPD$')
   plt.legend(loc='best')
   plt.title(index)
-  plt.xlabel('vpd (Pa')
-  plt.ylabel('et (w/m2)')
+  plt.xlabel('VPD (Pa)')
+  plt.ylabel('ET (w/m2)')
   plt.savefig('%s/%s_et_vpd_curve_leaf.png' % (PLOTDIR, index))
   return
 
