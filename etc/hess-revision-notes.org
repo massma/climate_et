@@ -1,0 +1,18 @@
+I think for the revision we should do a major rewrite. Just present
+the derivation, then present a single figure of 9 curves, represented
+25, 50 and 75 percentiles for g1, uWUE, and the scaling term. We could
+even take these directly from the literature. The scaling term could
+come from the data though.
+
+Then we could show okay, what if there are structural differences in
+the functional form?
+
+Then we can conclude by saying, okay, we really do not know what the
+et response is to vpd, and if we can't understand the response to a
+single isolated change, how can we ever know the reponse when many
+things are changing at once?
+
+This I think puts the focus where it should be: we really don't know
+the response and we need to focus our research on understanding these
+things. Makes it more into a discussion/review paper, but could still
+be interesting.
