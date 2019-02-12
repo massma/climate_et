@@ -13,6 +13,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import codebase.plot_tools as plot_tools
 import codebase.data_calc as d_calc
 import codebase.data_prep as d_prep
+import codebase.data_io as d_io
 import pickle
 
 mpl.rcParams.update(mpl.rcParamsDefault)
@@ -114,4 +115,3 @@ def panel_wrapper(_df, function, name, args=()):
 
 # grab sites actually used in analysis
 sites_used = df.loc[:, 'site'].drop_duplicates()
-

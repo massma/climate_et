@@ -126,7 +126,7 @@ def pm_et(_df, vpd=None, uwue=None, n=0.5, kernel=medlyn_kernel):
         *(kernel(_df, vpd)))))\
         /(_df['delta']+_df['gamma'])
 
-def sign(_df, vpd=None, uwue=None, n=0.5):
+def sign(_df, vpd=None, uwue=None, g1=None, n=0.5):
   """
   calculates the 'sign' term of et derivative w.r.t. vpd,
   as a function of n (exponent in *WUE metric)
@@ -135,11 +135,13 @@ def sign(_df, vpd=None, uwue=None, n=0.5):
     vpd = _df['vpd']
   if uwue is None:
     uwue = _df['uwue']
+  if g1 is None:
+    g1 = _df['g1']
   return CP/_df['r_moist']\
                 -_df['gamma']*_df['c_a']\
                 /(1.6*R_STAR*uwue)\
-                *(vpd**(n-1.0)*((n+0.5)*_df['g1']/np.sqrt(vpd)+n))\
-                  /(_df['g1']/np.sqrt(vpd)+1.0)**2
+                *(vpd**(n-1.0)*((n+0.5)*g1/np.sqrt(vpd)+n))\
+                  /(g1/np.sqrt(vpd)+1.0)**2
 
 def scaling(_df, t_a=None, g_a=None):
   """

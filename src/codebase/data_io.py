@@ -21,14 +21,16 @@ WUE_MEDLYN.loc[:, 'g1M'] = WUE_MEDLYN.loc[:, 'g1M']*np.sqrt(1000.)
 WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
                   comment='#', delimiter=',')
 WUE.index = WUE.PFT
+
+def uWUE_converter(zhou_uwue):
+  return zhou_uwue*1.e6/12.011*np.sqrt(100.)/LV
+
 # convert from g C to micromol (units of c_s),
 # and from sqrt(hPa) to sqrt(PA)
 # and from kg H20 to joules
-WUE.loc[:, 'u_wue_yearly'] = WUE.loc[:, 'u_wue_yearly']\
-                             *1.e6/12.011*np.sqrt(100.)/LV
-WUE.loc[:, 'u_wue_yearly_std'] = WUE.loc[:, 'u_wue_yearly_std']\
-                             *1.e6/12.011*np.sqrt(100.)/LV
+WUE.loc[:, 'u_wue_yearly'] = uWUE_converter(WUE.loc[:, 'u_wue_yearly'])
 
+WUE.loc[:, 'u_wue_yearly_std'] = uWUE_converter(WUE.loc[:, 'u_wue_yearly_std'])
 
 SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
                        'Site_list_(canopy_height).csv' % os.environ['DATA'],\

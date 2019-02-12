@@ -47,3 +47,5 @@ src/paper_figure_code/co2_plot.py
 src/paper_figure_code/compare_conductance_nikinmaa.py
 src/paper_figure_code/test.bin
 src/temp_plot.py
+*.pkl
+*.gz
