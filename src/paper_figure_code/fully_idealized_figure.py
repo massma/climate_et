@@ -6,8 +6,6 @@ from shared_functions import *
 import matplotlib.lines as mlines
 
 # mean_df defined her at module-level
-
-
 linewidth=2.5
 dashedlinewidth=3.0
 markersize=8
@@ -19,7 +17,7 @@ vpd = np.linspace(df.vpd.quantile(q=0.05), df.vpd.quantile(q=0.95))
 median_row = df.quantile(q=0.5)
 linestyles = ['-','--','-.']
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color'][:3]
-ptiles = [25.0, 50.0, 75.0]
+ptiles = [15.0, 50.0, 85.0]
 pdesc = ['min', 'median', 'max']
 
 paren_string = r'$\frac{ c_p}{R_{air}} '\
@@ -31,8 +29,16 @@ g1s = list(map(lambda x: x*np.sqrt(1000.0), [2.0, 4.0, 6.0]))
 uwues = list(map(d_io.uWUE_converter, [6.99, 9.52, 12.05]))
 def get_scaling_quantiles(_df):
   out = d_calc.scaling(_df)
-  return list(map((lambda p: out.quantile(q=p)), [0.25, 0.5, 0.75]))
+  return list(map((lambda p: out.quantile(q=p)), [0.15, 0.5, 0.85]))
 
+def get_scaling_quantiles_idealized():
+  x = []
+  for t, g_a in zip([10.0, 20.0, 30.0][::-1], [0.015, 0.035, 0.055]):
+    print('Temperature: %5.2f' % t)
+    print('aero conductance: %5.2f' % (g_a*1000.0))
+    _df = {'t_a_k': t + 273.15, 'p_a': 100000.0, 'gamma': 64.5}
+    x.append(d_calc.scaling(_df, t_a=t, g_a=g_a))
+  return x
 
 def get_sign_range():
     return np.array([d_calc.sign(median_row, g1=g1, uwue=uwue, vpd=vpd)
@@ -41,7 +47,7 @@ def get_sign_range():
 def add_plots(_df, ax):
   """takes df and plots both halves of product in term 2"""
   signs = get_sign_range()
-  for scaling, scaling_ptile, c in zip(get_scaling_quantiles(df),
+  for scaling, scaling_ptile, c in zip(get_scaling_quantiles_idealized(),
                                        ptiles,
                                        colors):
     for sign_f, sign_ptile, l in zip([np.min, np.median, np.max],
@@ -67,7 +73,6 @@ ax = fig.add_subplot(1, 1, 1)
 add_plots(df, ax)
 ax.set_xlabel('VPD (Pa)', fontsize=single_ax_fontsize)
 ax.set_ylabel(et_string, fontsize=single_ax_fontsize)
-
 xlims = ax.get_xlim()
 ax.plot(xlims, [0., 0.], 'k--', linewidth=linewidth)
 ax.set_xlim(xlims)
@@ -81,7 +86,6 @@ add_sign_plots(df, ax)
 ax.set_xlabel('VPD (Pa)', fontsize=single_ax_fontsize)
 # ax.set_ylabel(paren_string, fontsize=single_ax_fontsize)
 ax.set_ylabel(et_string, fontsize=single_ax_fontsize)
-
 xlims = ax.get_xlim()
 ax.plot(xlims, [0., 0.], 'k--', linewidth=linewidth)
 ax.set_xlim(xlims)
@@ -90,3 +94,8 @@ style_handles = [mlines.Line2D([], [], color='k', linestyle=l, label=(p + ": uWU
 ax.legend(handles = (color_handles + style_handles), loc='best', fontsize=single_ax_fontsize-4)
 plt.tight_layout()
 plt.savefig('../../doc/paper/fully_idealized_sign.pdf')
+
+for p in [0.15, 0.5, 0.85]:
+  print("\n*****Percentile: %5.2f" % p)
+  for var in ["p_a", "g_a","t_a","gamma","delta"]:
+    print("%s: %f" % (var, df[var].quantile(q=p)))
