@@ -16,3 +16,16 @@ This I think puts the focus where it should be: we really don't know
 the response and we need to focus our research on understanding these
 things. Makes it more into a discussion/review paper, but could still
 be interesting.
+
+From notepad:
+
+- highligh novel nature of using uWUE to cancel photsynthesis
+  dependence.
+- resposne can vary greatly with plant parameter
+- the functional form of response varies with model/framework
+  choice. Where does this leave us.
+- Frame everything in terms of previous literature (which PFTs have
+  high/low g1 and uWUE?)
+- explain usefulness of PDEs:
+   - conceputal, valid for however long you want to approximate other
+     quantities held fixed.
