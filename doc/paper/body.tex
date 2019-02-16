@@ -1,56 +1,5 @@
 
-\section{Materials and Methods}
-\subsection{Data}
-\label{data}
-We use both meteorological and eddy-covariance data from the FLUXNET2015
-database (data available at \sloppy
-\url{https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/} \sloppy),
-including all Tier 1 sites with at least four years of data and
-observations of the variables described in the methods section (Sect.
-\ref{methods}). Sixty-six sites met these requirements, and were grouped
-into nine plant functional types (PFT) according to the International
-Geosphere-Biosphere Programme vegetation classification scheme
-\citep{Loveland_1999}: cropland (CRO), grass (GRA), deciduous broadleaf
-forest (DBF), evergreen broadleaf forest (EBF), evergreen needleleaf
-forest (ENF), mixed forest (MF), closed shrub (CSH), savannah (SAV), and
-woody savannah (WSA) (site locations and citations are in Fig.
-\ref{map_fig} and Appendix \ref{flux_sites}, respectively).
-
-\begin{figure}[h]
-  \centering \includegraphics[trim={0 3cm 0 3cm}, clip]{./map.pdf}
-  \caption{Plant functional type and location of FLUXNET2015 sites
-    used in this analysis.}
-  \label{map_fig}
-\end{figure}
-
-
-The purpose of this study is to examine ecosystem response to
-atmospheric drying, focusing on the growing season. To accomplish
-this, we filter and quality control the data using a similar procedure
-as \cite{Zhou_2015}:
-\begin{itemize}
-\item Only measured or highest (``good'') quality gapfilled data,
-  according to quality control flags, are used.
-\item To isolate the growing season, we only use days in which the
-  average Gross Primary Productivity (GPP) exceeds 10\% of the
-  observed 95th percentile of GPP for a given site. GPP is calculated
-  using the nighttime respiration partitioning method.
-\item We remove days with rain and the day following to avoid issues
-  with rain interception and sensor saturation at high relative
-  humidity (\cite{Medlyn_2017}).
-\end{itemize}
-Additionally, as in \citet{Lin_2018}, we restrict data to the daytime,
-which is identified when downwelling shortwave radiation is greater
-than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W
-m$^{-2}$. To reduce the chance of sensor saturation at high relative
-humidity, we remove all time steps for which VPD is less than .01 kPa,
-and to reduce errors at low windspeeds we remove all periods with wind
-magnitudes less than 0.5 m s$^{-1}$. Timesteps with negative observed
-GPP or ET are also removed, and we aggregate half hourly data to
-hourly averages to reduce noise \citep{Lin_2018}. After these quality
-control procedures, 400,983 upscaled hourly observations remain.
-
-\subsection{Methods}
+\section{Methods}
 \label{methods}
 The Penman-Monteith equation \citep [hereafter PM,][]{Penman_1948,
   Monteith_1965} estimates ET as a function of observable atmospheric
@@ -150,10 +99,11 @@ of m s$^{-1}$, the ecosystem scale stomatal conductance is:
   \end{equation}
 % \end{linenomath*}
 
-where GPP is the ecosystem scale gross primary production, and $g_1$
-is an ecosystem scale analogue to $g_{1-leaf}$. We solve for $g_1$
-following \citet{Medlyn_2017} (Eq. (5)), and take the median $g_1$
-value to be representative of each PFT (Table \ref{pft}) instead of the mean to avoid extra weighting of rare outliers.
+  where GPP is the ecosystem scale gross primary production, and $g_1$
+  is an ecosystem scale analogue to $g_{1-leaf}$. We solve for $g_1$
+  following \citet{Medlyn_2017} (Eq. (5)), and take the median $g_1$
+  value to be representative of each PFT (Table \ref{pft}) instead of
+  the mean to avoid extra weighting of rare outliers.
 
 \begin{table}
   \caption{Plant functional types, their abbreviation, calculated
@@ -244,111 +194,102 @@ in][]{Zhou_2014}. So uWUE is related to atmospheric CO$_2$
 concentration and compensation point, and is inversely proportional to
 the marginal water cost of leaf carbon.
 
-Given eddy-covariance FLUXNET2015 data (Sect. \ref{data}), every
-term in our new version of PM (Eq. (\ref{et})) is observed, except
-for uWUE, which we fit by calculating its expectation, given the model
-and FLUXNET2015 data.
 
-However, eddy-covariance data are inherently noisy so we include a
-measure of uncertainty in our analysis. To account for observational
-error, as well as model uncertainty (e.g. temporal and spatial
-variations of uWUE and $g_1$), we introduce an uncertainty parameter
-$\sigma$ modifying uWUE:
+With Equation \ref{eq} we can take the partial derivative with respect
+to VPD:
 
 % \begin{linenomath*}
   \begin{equation}
-    ET = \frac{\Delta R_{net} + \frac{g_a\; P}{T} \left( \frac{ c_p VPD}{R_{air}} -  \frac{\gamma c_a \sqrt{VPD} }{ R \; 1.6\; \sigma \; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})} \right) }{ \Delta + \gamma}
-    \label{et_sigma}
-  \end{equation}
-% \end{linenomath*}
-
-Now, from each FLUXNET2015 observation (i.e. for each hourly
-observation at every time step) we can evaluate $\sigma$:
-
-% \begin{linenomath*}
-  \begin{equation}
-    \sigma = - \frac{g_a \gamma c_a \sqrt{VPD} L_v P }{ \left(\text{ ET } ( \Delta + \gamma) - \Delta R_{net} - g_a \rho_a c_p VPD\right) 1.6 \; R\; T\; \text{ uWUE } (1 + \frac{g_1}{\sqrt{VPD}})},
-    \label{sigma}
-  \end{equation}
-% \end{linenomath*}
-
-So, with this uncertainty analysis we can evaluate departure from
-our theory in observations, as a departure of $\sigma$ from unity. The
-variability of $\sigma$ across sites and time provides a measure of
-uncertainty in our model, assumptions, as well as in the FLUXNET2015
-observations themselves. The variability of $\sigma$ then propagates
- any uncertainty through to our partial derivative of Eq.
-(\ref{et_sigma}) with respect to VPD:
-
-% \begin{linenomath*}
-  \begin{equation}
-    \frac{\partial \;  ET}{\partial \; VPD} = \frac{2\; g_a \; P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -  \frac{\gamma c_a }{1.6 \; R\; \sigma \; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right) \right)
+    \frac{\partial \;  ET}{\partial \; VPD} = \frac{2\; g_a \;
+      P}{T(\Delta + \gamma)}   \left(\frac{ c_p}{R_{air}} -
+      \frac{\gamma c_a }{1.6 \; R\; \; \text{ uWUE }} \left(
+        \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right)
+    \right),
     \label{d_et}
   \end{equation}
 % \end{linenomath*}
 
-With Eq. (\ref{d_et}) we have an analytical framework for ecosystem
-response to atmospheric demand perturbations with environmental
-conditions held fixed. There are a few subtleties to taking the
-derivative in Eq. (\ref{d_et}): $\Delta$ ($\frac{d e_{s}}{d T}$)
-and $VPD$ are functionally related, so while taking the derivative we
-evaluate
-$\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET}
-{\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD}
-\Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH}
-\frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$
-    fixed}}$. $RH$ and $e_s$ are assumed to be approximately
-independent, which is supported by the data (not shown).
+  deriving an analytical framework for ecosystem response to
+  atmospheric demand perturbations with environmental conditions held
+  fixed. There are a few subtleties to taking the derivative in
+  Eq. (\ref{d_et}): $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are
+  functionally related, so while taking the derivative we evaluate
+  $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET}
+  {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD}
+  \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH}
+  \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$
+      fixed}}$. $RH$ and $e_s$ are assumed to be approximately
+  independent, which is supported by data (not shown).
 
-This derivation relied either implicitly or explicitly on several
-assumptions. First, we assume that VPD at the leaf surface is the same
-as VPD at measurement height; physically this implies that leaves are
-perfectly coupled to the atmosphere. In reality, for some conditions
-and plant types the leaves can become decoupled from the boundary
-layer \citep{De_2017, Medlyn_2017}. Given our focus on the growing
-season, which is usually characterized by relatively high insolation
-inducing instability and convective boundary layers, we would expect
-the surface to be generally well coupled. An additional assumption in
-the formulation of $uWUE$ \citep{Zhou_2014, Zhou_2015} and
-\citet{Medlyn_2017}'s stomatal conductance model is that direct soil
-evaporation (E) contributions to ET remain small relative to
-transpiration (T). This should be more true during the growing
-season. The ratio of E to T may increase immediately after rainfall
-events due to high soil moisture and ponding, but VPD is generally low
-anyways during these times. However, some plant types allow for
-systematically larger contributions of E in ET, particularly those
-with sparse canopies and smaller relative amounts of transpiration. We
-therefore might expect that the theory will be most applicable to
-forest PFTs, which will be most strongly coupled to the boundary layer
-due to larger surface roughness, and will also generally have the
-highest ratios of transpiration to evaporation. Finally, for the goal
-of developing PFT-wide intuition, we assume that $g_1$ and $uWUE$ are
-constant in space and time. Both quantities have been shown to be well
-conserved over space and time within a PFT relative to inter-PFT
-variability. However, we would expect them to vary somewhat with
-environmental conditions including very low soil water content,
-temperature, and with intra-PFT plant-specific characteristics like
-wood density for tree PFTs \citep{Lin_2015}. Given these strong
-assumptions made with the goal of understanding broad, leading order
-plant behaviors, we take the extra care of including and analyzing
-uncertainty (Sect. \ref{testing}) and examining sensitivity to the
-exponent of the VPD response (Sect. \ref{functional_form}).
+  This derivation relied either implicitly or explicitly on several
+  assumptions. First, we assume that VPD at the leaf surface is the
+  same as VPD at measurement height; physically this implies that
+  leaves are perfectly coupled to the atmosphere. In reality, for some
+  conditions and plant types the leaves can become decoupled from the
+  boundary layer \citep{De_2017, Medlyn_2017}. Therefor, our
+  derivation will be most applicable in times like the growing season,
+  when relatively high insolation induces instability and convective
+  boundary layers, and we would expect the surface to be generally
+  well coupled. An additional assumption in the formulation of $uWUE$
+  \citep{Zhou_2014, Zhou_2015} and \citet{Medlyn_2017}'s stomatal
+  conductance model is that direct soil evaporation (E) contributions
+  to ET remain small relative to transpiration (T). This should be
+  more true during the growing season. The ratio of E to T may
+  increase immediately after rainfall events due to high soil moisture
+  and ponding, but VPD is generally low anyways during these
+  times. However, some plant types allow for systematically larger
+  contributions of E in ET, particularly those with sparse canopies
+  and smaller relative amounts of transpiration. We therefore might
+  expect that the theory will be most applicable to forest PFTs, which
+  will be most strongly coupled to the boundary layer due to larger
+  surface roughness, and will also generally have the highest ratios
+  of transpiration to evaporation. Finally, we assume that $g_1$ and
+  $uWUE$ are constant with respect to the conceptual VPD
+  perturbation. Both quantities have been shown to be relatively
+  constant with respect to changes in
+  % TODO: make this a general discussion on partial derivatives and
+  % what things are constant/how to interpret?
+  VPD \cite{Franks_2017, Zhou_2014}. These parameters will however
+  vary with plant species and characteristics \citep[e.g. wood density,
+  ]{Lin_2015}, as well as environmental conditions including soil
+  water content and temperature.
+  % TODO: write exact parameter ranges we use, and introduce
+  % scaling/sign term here?
+  % \item
 
-We note one final comment on our derivation which is relevant for
-drought indices. If we approximate $c_a$ at a global mean CO$_2$
-concentration, then the RHS of Eq. (\ref{et}) is fully defined
-using commonly available weather station data and the constants
-published here. This makes Eq. (\ref{et}) useful in addition to
-PET in drought indices and hydrometeorological analysis for vegetated
-surfaces. Equation (\ref{et}) better reflects the physics of water
-exchange at the land surface and would only require fitting of uWUE
-and $g_1$, and can also account for changes in CO$_2$ concentration
-(assuming some relationship between $\lambda$ and [CO$_2$]), which is missing
-in other drought indices such as the Palmer Drought Severity Index
-(PDSI) \citep{Swann_2016, Lemordant_2016, Lemordant_2018}. Lastly, all
-code and data used in this analysis, including those used to generate
-the figures and tables, are publicly available at
-\url{https://github.com/massma/climate\_et}.
+To account for both this variability in plant parameters and the
+environmental, we will systematically analyze how the ET reponse to
+VPD (Equation \ref{d_et}) varies. Equation \ref{d_et} includes a
+``sign'' term  that determines the sign of the response in addition to
+magnitude:
+
+\begin{equation}
+  \label{sign}
+  \frac{c_p}{R_{air}} - \frac{\gamma c_a }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right),
+\end{equation}
+
+and a ``scaling'' multiplying the ``sign'' term:
+
+\begin{equation}
+  \frac{g_a \; P}{T(\Delta + \gamma)}.
+\end{equation}
+
+In the ``sign term'' most of quantities are relatively constant,
+except for VPD and the plant parameters g$_1$ and uWUE. In the scaling
+term, most of the terms are relatively constant with the exception of
+aerodynamic conductance ($g_a$) and temperature (especially its effect
+on $\Delta$). To determine the range of probable ET reponses to VPD we
+will systematically vary this parameters according to Table
+\ref{param_values}. Environmental parameters ($g_a$, $T$) are varied
+according to ranges we would expect for growing season conditions
+across a range of plant types (canopy height is a determinant $g_a$),
+and plant parameters (g$_1$, uWUE) are varied according to ranges
+established in previous literature \citep{Zhou_2015,
+  Medlyn_2017}. Using this previous literature we can connect the
+effect of varying plant parameters to specific plant types and
+characteristics. Lastly, all code and data used in this analysis,
+including those used to generate the figures and tables, are publicly
+available at \url{https://github.com/massma/climate\_et}.
 %\hyperref[https://github.com/massma/climate\_et]{https://github.com/massma/climate_et}.
 
 \section{Results and Discussion}
@@ -382,18 +323,11 @@ functional form of Eq. (\ref{d_et}). There are two main terms: a
 ``scaling'' term, which modifies the magnitude but not the sign of the
 ET response to VPD ($\frac{\partial \; ET}{\partial \; VPD}$):
 
-\begin{equation}
-  \frac{g_a \; P}{T(\Delta + \gamma)},
-\end{equation}
 
 and a ``sign'' term, which determines whether ET increases or
 decreases with VPD (i.e. atmospheric demand driven or physiologically
 controlled):
 
-\begin{equation}
-  \label{sign}
-  \frac{c_p}{R_{air}} - \frac{\gamma c_a }{1.6 \; R\; \text{ uWUE }} \left( \frac{2 g_1 + \sqrt{VPD}}{2 (g_1 + \sqrt{VPD})^2}\right).
-\end{equation}
 All variables are positive, so the relative magnitude between the
 first term and the second term in the sign term (Eq. (\ref{sign}))
 will determine whether ET increases or decreases with increasing

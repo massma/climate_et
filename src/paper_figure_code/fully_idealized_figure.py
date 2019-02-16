@@ -25,10 +25,14 @@ paren_string = r'$\frac{ c_p}{R_{air}} '\
                r'\left( \frac{2 g_1 + \sqrt{VPD}}'\
                r'{2 (g_1 + \sqrt{VPD})^2}\right)$'
 
-g1s = list(map(lambda x: x*np.sqrt(1000.0), [2.0, 4.0, 6.0]))
-uwues = list(map(d_io.uWUE_converter, [6.99, 9.52, 12.05]))
+g1_medlyn = [2.0, 4.0, 6.0]
+g1s = list(map(lambda x: x*np.sqrt(1000.0), g1_medlyn))
+uwue_zhou = [6.99, 9.52, 12.05]
+uwues = list(map(d_io.uWUE_converter, uwue_zhou))
 ts = [10.0, 20.0, 30.0]
 gas = [0.015, 0.035, 0.055]
+p_default =
+
 
 def get_scaling_quantiles(_df):
   out = d_calc.scaling(_df)
