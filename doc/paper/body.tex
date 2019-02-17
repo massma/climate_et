@@ -356,198 +356,121 @@ temperature, which is still an important factor.
 \section{Discussion}
 \label{discussion}
 
+Interpreting both the derivation and results of this manuscript hinges
+on an understanding and appreciation for the usefulness of partial
+dervatives for understanding the behavior of complex systems. Our
+results are a conceptual tool for answering the question, ``What is
+the ET response to VPD with all other quantities held fixed?'' This is
+useful, and we would argue is critical, for understanding complex
+responses when many quantities are varying symotaneously. Through
+partial derivatives, we can approach answering questions like ``What
+is the relative contribution of VPD in some observed response given
+that X Y and Z were also varying?'' In this example, X Y and Z could
+be, for example, radiation, soil moisture, and temperature. Equation
+\ref{d_et} explicitly provides an estimate of the ET response to VPD,
+given assumptions about ecosystem plant characteristics through the
+parameters g$_1$ and uWUE. Equation \ref{d_et} is generic to external
+environmental factors and the timescale over which a VPD response
+acts, and has a straightforward conceptual meaning. It provides the ET
+response, given other quantities and parameters held fixed. So, while
+the plant parameters g$_1$ and uWUE may vary with plant species and
+environmental conditions like soil moisture, we can still assess the
+ET response to VPD for a given plant species, or for a given soil
+moisture condition.
 
-\small
-% \begin{linenomath*}
-  \begin{equation}
-    VPD_{crit} = \frac{R_{air}}{4 c_p} \left( \frac{\gamma c_a}{1.6\; R \;  uWUE} + \sqrt{\frac{\gamma c_a}{1.6\; R \;  uWUE}\left( \frac{\gamma c_a}{1.6\; R \;  uWUE} + 8 g_1 \frac{c_p}{R_{air}}\right)} - 4 g_1 \frac{c_p}{R_{air}} \right),
-    \label{vpd_min_et}
-  \end{equation}
-% \end{linenomath*}
-  \normalsize
+However, given that g$_1$ and uWUE can vary, and that they both have a
+large impact on the ET response (Figure \ref{full}, \ref{sign}) it is
+useful to rexamine how these quantities vary in previous literature,
+framed by our results on ET responses. In \citet{Zhou_2015} most plant
+types have uWUE similiar to our median value, where whether ET
+response is postive (water intensive) or negative (water conservative)
+depends on VPD. However, crops, which we expect to prioritize carbon
+uptake over water conservation, have a higher uWUE closer to our
+maximum value. This higher uWUE results in a higher liklhood for an
+increasing ET response to VPD, which intuitively amkes sense given
+taht we expect crops ro keep stoamta open for access to carbon, at the
+cost of water loss. Shrubs, and to a lesser extent grass, gave an uWUE
+closer to the minumum uWUE. For these plant types, we would then
+expect a higher liklhood of a water conservatve response; that is, a
+decrease of ET in response to VPD. It is important to note that, while
+\citet{Zhou_2015} did not examine the roll of soil moisture in within
+plant-type variability of uWUE, we might expect some variation,
+especially in extreme cases when soil water becomes a limiting factor.
 
-Differences in $VPD_{crit}$ are exclusively determined by uWUE and the
-slope parameter ($g_1$) related to the plant functional type. A larger
-uWUE means a smaller $VPD_{crit}$, and an ET response to increases VPD
-that is more likely to be positive. At first glance this result is
-somewhat counter-intuitive; we expect that plants with a higher water
-use efficiency would be more water conservative. However, in reality
-uWUE determines how $WUE$ changes with VPD:
+In \citet{Medlyn_2017} there is not as robust of a relationship
+between plant type and g$_1$ as there was for uWUE in
+\citet{Zhou_2015}. Given that there is a robust relatiohsip between
+g$_1$ and plant type in \citet{Lin_2015}, the ambiguos results in
+\citet{Medlyn_2017} could be due to noise in ecosystem scale
+observations, the consequences of imposing a model structure in some
+of the g$_1$ observations, or real ecosystem-scale within-plant type
+variability. These differences between leaf-scale behavior and
+ecosystem scale behaviro highlight the importance of understanding how
+and why slope parameters vary at the ecosystem scale, as argued by
+\citet{Medlyn_2017}. However, if we assume that there is some real
+analogy between leaf scale results in \citet{Lin_2015} and ecosystem
+scale behavior, and that some of the ambiguity in \citet{Medlyn_2017}
+is due to model and/or observational error, then we can make some
+connections between g$_1$-induced ET response variability and plant
+characteristics, which are subject to the strong caveat that we still
+do not fully understand the g$_1$'s utility at the ecosystem
+scale. Extrapolating \citet{Lin_2015}'s results (e.g. Fig. 2) to the
+ecosystem scale would reveal the following relationships between g$_1$
+and plant types:
 
-\[WUE = \frac{GPP}{ET} = \frac{uWUE}{\sqrt{VPD}}.\]
-\[\frac{\partial \; WUE}{\partial \; VPD} = -\frac{uWUE}{2 \;
-    VPD^{3/2}}\]
+\begin{itemize}
+  \item C3 plants would have a generally higher g$_1$ than C4 plants,
+  \item Crops would have a larger g$_1$ than shrubs, grass, and
+    angiosperm trees, which have a higher g$_1$ than gymnosperm
+    trees.
+  \item Tropical and temperate climates would generally host plants
+    with a higher g$_1$ than artic and boreal climates.
+\end{itemize}
+For all of the above relationships, a higher g$_1$ means a higher
+liklihood of a postive ET response to increasing VPD (water
+intensive), and a smaller VPD dependence of the ET response.
 
-So, plants with a higher uWUE will have a greater \textit{decrease} in
-ecosystem-scale $WUE$ in response to increases in VPD. This decrease
-in $WUE$ causes more water loss per unit carbon gain, and explains the
-relationship between high uWUE and high likelihood of increases of ET
-in response to increasing atmospheric drying (increases in VPD).
+Our theoretical results, when framed by previous literature tying
+parametets to plant types and climate, highlight the variability of ET
+response to VPD as a function of plant characteristics. Whether an
+ecosystem increases or decreases ET in response to VPD will vary
+depending on vegetation and climate. Generalizations about ET response
+to VPD therefore require thoughtful consideration of ecosystem
+characteristics; statements such as ``ET increases with warming due to
+increases in VPD'' may be false depending on the water conservation
+strategy of a given ecosystem **CITE SOME EXAMPLES OF THIS LOGIC FROM
+GLOBAL WARMING LIT**.
 
-A tendency towards increasing ET response with increasing VPD can also
-be caused by a high slope parameter ($g_1$), characteristic of plants
-that at the leaf scale are more willing to trade water for access to
-atmospheric CO$_2$. Plants that are less conservative will be thus be
-more likely to increase ET with increasing VPD. Both the
-aforementioned effects (large uWUE, $g_1$) can amplify each other, and
-generally conspire to shift the sign term towards a positive value for
-a given PFT.
+Additionally, the sensitivity of ET reponse to plant parameter
+highlights the importance of understanding and developing stomatal
+conductance models and parameters for the ecosystem scale. In
+particular, why and how g$_1$ behavior at the leaf and ecosystem scale
+are not directly analgalous much be understood. While the derivation
+here was explicit about the assumptions of a constant g$_1$ term with
+respect to the VPD perturbation, many sophsiticated land surface
+models and earth system models employing stomatal conductance models
+make similiar, and even stronger assumptions about the stationarity of
+VPD slope terms. In particular, many models will assume a constant
+g$_1$ term within a given plant functional type, and research derived
+from these models will not acknowledge limitations of this assumption,
+or difficulty in the literature with quantifying an ecosystem scale
+slope paramter \citep{Medlyn_2017}. Given that something so
+fundamental as the ET resposne to VPD varies strongly with g$_1$, we
+must invenst more in understanding g$_1$'s behavir at the ecosystem
+scale, and the efficacy of models using g$_1$'s for ecosystem-scale
+fluxes.
 
-This effect of uWUE and $g1$ on the sign term is most apparent by
-comparing two extreme PFTs: water intensive crops (CRO) and water
-conservative closed shrub (CSH). CRO has higher slope parameter and a
-slightly higher uWUE ($g_1 = 140.7$ Pa$^{1/2}$; $2.85$ $\mu$-mol [C]
-Pa$^{0.5}$ J$^{-1}$ [ET]) compared to CSH ($g1 = 75.1 \, Pa^{1/2}$,
-$uWUE=2.82$ $\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET]). These differences
-in PFT parameters cause opposite ET responses to changes in VPD
-between CRO and CSH. ET theoretically always decreases with increasing
-VPD for the more water conservative CSH, while ET frequently increases
-with increasing VPD for the more water intensive CRO (Fig.
-\ref{idealized_sign}). CROs evolved or were bred to prioritize GPP and
-yield and are thus not water conservative. They are very willing to
-trade water for photosynthesis and productivity, despite changes in
-VPD, while CSH are very unwilling to trade water for more
-photosynthesis.
-
-\begin{figure}
-  \centering \includegraphics{./idealized_sign.pdf}
-  \caption{The functional form of the sign term, with $\sigma$ held
-    fixed at 1, and all terms except VPD set to PFT averages. For
-    comparison, the observed range of VPD for each PFT is plotted
-    below the x-axis. Stars denote 25th, 50th, and 75th percentiles,
-    and the range of the line spans the 5th-95th percentiles of
-    observed VPD. Vertical black lines denote the location of
-    $VPD_{crit}$ for each PFT, with the exception of CSH and WSA, for which
-    $VPD_{crit}$ is off-scale.}
-  \label{idealized_sign}
-\end{figure}
-
-
-As expected, the slope parameter ($g_1$) is a primary determinant of
-the VPD dependence for the sign term shown in Fig.
-\ref{idealized_sign}. Plants that are more conservative (small $g_1$)
-will tend to reduce ET with increasing VPD, and will be very effective
-at reducing ET, especially at low VPD. However, at very high VPD,
-gradients in vapor pressure at the leaf scale will become very strong
-as stomata reach their limits of closure in response to VPD
-(parameterized with $g_1$). As a result, ET response will begin to
-asymptote towards a constant ecosystem-scale values as leaf-scale
-response to VPD asymptotes towards zero.  Therefore, plants with a low
-$g_1$ will have the largest VPD dependence of ET response because the
-difference in ET response at low VPD (leaf stomatal response
-dominates) and high VPD (VPD gradient dominates) is largest. This is
-apparent in the strong VPD dependence of CSH, which has the lowest
-slope parameter ($g_1=75.1$ Pa$^{1/2}$) (Fig. \ref{idealized_sign}).
-
-To summarize our theoretical insights (Fig. \ref{idealized_sign} and
-Table \ref{vpd_crit}), CROs are the least water conservative and have
-the strongest overall tendency to increase ET with increasing VPD,
-while CSH are the most water conservative and have the strongest
-tendency to decrease ET with increasing VPD, as well as the strongest
-VPD dependence of response. Fig. \ref{idealized_sign} clearly shows,
-according to our theory, that for all PFTs except for crops there is
-frequent occurrence of a negative (plant dominating) ET response to
-increases in VPD. Therefore, plants are able in most atmospheric
-conditions to reduce ET in response to increased VPD and thus to
-reduce water loss. To better illustrate this, the ranges of observed
-environmental VPDs at the FLUXNET sites are plotted parallel to the
-x-axis. For CSH and WSA, VPD is always less than VPD$_{crit}$ (off
-scale) so that the plant response dominates in typical environmental
-conditions, emphasizing the water conservative strategy of those
-plants. For CRO on the other hand, VPD is higher than VPD$_{crit}$ for
-more than 50\% of observations, emphasizing that those plants operate
-with an aggressive water usage strategy, are water intensive and were
-actually engineered for photosynthesis rather than water saving. For
-DBF, EBF, MF, GRA, and SAV more than half of the observed VPD are less
-than VPD$_{crit}$, i.e. in conditions where plant response
-dominates. SAV has a more water conservative response than the forest,
-grass, and crop plan types, but still responds by increasing ET with
-increasing VPD for about a quarter of observations, due to the high
-aridity (VPD) of the SAV ecoclimate. It is also important to note that
-for all PFTs, even when atmospheric demand dominates, ET response to
-VPD is still far more negative than it would be for potential
-evaporation $\partial PET/\partial VPD$, i.e. atmospheric demand only,
-emphasizing that there is still a strong regulation of evaporative
-flux by stomata and though the plant xylem. The sign term in the PET
-case would just be a constant ($\frac{c_p}{R_{air}} \approx 3.5$),
-which is far larger than any part of the curves for any PFT. Plants
-are always regulating water exchange from the land surface, even when
-they reach the limits of they ability to do so.
-
-\subsection{Functional Form of the Scaling Term}
-\label{scale_term}
-While the above discussion of the sign of
-$\frac{\partial \; ET}{\partial \; VPD}$ is important to answer our
-question of when ET response increases or decreases with VPD,
-understating the overall magnitude of the ET response is important to
-soil-plant-atmosphere water budgeting. So we now more closely examine
-the terms that affect how the sign term is scaled:
-
-\begin{equation}
-  \frac{g_a \; P}{T(\Delta + \gamma)}.
-\end{equation}
-
-$\frac{P}{T}$ is an air-density term, which varies little compared to
-aerodynamic conductance and Clausius-Clapeyron ($\Delta$). The
-psychometric constant ($\gamma$) is also relatively constant, so the
-scaling term should be primarily a function of aerodynamic conductance
-and temperature, through the Clausius-Clapeyron relationship
-$\Delta$. This is as expected, given that the aerodynamic conductance
-represents the efficiency of exchange between the surface and the
-atmosphere. As aerodynamic conductance increases, any plant response
-will be communicated more strongly to the atmosphere (and vice-versa).
-
-$\Delta$'s presence in the scaling term also matches physical
-intuition. $\Delta$ (and also the approximately constant $\gamma$)
-control the efficiencies with which surface energy is converted to
-latent and sensible heat \citep{Monteith_1965}. The functional from of
-$\Delta$ will be the same across PFTs, but the temperature range may
-vary slightly. In contrast, aerodynamic conductance will vary strongly
-with PFT due to the importance of surface roughness for aerodynamic
-conductance. So most of the differences in scaling between PFT should
-be in the aerodynamic conductance term.
-
-The control of the scaling term variability between PFTs by
-aerodynamic conductance is confirmed by data (Fig.
-\ref{scale_vary}). Differences between PFT are almost entirely due to
-differences in aerodynamic conductance, rather than differences in
-observed temperature ranges. The scaling term for the tree PFTs (DBF,
-EBF, ENF, MF) is generally about double the scaling terms for other
-PFTs which have lower surface roughness and generally smaller
-aerodynamic conductance (GRA, CSH, CRO). The savannah (WSA, SAV) PFT's
-scaling is somewhere between GRA, CSH, and CRO, and DBF, EBF, ENF, and
-MF, due to higher variability and surface roughness.
-
-\begin{figure}
-  % \centering
-  \centerline{\includegraphics[width=1.2\textwidth]{./idealized_scale.pdf}}
-  \caption{Primary sources of variability for the scaling term, as a
-    function of PFT. The 5th-95th percentile range of temperature is
-    plotted at the 5th, 25th, 50th, 75th, and 95th percentiles of
-    aerodynamic conductance, as observed for each PFT.}
-  \label{scale_vary}
-\end{figure}
-
-Within each PFT, the scaling term variability is controlled both by
-environmental temperature and aerodynamic conductance variability
-(Fig. \ref{scale_vary}). While the observed variability of the
-aerodynamic conductance contributes more to the scaling term
-variability than temperature, the temperature contribution is
-non-negligible. Specifically, the scaling term is generally larger at
-low temperatures when latent heat is relatively inefficient at moving
-energy away from the surface. This effect amplifies the role of
-aerodynamic conductance variability at low temperatures.
-
-To summarize, variability between PFTs is mostly controlled by
-systematic differences in aerodynamic conductance, due to differences
-in surface roughness between each PFT, and possibly to a lesser extent
-wind conditions. In contrast, variability within PFT is also
-controlled by temperature, through Clausius-Clapeyron. But,
-aerodynamic conductance variability generally impacts the scaling term
-more than temperature, even within PFTs.
-
-
-
+So far we have discussed the role of different parameters in the ET
+response. However, the form of the ET response is imposed by our
+choice of stomatal conductance model. We now examine how the model
+choice, and speicifcally the exponent of the VPD dependence in teh
+stomatal conductance model, can impact the general form of the ET-VPD
+relationship. This is relevant as many models include an
+exponententiated VPD term \citep[e.g.,][]{Leuning_1990}, but the value
+of the exponent can vary. It is useful to understand how generally the
+choice of model imposes the functional form of the ET-VPD
+relationship, given its fundamental importance for land atmosphere
+interaction.
 \subsection{Functional form of ET dependence on VPD and its relation
   to the VPD exponent}
 \label{functional_form}
@@ -660,6 +583,7 @@ relations reveal themselves from Eq. (\ref{curves}):
     reconciliation of empirical and theoretical stomatal and
     ecosystem behavior should be prioritized.
 \end{itemize}
+
 While it is possible that in the future some other form of
 VPD dependence is derived, at present \cite{MEDLYN_2011} and
 \cite{Zhou_2014} firmly established n=m=1/2 as the most likely
@@ -685,22 +609,19 @@ atmospheric demand is high.
 
 This analysis allows us to understand the theoretical shape of the ET
 response to VPD with environmental conditions held
-fixed. Accomplishing this with purely statistical
-methods applied to flux observations would be very difficult, given
-the relatively fast time scale of plant response and the
-non-stationarity of [solar forced] environmental conditions over the
-relatively coarse (half hourly) flux estimates (which is required to
-obtain robust eddy-covariance statistics). Our results on the shape of
-the ET-VPD curve with environmental conditions held
-fixed can be built upon with future work examining how changes in VPD
-and environmental conditions (e.g. soil water storage) feedback upon
-one another. In the soil water storage example, over very long time
-scales extremely high VPD perturbations coupled with no precipitation
-could result in decreases in soil water storage such that water
-becomes limiting. This could be represented by an extension of our
-framework in which uWUE is allowed to decrease with decreasing SWC, as
-observed in Sect. \ref{swc_section}. Here, we focus our results by
-assuming constant PFT-wide conditions to build baseline intuition for
-ET-VPD dependence. For most PFTs, the theory with plant function held
-fixed matches the leading order behavior of the observations where
-plant function varies (Sect. \ref{testing}).
+fixed. Accomplishing this with purely statistical methods applied to
+flux observations would be very difficult, given the relatively fast
+time scale of plant response and the non-stationarity of [solar
+forced] environmental conditions over the relatively coarse (half
+hourly) flux estimates (which is required to obtain robust
+eddy-covariance statistics). Our results on the shape of the ET-VPD
+curve with environmental conditions held fixed can be built upon with
+future work examining how changes in VPD and environmental conditions
+(e.g. soil water storage) feedback upon one another. In the soil water
+storage example, over very long time scales extremely high VPD
+perturbations coupled with no precipitation could result in decreases
+in soil water storage such that water becomes limiting. This could be
+represented by an extension of our framework in which uWUE is allowed
+to decrease with decreasing SWC. Here, we focus our results by
+framing theme with previous literature to  build baseline intuition for
+ET-VPD dependence.
