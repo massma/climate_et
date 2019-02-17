@@ -112,16 +112,16 @@ of m s$^{-1}$, the ecosystem scale stomatal conductance is:
     shown for comparison. Note that uWUE from \citet{Zhou_2015} is
     calculated from a different set of sites, and that units are
     converted such that the quantities work with Equations 1-8 and the
-    variables defined Table \ref{definitions}.}
+    variables defined Table \ref{definitions}. }
   \small
   \label{pft}
   \centering
-  \begin{tabular}{l c c @{\qquad} c c}
+  \begin{tabular}{l c c c}
     \hline
-    \multirow{2}[3]{*}{Abbreviation} & \multirow{2}[3]{*}{PFT} & \multirow{2}[3]{*}{$g_1$ (Pa$^{0.5}$)} & \multicolumn{2}{c}{uWUE ($\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET])}  \\
-    \cmidrule{4-5}
-
-                                     & & & fitted & \citet{Zhou_2015} \\
+    Symbol & min (~15th percentile) & med (~50th percentile ) & max
+                                                                (~15th
+                                                                percentile)
+    & citation
 
     \hline
     \input{pft_params.tex}
@@ -280,17 +280,51 @@ term, most of the terms are relatively constant with the exception of
 aerodynamic conductance ($g_a$) and temperature (especially its effect
 on $\Delta$). To determine the range of probable ET reponses to VPD we
 will systematically vary this parameters according to Table
-\ref{param_values}. Environmental parameters ($g_a$, $T$) are varied
-according to ranges we would expect for growing season conditions
-across a range of plant types (canopy height is a determinant $g_a$),
-and plant parameters (g$_1$, uWUE) are varied according to ranges
-established in previous literature \citep{Zhou_2015,
-  Medlyn_2017}. Using this previous literature we can connect the
-effect of varying plant parameters to specific plant types and
-characteristics. Lastly, all code and data used in this analysis,
-including those used to generate the figures and tables, are publicly
-available at \url{https://github.com/massma/climate\_et}.
+\ref{param_varying}, while all other parametrs are held fixed (Table
+\ref{param_fixed}). Physical variables ($g_a$, $T$) and plant
+physiological paramters (g$_1$, uWUE) are varied according to
+literature-based expectations for a range of growing season conditions
+and plant types \citep{Zhou_2015, Medlyn_2017}. Using this previous
+literature we can connect the effect of varying plant parameters to
+specific plant types and characteristics. Lastly, all code and data
+used in this analysis, including those used to generate the figures
+and tables, are publicly available at \url{https://github.com/massma/climate\_et}.
 %\hyperref[https://github.com/massma/climate\_et]{https://github.com/massma/climate_et}.
+
+\begin{table}
+  \caption{Variable quantities in the ET response to VPD. Each value
+    is varied to determine the effect of a range of expected plant and
+    environmental conditions on ET response to VPD. A citation is
+    provided in cases where the quantites are directly derived from
+    previous literature. Conceptual percentiles
+    for interpreting each quantity are noted.}
+  \label{param_varying}
+  \centering
+  \begin{tabular}{l c c c c c}
+    \hline
+    Symbol & units [units in citation] & min (~15th percentile) & med (~50th percentile) & max
+                                                                                            (~15th
+                                                                                            percentile)
+    & citation  \\
+    \hline
+    \input{param_varying.tex}
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}
+  \caption{Quantities that are fixed in the ET response to VPD
+    (relative to those in Table \ref{param_varying}).}
+  \label{param_varying}
+  \centering
+  \begin{tabular}{l c c}
+    \hline
+    Symbol & units & value \\
+    \hline
+    \input{param_fixed.tex}
+    \hline
+  \end{tabular}
+\end{table}
 
 \section{Results and Discussion}
 \label{results}

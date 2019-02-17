@@ -31,15 +31,17 @@ uwue_zhou = [6.99, 9.52, 12.05]
 uwues = list(map(d_io.uWUE_converter, uwue_zhou))
 ts = [10.0, 20.0, 30.0]
 gas = [0.015, 0.035, 0.055]
-p_default =
-
+p_d = 100000.0
+gamma_d = 64.5
+r_moist_d = 288.0
+c_a_d = 400.0
 
 def get_scaling_quantiles(_df):
   out = d_calc.scaling(_df)
   return list(map((lambda p: out.quantile(q=p)), [0.15, 0.5, 0.85]))
 
 def idealized_scaling(t, g):
-  _df = {'t_a_k': t + 273.15, 'p_a': 100000.0, 'gamma': 64.5}
+  _df = {'t_a_k': t + 273.15, 'p_a': p_d, 'gamma': gamma_d}
   return d_calc.scaling(_df, t_a=t, g_a=g)
 
 def get_scaling_quantiles_idealized():
@@ -49,7 +51,7 @@ def get_scaling_quantiles_idealized():
   return x
 
 def idealized_sign(g1, uwue):
-  _df = {'gamma': 64.6, 'r_moist' : 288.0, "c_a"  : 400.0}
+  _df = {'gamma': gamma_d, 'r_moist' : r_moist_d, "c_a"  : c_a_d}
   return d_calc.sign(_df, g1=g1, uwue=uwue, vpd=vpd)
 
 
@@ -138,3 +140,37 @@ for p in [0.15, 0.5, 0.85]:
   print("\n*****Percentile: %5.2f" % p)
   for var in ["p_a", "g_a","t_a","gamma","delta"]:
     print("%s: %f" % (var, df[var].quantile(q=p)))
+
+
+# write tables
+def write_varying():
+  """write output of varying plant params"""
+  fh = open("../../doc/paper/param_varying.tex", "w")
+  for symbol, unit, citation, values, citevals \
+      in zip(["g$_1$", "uWUE", "T", "g$_a$"],
+             ["Pa$^{1/2}$ [kPa$^{1/2}$]", "$\\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET] [g [C] hPa$^{1/2}$ kg$^{-1}$ [H$_2$O]]", "K", "m/s"],
+             ["Fig. 2, 7; \\citet{Medlyn_2014}", "Table 4; \\citet{Zhou_2015}", "-", "-"],
+             [g1s, uwues, ts, gas],
+             [g1_medlyn, uwue_zhou, [], []]):
+    fh.write("%s & %s & " % (symbol, unit))
+    if citevals:
+      list(map(lambda v, cv: fh.write("%.2f [%.2f] & " % (v, cv)), values, citevals))
+    else:
+      list(map(lambda v: fh.write("%.2f & " % v), values))
+    fh.write("%s \\\\ \n" % citation)
+  fh.close()
+  return
+
+def write_fixed():
+  """write output of fixed plant params"""
+  fh = open("../../doc/paper/param_fixed.tex", "w")
+  for symbol, unit, value \
+      in zip(["P", "$\\gamma$", "R$_{air}$", "c_a"],
+             ["Pa", "Pa K$^{-1}$", "J  K$^{-1}$ kg$^{-1}$", "$\\mu$ mol CO$_2$ mol$^{-1}$ air"],
+             [p_d, gamma_d, r_moist_d, c_a_d]):
+    fh.write("%s & %s & %.2f \\\\ \n" % (symbol, unit, value))
+  fh.close()
+  return
+
+write_fixed()
+write_varying()
