@@ -1,4 +1,3 @@
-
 \section{Methods}
 \label{methods}
 The Penman-Monteith equation \citep [hereafter PM,][]{Penman_1948,
@@ -234,7 +233,7 @@ to VPD:
   % \item
 
   To account for both this variability in plant parameters and the
-  environment, we will systematically analyze how the ET reponse to
+  environment, we will systematically analyze how the ET response to
   VPD (Equation \ref{d_et}) varies. Equation \ref{d_et} includes a
   ``sign'' term that determines the sign of the response in addition
   to magnitude:
@@ -254,11 +253,11 @@ In the ``sign term'' most of quantities are relatively constant,
 except for VPD and the plant parameters g$_1$ and uWUE. In the scaling
 term, most of the terms are relatively constant with the exception of
 aerodynamic conductance ($g_a$) and temperature (especially its effect
-through $\Delta$). To determine the range of probable ET reponses to
+through $\Delta$). To determine the range of probable ET responses to
 VPD we will systematically vary this parameters according to Table
-\ref{param_varying}, while all other parametrs are held fixed (Table
+\ref{param_varying}, while all other parameters are held fixed (Table
 \ref{param_fixed}). Physical variables ($g_a$, $T$) and plant
-physiological paramters (g$_1$, uWUE) are varied according to
+physiological parameters (g$_1$, uWUE) are varied according to
 literature-based expectations for a range of growing season conditions
 and plant types \citep{Zhou_2015, Medlyn_2017}. Using this previous
 literature we can connect the effect of varying plant parameters to
@@ -273,7 +272,7 @@ generate the figures and tables, are publicly available at
   \caption{Variable quantities in the ET response to VPD. Each value
     is varied to determine the effect of a range of expected plant and
     environmental conditions on ET response to VPD. A citation is
-    provided in cases where the quantites are directly derived from
+    provided in cases where the quantities are directly derived from
     previous literature. Conceptual percentiles
     for interpreting each quantity are noted.}
   \label{param_varying}
@@ -336,7 +335,7 @@ VPD (water intensive), and with increasing g$_1$ also leading to a
 higher non-linear VPD dependence of the response.
 
 \begin{figure}
-  \centering \includegraphics{./fully_idealized)sign.pdf}
+  \centering \includegraphics{./fully_idealized_sign.pdf}
   \caption{The functional form of the $\frac{\partial \; ET}{\partial
       \; VPD}$ evaluated at the median value of the scaling term, for
     varying values of g$_1$ and uWUE as given in Table \ref{param_varying}.}
@@ -346,10 +345,10 @@ higher non-linear VPD dependence of the response.
 Examining the scaling term independent of the sign term shows how
 aerodynamic conductance (communication between the atmosphere and the
 surface) and temperature (through $\Delta$ controls the efficiency of
-energy conversion to latent heat), amplify or supress the plant
+energy conversion to latent heat), amplify or suppress the plant
 physiological response represented in the sign term. Both lower
 temperatures and higher aerodynamic conductance lead to amplified ET
-response to VPD, with the variabilty of aerodynamic conudcance
+response to VPD, with the variability of aerodynamic conductance
 resulting in a slightly higher variability of ET response relative to
 temperature, which is still an important factor.
 
@@ -358,11 +357,11 @@ temperature, which is still an important factor.
 
 Interpreting both the derivation and results of this manuscript hinges
 on an understanding and appreciation for the usefulness of partial
-dervatives for understanding the behavior of complex systems. Our
+derivatives for understanding the behavior of complex systems. Our
 results are a conceptual tool for answering the question, ``What is
 the ET response to VPD with all other quantities held fixed?'' This is
 useful, and we would argue is critical, for understanding complex
-responses when many quantities are varying symotaneously. Through
+responses when many quantities are varying simultaneously. Through
 partial derivatives, we can approach answering questions like ``What
 is the relative contribution of VPD in some observed response given
 that X Y and Z were also varying?'' In this example, X Y and Z could
@@ -380,18 +379,18 @@ moisture condition.
 
 However, given that g$_1$ and uWUE can vary, and that they both have a
 large impact on the ET response (Figure \ref{full}, \ref{sign}) it is
-useful to rexamine how these quantities vary in previous literature,
+useful to examine how these quantities vary in previous literature,
 framed by our results on ET responses. In \citet{Zhou_2015} most plant
-types have uWUE similiar to our median value, where whether ET
-response is postive (water intensive) or negative (water conservative)
+types have uWUE similar to our median value, where whether ET
+response is positive (water intensive) or negative (water conservative)
 depends on VPD. However, crops, which we expect to prioritize carbon
 uptake over water conservation, have a higher uWUE closer to our
-maximum value. This higher uWUE results in a higher liklhood for an
-increasing ET response to VPD, which intuitively amkes sense given
-taht we expect crops ro keep stoamta open for access to carbon, at the
+maximum value. This higher uWUE results in a higher likelihood for an
+increasing ET response to VPD, which intuitively makes sense given
+that we expect crops to keep stomata open for access to carbon, at the
 cost of water loss. Shrubs, and to a lesser extent grass, gave an uWUE
-closer to the minumum uWUE. For these plant types, we would then
-expect a higher liklhood of a water conservatve response; that is, a
+closer to the minimum uWUE. For these plant types, we would then
+expect a higher likelihood of a water conservative response; that is, a
 decrease of ET in response to VPD. It is important to note that, while
 \citet{Zhou_2015} did not examine the roll of soil moisture in within
 plant-type variability of uWUE, we might expect some variation,
@@ -399,13 +398,13 @@ especially in extreme cases when soil water becomes a limiting factor.
 
 In \citet{Medlyn_2017} there is not as robust of a relationship
 between plant type and g$_1$ as there was for uWUE in
-\citet{Zhou_2015}. Given that there is a robust relatiohsip between
-g$_1$ and plant type in \citet{Lin_2015}, the ambiguos results in
+\citet{Zhou_2015}. Given that there is a robust relationship between
+g$_1$ and plant type in \citet{Lin_2015}, the ambiguous results in
 \citet{Medlyn_2017} could be due to noise in ecosystem scale
 observations, the consequences of imposing a model structure in some
 of the g$_1$ observations, or real ecosystem-scale within-plant type
 variability. These differences between leaf-scale behavior and
-ecosystem scale behaviro highlight the importance of understanding how
+ecosystem scale behavior highlight the importance of understanding how
 and why slope parameters vary at the ecosystem scale, as argued by
 \citet{Medlyn_2017}. However, if we assume that there is some real
 analogy between leaf scale results in \citet{Lin_2015} and ecosystem
@@ -424,14 +423,14 @@ and plant types:
     angiosperm trees, which have a higher g$_1$ than gymnosperm
     trees.
   \item Tropical and temperate climates would generally host plants
-    with a higher g$_1$ than artic and boreal climates.
+    with a higher g$_1$ than arctic and boreal climates.
 \end{itemize}
 For all of the above relationships, a higher g$_1$ means a higher
-liklihood of a postive ET response to increasing VPD (water
+likelihood of a positive ET response to increasing VPD (water
 intensive), and a smaller VPD dependence of the ET response.
 
 Our theoretical results, when framed by previous literature tying
-parametets to plant types and climate, highlight the variability of ET
+parameters to plant types and climate, highlight the variability of ET
 response to VPD as a function of plant characteristics. Whether an
 ecosystem increases or decreases ET in response to VPD will vary
 depending on vegetation and climate. Generalizations about ET response
@@ -441,32 +440,32 @@ increases in VPD'' may be false depending on the water conservation
 strategy of a given ecosystem **CITE SOME EXAMPLES OF THIS LOGIC FROM
 GLOBAL WARMING LIT**.
 
-Additionally, the sensitivity of ET reponse to plant parameter
+Additionally, the sensitivity of ET response to plant parameter
 highlights the importance of understanding and developing stomatal
 conductance models and parameters for the ecosystem scale. In
 particular, why and how g$_1$ behavior at the leaf and ecosystem scale
-are not directly analgalous much be understood. While the derivation
+are not directly analogous much be understood. While the derivation
 here was explicit about the assumptions of a constant g$_1$ term with
-respect to the VPD perturbation, many sophsiticated land surface
+respect to the VPD perturbation, many sophisticated land surface
 models and earth system models employing stomatal conductance models
-make similiar, and even stronger assumptions about the stationarity of
+make similar, and even stronger assumptions about the stationarity of
 VPD slope terms. In particular, many models will assume a constant
 g$_1$ term within a given plant functional type, and research derived
 from these models will not acknowledge limitations of this assumption,
 or difficulty in the literature with quantifying an ecosystem scale
-slope paramter \citep{Medlyn_2017}. Given that something so
-fundamental as the ET resposne to VPD varies strongly with g$_1$, we
-must invenst more in understanding g$_1$'s behavir at the ecosystem
+slope parameter \citep{Medlyn_2017}. Given that something so
+fundamental as the ET response to VPD varies strongly with g$_1$, we
+must invest more in understanding g$_1$'s behavior at the ecosystem
 scale, and the efficacy of models using g$_1$'s for ecosystem-scale
 fluxes.
 
 So far we have discussed the role of different parameters in the ET
 response. However, the form of the ET response is imposed by our
 choice of stomatal conductance model. We now examine how the model
-choice, and speicifcally the exponent of the VPD dependence in teh
+choice, and specifically the exponent of the VPD dependence in the
 stomatal conductance model, can impact the general form of the ET-VPD
 relationship. This is relevant as many models include an
-exponententiated VPD term \citep[e.g.,][]{Leuning_1990}, but the value
+exponentiated VPD term \citep[e.g.,][]{Leuning_1990}, but the value
 of the exponent can vary. It is useful to understand how generally the
 choice of model imposes the functional form of the ET-VPD
 relationship, given its fundamental importance for land atmosphere

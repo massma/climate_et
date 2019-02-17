@@ -168,7 +168,7 @@ def write_fixed():
   """write output of fixed plant params"""
   fh = open("../../doc/paper/param_fixed.tex", "w")
   for symbol, unit, value \
-      in zip(["P", "$\\gamma$", "R$_{air}$", "c_a"],
+      in zip(["P", "$\\gamma$", "R$_{air}$", "c$_a$"],
              ["Pa", "Pa K$^{-1}$", "J  K$^{-1}$ kg$^{-1}$", "$\\mu$ mol CO$_2$ mol$^{-1}$ air"],
              [p_d, gamma_d, r_moist_d, c_a_d]):
     fh.write("%s & %s & %.2f \\\\ \n" % (symbol, unit, value))
