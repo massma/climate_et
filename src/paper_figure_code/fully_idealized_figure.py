@@ -103,6 +103,9 @@ ax.plot(xlims, [0., 0.], 'k--', linewidth=linewidth)
 ax.set_xlim(xlims)
 color_handles = [mlines.Line2D([], [], color=c, label=r'%s: ($\frac{2 \; g_a \; P}{T(\Delta + \gamma)}$)' % p) for c,p in zip(colors, pdesc)]
 style_handles = [mlines.Line2D([], [], color='k', linestyle=l, label=(p + ": " + paren_string)) for l,p in zip(linestyles, pdesc)]
+ax.legend(handles = (color_handles + style_handles), loc='best', fontsize=single_ax_fontsize-4)
+plt.tight_layout()
+plt.savefig('../../doc/paper/fully_idealized.pdf')
 
 fig = plt.figure()
 fig.set_figheight(fig.get_figheight()*1.35)
@@ -148,7 +151,7 @@ def write_varying():
   fh = open("../../doc/paper/param_varying.tex", "w")
   for symbol, unit, citation, values, citevals \
       in zip(["g$_1$", "uWUE", "T", "g$_a$"],
-             ["Pa$^{1/2}$ [kPa$^{1/2}$]", "$\\mu$-mol [C] Pa$^{0.5}$ J$^{-1}$ [ET] [g [C] hPa$^{1/2}$ kg$^{-1}$ [H$_2$O]]", "K", "m/s"],
+             ["Pa$^{1/2}$ [kPa$^{1/2}$]", "$\\mu$-mol C Pa$^{0.5}$ J$^{-1}$ ET [g [C] hPa$^{1/2}$ kg$^{-1}$ [H$_2$O]]", "K", "m/s"],
              ["Fig. 2, 7; \\citet{Medlyn_2014}", "Table 4; \\citet{Zhou_2015}", "-", "-"],
              [g1s, uwues, ts, gas],
              [g1_medlyn, uwue_zhou, [], []]):
