@@ -15,7 +15,14 @@ $R_{net}$ is the net radiation minus ground heat flux, $g_a$ is
 aerodynamic conductance, $\rho_a$ is air density, $c_p$ is specific
 heat of air at constant pressure, $\gamma$ is the psychometric
 constant, and $g_s$ is the stomatal conductance (Table
-\ref{definitions}).
+\ref{definitions}). The issue with PM is that $g_s$ is a function of
+carbon uptake, which is has a strong functionally relation to ET
+through stomatal function. Therefore, when PM is formulated in terms
+of $g_s$, it is an implicit funciton of ET as a function of itself
+rather than an explicit function of ET. Here we will derive a new form
+of PM in which ET is an explicit function of plant parameters and
+environmental conditions, and use it to assess the ecosystem scale
+response to VPD (by taking a partial derivative).
 
 \begin{table}
   \caption{Definition of symbols and variables, with citation for how
@@ -80,7 +87,8 @@ parameter ($g_{1-leaf}$) to physical parameters as:
 where $\Gamma^*$ is the CO$_2$ compensation point for photosynthesis
 (without dark respiration), and $\lambda$ is the marginal water cost
 of leaf carbon
-($\frac{\partial \; \text{transpiration}}{\partial \; A}$). So,
+($\frac{\partial \; \text{transpiration}}{\partial \; A}$)
+\citep{Farquhar_1980, Katul_2009}. So,
 $g_{1-leaf}$ is a leaf-scale term reflecting the trade-off of water for
 carbon uptake. The higher $g_{1-leaf}$, the more open the stomata and
 the more they release water in exchange for carbon.
@@ -100,18 +108,19 @@ stomatal conductance is:
   where GPP is the ecosystem scale gross primary production, and $g_1$
   is an ecosystem scale analogue to $g_{1-leaf}$.
 
-While Eq. (\ref{medlyn}) can be used in PM (Eq. (1)), it will make
-analytical work with the function intractable because $GPP$ is
-functionally related to ET itself. Additionally, a perturbation to VPD
-should induce a physiological plant response that will alter GPP and
-cause an indirect change in stomatal conductance, in addition to the
-direct effect of VPD in Eq. (\ref{medlyn}). Therefore, in order to
-derive the response of ET to VPD, we must account for the functional
-relationship between GPP, ET, and VPD, and its effect on stomatal
-conductance. We can use aforementioned semi-empirical results of
-\citet{Zhou_2015} as a tool to approach this
-problem. \citet{Zhou_2015}, showed that  underlying Water Use
-Efficiency (uWUE):
+  While Eq. (\ref{medlyn}) can be used in PM (Eq. (1)), it will make
+  analytical work with the function intractable because $GPP$ is
+  functionally related to ET itself. Additionally, a perturbation to
+  VPD should induce a physiological plant response that will alter GPP
+  and cause an indirect change in stomatal conductance, in addition to
+  the direct effect of VPD in Eq. (\ref{medlyn}). Therefore, in order
+  to derive the response of ET to VPD, we must account for the
+  functional relationship between GPP, ET, and VPD, and its effect on
+  stomatal conductance. We can use aforementioned semi-empirical
+  results of \citet{Zhou_2015}, which were inspired optimal
+  photosynthesis theory, as a tool to approach this
+  problem. \citet{Zhou_2015}, showed that underlying Water Use
+  Efficiency (uWUE):
 
 % \begin{linenomath*}
   \begin{equation}
@@ -120,15 +129,15 @@ Efficiency (uWUE):
   \end{equation}
 % \end{linenomath*}
 
-  is relatively constant across time and moisture conditions within a
-  plant functional type, and correctly captures a constant
-  relationship between GPP, ET and VPD over a diurnal cycle during the
-  growing season \citep{Zhou_2014}. The theoretical derivation of the
-  square root VPD dependence in $uWUE$ leverages the same assumptions
-  used in \cite{MEDLYN_2011} to derive the square-root VPD dependence
-  of the stomatal conductance model (Eq.  (\ref{medlyn})).  We can use
-  uWUE to remove the $GPP$ dependence from $g_s$ in a way that makes
-  PM analytically tractable:
+  is relatively constant across time within a plant functional type,
+  and correctly captures a constant relationship between GPP, ET and
+  VPD over a diurnal cycle during the growing season
+  \citep{Zhou_2014}. The theoretical derivation of the square root VPD
+  dependence in $uWUE$ leverages the same assumptions used in
+  \cite{MEDLYN_2011} to derive the square-root VPD dependence of the
+  stomatal conductance model (Eq.  (\ref{medlyn})).  We can use uWUE
+  to remove the $GPP$ dependence from $g_s$ in a way that makes PM
+  analytically tractable:
 
 % \begin{linenomath*}
   \begin{equation}
@@ -148,16 +157,21 @@ dependence on $GPP$ is removed:
   \end{equation}
 % \end{linenomath*}
 
-By accounting for photosynthesis changes in ecosystem conductance, with
-Eq. (\ref{et}) we have derived for the first time, using recent
-results \citep[][]{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017}, ET
-explicitly as function of environmental variables and two
-plant-specific constants, the slope parameter ($g_1$), and uWUE, both
-reflecting water conservation strategy. The slope parameter is related
-to the willingness of stomata to trade water for CO$_2$ and to keep
-stomata open. uWUE is a semi-empirical ecosystem-scale constant
-related to how WUE changes with VPD (specifically $VPD^{-1/2}$). It is
-also roughly proportional to physical constants:
+  By accounting for photosynthesis changes in ecosystem conductance,
+  with Eq. (\ref{et}) we have used recent results
+  \citep[][]{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017} to derive
+  ET explicitly as function of environmental variables and two
+  plant-specific constants, the slope parameter ($g_1$), and uWUE. For
+  the first time we have removed the implicit dependence of ET on
+  itself through the stomatal conductance term, and we have also
+  replaced the added complexity of a stomatal conductance reduction
+  factor and a photosythesis model with a signle paramter (uWUE). Both
+  the plant paramters reflect water conservation strategy.The
+  slope parameter is related to the willingness of stomata to trade
+  water for CO$_2$ and to keep stomata open (carbon cost in terhms of
+  water)). uWUE is a semi-empirical ecosystem-scale constant related
+  to how WUE changes with VPD (specifically $VPD^{-1/2}$). It is also
+  roughly proportional to physical constants:
 
 \[uWUE \appropto \sqrt{\frac{c_a - \Gamma}{1.6 \lambda}},\]
 
@@ -167,8 +181,8 @@ concentration and compensation point, and is inversely proportional to
 the marginal water cost of leaf carbon.
 
 
-With Equation \ref{et} we can take the partial derivative with respect
-to VPD:
+With Equation \ref{et} we can take the partial derivative of ET with respect
+to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
 
 % \begin{linenomath*}
   \begin{equation}
@@ -182,7 +196,7 @@ to VPD:
 % \end{linenomath*}
 
   deriving an analytical framework for ecosystem response to
-  atmospheric demand perturbations with environmental conditions held
+  atmospheric demand with environmental conditions held
   fixed. There are a few subtleties to taking the derivative in
   Eq. (\ref{d_et}): $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are
   functionally related, so while taking the derivative we evaluate
@@ -206,19 +220,20 @@ to VPD:
   additional assumption in the formulation of $uWUE$ \citep{Zhou_2014,
     Zhou_2015} and \citet{Medlyn_2017}'s stomatal conductance model is
   that direct soil evaporation (E) contributions to ET remain small
-  relative to transpiration (T). This should be more true during the
-  growing season. The ratio of E to T may increase immediately after
-  rainfall events due to high soil moisture and ponding, but VPD is
-  generally low anyways during these times. However, some plant types
-  allow for systematically larger contributions of E in ET,
-  particularly those with sparse canopies and smaller relative amounts
-  of transpiration. We therefore might expect that the theory will be
-  most applicable to forest PFTs, which will be most strongly coupled
-  to the boundary layer due to larger surface roughness, and will also
-  generally have the highest ratios of transpiration to
-  evaporation. Finally, we assume that $g_1$ and $uWUE$ are constant
-  with respect to the conceptual VPD perturbation. Both quantities
-  have been shown to be relatively constant with respect to changes in
+  relative to transpiration (T). Again, this should be more true
+  during the growing season. The ratio of E to T may increase
+  immediately after rainfall events due to high soil moisture and
+  ponding, but VPD is generally low anyways during these
+  times. However, some plant types allow for systematically larger
+  contributions of E in ET, particularly those with sparse canopies
+  and smaller relative amounts of transpiration. We therefore might
+  expect that the theory will be most applicable to forest PFTs, which
+  will be most strongly coupled to the boundary layer due to larger
+  surface roughness, and will also generally have the highest ratios
+  of transpiration to evaporation. Finally, we assume that $g_1$ and
+  $uWUE$ are constant with respect to the conceptual VPD
+  perturbation. Both quantities have been shown to be relatively
+  constant with respect to changes in
   % TODO: make this a general discussion on partial derivatives and
   % what things are constant/how to interpret?
   VPD \citep{Franks_2017, Zhou_2014}. These parameters will however
@@ -233,6 +248,10 @@ to VPD:
   VPD (Equation \ref{d_et}) varies. Equation \ref{d_et} includes a
   ``sign'' term that determines the sign of the response in addition
   to magnitude:
+
+  ** comment on temperature and acclimation??? **
+  ** impact of T is much smaller than VPD? **
+  ** paragraph on soil moisture **
 
 \begin{equation}
   \label{sign}
