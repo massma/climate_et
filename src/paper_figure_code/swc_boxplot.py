@@ -40,7 +40,7 @@ def plot_box(_df, ax=None, pft=False):
     labels.append('%4.0f' % positions[-1])
   ax.boxplot(x=data, positions=positions,\
              sym=(''), widths=widths, manage_xticks=False,\
-             whis=[5, 95], boxprops=boxprops, medianprops=medianprops)#sym=('')
+             whis=[10, 90], boxprops=boxprops, medianprops=medianprops)#sym=('')
   print('make hist for %s' % _df.pft.iloc[0])
   orig_xlim = ax.get_xlim()
   #ax.plot(orig_xlim, [d_calc.CP/287.0, d_calc.CP/287.0], 'm--', linewidth=1.0)
@@ -51,8 +51,8 @@ def plot_box(_df, ax=None, pft=False):
     ax.set_title(name_dict[_df.pft.iloc[0]],\
                  fontsize=fontsize+3)
   else:
-    ax.set_title('Site: %s, PFT: %s'\
-                 % (_df.site.iloc[0], _df.pft.iloc[0]),\
+    ax.set_title('Site: %s, PFT: %s, Nobs: %d'\
+                 % (_df.site.iloc[0], _df.pft.iloc[0], _df.shape[0]),\
                  fontsize=fontsize+3)
   # if _df.pft.iloc[0] in xlim:
   #   _xlims = xlim[_df.pft.iloc[0]]
@@ -63,17 +63,18 @@ def plot_box(_df, ax=None, pft=False):
   if savefig:
     plt.tight_layout()
     if pft:
-      plt.savefig('%s/climate_et/swc_box/pft/%s_box.png'\
+      safesavefig('%s/climate_et/swc_box/pft/%s_box.png'\
                   % (os.environ['PLOTS'], _df.pft.iloc[0]))
     else:
-      plt.savefig('%s/climate_et/swc_box/%s_%s_box.png'\
+      safesavefig('%s/climate_et/swc_box/%s_%s_box.png'\
                   % (os.environ['PLOTS'], _df.pft.iloc[0], _df.site.iloc[0]))
   return
 
-
+df_uwue_obs = df.copy()
+df_uwue_obs['uwue'] = df_uwue_obs['gpp_obs']/df_uwue_obs['et_obs']*np.sqrt(df_uwue_obs['vpd'])
 #_df = df.iloc[:1000, :].copy()
 #plot_box(_df)
-#df.groupby('site').apply(plot_box)
+# df.groupby('site').apply(plot_box)
+df_uwue_obs.groupby('site').apply(plot_box)
 # df.groupby('pft').apply(plot_box, pft=True)
-panel_wrapper(df, plot_box, "swc_boxplot.pdf", args=(True,))
-
+# panel_wrapper(df, plot_box, "swc_boxplot.pdf", args=(True,))

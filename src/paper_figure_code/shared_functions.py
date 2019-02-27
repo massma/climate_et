@@ -115,3 +115,8 @@ def panel_wrapper(_df, function, name, args=()):
 
 # grab sites actually used in analysis
 sites_used = df.loc[:, 'site'].drop_duplicates()
+
+def safesavefig(path):
+  direct = "/".join(path.split("/")[:-1])
+  os.system("mkdir -p %s" % direct)
+  plt.savefig(path)
