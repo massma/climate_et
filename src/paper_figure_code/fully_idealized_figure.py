@@ -151,13 +151,15 @@ def write_varying():
   fh = open("../../doc/paper/param_varying.tex", "w")
   for symbol, unit, citation, values, citevals \
       in zip(["g$_1$", "uWUE", "T", "g$_a$"],
-             ["Pa$^{1/2}$ [kPa$^{1/2}$]", "$\\mu$-mol C Pa$^{0.5}$ J$^{-1}$ ET [g [C] hPa$^{1/2}$ kg$^{-1}$ [H$_2$O]]", "K", "m/s"],
-             ["Fig. 2, 7; \\citet{Medlyn_2014}", "Table 4; \\citet{Zhou_2015}", "-", "-"],
+             ["Pa$^{1/2}$ [kPa$^{1/2}$]", "$\\mu$-mol C Pa$^{0.5}$ J$^{-1}$ ET [g C hPa$^{1/2}$ kg$^{-1}$ H$_2$O]", "C", "m/s"],
+             ["Fig. 2, 7; \\citet{Medlyn_2017}", "Table 4; \\citet{Zhou_2015}", "-", "-"],
              [g1s, uwues, ts, gas],
              [g1_medlyn, uwue_zhou, [], []]):
     fh.write("%s & %s & " % (symbol, unit))
     if citevals:
       list(map(lambda v, cv: fh.write("%.2f [%.2f] & " % (v, cv)), values, citevals))
+    elif symbol == "g$_a$":
+      list(map(lambda v: fh.write("%.3f & " % v), values))
     else:
       list(map(lambda v: fh.write("%.2f & " % v), values))
     fh.write("%s \\\\ \n" % citation)

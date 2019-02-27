@@ -20,12 +20,17 @@ be interesting.
 From notepad:
 
 - highligh novel nature of using uWUE to cancel photsynthesis
-  dependence.
-- resposne can vary greatly with plant parameter
+  dependence. - THIS IS NOT IN THERE RIGHT NOW
+- resposne can vary greatly with plant parameter - DONE
 - the functional form of response varies with model/framework
-  choice. Where does this leave us.
+  choice. Where does this leave us. - COULD HIGHLIG THIS MORE - add
+  language like "our framework also clearly illuminates contradictions
+  between exisitng stomstal conductance models, which brings into
+  question the efficacy of modeling results, even those employing much
+  "more sophisticated" methods
+
 - Frame everything in terms of previous literature (which PFTs have
-  high/low g1 and uWUE?)
+  high/low g1 and uWUE?) - DONE
 - explain usefulness of PDEs:
    - conceputal, valid for however long you want to approximate other
-     quantities held fixed.
+     quantities held fixed. DONE

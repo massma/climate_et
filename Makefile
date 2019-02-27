@@ -20,6 +20,9 @@ ALL_REQUIRE = dat/changjie/diagnosed_data.pkl
 PLOTS = $(CURDIR)/etc/plots
 DATA = $(CURDIR)/dat
 
+
+paper : doc/paper/vpd_et_paper_hess.pdf
+
 
 # installation, data and python dependencies
 install : src/FLUXNET_citations dat/changjie/MAT_DATA
@@ -54,8 +57,6 @@ doc/paper/ms.pdf : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/references.bib
 	cd ./doc/paper && pdflatex ms && \
 	bibtex ms && pdflatex ms && \
 	bibtex ms && pdflatex ms
-
-paper : doc/paper/vpd_et_paper_hess.pdf
 
 doc/paper/vpd_et_paper_hess.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 	cd ./doc/paper && pdflatex vpd_et_paper_hess && \
