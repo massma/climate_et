@@ -43,6 +43,8 @@ response to VPD (by taking a partial derivative).
     $c_p$  & specific heat capacity of air at constant pressure & J K$^{-1}$ kg$^{-1}$ & - \\
     $VPD$  & vapor pressure deficit & Pa  & - \\
     $\gamma$  & psychometric constant & Pa K$^{-1}$   & - \\
+    $g_{0}$  & leaf-scale mimimum stomatal conductance & m s$^{-1}$  & \citet{MEDLYN_2011} \\
+
     $g_{s-leaf}$  & leaf-scale stomatal conductance & m s$^{-1}$  & \citet{MEDLYN_2011} \\
     $g_{s}$  &  stomatal conductance & m s$^{-1}$
                                    & \citet{Medlyn_2017} \\
@@ -53,7 +55,7 @@ response to VPD (by taking a partial derivative).
     $R_{air}$ & gas constant of air & J  K$^{-1}$ kg$^{-1}$ & - \\
     $\sigma$ & uncertainty parameter & -& - \\
     $c_a$ & CO$_2$ concentration & $\mu$ mol CO$_2$ mol$^{-1}$ air& - \\
-    $\lambda$ & marginal water cost of leaf carbon & mol H$_2$O mol$^{-1}$ CO$_2$ & - \\
+    $\lambda = \frac{\partial \; transpiration}{\partial\; CO_2\; assimilation}$ & marginal water cost of leaf carbon & mol H$_2$O mol$^{-1}$ CO$_2$ & - \\
     $\Gamma$ & CO$_2$ compensation point & - & - \\
     $\Gamma^*$ & CO$_2$ compensation point without dark respiration & - & - \\
     \hline
@@ -222,25 +224,25 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   we would expect the surface to be generally well coupled. An
   additional assumption in the formulation of $uWUE$ \citep{Zhou_2014,
     Zhou_2015} and \citet{Medlyn_2017}'s stomatal conductance model is
-  that direct soil evaporation (E) contributions to ET remain small
-  relative to transpiration (T). Again, this should be more true
-  during the growing season. The ratio of E to T may increase
-  immediately after rainfall events due to high soil moisture and
-  ponding, but VPD is generally low anyways during these
+  that direct soil evaporation contributions to ET remain small
+  relative to transpiration. Again, this should be more true during
+  the growing season. The ratio of evaporation to transpiration may
+  increase immediately after rainfall events due to high soil moisture
+  and ponding, but VPD is generally low anyways during these
   times. However, some plant types allow for systematically larger
-  contributions of E in ET, particularly those with sparse canopies
-  and smaller relative amounts of transpiration. We therefore might
-  expect that the theory will be most applicable to forest PFTs, which
-  will be most strongly coupled to the boundary layer due to larger
-  surface roughness, and will also generally have the highest ratios
-  of transpiration to evaporation. Finally, we assume that $g_1$ and
-  $uWUE$ are constant with respect to the conceptual VPD
+  contributions of evaporation in ET, particularly those with sparse
+  canopies and smaller relative amounts of transpiration. We therefore
+  might expect that the theory will be most applicable to forest PFTs,
+  which will be most strongly coupled to the boundary layer due to
+  larger surface roughness, and will also generally have the highest
+  ratios of transpiration to evaporation. Finally, we assume that
+  $g_1$ and $uWUE$ are constant with respect to the conceptual VPD
   perturbation. Both quantities have been shown to be relatively
-  constant with respect to changes in
-  VPD \citep{Franks_2017, Zhou_2014}. These parameters will however
-  vary with plant species and characteristics \citep[e.g. wood density,
-  ][]{Lin_2015}, as well as environmental conditions including soil
-  water content \citep{Manzoni2013} and temperature.
+  constant with respect to changes in VPD \citep{Franks_2017,
+    Zhou_2014}. These parameters will however vary with plant species
+  and characteristics \citep[e.g. wood density, ][]{Lin_2015}, as well
+  as environmental conditions including soil water content
+  \citep{Manzoni2013} and temperature.
 
   As Eq. (\ref{d_et}) is a partial derivative, it's utility is as a
   conceptual model for the change in ET in response to VPD with all
