@@ -84,12 +84,14 @@ given PFT.
 
 Thank you for a very thoughtful review. You identified some critical
 flaws in our methods and presentation, and addressing these flaws
-have, in our opinion, greatly improved the strength and clariy of the
+have, in our opinion, greatly improved the strength and clarity of the
 manuscript.
 
 \subsection{Compounding uncertainties}
-
-As stated in our response during the open discussion period, we agree
+\label{pft}
+As stated in
+\href{https://editor.copernicus.org/index.php/hess-2018-553-AC1.pdf}{our
+response} during the open discussion period, we agree
 with you that there are problems prescribing any parameters as fixed
 within a given PFT, as we would expect relatively large variability
 within a PFT. While this type of analysis was motivated by examples in
@@ -121,12 +123,13 @@ type/climate.
 
 \subsection{Attribution to physiological responses}
 
-In our open discussion response we detailed our agreement with you that g1 and
-uWUE should vary within a given PFT. Removing this PFT-focused
-analysis should prevent any misinterpretation that we are making
-claims that these paremeters should be fixed within a given PFT. For
-convenience, we also reproduce a particlarly relevant passage from our
-orignal response:
+In our open discussion
+\href{https://editor.copernicus.org/index.php/hess-2018-553-AC1.pdf}{response}
+we detailed our agreement with you that g1 and uWUE should vary within
+a given PFT. Removing this PFT-focused analysis should prevent any
+misinterpretation that we are making claims that these paremeters
+should be fixed within a given PFT. For convenience, we also reproduce
+a particlarly relevant passage from our orignal response:
 
 ``What we need to communicate better is that a given ecosystem's state
 at a place or time controls its response to a VPD perturbation. We are
@@ -178,6 +181,153 @@ we do not include these analysis in the body of the text, but these
 types of assumptions can make our theory more useful to the
 practitioner so we provide them for their interpretation and
 motivation for future research.
+
+\section{Reviewer 2}
+
+Thank you again for a high quality review. The discussion it
+inspired improved the strength of the manuscript.
+
+\subsection{(i)}
+\label{(i)}
+Please see our
+\href{https://www.hydrol-earth-syst-sci-discuss.net/hess-2018-553/hess-2018-553-AC2-supplement.pdf}{previous
+  response} for a full discussion of the barriers to assessing the ET
+response to VPD using pure data. For convience, we includ an exerpt
+here:
+
+``One issue with analyses attempting to diagnose the ET response to
+VPD with pure data (e.g. using binned boxplots, as you suggest), is
+that ET varies strongly with both aerodynamic conductance and
+radiation. Simply binning by VPD or by site includes too many
+confounding factors to really diagnose what the attributable response
+is to VPD. This issue is really what motivated our analysis and makes
+it unique; by building an analytical framework based on confirmed
+results in the literature (uWUE, Medlyn model, Penman-Monteith [PM]),
+we are able to formally deduce what the actual ET response is, with
+other environmental factors held fixed. This ``other environmental
+factors held fixed'' component is, in our mind, nearly impossible to
+deduce from pure data, because the environment is always changing and
+direct analogues are either impossible to find or result in too small
+of a sample size to form a meaningful conclusion... Essentially we are
+saying that to the degree we trust arithmetic, uWUE, Penman-Monteith,
+and the Medlyn stomatal conductance model, our evaluation of the
+derivative is robust.''
+
+You also mention possible net radiation dependence on VPD, which we
+address in the minor comments.
+
+\subsection{(ii)}
+
+As in our
+\href{https://www.hydrol-earth-syst-sci-discuss.net/hess-2018-553/hess-2018-553-AC2-supplement.pdf}{previous
+  response}, we agree that we need more discussion connecting and
+contrasting leaf level results with our ecosystems scale approach. We
+have summarized the discussion from our reviewer response and added it
+to the introduction in lines ** **.
+
+\subsection{(iii)}
+
+We agree that are PFT-based formulation was too easy to be
+misintrepreted as an assertion that g1 and uWUE are constant and never
+vary in time or space. As described in Section \ref{pft}, we have
+removed the observational and PFT-focused component of the analysis,
+and instead focus exclusvively on using previously published constants
+(and their range) to interpret results. We would also like to
+reiterate that we do not view our use of uWUE as an introduction of an
+extra parameter. Our use of uWUE replaces a photosynthesis model,
+which will generally have many more parameters. Using uWUE is instead
+a simplifying approximation that relies on assumptions (based on
+optimal theory), but one that certainly reduces the total number of
+parameters of a more traditional estimate of ET.
+
+\subsection{(iv)}
+
+Yes, we should not have used ``leading-order'' language. We removed
+that confusing and inappropraite language. Also, by removing the
+empirical results and focusing exclusively theory framed by observational
+results from the literature, we have clarified the manuscript along
+lines you suggest (e.g. better seperation of theory vs empirical
+data).
+
+\subsection{Minor Comments}
+
+\begin{itemize}
+\item P 1 L 17: We removed ``stress'' language.
+\item P 1 L 22-24: Discussion of PET was removed to simplify
+  manuscript (it seemed less relevant). Otherwise the Roderick
+  citation is a good one, thanks.
+\item P 2 L 17: Discussion of precipitation removed to simplify
+  manuscript.
+\item P 2 L 33-35: You're right, and this was speculation; removed
+  this language and replaced with: ``However these researchers did not
+  explore explicitly the sensitivity of ET to VPD, including VPD's
+  effect on stomatal conductance and plant function.''
+\item P 3 L 2: Added citation.
+\item P 3 L 9: Replaced novel with useful.
+\item P 5 L 4: Yes it is related to water use efficiency, but we think
+  that could add more confusion given the ``water use efficiency''
+  language in uWUE; by expressing it in terms of $\lambda$ hopefully
+  it is clear to the reader that g$_1$ is related to water use
+  efficiency.
+\item P 6 L 4: Yes, that equation was mislabeled. Should be fixed now.
+\item P 7 L 14: We no longer fit our own values, so this is no
+  longer relevant.
+\item P 7 Eq. (10): Yes, a change in ET/VPD would induce indrect
+  effects like changes in temperature and (be extension) net
+  radiation. We added discussion guiding the reader on how to avoid
+  misuse partial derivatives, because it seems like readers may not
+  the sufficient understanding, and included explicit discussion of
+  net radiation as an example: ``Care must also be taken with possible
+  indirect effects associated with a change in VPD: for example, a
+  change in ET induced by a change in VPD can cause a change in
+  surface temperature, which would drive a change in net
+  radiation. These types of indirect effects and feedbacks are not
+  considered in Eq. (\ref{d_et}): temperature (a variable) is
+  mathematically fixed.''
+\item P 10 LL 2 and LL 5: Yes, ``physiological controls'' can be
+  misintrepreted and doesn't tell the full story. This language is
+  removed.
+\item P 10 Eq. (12): Yes there should have been a $\sigma$, but
+  $\sigma$ is now removed from the manuscript.
+\item P 10. L 11: Yes, both g$_1$ and uWUE can vary with soil moisture
+  as both are dependent on $\lambda$. This section is however removed
+  from the updated manuscript, but we also added language reflecting
+  this ``These parameters will however vary with plant species and
+  characteristics \citep[e.g. wood density, ][]{Lin_2015}, as well as
+  environmental conditions including soil water content
+  \citep{Manzoni2013} and temperature.''
+\item P 10 Equation (13): $\sigma$ should not have been removed, but
+  it is now no longer in the manuscript.
+\item P 10 L 29-30 ** think on this, gets back to $\lambda$ and how it
+  changes with aridity **
+\item P 11 L 14-17 : this discussion removed from new version of
+  paper.
+\item P 13 L 7-9: this discussion removed from new version of paper.
+\item Figure 4: removed from paper.
+\item P 16 L 16: Yes this was somewhat circular and limited: it only
+  allowed us to test if/how uWUE, given a prescribed model form
+  and the data, would systematically vary with VPD within a PFT. There
+  were definitely some issues with our PFT-focused methods and how we
+  handled uncertainty, which let us to remove this portion of the
+  analysis (see Section \ref{pft}).
+\item P 16, L 15: Agreed, and thankfully this whole analysis is now
+  removed from the paper.
+\item P 18 L 32 / P 21 L 1-3: These sections have been
+  removed. However, we do cannot completely follow the feedback logic
+  you are using; can you ellaborate? Also we provide some citations
+  suggesting that uWUE and g1 can be \textit{relatively} constant
+  \citep{Lin_2005, Franks_2017, Zhou_2015}, so would be interested in
+  citations showing that they are not constant for the majority fo
+  conditions. Please note we also added some plots of the relationship
+  between soil moisture and uWUE in our supplementary material to aid
+  the reader, but view this as an active research as well.
+\item P 23 L 6: This section removed.
+\item P 24 L 24: Added clarifying language about the exponent.
+  ``In general, increasing the exponent of VPD dependence for
+  either $uWUE*$ or $g_*$ increases the likelihood ``
+\item P 26 L 2-4: Please see discussion in Section \ref{(i)}.
+\item P 27 Appendix A: removed use of FLUXNET data in this manuscript.
+\end{itemize}
 
 
 % \printbibliography

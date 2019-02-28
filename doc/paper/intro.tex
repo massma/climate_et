@@ -3,8 +3,9 @@ the future due to the combination of increased temperature and,
 depending on region, decreased relative humidity
 \citep{Byrne_2013}. Increases in VPD increase the atmospheric demand
 for evapotranspirated water \citep{Penman_1948, Monteith_1965}, but
-also stress plant stomata \citep{Leuning_1990,
-MEDLYN_2011}. Understanding the net evaportanspiration (ET) response
+also reduce stomatal conductance through stomatal closure \citep{Leuning_1990, MEDLYN_2011} by
+p \citep{Rawson1977, Mott2007,
+Darmour2010}. Understanding the net evaportanspiration (ET) response
 to these two opposing effects of changes in VPD is crucial for
 assessing the impact of environmental perturbations to VPD on the
 water cycle.
@@ -63,21 +64,20 @@ framework for understanding plant response to atmospheric drying and
 evaluating the VPD dependence of ET while keeping other variables
 fixed. This framework will aid interpretation of observations, full
 complexity models, and facilitate the disentanglement of complex
-land-atmosphere feedbacks. In particular, we can understand the impact
-of climate change, given the expected increase of VPD.  In the past,
-similar simplified approaches were used to understand interactions
-between stomatal conductance, evapotranspiration and the environment
-\citep[e.g.,][]{Jarvis_1984, Jarvis_1986, Mcnaughton_1991}. However,
-at the time researchers' understanding of the form of VPD's effect on
-plant physiology was limited, so they could not systematically explore
-the sensitivity of ET to VPD, including VPD's effect on stomatal
-conductance and plant function.
+land-atmosphere feedbacks. In particular, it facilitates increased
+understading of the impact of climate change, given the expected
+increase of VPD.  In the past, similar simplified approaches were used
+to understand interactions between stomatal conductance,
+evapotranspiration and the environment \citep[e.g.,][]{Jarvis_1984,
+Jarvis_1986, Mcnaughton_1991}. However these researchers did not
+explore explicitly the sensitivity of ET to VPD, including VPD's
+effect on stomatal conductance and plant function.
 
 Recent results have drastically improved our understanding of VPD's
 impact on physiology, especially at the leaf
 level. \citet{MEDLYN_2011} developed a model for leaf-scale stomatal
 conductance ($g_s$), including VPD response, by combining an optimal
-photosynthesis theory \citep{Cowan_1977, Katul_2009} with an empirical
+photosynthesis theory \citep{Cowan_1977, Katul_2009, Katul_2010} with an empirical
 approach, and extended use of this model to the ecosystem scale in
 \citet{Medlyn_2017}. Additionally, \citet{Zhou_2014} demonstrated that
 a quantity underlying water use efficiency $\left(uWUE = \frac{GPP\;
@@ -85,27 +85,53 @@ a quantity underlying water use efficiency $\left(uWUE = \frac{GPP\;
 between GPP, ET, and VPD over a diurnal cycle at the ecosystem
 scale. uWUE is also relatively well conserved in the growing season
 across space and time, within a plant functional type (PFT)
-\citep{Zhou_2015}. ** here talk about difference between leaf level
-and ecosystem scale, also connect uWUE to g1 ** While stomatal
-conductance parameterizations and uWUE greatly simplify complex plant
-physiological processes, they therefore still capture ecosystem
-behavior for vegetated surfaces \citep{Medlyn_2017, Zhou_2014}, and
-are novel tools to transparently develop intuition for the behavior of
-complex land-atmosphere systems.
+\citep{Zhou_2015}.  While stomatal conductance parameterizations and
+uWUE greatly simplify complex plant physiological processes, they
+therefore still capture ecosystem behavior for vegetated surfaces
+\citep{Medlyn_2017, Zhou_2014}, and are useful tools to transparently
+develop intuition for the behavior of complex land-atmosphere systems.
 
 In this manuscript, we leverage uWUE and recent developments in
-stomatal conductance parameterizations \citep{MEDLYN_2011} to derive
-the theoretical one-way response of ET to VPD with other environmental
-variables properly controlled for, i.e. we develop a framework for
-evaluating the partial derivative of ET with respect to VPD. We
-explicitly include VPD's full effect on stomatal conductance,
-including its impact on photosynthesis. We explore the range of
-possible ET responses to VPD, given parameters previously established
-in peer reviewed literature. Additionally, we show the sensitivity of
-the ET-VPD relationship to model and framework choice, highlighting
-the importance of: 1) future research on stomatal conductance and
-ecosystem scale modeling, and 2) thoughtful selection of
-photosynthesis and stomatal conductance models in more sophisticated
-land surface and earth system models. Finally, we discuss the caveats
-of our approach and the sensitivity of results to assumptions about
-stomatal conductance.
+stomatal conductance parameterizations \citep{MEDLYN_2011} with a
+Penman-Monteith framework \citep [hereafter PM,][]{Penman_1948,
+Monteith_1965} to derive the theoretical one-way response of ET to VPD
+with other environmental variables properly controlled for, i.e. we
+develop a framework for evaluating the partial derivative of ET with
+respect to VPD. We explicitly include VPD's full effect on stomatal
+conductance, including its impact on photosynthesis. The use of an
+energy balance framework (PM) allows us to include in our analysis the
+effects of the energy cost of evaporating water from a surface, which
+is an important factor in the natural environment, compared to
+prescribed in situ envirnmental conditions. This is relevant because
+previous research focusing on the leaf scale \citep{Rawson1977,
+Turner1984, Oren1999, Darmour2010, Mott2013} does not consistently or
+analogously include the energetic constraints on evapotranspiration
+under which ecosystems operate. The leaf-scale results agree that
+stomatal conductance decreases in response to VPD \citep{Oren199,
+Damour2010}, which we expect to be true for an ecosystem as
+well. However leaf scale results also indicate that transpiration
+usually increases with increasing VPD in a concave downward shape
+\citep[e.g.,][]{Rawson1977, Turner1983, Mott2013}, which may not be
+true for ET at the ecosystem scale once energetic constraints on ET
+are included in the analysis. Our approach allows us to estimate the
+expected ET response to VPD at the ecosystem scale, including the
+effects of surface energy balance constraints, and assess how
+ecosystem ET response to VPD deviates from previous leaf scale
+analyses. It is indeed key to disconnect the impact of VPD from other
+variables as VPD is known to increase dramatically with future climate
+** (Novick JGR 2017) **, yet other environmental conditions such as
+soil moisture and radiation will not increase as
+dramatically. Nonetheless previous studies have typically been
+hampered by the covariations between different variables
+\citep[e.g. radiation and VPD or soil moisture and VPD, ][]{Lin_2018,
+Zhou_2019}, which limits the interpretability and understanding of the
+response of ecosystem-scale ET to VPD.
+
+This manuscript presents the range of possible ecosystem-scale ET
+responses to VPD, given parameters previously established in peer
+reviewed literature. Additionally, we explore the sensitivity of the
+ET-VPD relationship to stomatal model and framework choice,
+highlighting the importance of: 1) future research on stomatal
+conductance and ecosystem scale modeling, and 2) thoughtful selection
+of photosynthesis and stomatal conductance models in more
+sophisticated land surface and earth system models.

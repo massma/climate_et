@@ -78,9 +78,12 @@ CO$_2$ assimilation rate, and $c_a$ is the atmospheric CO$_2$
 concentration at the leaf surface. \cite{MEDLYN_2011} relate the slope
 parameter ($g_{1-leaf}$) to physical parameters as:
 % \begin{linenomath*}
-  \label{slope}
   \begin{equation}
-    g_{1-leaf} = \sqrt{\frac{3 \, \Gamma^* \, \lambda}{1.6}},\footnote{Note this expression has units of of (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to Pa$^{1/2}$ using the ideal gas law.}
+    g_{1-leaf} = \sqrt{\frac{3 \, \Gamma^* \,
+        \lambda}{1.6}},\footnote{Note this expression has units of of
+      (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to
+      Pa$^{1/2}$ using the ideal gas law.}
+    \label{slope}
   \end{equation}
 % \end{linenomath*}
 
@@ -234,20 +237,37 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   $uWUE$ are constant with respect to the conceptual VPD
   perturbation. Both quantities have been shown to be relatively
   constant with respect to changes in
-  % TODO: make this a general discussion on partial derivatives and
-  % what things are constant/how to interpret?
   VPD \citep{Franks_2017, Zhou_2014}. These parameters will however
   vary with plant species and characteristics \citep[e.g. wood density,
   ][]{Lin_2015}, as well as environmental conditions including soil
-  water content and temperature.
-  % TODO: write exact parameter ranges we use, and introduce
-  % scaling/sign term here?
-  % \item
-  To account for both this variability in plant parameters and the
+  water content \citep{Manzoni2013} and temperature.
+
+  As Eq. (\ref{d_et}) is a partial derivative, it's utility is as a
+  conceptual model for the change in ET in response to VPD with all
+  other variables held fixed. This concept is a useful tool for
+  identifying the effect of VPD on ET through atmospheric demand and
+  plant response, and allows a practitioner to disentangle complicated
+  feedbacks when many quantities co-vary. However users of
+  Eq. (\ref{d_et}) should take care that their interpretation matches
+  the assumptions inherent in a partial derivative. For example,
+  results will only be as valid as the assumption that g$_1$ and uWUE
+  (and by extension $\lambda$) are fixed with respect to the user's
+  conceptual change in VPD. Fortunately, these quantities are
+  relatively constant for many under many scenarios
+  \citep{Franks_2017}. Care must also be taken with possible indirect
+  effects associated with a change in VPD: for example, a change in ET
+  induced by a change in VPD can cause a change in surface
+  temperature, which would drive a change in net radiation. These
+  types of indirect effects and feedbacks are not considered in
+  Eq. (\ref{d_et}): temperature (a variable) is mathematically fixed.
+
+  To account for both the variability in plant parameters and the
   environment, we will systematically analyze how the ET response to
-  VPD (Equation \ref{d_et}) varies. Equation \ref{d_et} includes a
+  VPD (Eq. (\ref{d_et})) varies. Equation (\ref{d_et}) includes a
   ``sign'' term that determines the sign of the response in addition
   to magnitude:
+
+
 
   ** comment on temperature and acclimation??? **
   ** impact of T is much smaller than VPD? **
@@ -373,13 +393,13 @@ should increase and uWUE should decrease. ** ellaborate **
 
 Examining the scaling term independent of the sign term shows how
 aerodynamic conductance (communication between the atmosphere and the
-surface) and temperature (controls the efficiency of
-energy conversion to latent heat through $\Delta$), amplify or suppress the plant
-physiological response represented in the sign term (Figure \ref{scaing}). Both lower
-temperatures and higher aerodynamic conductance lead to amplified ET
-response to VPD, with the variability of aerodynamic conductance
-resulting in a slightly higher variability of ET response relative to
-temperature.
+surface) and temperature (controls the efficiency of energy conversion
+to latent heat through $\Delta$), amplify or suppress the plant
+response represented in the sign term (Figure \ref{scaing}). Both
+lower temperatures and higher aerodynamic conductance lead to
+amplified ET response to VPD, with the variability of aerodynamic
+conductance resulting in a slightly higher variability of ET response
+relative to temperature.
 
 \section{Discussion}
 \label{discussion}
@@ -615,17 +635,18 @@ relations reveal themselves from Eq. (\ref{curves}):
   \item For all physically possible exponents of VPD dependence ($n,
     m$), whether the solution is concave up or concave down does not
     depend on $uWUE$.
-  \item In general, increasing the exponent of VPD dependence
-    increases the likelihood of a concave down result. Additionally, as
-    the exponent of VPD dependence increases from the optimum value of
-    1/2, whether the curve is concave upward or concave downward
-    becomes a function of the plant specific slope parameter $g_*$,
-    through non-dimensional VPD ($VPD^m/g_*$). Because the exponent of
-    the VPD dependencies is capable of altering the fundamental shape
-    of ET-VPD dependence, future research investment in understanding
-    the exact VPD dependence of stomatal conductance, and further
-    reconciliation of empirical and theoretical stomatal and
-    ecosystem behavior should be prioritized.
+  \item In general, increasing the exponent of VPD dependence for
+    either $uWUE*$ or $g_*$ increases the likelihood of a concave down
+    result. Additionally, as the exponent of VPD dependence increases
+    from the optimum value of 1/2, whether the curve is concave upward
+    or concave downward becomes a function of the plant specific slope
+    parameter $g_*$, through non-dimensional VPD
+    ($VPD^m/g_*$). Because the exponent of the VPD dependencies is
+    capable of altering the fundamental shape of ET-VPD dependence,
+    future research investment in understanding the exact VPD
+    dependence of stomatal conductance, and further reconciliation of
+    empirical and theoretical stomatal and ecosystem behavior should
+    be prioritized.
 \end{itemize}
 
 While it is possible that in the future some other form of
