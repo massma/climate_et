@@ -55,6 +55,7 @@ solve_vars = [m, n, m]
 labels = ["n=1/2, m varying", "n varying, m=1/2",\
           "n=m, both vary"]
 
+g1 = 126.49
 
 def gen_func(substitute, solve_var, soln):
   """generates a lambdified function for plotting,
@@ -65,7 +66,7 @@ def gen_func(substitute, solve_var, soln):
 def plot_curve(ax, subbed, label):
   """plots the curve, given normlaized func"""
   n = np.linspace(0.5, 0.9999999) # singlulatity at 1
-  ax.plot([(subbed[0](_)*mean_df.g1.mean())**2 for _ in n], n, label=label)
+  ax.plot([(subbed[0](_)*g1)**2 for _ in n], n, label=label)
   return ax
 
 
@@ -78,7 +79,7 @@ for sub, solve_var, label in zip(substitutes, solve_vars, labels):
   ax = plot_curve(ax, subbed, label)
 ax.set_ylabel(r"VPD Exponent (m: $\frac{g_*}{VPD^m}$, "\
               r"n: $\frac{GPP}{ET}VPD^n$)", fontsize=single_ax_fontsize)
-ax.set_xlabel(r"VPD (Pa), assuming g$_*$=110 Pa$^{0.5}$ and m=1/2",\
+ax.set_xlabel(r"VPD (Pa), assuming g$_*$=%3.0f Pa$^{0.5}$ and m=1/2" % g1,\
               fontsize=single_ax_fontsize)
 ax.set_xlim([0., 4000.0])
 ax.set_ylim([0.5, 1.0])

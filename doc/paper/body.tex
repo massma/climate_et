@@ -478,36 +478,70 @@ Additionally, the sensitivity of ET response to plant parameters
 highlights the importance of understanding and developing stomatal
 conductance models and parameters for the ecosystem scale. In
 particular, why and how g$_1$ behavior at the leaf scale is not
-analagous to the ecosystem scale must be understood. While the derivation
-here was explicit about the assumption of a constant g$_1$ term with
-respect to the VPD perturbation, many sophisticated land surface
-models and earth system models employing stomatal conductance models
-make similar, and even stronger assumptions about the stationarity of
-VPD slope terms. Many models will assume a constant g$_1$ term within
-a given plant functional type, and research derived from these models
-often does not acknowledge limitations of this assumption, or the
-difficulty in the literature with quantifying an ecosystem scale slope
-parameter \citep{Medlyn_2017}. Given that something so fundamental as
-the ET response to VPD varies strongly with g$_1$, we must invest more
-in understanding g$_1$'s behavior at the ecosystem scale, and the
-efficacy of models using g$_1$'s for ecosystem-scale
-fluxes. Fortunately, our framework, and the novel approach of
-using robust ecosystem-scale ratios (uWUE) to remove the implicit
-dependence of stomatal conductance on ET, is flexible enough to be
-applied to any future-derived ecosystem-scale stomatal conductance
-model that contains a dependence on GPP.
+analagous to the ecosystem scale must be understood. While the
+derivation here was explicit about the assumption of a constant g$_1$
+term with respect to the VPD perturbation, many sophisticated land
+surface models and earth system models employing stomatal conductance
+models make similar, and even stronger assumptions about the
+stationarity of VPD slope terms \citep{Niu_2011, Franks_2017,
+  Rogers_2017, Lawrence_2019}. Many models will assume a constant
+g$_1$ term within a given plant functional type, and research derived
+from these models often does not acknowledge limitations of this
+assumption, or the difficulty in the literature with quantifying an
+ecosystem scale slope parameter \citep{Medlyn_2017}. Given that
+something so fundamental as the ET response to VPD varies strongly
+with g$_1$, we must invest more in understanding g$_1$'s behavior at
+the ecosystem scale, and the efficacy of models using g$_1$'s for
+ecosystem-scale fluxes. Fortunately, our framework, and the novel
+approach of using robust ecosystem-scale ratios (uWUE) to remove the
+implicit dependence of stomatal conductance on ET, is flexible enough
+to be applied to any stomatal conductance model that contains a
+dependence on GPP.
 
 So far we have discussed the role of different parameters in
 modulating the ET response. However, the form of the ET response is
 imposed by our choice of stomatal conductance model. We now examine
-how the model choice, and specifically the exponent of the VPD
-dependence in the stomatal conductance model, can impact the general
-form of the ET-VPD relationship. This is relevant as many models
-include an exponentiated VPD term \citep[e.g.,][]{Leuning_1990}, but
-the value of the exponent can vary. It is useful to understand how the
-choice of model imposes the functional form of the ET-VPD
-relationship, given its fundamental importance for land atmosphere
-interaction.
+how the stomatal model choice, and specifically the exponent of the
+VPD dependence in the stomatal conductance model, can impact the
+general form of the ET-VPD relationship. There is a theoretical basis
+for the square root VPD dependence in both the stomatal conductance
+model and $uWUE$ based on the assumption that stomata behave to
+maximize carbon gain while minimizing water loss, which observations
+also generally support \citep{Lloyd_1991, MEDLYN_2011, Lin_2015,
+  Zhou_2014, Zhou_2015, Medlyn_2017}. However, some purely empirical
+results that fit the exponent of the VPD dependence to data have shown
+that it may vary slightly from 1/2, suggesting that stomata, as well
+as ecosystem-scale quantities based on stomata theory, may not always
+function optimally \citep{Zhou_2015, Lin_2018}. Specifically with
+regards to $uWUE$, one would not expect that this ecosystem scale WUE
+quantity will respond to VPD exactly analogously to stomata. Direct
+soil evaporation's contributions to ET should shift the exponent of
+the VPD dependence, especially at conditions of low GPP when we would
+expect a systematically larger portion of direct soil evaporation
+contributions to ET, because we would also expect lower amounts of
+transpiration at low GPP. \citet{Zhou_2015}'s results corroborate
+this: they found a mean empirically fit exponential VPD dependence of
+0.55, varying slightly from the theoretically optimal value of of 0.5
+for AmeriFlux sites. \citet{Lin_2018}'s results also show variance in
+the empirical exponent of the VPD dependence of the stomatal
+conductance model, but interpretation of this variance is more
+difficult as \citet{Lin_2018} do not handle GPP/A dependence of
+stomatal conductance in a directly analogous manner to the optimal
+theory in \citet{MEDLYN_2011} and \citet{Medlyn_2017}. Regardless,
+given that these recent results on the relationship between VPD, GPP,
+and ET \citep{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017} form the
+backbone of our analysis and are what allowed us to derive an explicit
+ET expression for the first time (Eq. (\ref{et})), we will analyze if
+and how assumptions about the exponent of the VPD dependence impacts
+the shape of the ET-VPD dependence. This analysis is also important to
+understand whether the choice of stomatal conductance model alters the
+fundamental behavior of the ET-VPD relationships, as many commonly
+used models utilize a VPD exponent other than the 1/2 suggested by
+optimal theory \citep[e.g. ][ which uses an exponent of
+1]{Leuning_1990}. It is useful to understand how the choice of model
+imposes the functional form of the ET-VPD relationship, given its
+fundamental importance for land-atmosphere interactions.
+
 
 \subsection{Functional form of ET dependence on VPD and its relation
   to the VPD exponent}
@@ -516,54 +550,26 @@ interaction.
 The results presented in Sect. \ref{results} indicates that for a
 given $uWUE$ and $g_1$, the ET dependence on VPD should be concave
 upward. In other words, there should be some local minimum in ET at a
-critical VPD$_{crit}$, assuming the scaling and plant terms  (e.g. aerodynamic
-conductance, $\Delta$, $g_1$ and $uWUE$) are held fixed. This result warrants further
-investigation, because to our knowledge no one has derived the
-theoretical ecosystem-scale relationship between ET and VPD while
-controlling for other environmental conditions. In particular, from
-personal communication, there is an apparent lack of consensus over
-whether the shape of the ET-VPD curve should be concave upward (our
-result) or concave downward in the absence of dramatic water stress. Given that understanding the ET-VPD
-relationship of the one-way plant response is fundamental to
-hypothesizing about any feedbacks between the land surface and the
-atmosphere, we analyze why our derived ET-VPD relationship is concave
-upward, particularly with respect to the exponent of VPD dependence in
-$uWUE$ and the Medlyn unified stomatal conductance model.
+critical VPD$_{crit}$, assuming the scaling and plant terms
+(e.g. aerodynamic conductance, $\Delta$, $g_1$ and $uWUE$) are held
+fixed. This result warrants further investigation, because to our
+knowledge no earlier work has derived the theoretical ecosystem-scale
+relationship between ET and VPD while controlling for other
+environmental conditions. In particular there is an apparent lack of
+consensus over whether the shape of the ET-VPD curve should be concave
+upward (our result) or concave downward in the absence of dramatic
+water stress. Given that understanding the ET-VPD relationship of the
+one-way plant response is fundamental to hypothesizing about any
+feedbacks between the land surface and the atmosphere, we analyze why
+our derived ET-VPD relationship is concave upward, particularly with
+respect to the exponent of VPD dependence in $uWUE$ and the Medlyn
+unified stomatal conductance model, as other models and empiracle
+results have suggested exponents varying from 1/2 \citep{Leuning_1990,
+  Zhou_2015, Lin_2018}.
 
-There is a theoretical basis for the square root VPD dependence in
-both the stomatal conductance model and $uWUE$ based on the assumption
-that stomata behave to maximize carbon gain while minimizing water
-loss, which observations also generally support \citep{Lloyd_1991,
-  MEDLYN_2011, Lin_2015, Zhou_2014, Zhou_2015, Medlyn_2017}. However,
-some purely empirical results that fit the exponent of the VPD
-dependence to data have shown that it may vary slightly from 1/2,
-suggesting that stomata, as well as ecosystem-scale quantities based
-on stomata theory, may not always function optimally \citep{Zhou_2015,
-  Lin_2018}. Specifically with regards to $uWUE$, one would not expect
-that this ecosystem scale WUE quantity will respond to VPD exactly
-analogously to stomata. Direct soil evaporation's contributions to ET
-should shift the exponent of the VPD dependence, especially at
-conditions of low GPP when we would expect a systematically larger
-portion of direct soil evaporation contributions to ET, because we
-would also expect lower amounts of transpiration at low GPP. \citet{Zhou_2015}'s
-results corroborate this: they found a mean empirically fit
-exponential VPD dependence of 0.55, varying slightly from the
-theoretically optimal value of of 0.5 for AmeriFlux
-sites. Interpreting \citet{Lin_2018}'s results, which also show
-variance in the empirical exponent of the VPD dependence of the
-stomatal conductance model, is more difficult as \citet{Lin_2018} do
-not handle GPP/A dependence of stomatal conductance in a directly
-analogous manner to the optimal theory in \citet{MEDLYN_2011} and
-\citet{Medlyn_2017}. Regardless, given that these recent results on
-the relationship between VPD, GPP, and ET \citep{MEDLYN_2011,
-  Zhou_2014, Zhou_2015, Medlyn_2017} form the backbone of our analysis
-and are what allowed us to derive an explicit ET expression for the
-first time (Eq. (\ref{et})), we will analyze if and how assumptions
-about the exponent of the VPD dependence impacts the shape of the
-ET-VPD dependence. This analysis is also important to understand whether the choice of stomatal conductance model alters the fundamental behavior of the ET-VPD relationships, as many commonly used models  utilize a VPD exponent other than the 1/2 suggested by optimal theory \citep[e.g. ][ which uses an exponent of 1]{Leuning_1990}.
-
-By introducing $n$ and $m$ we can free our stomatal
-conductance model from assumptions about VPD dependence:
+By introducing $n$, the exponent of VPD in uWUE, and $m$, the exponent
+of VPD in the stomatal conductance model, we can free our theory from
+assumptions about VPD dependence:
 % \begin{linenomath*}
   \begin{equation}
     g_s = \frac{R \, T}{P} 1.6 \left(1 + \frac{g*}{VPD^m}\right) \frac{*WUE \; ET}{c_a \; VPD^n},
@@ -633,13 +639,13 @@ slightly open \citep{De_2013, Nikinmaa_2013, Ryan_2014}. Furthermore,
 even if complete stomatal closure were possible, cuticular water loss
 and [at the ecosystem-scale] direct soil evaporation are still sources
 of ET which increase with VPD, independent of stomatal
-closure. Therefore, in the limit as VPD becomes large and we assume
+closure ** cite katul??? **. Therefore, in the limit as VPD becomes large and we assume
 plants are exercising all strategies to reduce ET, any further increase
 in VPD should result in an increase in ET through cuticular water loss
 and/or direct soil evaporation. This inevitable transition from
 conditions when stomata respond strongly to VPD to conditions when
 stomata response is asymptoting towards full closure would cause a
-concave up ET-VPD curve, which is matched by the theory. In short,
+concave up ET-VPD curve, which is matched by our theory. In short,
 plant response becomes more limited as VPD increases, while
 atmospheric demand monotonically increases with VPD, leading to the
  result that atmospheric demand dominates plant response when
@@ -660,6 +666,6 @@ storage example, over very long time scales extremely high VPD
 perturbations coupled with no precipitation could result in decreases
 in soil water storage such that water becomes limiting. This could be
 represented by an extension of our framework in which uWUE is allowed
-to decrease with decreasing SWC. Here, we focus our results by
-framing theme with previous literature to  build baseline intuition for
-ET-VPD dependence.
+to change with changing SWC. Here, we focus our results by framing
+theme with previous literature to build baseline intuition for ET-VPD
+dependence.
