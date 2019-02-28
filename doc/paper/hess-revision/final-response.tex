@@ -1,0 +1,186 @@
+\documentclass[12pt]{article}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{bm}
+% \usepackage{graphicx}
+% \usepackage{epstopdf}
+% \usepackage{xcolor}
+% \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+% \usepackage{color}
+% \pagestyle{plain}
+
+% \usepackage[
+% 	backend=biber,
+% 	url=false,
+% 	isbn=false,
+% 	doi=false,
+%         eprint=false,
+%         bibstyle=authoryear,
+%         style=authoryear,
+%         % style=numeric-comp,
+% 	% uniquename=false,
+% 	% uniquelist=false,
+% 	% firstinits=true,
+%  	natbib=true,
+% 	sorting=none,
+%         ]{biblatex}
+
+% \addbibresource{./references.bib}
+
+\RequirePackage{natbib}
+\bibliographystyle{agufull08}
+
+% Bib aliases
+\makeatletter
+\def\@citex[#1]#2{\leavevmode
+  \let\@citea\@empty
+  \@cite{\@for\@citeb:=#2\do
+    {\@citea\def\@citea{,\penalty\@m\ }%
+\edef\magic##1{\let##1\expandafter\noexpand\csname bibalias@\@citeb\endcsname}%
+\magic\tmp \ifx\tmp\relax\else \let\@citeb\tmp\fi
+     \edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+     \if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+     \@ifundefined{b@\@citeb}{\hbox{\reset@font\bfseries ?}%
+       \G@refundefinedtrue
+       \@latex@warning
+         {Citation `\@citeb' on page \thepage \space undefined}}%
+       {\@cite@ofmt{\csname b@\@citeb\endcsname}}}}{#1}}
+\def\bibalias#1#2{\expandafter\def\csname bibalias@#1\endcsname{#2}}
+\makeatother
+
+\title{Final Response: When does vapor pressure deficit drive or
+  reduce evapotranspiration?}
+
+\author{Adam Massmann, Pierre Gentine, and Changjie Lin}
+
+\date{December 17th, 2018}
+
+\begin{document}
+
+Thank you very much for an excellent and very thoughtful
+review. Addressing your comments will greatly improve the
+manuscript. We agree with your comments, and think the manuscript
+could use substantial re-framing and rewording to clarify how we are
+answering our research question, and how the answer may vary with
+climate and environmental factors.
+
+Just a quick general comment before addressing your specific
+comments. By including a PFT-focused analysis we did not fully
+communicate the major goal and scope of our project: we are trying to
+characterize the response of ET to VPD, with all other environment
+variables held fixed. To accomplish this, we need to formulate an
+explicit function of ET in terms of environmental variables and
+parameters, where any parameters can be approximated as constant with
+regards to some [arbitrary] VPD perturbation scenario. We will
+elaborate more below on why we used PFT-focused scenarios for much of
+our analysis. However, the goal of our manuscript was much more simple
+and fundamental: at a given place or time, if you introduce a
+perturbation to VPD, what is the immediate ET response (e.g. positive
+or negative)? Answering this question does not require the much
+stronger assertion that any parameters must be invariant within a
+given PFT.
+
+\section{Reviewer 1}
+
+Thank you for a very thoughtful review. You identified some critical
+flaws in our methods and presentation, and addressing these flaws
+have, in our opinion, greatly improved the strength and clariy of the
+manuscript.
+
+\subsection{Compounding uncertainties}
+
+As stated in our response during the open discussion period, we agree
+with you that there are problems prescribing any parameters as fixed
+within a given PFT, as we would expect relatively large variability
+within a PFT. While this type of analysis was motivated by examples in
+previous literature, we think it is misleading in this case to present
+results where these parameters are suggested to be fixed. These issues
+were exacerbated by the manner in which we fit our parameters: it was
+unclear given our methods how model and observational uncertainty,
+which can be considerable, are partitioned into our PFT-wide estimates
+of g1 and uWUE. Also, as you point out, there is already previous
+literature on the values of g1 and uWUE, so in many ways by fitting
+out own values we are repeating previous work, but with defects given
+our handling of observational and model error. Also, much of our
+observational work, in addition to its flaws, decreased the clarity of
+our manuscript and distracted from the focus, which a flexible
+derivation, based completely on previous literature, of ET explicitly
+as a function of enviornmental variables and plant parameters.
+
+These realizations led us to make significant alterations to our
+manuscript. We no longer use observations or fit parameters
+ourselves. Instead we frame our theoretical derivation in terms of
+parameters established in the literature. Using this literature, we
+can then make statements about the general liklihood of a positive or
+negative ET response to increasing VPD in terms of climate, plant
+type, and photosynthetic pathway. This seemed a more natural
+delineation of scope: our paper presents a derivation tying plant
+parameters to an ET response to VPD, while previous literature
+establishes relationships between plant parameters and plant
+type/climate.
+
+\subsection{Attribution to physiological responses}
+
+In our open discussion response we detailed our agreement with you that g1 and
+uWUE should vary within a given PFT. Removing this PFT-focused
+analysis should prevent any misinterpretation that we are making
+claims that these paremeters should be fixed within a given PFT. For
+convenience, we also reproduce a particlarly relevant passage from our
+orignal response:
+
+``What we need to communicate better is that a given ecosystem's state
+at a place or time controls its response to a VPD perturbation. We are
+making an approximation that we can parameterize the effect of the
+ecosystem's state on VPD response with g$_1$ and uWUE. These quantities
+can also vary due to soil moisture condition; the approximation we
+need to answer our research question is that they are fixed
+with respect to a VPD perturbation. In this sense, we do not view the
+two statements: ``plants that are evolved to bred to prioritize
+primary production over water conservation (e.g., crops) exhibit a
+higher likelihood of atmospheric demand-driven response'' and
+``ecosystem types are responding in this way because they have, on the
+whole, been subjected to less soil water limitation (due to the
+non-negligible effects of irrigation?)'' as mutually exclusive. In
+fact, we view them as consistent with a view that crops and their
+physiology (parameterized by g$_1$ and uWUE) exist at a given time and
+place because they have not been subjected to soil water limitation,
+and they have a given response to VPD because of their physiology
+(which is a direct effect of the environment). In this way, climate
+and land surface state are causes of the VPD response both directly
+and through their effect on plant physiology (parameterized by g$_1$
+and uWUE).''
+
+In addition we added language to the manuscript that our results
+should be used by a reader/scientist under the assumption that plant
+parameters are fixed with respect to the VPD perturbation
+considered. Previous literature \citep{Zhou_2015, Lin_2015} suggests
+that these parameters might also be approximately constant across a
+relatively broader range of plant types and environmental conditions,
+but our manucript avoids claims about this costancy other than the
+importance of conceptually considering these parameters to be constant
+when applying our theory to a problem of interest.
+
+The issue of soil moisture dependence is of particular importance,
+however. If our plant parameters are more stationary with respect to
+soil moisture, then our theory can be applied to a broader range of
+VPD scenarios, including observed compound events between high VPD and
+low soil moisture \citep{Zhou_2019}. To help the reader assess the
+soil moisture dependence of uWUE (and partially by extension
+$\lambda$), we provided supplementaty material showing the
+distribution of uWUE with SWC for each of 66 FLUXNET sites. The
+functional relationship between uWUE and SWC varies, with a mix of
+sites showing strong and weak SWC-dependence. For all sites the ratio
+of signal to noise is very low, an unfortunate consequence of taking a
+ratio of two highly uncertain eddy-covariance derived fluxes. In
+general we find this analysis inconclusive. Our paper does not rely on
+assumptions about uWUE's functional relationship to soil moisture so
+we do not include these analysis in the body of the text, but these
+types of assumptions can make our theory more useful to the
+practitioner so we provide them for their interpretation and
+motivation for future research.
+
+
+% \printbibliography
+\bibliography{references}
+
+\end{document}
