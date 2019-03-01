@@ -7,7 +7,8 @@ ARXIV_FILES = doc/paper/ms.tex doc/paper/abstract.tex \
 
 PAPER_FILES = doc/paper/references.bib doc/paper/body.tex \
 doc/paper/abstract.tex doc/paper/vpd_et_paper_hess.tex \
-doc/paper/intro.tex doc/paper/conclusions.tex
+doc/paper/intro.tex doc/paper/conclusions.tex doc/paper/hess-supplement.tex
+doc/paper/supp-figs.tex
 
 TABLES = doc/paper/param_fixed.tex doc/paper/param_varying.tex
 
@@ -65,6 +66,9 @@ doc/paper/vpd_et_paper_hess.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
+
+doc/paper/supp-figs.tex : src/paper_figure_code/swc_boxplot.py
+	cd src/paper_figure_code && pipenv run $^
 
 
 # Clean targets

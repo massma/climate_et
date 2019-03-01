@@ -6,7 +6,16 @@ from matplotlib.ticker import FuncFormatter
 from shared_functions import *
 import seaborn as sns
 import importlib
-mpl.rcParams.update(small_ax_params)
+plt.close('all')
+
+params = mpl.rcParamsDefault
+small_ax_params['xtick.labelsize'] = 12
+small_ax_params['ytick.labelsize'] = 12
+
+
+# mpl.rcParams.update(small_ax_params)
+mpl.rcParams.update(params)
+
 linewidth=2.5
 boxprops = {'linewidth' : 1.5}
 medianprops = {'linewidth' : 2.5}
@@ -45,13 +54,13 @@ def plot_box(_df, ax=None, pft=False):
   orig_xlim = ax.get_xlim()
   #ax.plot(orig_xlim, [d_calc.CP/287.0, d_calc.CP/287.0], 'm--', linewidth=1.0)
   ylim = ax.get_ylim()#[-4.0, 4.0]
-  custom_xlabel(_df, ax, 'Volumetric SWC', fontsize=small_ax_fontsize)
-  custom_ylabel(_df, ax, 'uWUE', fontsize=small_ax_fontsize)
+  custom_xlabel(_df, ax, 'Volumetric SWC', fontsize=small_ax_fontsize-4)
+  custom_ylabel(_df, ax, 'uWUE', fontsize=small_ax_fontsize-4)
   if pft:
     ax.set_title(name_dict[_df.pft.iloc[0]],\
                  fontsize=fontsize+3)
   else:
-    ax.set_title('Site: %s, PFT: %s, # obs: %d'\
+    ax.set_title('Site: %s, PFT: %s, b# obs: %d'\
                  % (_df.site.iloc[0], _df.pft.iloc[0], _df.shape[0]),\
                  fontsize=fontsize+3)
   # if _df.pft.iloc[0] in xlim:
@@ -66,9 +75,11 @@ def plot_box(_df, ax=None, pft=False):
       safesavefig('%s/climate_et/swc_box/pft/%s_box.png'\
                   % (os.environ['PLOTS'], _df.pft.iloc[0]))
     else:
-      safesavefig('%s/climate_et/swc_box/%s_%s_box.png'\
-                  % (os.environ['PLOTS'], _df.pft.iloc[0], _df.site.iloc[0]))
+      safesavefig('../../doc/paper/supp-figs/%s_%s_box.pdf'\
+                  % (_df.pft.iloc[0], _df.site.iloc[0]))
   return
+
+
 
 df_uwue_obs = df.copy()
 df_uwue_obs['uwue'] = df_uwue_obs['gpp_obs']/df_uwue_obs['et_obs']*np.sqrt(df_uwue_obs['vpd'])
@@ -78,3 +89,30 @@ df_uwue_obs['uwue'] = df_uwue_obs['gpp_obs']/df_uwue_obs['et_obs']*np.sqrt(df_uw
 df_uwue_obs.groupby('site').apply(plot_box)
 # df.groupby('pft').apply(plot_box, pft=True)
 # panel_wrapper(df, plot_box, "swc_boxplot.pdf", args=(True,))
+
+def sitename(fname):
+  return fname.split("_")[1]
+
+def write_site(filename, fh):
+  figure_string = """\\begin{figure}
+  \\centering \\includegraphics{./supp-figs/%s}
+  \\caption{The relationship between uWUE and VPD at the FLUXNET site %s. Each box plot correspondes to 5\\%% of the data. To aid visualization only the 0\\%%-90\\%% range of SWC bins are included.}
+  \\end{figure}
+  \\clearpage \n\n""" % (filename, sitename(filename))
+  fh.write(figure_string)
+  return ()
+
+
+def write_supp_figs():
+  fs = os.listdir("../../doc/paper/supp-figs")
+  fs.sort
+  fh = open("../../doc/paper/supp-figs.tex", "w")
+  for fname in fs:
+    write_site(fname, fh)
+  return
+
+write_supp_figs()
+
+
+
+#   fh.write("")

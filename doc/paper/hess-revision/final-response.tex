@@ -1,13 +1,14 @@
 \documentclass[12pt]{article}
-% \usepackage{amsmath}
-% \usepackage{amssymb}
-% \usepackage{bm}
-% \usepackage{graphicx}
-% \usepackage{epstopdf}
-% \usepackage{xcolor}
-% \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
-% \usepackage{color}
-% \pagestyle{plain}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+\usepackage{color}
+\pagestyle{plain}
 
 % \usepackage[
 % 	backend=biber,
@@ -53,7 +54,7 @@
 
 \author{Adam Massmann, Pierre Gentine, and Changjie Lin}
 
-\date{December 17th, 2018}
+\date{February 28th, 2019}
 
 \begin{document}
 
@@ -169,18 +170,20 @@ soil moisture, then our theory can be applied to a broader range of
 VPD scenarios, including observed compound events between high VPD and
 low soil moisture \citep{Zhou_2019}. To help the reader assess the
 soil moisture dependence of uWUE (and partially by extension
-$\lambda$), we provided supplementaty material showing the
-distribution of uWUE with SWC for each of 66 FLUXNET sites. The
-functional relationship between uWUE and SWC varies, with a mix of
-sites showing strong and weak SWC-dependence. For all sites the ratio
-of signal to noise is very low, an unfortunate consequence of taking a
-ratio of two highly uncertain eddy-covariance derived fluxes. In
-general we find this analysis inconclusive. Our paper does not rely on
-assumptions about uWUE's functional relationship to soil moisture so
-we do not include these analysis in the body of the text, but these
-types of assumptions can make our theory more useful to the
-practitioner so we provide them for their interpretation and
-motivation for future research.
+$\lambda$), we provide figures in supplementary material showing the
+distribution of uWUE with SWC for each of 66 FLUXNET sites from the
+FLUXNET-2015 database. The functional relationship between uWUE and
+SWC varies, with a mix of sites showing strong and weak
+SWC-dependence. For all sites the ratio of signal to noise is very
+low, an unfortunate consequence of taking a ratio of two highly
+uncertain eddy-covariance derived fluxes. In general we find this
+analysis inconclusive. The paper does not rely on assumptions about
+uWUE's functional relationship with soil moisture so we do not include
+the figures in the body of the manuscript. But given that constant
+uWUE g$_1$ assumptions can make our theory more useful to the reader
+we provide the figures for their interpretation, and motivation for
+future research.
+
 
 \section{Reviewer 2}
 
@@ -353,16 +356,16 @@ this more restricted scenario still has utility for disentangling land
 atmosphere feedbacks, and understanding observations and more
 sophisticated models. However, \cite{Zhou_2015}'s results do suggest
 that uWUE (and by extension $\lambda$) may be somewhat constant with
-respect to soil moisture. The degree to which it is constant
-influences the degree to which a reader can relax their interpretation
-to one in which soil moisture is not fixed with respect to VPD. We
-attempted to shed some more light on this issue by plotting the
-distribution of uWUE with SWC for 66 fluxnet sites, but the signal to
-noise ratio was too low and when there was a signal of a relationship,
-it was inconsistent across sites. We did include this in supplemental
-material to aid the reader and draw attention to uWUE (and $\lambda$)
-- SWC relationships at the ecosystem scale as an important area for
-future research.
+across a range of conditions (including implicitly soil moisture). The
+degree to which it is constant influences the degree to which a reader
+can relax their interpretation to one in which soil moisture is not
+fixed with respect to VPD. We attempted to shed some more light on
+this issue by plotting the distribution of uWUE with SWC for 66
+fluxnet sites, but the signal to noise ratio was too low and when
+there was a signal of a relationship, it was inconsistent across
+sites. We did include this in supplemental material to aid the reader
+and draw attention to uWUE (and $\lambda$) - SWC relationships at the
+ecosystem scale as an important area for future research.
 
 \subsubsection{Interpretation issues with the use of the uncertainty
   parameter}
@@ -434,15 +437,6 @@ removed with the removal of the observational component.
     effect).
   \item \textbf{P 15 L 15 ``between''}: removed.
 \end{itemize}
-
-
-
-
-
-
-
-
-
 
 % \printbibliography
 \bibliography{references}
