@@ -54,15 +54,16 @@ def plot_box(_df, ax=None, pft=False):
   orig_xlim = ax.get_xlim()
   #ax.plot(orig_xlim, [d_calc.CP/287.0, d_calc.CP/287.0], 'm--', linewidth=1.0)
   ylim = ax.get_ylim()#[-4.0, 4.0]
-  custom_xlabel(_df, ax, 'Volumetric SWC', fontsize=small_ax_fontsize-4)
-  custom_ylabel(_df, ax, 'uWUE', fontsize=small_ax_fontsize-4)
+  ax.set_xlabel('Volumetric SWC')
+  ax.set_ylabel('uWUE')
+  # custom_xlabel(_df, ax, 'Volumetric SWC', fontsize=small_ax_fontsize-4)
+  # custom_ylabel(_df, ax, , fontsize=small_ax_fontsize-4)
   if pft:
     ax.set_title(name_dict[_df.pft.iloc[0]],\
                  fontsize=fontsize+3)
   else:
-    ax.set_title('Site: %s, PFT: %s, b# obs: %d'\
-                 % (_df.site.iloc[0], _df.pft.iloc[0], _df.shape[0]),\
-                 fontsize=fontsize+3)
+    ax.set_title('Site: %s, PFT: %s, # obs: %d'\
+                 % (_df.site.iloc[0], _df.pft.iloc[0], _df.shape[0]))
   # if _df.pft.iloc[0] in xlim:
   #   _xlims = xlim[_df.pft.iloc[0]]
   #   ax.set_xlim(_xlims)

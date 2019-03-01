@@ -59,6 +59,11 @@ doc/paper/ms.pdf : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/references.bib
 	bibtex ms && pdflatex ms && \
 	bibtex ms && pdflatex ms
 
+doc/paper/hess-supplement.pdf : doc/paper/hess-supplement.tex doc/paper/references.bib
+	cd ./doc/paper && pdflatex hess-supplement && \
+	bibtex hess-supplement && pdflatex hess-supplement && \
+	bibtex hess-supplement && pdflatex hess-supplement
+
 doc/paper/vpd_et_paper_hess.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 	cd ./doc/paper && pdflatex vpd_et_paper_hess && \
 	bibtex vpd_et_paper_hess && pdflatex vpd_et_paper_hess && \
