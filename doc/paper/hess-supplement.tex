@@ -88,6 +88,54 @@ assumptions can make our theory more useful to the reader we provide
 the figures for their interpretation, and motivation for future
 research.
 
+\section{Description of data}
+\subsection{Data}
+\label{data}
+We use both meteorological and eddy-covariance data from the FLUXNET2015
+database (data available at \sloppy
+\url{https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/} \sloppy),
+including all Tier 1 sites with at least four years of data and
+observations of the variables described in the methods section (Sect.
+\ref{methods}). Sixty-six sites met these requirements, and were grouped
+into nine plant functional types (PFT) according to the International
+Geosphere-Biosphere Programme vegetation classification scheme
+\citep{Loveland_1999}: cropland (CRO), grass (GRA), deciduous broadleaf
+forest (DBF), evergreen broadleaf forest (EBF), evergreen needleleaf
+forest (ENF), mixed forest (MF), closed shrub (CSH), savannah (SAV), and
+woody savannah (WSA) (site locations and citations are in Fig.
+\ref{map_fig} and Appendix \ref{flux_sites}, respectively).
+
+\begin{figure}[h]
+  \centering \includegraphics[trim={0 3cm 0 3cm}, clip]{./map.pdf}
+  \caption{Plant functional type and location of FLUXNET2015 sites
+    used in this analysis.}
+  \label{map_fig}
+\end{figure}
+We filter and quality control the FLUXNET-2015 data using a similar
+procedure as \cite{Zhou_2015}:
+
+\begin{itemize}
+\item Only measured or highest (``good'') quality gapfilled data,
+  according to quality control flags, are used.
+\item To isolate the growing season, we only use days in which the
+  average Gross Primary Productivity (GPP) exceeds 10\% of the
+  observed 95th percentile of GPP for a given site. GPP is calculated
+  using the nighttime respiration partitioning method.
+\item We remove days with rain and the day following to avoid issues
+  with rain interception and sensor saturation at high relative
+  humidity (\cite{Medlyn_2017}).
+\end{itemize}
+Additionally, as in \citet{Lin_2018}, we restrict data to the daytime,
+which is identified when downwelling shortwave radiation is greater
+than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W
+m$^{-2}$. To reduce the chance of sensor saturation at high relative
+humidity, we remove all time steps for which VPD is less than .01 kPa,
+and to reduce errors at low windspeeds we remove all periods with wind
+magnitudes less than 0.5 m s$^{-1}$. Timesteps with negative observed
+GPP or ET are also removed, and we aggregate half hourly data to
+hourly averages to reduce noise \citep{Lin_2018}. After these quality
+control procedures, 400,983 upscaled hourly observations remain.
+
 \input{supp-figs.tex}
 
 \section{FLUXNET2015 sites}
