@@ -7,7 +7,7 @@ ARXIV_FILES = doc/paper/ms.tex doc/paper/abstract.tex \
 
 PAPER_FILES = doc/paper/references.bib doc/paper/body.tex \
 doc/paper/abstract.tex doc/paper/vpd_et_paper_hess.tex \
-doc/paper/intro.tex doc/paper/conclusions.tex doc/paper/hess-supplement.tex \
+doc/paper/intro.tex doc/paper/conclusions.tex doc/paper/james-supplement.tex \
 doc/paper/supp-figs.tex
 
 TABLES = doc/paper/param_fixed.tex doc/paper/param_varying.tex
@@ -22,7 +22,7 @@ PLOTS = $(CURDIR)/etc/plots
 DATA = $(CURDIR)/dat
 
 
-paper : doc/paper/vpd_et_paper_hess.pdf
+paper : doc/paper/agu-james-submission.pdf
 
 
 # installation, data and python dependencies
@@ -59,15 +59,20 @@ doc/paper/ms.pdf : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/references.bib
 	bibtex ms && pdflatex ms && \
 	bibtex ms && pdflatex ms
 
-doc/paper/hess-supplement.pdf : doc/paper/hess-supplement.tex doc/paper/references.bib
-	cd ./doc/paper && pdflatex hess-supplement && \
-	bibtex hess-supplement && pdflatex hess-supplement && \
-	bibtex hess-supplement && pdflatex hess-supplement
+doc/paper/james-supplement.pdf : doc/paper/james-supplement.tex doc/paper/references.bib
+	cd ./doc/paper && pdflatex james-supplement && \
+	bibtex james-supplement && pdflatex james-supplement && \
+	bibtex james-supplement && pdflatex james-supplement
 
 doc/paper/vpd_et_paper_hess.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 	cd ./doc/paper && pdflatex vpd_et_paper_hess && \
 	bibtex vpd_et_paper_hess && pdflatex vpd_et_paper_hess && \
 	bibtex vpd_et_paper_hess && pdflatex vpd_et_paper_hess
+
+doc/paper/agu-james-submission.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
+	cd ./doc/paper && pdflatex agu-james-submission && \
+	bibtex vpd_et_paper_hess && pdflatex agu-james-submission && \
+	bibtex vpd_et_paper_hess && pdflatex agu-james-submission
 
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
