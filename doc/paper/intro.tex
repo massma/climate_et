@@ -1,10 +1,10 @@
 Vapor pressure deficit (VPD) is expected to rise over continents in
 the future due to the combination of increased temperature and,
 depending on region, decreased relative humidity
-\citep{Byrne_2013}. Increases in VPD increase the atmospheric demand
-for evapotranspirated water \citep{Penman_1948, Monteith_1965}, but
+\cite{Byrne_2013}. Increases in VPD increase the atmospheric demand
+for evapotranspirated water \cite{Penman_1948, Monteith_1965}, but
 also reduce stomatal conductance through stomatal closure
-\citep{Rawson1977, Leuning_1990, Mott2007, Damour2010,
+\cite{Rawson1977, Leuning_1990, Mott2007, Damour2010,
 MEDLYN_2011}. Understanding the net evapotranspiration (ET) response
 to these two opposing effects of changes in VPD is crucial for
 assessing the impact of environmental VPD perturbations on the water
@@ -15,13 +15,13 @@ stomatal closure lead to two possible perspectives for how ET responds
 to shifts in VPD. The first, a hydrometeorological perspective, is
 that higher VPD increases atmospheric demand for water from the land
 surface, and this drives an increase in ET
-\citep{Penman_1948}. However, plants' stomata have evolved to
+\cite{Penman_1948}. However, plants' stomata have evolved to
 optimally regulate the exchange of water and carbon, and tend to
 partially close in response to increased atmospheric dryness
-\citep{Farquhar_1978, Ball_1987, Leuning_1990, Katul_2009,
+\cite{Farquhar_1978, Ball_1987, Leuning_1990, Katul_2009,
 MEDLYN_2011}. This leads to a plant physiology perspective, in which
 an increase in VPD may actually correspond to a decrease in ET because
-of stomatal closure \citep[e.g.][]{Rigden_2017}.  In other words, the
+of stomatal closure \cite<e.g.>[]{Rigden_2017}.  In other words, the
 question ``When does VPD drive or reduce ET?'' can be related to
 whether plant regulation or atmospheric demand dominates the ET
 response.
@@ -32,12 +32,12 @@ atmospheric drying then soil moisture will be better conserved. This
 represents a sensible evolutionary strategy to cope with aridity: save
 water for periods when atmospheric demand for water is relatively low,
 and atmospheric carbon can be accessed with a relatively smaller cost
-in water loss. If instead stomata were fully passive \citep [similar
-to soil pores, e.g. ][]{Or_2013}, increased atmospheric aridity would
-strongly reduce soil moisture \citep{Berg_2017}. This could further
+in water loss. If instead stomata were fully passive \cite<similar
+to soil pores, e.g. >[]{Or_2013}, increased atmospheric aridity would
+strongly reduce soil moisture \cite{Berg_2017}. This could further
 increase aridity as low soil moisture levels increases the Bowen
 ratio, leading to increased temperature and atmospheric drying
-\citep[][]{Bouchet_1963, Morton_1965, Brutsaert_1999, Ozdogan_2006,
+\cite{Bouchet_1963, Morton_1965, Brutsaert_1999, Ozdogan_2006,
 Salvucci_2013, Gentine_2016, Berg_2016, Zhou_2019}. Therefore, passive
 regulation and a lack of soil moisture conservation does not seem to
 be a sensible strategy for plants from an evolutionary
@@ -72,42 +72,42 @@ feedbacks. In particular, our approach has applications for
 understanding climate change impacts, given expected increases in VPD
 with rising temperature.  In the past, similar simplified approaches
 were used to understand interactions between stomatal conductance,
-evapotranspiration and the environment \citep[e.g.,][]{Jarvis_1984,
+evapotranspiration and the environment \cite<e.g.,>[]{Jarvis_1984,
 Jarvis_1986, Mcnaughton_1991}. However these researchers did not
 explore explicitly the sensitivity of ET to VPD, including VPD's
 effect on stomatal conductance and plant function.
 
 Approaching the problem of ET response to VPD is aided by recent
 results drastically improving our understanding of VPD's impact on
-physiology, especially at the leaf level. \citet{MEDLYN_2011}
+physiology, especially at the leaf level. \citeA{MEDLYN_2011}
 developed a model for leaf-scale stomatal conductance ($g_s$),
 including VPD response, by combining an optimal photosynthesis theory
-\citep{Cowan_1977, Katul_2009, Katul_2010} with an empirical approach,
+\cite{Cowan_1977, Katul_2009, Katul_2010} with an empirical approach,
 and extended use of this model to the ecosystem scale in
-\citet{Medlyn_2017}. Additionally, \citet{Zhou_2014} demonstrated that
+\citeA{Medlyn_2017}. Additionally, \citeA{Zhou_2014} demonstrated that
 a quantity underlying water use efficiency $\left(uWUE = \frac{GPP\;
 \sqrt{VPD}}{ET}\right)$ properly captures a constant relationship
 between GPP, ET, and VPD over a diurnal cycle at the ecosystem
 scale. uWUE is also relatively well conserved in the growing season
 across space and time, within a plant functional type (PFT)
-\citep{Zhou_2015}.  While stomatal conductance parameterizations and
+\cite{Zhou_2015}.  While stomatal conductance parameterizations and
 uWUE greatly simplify complex plant physiological processes, they
  still capture ecosystem behavior for vegetated surfaces
-\citep{Medlyn_2017, Zhou_2014}, and are useful tools to transparently
+\cite{Medlyn_2017, Zhou_2014}, and are useful tools to transparently
 develop intuition for the behavior of complex land-atmosphere systems.
 
 In this manuscript, we leverage uWUE and recent developments in
-stomatal conductance parameterizations \citep{MEDLYN_2011} with a
-Penman-Monteith framework \citep [hereafter PM,][]{Penman_1948,
+stomatal conductance parameterizations \cite{MEDLYN_2011} with a
+Penman-Monteith framework \cite<hereafter PM,>[]{Penman_1948,
 Monteith_1965} to derive the theoretical one-way response of ET to VPD
 with other environmental variables properly controlled for, i.e. we
 develop a framework for evaluating the partial derivative of ET with
 respect to VPD. It is useful to disconnect the impact of VPD from
 other variables as VPD is known to increase dramatically with future
-climate and limit ET more than soil moisture \citep{Novick_2016}, but
+climate and limit ET more than soil moisture \cite{Novick_2016}, but
 disentangling VPD effects from soil moisture effects has been
 difficult in previous research, given their co-variability
-\citep[][]{Lin_2018, Zhou_2019}.  We are
+\cite{Lin_2018, Zhou_2019}.  We are
 able to disentangle the effect of VPD on ET because we explicitly
 include VPD's full effect on stomatal conductance, including its
 impact on photosynthesis. The use of an energy balance framework (PM)
@@ -115,14 +115,14 @@ allows us to include in our analysis the effects of the energy cost of
 evaporating water from a surface, which is an important factor in the
 natural environment, compared to prescribed in situ environmental
 conditions. This is relevant because previous research focusing on the
-leaf scale \citep{Rawson1977, Turner1984, Oren1999, Damour2010,
+leaf scale \cite{Rawson1977, Turner1984, Oren1999, Damour2010,
 Mott2013} does not consistently or analogously include the energetic
 constraints on evapotranspiration under which ecosystems operate. The
 leaf-scale results agree that stomatal conductance decreases in
-response to VPD \citep{Oren1999, Damour2010}, which we expect to be
+response to VPD \cite{Oren1999, Damour2010}, which we expect to be
 true for an ecosystem as well. However leaf scale results also
 indicate that transpiration usually increases with increasing VPD in a
-concave downward shape \citep[e.g.,][]{Rawson1977, Turner1984,
+concave downward shape \cite<e.g.,>[]{Rawson1977, Turner1984,
 Mott2013}, which may not be true for ET at the ecosystem scale once
 energetic constraints on ET are included in the analysis.  Our
 approach allows us to estimate the expected ET response to VPD at the

@@ -152,7 +152,7 @@ def write_varying():
   for symbol, unit, citation, values, citevals \
       in zip(["g$_1$", "uWUE", "T", "g$_a$"],
              ["Pa$^{1/2}$ [kPa$^{1/2}$]", "$\\mu$-mol C Pa$^{0.5}$ J$^{-1}$ ET [g C hPa$^{1/2}$ kg$^{-1}$ H$_2$O]", "$^o$C", "m/s"],
-             ["Fig. 2, 7; \\citet{Medlyn_2017}", "Table 4; \\citet{Zhou_2015}", "-", "-"],
+             ["Fig. 2, 7; \\citeA{Medlyn_2017}", "Table 4; \\citeA{Zhou_2015}", "-", "-"],
              [g1s, uwues, ts, gas],
              [g1_medlyn, uwue_zhou, [], []]):
     fh.write("%s & %s & " % (symbol, unit))
