@@ -128,9 +128,9 @@ that underlying Water Use Efficiency (uWUE):
   VPD over a diurnal cycle during the growing season
   \cite{Zhou_2014}. The theoretical derivation of the square root VPD
   dependence in uWUE leverages the same assumptions used in
-  \cite{MEDLYN_2011} to derive the square-root VPD dependence of the
+  \citeA{MEDLYN_2011} to derive the square-root VPD dependence of the
   stomatal conductance model (Eq.  (\ref{medlyn})).  We can use uWUE
-  to remove the $GPP$ dependence from $g_s$ in a way that makes PM
+  to remove the $GPP$ dependence in $g_s$ in a way that makes PM
   analytically tractable:
 
 % \begin{linenomath*}
@@ -160,7 +160,7 @@ dependence on $GPP$ is removed:
   itself through the stomatal conductance term, and we have also
   replaced the added complexity of a stomatal conductance reduction
   factor and a photosynthesis model with a single parameter (uWUE). Both
-  the plant parameters reflect water conservation strategy.The
+  the plant parameters reflect water conservation strategy. The
   slope parameter is related to the willingness of stomata to trade
   water for CO$_2$ and to keep stomata open (carbon cost in terms of
   water)). uWUE is a semi-empirical ecosystem-scale constant related
@@ -248,23 +248,23 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   case it is of interest to the reader, and to motivate future
   research.
 
-   Because Eq. (\ref{d_et}) is a partial derivative, it's utility is as a
-   conceptual model for the change in ET in response to VPD with all
-   other variables held fixed. This provides is a useful tool for
-   identifying the effect of VPD on ET through atmospheric demand and
-   plant response, and allows a practitioner to disentangle
-   complicated feedbacks when many quantities co-vary. However users
-   of Eq. (\ref{d_et}) should take care that their interpretation
-   matches the assumptions inherent in a partial derivative. For
-   example, results will only be as valid as the assumption that g$_1$
-   and uWUE (and by extension $\lambda$) are fixed with respect to the
-   user's conceptual change in VPD. Care must also be taken with
-   possible indirect effects associated with a change in VPD: for
-   example, a change in ET induced by a change in VPD can cause a
-   change in surface temperature, which would drive a change in net
-   radiation. These types of indirect effects and feedbacks are not
-   considered in Eq. (\ref{d_et}): temperature (a variable) is
-   mathematically fixed.
+  Because Eq. (\ref{d_et}) is a partial derivative, it's utility is as
+  a conceptual model for the change in ET in response to VPD with all
+  other variables held fixed. This provides a useful tool for
+  identifying the effect of VPD on ET through atmospheric demand and
+  plant response, and allows a practitioner to disentangle complicated
+  feedbacks when many quantities co-vary. However users of
+  Eq. (\ref{d_et}) should take care that their interpretation matches
+  the assumptions inherent in a partial derivative. For example,
+  results will only be as valid as the assumption that g$_1$ and uWUE
+  (and by extension $\lambda$) are fixed with respect to the user's
+  conceptual change in VPD. Care must also be taken with possible
+  indirect effects associated with a change in VPD: for example, a
+  change in ET induced by a change in VPD can cause a change in
+  surface temperature, which would drive a change in net
+  radiation. These types of indirect effects and feedbacks are not
+  considered in Eq. (\ref{d_et}): temperature (a variable) is
+  mathematically fixed.
 
 \subsection{Framing Eq. \ref{d_et} with previous research }
 
@@ -302,7 +302,7 @@ specific plant types and characteristics.
 
 All code and data used in this analysis, including those used to
 generate the figures and tables, are publicly available at
-\url{https://github.com/massma/climate\_et}.
+\url{https://github.com/massma/climate_et}.
 %\hyperref[https://github.com/massma/climate\_et]{https://github.com/massma/climate_et}.
 
 \begin{table}
@@ -317,6 +317,7 @@ generate the figures and tables, are publicly available at
     correspond to approximately the 85th percentile.}
   \label{param_varying}
   \centering
+  \footnotesize
   \begin{tabular}{l c c c c c}
     \hline
     Symbol & units [units in citation] & min  & med & max
@@ -386,9 +387,12 @@ should be exercised when interpreting the range of ET responses,
 because g$_1$ and uWUE should generally be anti-correlated due to
 their dependencies on $\lambda$. As $\lambda$ increases, g$_1$ should
 increase and uWUE should decrease. Because high and low values of uWUE
-and g$_1$ were determined independently from each other in
-previous literature, plant types with anomalously high or low values
-for \textit{both} g$_1$ and uWUE should be relatively rare.
+and g$_1$ were determined independently from each other in previous
+literature, plant types with anomalously high or low values for
+\textit{both} g$_1$ and uWUE should be relatively rare. However, some
+plant types do exhibit co-occuring high values for g$_1$ and uWUE. For
+example, C3 crops have both the highest g$_1$ value in
+\citeA{Franks_2017}, and the highest uWUE value in \citeA{Zhou_2015}.
 
 \begin{figure}
   \centering \includegraphics{./fully_idealized_scaling.pdf}
@@ -642,9 +646,9 @@ relations reveal themselves from Eq. (\ref{curves}):
     to plant type.
   \item For all physically possible exponents of VPD dependence ($n,
     m$), whether the solution is concave up or concave down does not
-    depend on uWUE.
+    depend on $*WUE$.
   \item In general, increasing the exponent of VPD dependence for
-    either $uWUE*$ or $g_*$ increases the likelihood of a concave down
+    either $*WUE$ or $g_*$ increases the likelihood of a concave down
     result. Additionally, as the exponent of VPD dependence increases
     from the optimum value of 1/2, whether the curve is concave upward
     or concave downward becomes a function of the plant specific slope
