@@ -382,17 +382,18 @@ the degree to which the response is water conservative
 ($\frac{\partial \; ET}{\partial \; VPD} > 0$) (Figure \ref{sign})
 . Higher g$_1$ and uWUE shift the curve towards increasing ET
 responses with VPD (water intensive), and smaller g$_1$ values lead to
-a higher non-linear VPD dependence of the response. However care
-should be exercised when interpreting the range of ET responses,
-because g$_1$ and uWUE should generally be anti-correlated due to
-their dependencies on $\lambda$. As $\lambda$ increases, g$_1$ should
-increase and uWUE should decrease. Because high and low values of uWUE
-and g$_1$ were determined independently from each other in previous
-literature, plant types with anomalously high or low values for
-\textit{both} g$_1$ and uWUE should be relatively rare. However, some
-plant types do exhibit co-occuring high values for g$_1$ and uWUE. For
-example, C3 crops have both the highest g$_1$ value in
-\citeA{Franks_2017}, and the highest uWUE value in \citeA{Zhou_2015}.
+a larger VPD dependence of the response (i.e. ET response is a
+stronger function of VPD). However care should be exercised when
+interpreting the range of ET responses, because g$_1$ and uWUE should
+generally be anti-correlated due to their dependencies on
+$\lambda$. As $\lambda$ increases, g$_1$ should increase and uWUE
+should decrease. Because high and low values of uWUE and g$_1$ were
+determined independently from each other in previous literature, plant
+types with anomalously high or low values for \textit{both} g$_1$ and
+uWUE should be relatively rare. However, some plant types do exhibit
+co-occurring high values for g$_1$ and uWUE. For example, C3 crops
+have both the highest g$_1$ value in \citeA{Franks_2017}, and the
+highest uWUE value in \citeA{Zhou_2015}.
 
 \begin{figure}
   \centering \includegraphics{./fully_idealized_scaling.pdf}
@@ -443,7 +444,7 @@ However, given that g$_1$ and uWUE can vary, and they both have a
 large impact on the ET response (Figure \ref{full}, \ref{sign}), it is
 useful to examine how these quantities vary in previous literature,
 framed by our results on $\frac{\partial \; ET}{\partial \; VPD}$. In
-\citeA{Zhou_2015} most plant types have uWUE similar to our median
+\citeA{Zhou_2015} most plant types' uWUE is similar to our median
 value, under which the sign of the ET response depends on
 VPD. However, crops, which we expect to prioritize carbon uptake over
 water conservation, have a higher uWUE value closer to our maximum
@@ -458,30 +459,30 @@ role of soil moisture for within plant-type variability of uWUE, we
 might expect some variation, especially in extreme cases when soil
 water becomes a limiting factor (see supplementary material).
 
-\citeA{Medlyn_2017}'s results did not display the robust relationship
-between plant type and and plant parameter (g$_1$) that was
-demonstrated by \citeA{Zhou_2015} for uWUE. Given that there is a
-robust relationship between g$_1$ and plant type in \citeA{Lin_2015},
-and that \citeA{Zhou_2015}'s ecosystem-scale results rely on the same
-underlying theory as \citeA{Medlyn_2017}'s results, the ambiguous
-results in \citeA{Medlyn_2017} could be due to noise in ecosystem
-scale observations, the consequences of imposing a model structure in
-some of their g$_1$ estimations, or real ecosystem-scale within-plant
-type variability (e.g. multiple species impacting the relationship
-within the eddy-covariance footprint). These differences between
-leaf-scale behavior and ecosystem scale behavior highlight the
+\citeA{Medlyn_2017}'s ecosystem-scale results did not display the
+robust relationship between plant type and and plant parameter (g$_1$)
+that was demonstrated by \citeA{Zhou_2015} for uWUE. Given that there
+is a robust relationship between g$_1$ and plant type in
+\citeA{Lin_2015}'s leaf-scale results, and that \citeA{Zhou_2015}'s ecosystem-scale results
+rely on the same underlying theory as \citeA{Medlyn_2017}'s results,
+the ambiguous results in \citeA{Medlyn_2017} could be due to noise in
+ecosystem scale observations, the consequences of imposing a model
+structure in some of their g$_1$ estimations, or real ecosystem-scale
+within-plant type variability (e.g. multiple species impacting the
+relationship within the eddy-covariance footprint). These differences
+between leaf-scale behavior and ecosystem scale behavior highlight the
 importance of understanding how and why slope parameters show
 increased variability at the ecosystem scale, as argued by
 \citeA{Medlyn_2017}. However, if we assume that there is some real
 analogy between leaf scale results in \citeA{Lin_2015} and ecosystem
 scale behavior, and that some of the ambiguity in \citeA{Medlyn_2017}
 is due to model and/or observational error, then we can use the
-relationships between g$_1$ and plant characteristics defined by \citeA{Lin_2015} to
-frame the ET response to VPD. This is subject
-to the strong caveat that we still do not fully understand g$_1$
-behavior at the ecosystem scale. Extrapolating \citeA{Lin_2015}'s
-results (e.g. Fig. 2) to the ecosystem scale would reveal the
-following relationships between g$_1$ and plant types:
+relationships between g$_1$ and plant characteristics defined by
+\citeA{Lin_2015} to frame the ET response to VPD. This is subject to
+the strong caveat that we still do not fully understand g$_1$ behavior
+at the ecosystem scale. Extrapolating \citeA{Lin_2015}'s results
+(e.g. Fig. 2) to the ecosystem scale would reveal the following
+relationships between g$_1$ and plant types:
 
 \begin{itemize}
   \item C3 plants would have a generally higher g$_1$ than C4 plants,
@@ -532,37 +533,37 @@ stomatal conductance model that contains a dependence on GPP.
 So far we have discussed the role of different parameters in
 modulating the ET response. However, the form of the ET response is
 imposed by our choice of stomatal conductance model. We now examine
-how the stomatal model choice, and specifically the exponent of the
-VPD dependence in the stomatal conductance model, can impact the
-general form of the ET-VPD relationship. There is a theoretical basis
-for the square root VPD dependence in both the stomatal conductance
-model and uWUE based on the assumption that stomata behave to maximize
-carbon gain while minimizing water loss, which observations also
-generally support \cite{Lloyd_1991, MEDLYN_2011, Lin_2015, Zhou_2014,
-  Zhou_2015, Medlyn_2017}. However, some purely empirical results that
-fit the exponent of the VPD dependence to data have shown that it may
-vary slightly from 1/2, suggesting that stomata, as well as
-ecosystem-scale quantities based on stomata theory, may not always
-function optimally \cite{Zhou_2015, Lin_2018}. Specifically with
-regards to uWUE, one would not expect that this ecosystem scale WUE
-quantity will respond to VPD exactly analogously to stomata. Direct
-soil evaporation's contributions to ET should shift the exponent of
-the VPD dependence. \citeA{Zhou_2015}'s results corroborate this: they
-found a mean empirically fit exponential VPD dependence of 0.55,
-varying slightly from the theoretically optimal value of of 0.5 for
-AmeriFlux sites. \citeA{Lin_2018}'s results also show variance in the
-empirical exponent of the VPD dependence in the stomatal conductance
-model, but interpretation of this variance is more difficult as
-\citeA{Lin_2018} do not handle the GPP dependence of stomatal
-conductance in a directly analogous manner to the optimal theory in
-\citeA{MEDLYN_2011} and \citeA{Medlyn_2017}. Regardless, given that
-these recent results on the relationship between VPD, GPP, and ET
-\cite{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017} form the
-backbone of our analysis and are what allowed us to derive an explicit
-ET expression for the first time (Eq. (\ref{et})), we will analyze if
-and how assumptions about the exponent of the VPD dependence impact
-the shape of the ET-VPD dependence. This analysis is also important to
-understand whether the choice of stomatal conductance model alters the
+how stomatal model choice, and specifically the exponent of the VPD
+dependence in the stomatal conductance model, can impact the general
+form of the ET-VPD relationship. There is a theoretical basis for the
+square root VPD dependence in both the stomatal conductance model and
+uWUE based on the assumption that stomata behave to maximize carbon
+gain while minimizing water loss, which observations also generally
+support \cite{Lloyd_1991, MEDLYN_2011, Lin_2015, Zhou_2014, Zhou_2015,
+  Medlyn_2017}. However, some purely empirical results that fit the
+exponent of the VPD dependence to data have shown that it may vary
+slightly from 1/2, suggesting that stomata, as well as ecosystem-scale
+quantities based on stomata theory, may not always function optimally
+\cite{Zhou_2015, Lin_2018}. Specifically with regards to uWUE, one
+would not expect that this ecosystem scale WUE quantity will respond
+to VPD exactly analogously to stomata. Direct soil evaporation's
+contributions to ET should shift the exponent of the VPD
+dependence. \citeA{Zhou_2015}'s results corroborate this: they found a
+mean empirically fit exponential VPD dependence of 0.55, varying
+slightly from the theoretically optimal value of of 0.5 for AmeriFlux
+sites. \citeA{Lin_2018}'s results also show variance in the empirical
+exponent of the VPD dependence in the stomatal conductance model, but
+interpretation of this variance is more difficult as \citeA{Lin_2018}
+do not handle the GPP dependence of stomatal conductance in a directly
+analogous manner to the optimal theory in \citeA{MEDLYN_2011} and
+\citeA{Medlyn_2017}. Regardless, given that these recent results on
+the relationship between VPD, GPP, and ET \cite{MEDLYN_2011,
+  Zhou_2014, Zhou_2015, Medlyn_2017} form the backbone of our analysis
+and are what allowed us to derive an explicit ET expression for the
+first time (Eq. (\ref{et})), we will analyze if and how assumptions
+about the exponent of the VPD dependence impact the shape of the
+ET-VPD dependence. This analysis is also important to understand
+whether the choice of stomatal conductance model alters the
 fundamental behavior of the ET-VPD relationships, as many commonly
 used models utilize a VPD exponent other than the 1/2 suggested by
 optimal theory \cite<e.g. >[ which uses an exponent of
@@ -661,8 +662,8 @@ relations reveal themselves from Eq. (\ref{curves}):
     be prioritized.
 \end{itemize}
 
-While it is possible that in the future some other form of VPD
-dependence is derived, at present \cite{MEDLYN_2011} and
+While it is possible (and even likely) that in the future some other
+form of VPD dependence is derived, at present \cite{MEDLYN_2011} and
 \cite{Zhou_2014} established n=m=1/2 as the most likely candidate
 given current theory and empirical data. Additionally, we argue that a
 concave up result matches physical intuition more than a concave down

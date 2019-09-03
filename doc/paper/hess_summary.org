@@ -1,8 +1,0 @@
-Plants can sense increasing dryness in the air and close up the pores
-on their leaves, preventing water loss. However, drier air also
-naturally demands more water from the land surface. Here we develop a
-simplified theory for when land surface water loss increases
-(atmospheric demand dominates) or decreases (plant response dominates)
-in response to increased dryness in the air. This theory provides
-intuition for how ecosystems regulate water in response to changes in
-atmospheric dryness.

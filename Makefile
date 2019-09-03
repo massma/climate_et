@@ -6,7 +6,7 @@ ARXIV_FILES = doc/paper/ms.tex doc/paper/abstract.tex \
 	doc/paper/intro.tex doc/paper/conclusions.tex
 
 PAPER_FILES = doc/paper/references.bib doc/paper/body.tex \
-doc/paper/abstract.tex doc/paper/vpd_et_paper_hess.tex \
+doc/paper/abstract.tex doc/paper/agu-james-submission.tex \
 doc/paper/intro.tex doc/paper/conclusions.tex doc/paper/james-supplement.tex \
 doc/paper/supp-figs.tex
 
@@ -64,15 +64,10 @@ doc/paper/james-supplement.pdf : doc/paper/james-supplement.tex doc/paper/refere
 	bibtex james-supplement && pdflatex james-supplement && \
 	bibtex james-supplement && pdflatex james-supplement
 
-doc/paper/vpd_et_paper_hess.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
-	cd ./doc/paper && pdflatex vpd_et_paper_hess && \
-	bibtex vpd_et_paper_hess && pdflatex vpd_et_paper_hess && \
-	bibtex vpd_et_paper_hess && pdflatex vpd_et_paper_hess
-
 doc/paper/agu-james-submission.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 	cd ./doc/paper && pdflatex agu-james-submission && \
-	bibtex vpd_et_paper_hess && pdflatex agu-james-submission && \
-	bibtex vpd_et_paper_hess && pdflatex agu-james-submission
+	bibtex agu-james-submission && pdflatex agu-james-submission && \
+	bibtex agu-james-submission && pdflatex agu-james-submission
 
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
@@ -85,12 +80,12 @@ doc/paper/supp-figs.tex : src/paper_figure_code/swc_boxplot.py
 clean :
 	rm -f $(FIGURES) doc/paper/arxiv-submission.tar && \
 	cd doc/paper && rm -f ./*.aux ./*.log ./*.blg ./*.bbl ms.pdf \
-	vpd_et_paper_hess.pdf
+	agu-james-submission.pdf
 
 # below is if you don't want to regenerate figs
 clean-paper :
 	cd doc/paper && rm -f ./*.aux ./*.log ./*.blg ./*.bbl \
-	data_scatter.png ms.pdf vpd_et_paper_hess.pdf
+	data_scatter.png ms.pdf agu-james-submission.pdf
 
 # below is because scatter figure takes so long to make, we don't want
 # to always clean it
