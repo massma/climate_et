@@ -236,14 +236,14 @@ def test_trend(_df, meta, fig=None):
                    stat="Spearman R", loc="upper right", fontsize=10)
     g.set_axis_labels(meta['x_label'], meta['y_label'],\
                       fontsize=meta['fontsize'])
+    # g.fig.suptitle('Site: %s, PFT: %s' % (_df['site'].iloc[0],_df['pft'].iloc[0]))
 
   if meta['full_ds']:
     test_savefig('%s/climate_et/scatters/%s_%s.pdf'\
                 % (os.environ['PLOTS'], meta['x_var'], meta['y_var']))
   elif meta['group'] == 'site':
-    test_savefig('%s/climate_et/scatters/%s_%s_site/%s.png'\
-                 % (os.environ['PLOTS'], meta['x_var'],\
-                    meta['y_var'],  _df['site'].iloc[0]))
+    test_savefig('../../doc/paper/supp-figs/0_%s_%s_%s.png' %
+                 (meta['x_var'], meta['y_var'], _df['site'].iloc[0]))
     plt.title('pft: %s' % _df['pft'].iloc[0])
   else:
     test_savefig('%s/climate_et/scatters/%s_%s/%s.png'\
@@ -267,7 +267,8 @@ def scatter_wrapper(df, meta):
   meta['full_ds'] = True
   test_trend(df, meta)
   # meta['full_ds'] = False
-  # df.groupby('pft').apply(test_trend, meta)
+  # meta['group'] = 'site'
+  # df.groupby('site').apply(test_trend, meta)
   return
 
 

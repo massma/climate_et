@@ -69,6 +69,12 @@ doc/paper/agu-james-submission.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
 	bibtex agu-james-submission && pdflatex agu-james-submission && \
 	bibtex agu-james-submission && pdflatex agu-james-submission
 
+doc/paper/agu-james-diff.pdf : $(PAPER_FILES)
+	cd ./doc/paper && latexdiff agu-james-original-submission.tex	\
+	agu-james-submission.tex > agu-james-diff.tex && bibtex		\
+	agu-james-diff && pdflatex agu-james-diff && bibtex		\
+	agu-james-diff && pdflatex agu-james-diff
+
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
 

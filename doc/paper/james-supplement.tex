@@ -72,6 +72,16 @@ assumptions can make our theory more useful to the reader we provide
 the figures for their interpretation, and motivation for future
 research.
 
+Additionally, we include a figure showing the joint distribution
+between saturation vapor pressure and relative humidity calculated
+from the FLUXNET-2015 data. Relative humidity and saturation vapor
+pressure are much more independent than saturation vapor pressure and
+VPD, and we use an assumption that relative humidity and saturation
+vapor pressure can be approximated as independent in order to evaluate
+$\frac{\partial ET}{\partial VPD}$. Please note that at a given site,
+the relationship may be more or less independent depending on the
+hydroclimate.
+
 \section{Description of data}
 \subsection{Data}
 \label{data}
@@ -119,6 +129,12 @@ hourly averages to reduce noise \citep{Lin_2018}. After these quality
 control procedures, 400,983 upscaled hourly observations remain.
 
 \input{supp-figs.tex}
+
+\begin{figure}
+  \centering \includegraphics{./supp-figs/0joint_rh_es.pdf}
+  \caption{The joint distribution of relative humidity and saturation
+    vapor pressure for the FLUXNET2015 dataset.}
+  \end{figure}
 
 \section{FLUXNET2015 sites}
   % below taken adapted from Trevor Keenan's FLUXNET citations

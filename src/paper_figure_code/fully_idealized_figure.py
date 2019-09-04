@@ -6,7 +6,7 @@ from shared_functions import *
 import matplotlib.lines as mlines
 
 # mean_df defined her at module-level
-linewidth=2.5
+linewidth=0.1 # for 0 line
 dashedlinewidth=3.0
 markersize=8
 
@@ -99,7 +99,7 @@ add_plots(df, ax)
 ax.set_xlabel('VPD (Pa)', fontsize=single_ax_fontsize)
 ax.set_ylabel(et_string, fontsize=single_ax_fontsize)
 xlims = ax.get_xlim()
-ax.plot(xlims, [0., 0.], 'k--', linewidth=linewidth)
+ax.plot(xlims, [0., 0.], 'k-', linewidth=linewidth)
 ax.set_xlim(xlims)
 color_handles = [mlines.Line2D([], [], color=c, label=r'%s: ($\frac{2 \; g_a \; P}{T(\Delta + \gamma)}$)' % p) for c,p in zip(colors, pdesc)]
 style_handles = [mlines.Line2D([], [], color='k', linestyle=l, label=(p + ": " + paren_string)) for l,p in zip(linestyles, pdesc)]
@@ -115,7 +115,7 @@ ax.set_xlabel('VPD (Pa)', fontsize=single_ax_fontsize)
 # ax.set_ylabel(paren_string, fontsize=single_ax_fontsize)
 ax.set_ylabel(et_string, fontsize=single_ax_fontsize)
 xlims = ax.get_xlim()
-ax.plot(xlims, [0., 0.], 'k--', linewidth=linewidth)
+ax.plot(xlims, [0., 0.], 'k-', linewidth=linewidth)
 ax.set_xlim(xlims)
 color_handles = [mlines.Line2D([], [], color=c, label=r'%s: g1' % p) for c,p in zip(colors, pdesc)]
 style_handles = [mlines.Line2D([], [], color='k', linestyle=l, label=(p + ": uWUE")) for l,p in zip(linestyles, pdesc)]
@@ -131,7 +131,7 @@ ax.set_xlabel('VPD (Pa)', fontsize=single_ax_fontsize)
 # ax.set_ylabel(paren_string, fontsize=single_ax_fontsize)
 ax.set_ylabel(et_string, fontsize=single_ax_fontsize)
 xlims = ax.get_xlim()
-ax.plot(xlims, [0., 0.], 'k--', linewidth=linewidth)
+ax.plot(xlims, [0., 0.], 'k-', linewidth=linewidth)
 ax.set_xlim(xlims)
 color_handles = [mlines.Line2D([], [], color=c, label=r'%s: g_a' % p) for c,p in zip(colors, pdesc)]
 style_handles = [mlines.Line2D([], [], color='k', linestyle=l, label=(p + ": T")) for l,p in zip(linestyles, pdesc)]
