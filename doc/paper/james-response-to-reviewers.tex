@@ -1,0 +1,134 @@
+\documentclass[12pt]{article}
+
+\input{preamble}
+
+\begin{document}
+
+\large \textbf{Response to Reviewers: \textit{When does vapor pressure deficit drive or reduce
+    evapotranspiration?}} \\
+Adam Massmann, Pierre Gentine, and Changjie Lin \\
+\today
+
+\vspace{0.1in}
+
+\normalsize
+\section{Response to Reviewer 1}
+
+Thank you very much for the thoughtful and thorough review. We
+responded to all comments in the annotated PDF, but this is our first
+time using that tool so if there are any issues please let us know. As
+an aside, thanks for introducing us to the annotated PDF feature. We
+were not aware of it, and it was pleasant to use.
+
+\section{Response to Reviewer 2}
+
+As with reviewer 1, thank you very much for the time spent on a
+thoughtful review. Here are responses to your comments:
+
+\begin{enumerate}
+
+\item This paper actually discusses transpiration not
+  evapotranspiration - while the role of soil evaporation is sometimes
+  acknowledged (and then dismissed) - it would be much cleaner if
+  references to evapotranspiration (ET) were replaced with
+  transpiration (T). The role of soil evaporation and interception in
+  a changing climate is a whole other (and difficult!) issue.
+
+  \textit{Response}: Yes, we agree that the underlying theory was
+  developed for transpiration, and that it would probably appear
+  cleaner to just present the manuscript in terms of transpiration
+  instead of evapotranspiration. However, we prefer to use ET, along
+  with the language discussing the theory's likely limitation when
+  evaporation is high relative to transpiration, for a few of
+  reasons. The parameter ranges we use in Table 2 for uWUE and g1 and
+  are derived from ecosystem ET measurements in Zhou et al. 2015 and
+  Medlyn et al. 2017, rather than T measurements. Given the
+  semi-empirical nature of the theory, and that the parameters were
+  developed empirically from ET observations rather than T
+  observations (and it would require the reader to dig into cited
+  literature to figure this out), we believe it is more transparent to
+  call the quantity ET rather than T, while including explicit
+  language about the possible weaknesses of the theory when
+  evaporation is large relative to transpiration. Additionally, Zhou
+  et al. 2014 and Zhou et al. 2015 use "ET" rather than "T", so by
+  using "ET" we are more consistent with that notation. However,
+  Medlyn et al. 2017 use "E" for this quantity (their Eq. 5), but call
+  it "canopy transpiration," which we actually did not prefer because
+  we felt using "transpiration" obfuscated the fact that their
+  estimate of $g$ was actually derived from ET measurements. So, while
+  we agree that it could appear cleaner to just call the quantity T
+  and remove our language discussing the theory's limitations and
+  caveats with respect to evaporation, we also believe this could hide
+  the fact the we use semi-empirical parameters derived for ET, and
+  distance our work from the previous work we directly build upon (in
+  particular Zhou et al. 2014 and 2015). While not relevant at all
+  (but still helpful in the end), keeping ET rather than adopting T
+  has a practical advantage that our title would not need to be
+  changed, which would help match the final peer reviewed version of
+  the manuscript to already publicly available pre-prints of the
+  manuscript.
+
+\item Lines 80-90. Plants also use evaporation to cool their leaves - is
+  this significant? And does it suggest there should be some residual
+  stomatal opening?
+
+  \textit{Response}: Yes, some plants use transpiration to regulate
+  temperature on their leaves in some conditions, and this could be a
+  cause of stomatal opening/closing. We added language at lines 78-80
+  acknowledging that the simplified logic in the opening excludes
+  details, including how plants can use transpiration for thermal
+  regulation: ``...excludes many details ... e.g., ... thermal
+  regulation with transpiration ... Lin et al. 2017''
+
+\item Line 210-211. It would be worth expanding on the RH - es
+  relationship - what data?
+
+\textit{Response}: Agreed, we added a figure to the supplemental material on
+    the relationship between RH and es, and a reference to it in the text.
+
+\item Table 4 legend. Needs a bit of clarification on the choice of ranges
+  of T and ga.
+
+  \textit{Response}: Agreed; added clarifying language to the caption
+  for how T and g$_a$ ranges were estimated (FLUXNET data): ``Values
+  for $T$ and g$_a$ are calculated from FLUXNET-2015 data (see
+  supplemental material for description), rounding the 15th, 50th, and
+  85th percentile to the nearest 5$^o$C and 0.005 m/s, respectively.''
+
+\item Line 322-335. I found this paragraph a bit ambiguous. The second
+  sentence suggests most ptfs are similar to the median type but the
+  following sentences suggest this is not true. I think this is
+  important - the reader needs to know whether the max and min values
+  of parameters are common or outliers.
+
+\textit{Response}: Thanks; we reworded this paragraph to make it more clear and
+    explicit: "...However, crops, shrubs, and grass are exceptions; they
+    exhibit an uWUE different than the median value in Table 2. Crops,
+    which we expect to prioritize carbon uptake over water conservation,
+    have a higher uWUE value closer to our maximum value. This higher uWUE
+    results in a higher likelihood for an increasing ET response to VPD,
+    which matches intuition given that we expect crops to keep stomata
+    open for access to carbon, at the cost of increased water loss during
+    high VPD. Shrubs, and to a lesser extent grass, have an uWUE closer to
+    the minimum uWUE. For these plant types, we would then expect a
+    decrease of ET in response to VPD."
+
+\item Supplementary material. As I say above I commend the inclusion of
+  this 'negative' result.  However I would like to know how soil
+  water was derived - is this measured or modelled and is it at the
+  surface or through the entire rooting zone?
+
+\textit{Response}: Yes, more clarity about the source of the data is
+    helpful. We added language to the supplement explicitly stating that
+    SWC is taken from the FLUXNET-2015 data; specifically the shallowest
+    observed layer at each site: "For SWC measurements, we use the
+    shallowest observed layer available at each site."
+\end{enumerate}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

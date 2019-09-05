@@ -1,7 +1,4 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL agu-james-original-submission.tex      Wed Sep  4 09:38:13 2019
-%DIF ADD agu-james-submission-single-file.tex   Thu Sep  5 14:25:10 2019
 % AGUJournalTemplate.tex: this template file is for articles formatted with LaTeX
 %
 % This file includes commands and instructions
@@ -48,25 +45,7 @@
 \draftfalse
 
 \journalname{Journal of Advances in Modeling Earth Systems (JAMES)}
-%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
-%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
-\RequirePackage[normalem]{ulem} %DIF PREAMBLE
-\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
-\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
-\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
-%DIF SAFE PREAMBLE %DIF PREAMBLE
-\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
-\providecommand{\DIFaddend}{} %DIF PREAMBLE
-\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
-\providecommand{\DIFdelend}{} %DIF PREAMBLE
-%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
-\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
-\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
-\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
-\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
-\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
-\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
-%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
 
 \begin{document}
 
@@ -113,7 +92,7 @@ The ET response varies due to: 1) climate, with tropical and temperate
 climates more likely to exhibit a positive ET response to increasing
 VPD than boreal and arctic climates; 2) photosynthesis strategy, with
 C3 plants more likely to exhibit a positive ET response than C4
-plants; and 3) \DIFdelbegin \DIFdel{due to }\DIFdelend plant type, with crops more likely to exhibit a
+plants; and 3) plant type, with crops more likely to exhibit a
 positive ET response, and shrubs and gymniosperm trees more likely to
 exhibit a negative ET response. These results, derived from previous
 literature connecting plant parameters to plant and climate
@@ -186,14 +165,10 @@ passive regulation and a lack of soil moisture conservation does not
 seem to be a sensible strategy for plants from an evolutionary
 standpoint. This simplified logic explains generally why plants
 evolved to respond to VPD, but also excludes many details and special
-cases \DIFdelbegin \DIFdel{(e.g. plant to plant interaction and highly specialized
-photosynthesis strategies like Crassulacean acid metabolism
-photosynthesis)}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
-\cite<e.g. plant to plant interaction, thermal regulation with
+cases \cite<e.g. plant to plant interaction, thermal regulation with
 transpiration, and highly specialized photosynthesis strategies like
 Crassulacean acid metabolism photosynthesis; see>[]{Brooker_2006, Lin_2017,
-  Cushman_2001}}%DIFAUXCMD
-}\DIFaddend .
+  Cushman_2001}.
 
 We can use intuition about plant water conservation strategy to
 hypothesize about ET response to changes in VPD. Plants and ecosystems
@@ -213,7 +188,7 @@ overwhelms the limited plant response to conserve water.
 The objective of the present manuscript is to use reasonable
 approximations established in prior research as a tool to develop a
 framework for understanding plant responses to atmospheric drying and
-the \DIFdelbegin \DIFdel{the }\DIFdelend VPD dependence of ET while keeping other variables fixed. This
+the VPD dependence of ET while keeping other variables fixed. This
 framework will aid interpretation of observations, full complexity
 models, and facilitate the disentanglement of complex land-atmosphere
 feedbacks. In particular, our approach has applications for
@@ -376,19 +351,14 @@ VPD. They also extended this model to the ecosystem scale
   \begin{equation}
     g_{1}  \propto \sqrt{\frac{3 \, \Gamma^* \,
         \lambda}{1.6}},
-    \DIFdelbegin \footnote{\DIFdel{Note this expression has units of of
-      (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to
-      Pa$^{1/2}$ using the ideal gas law.}}
-    %DIFAUXCMD
-\addtocounter{footnote}{-1}%DIFAUXCMD
-\DIFdelend \label{slope}
+    \label{slope}
   \end{equation}
 % \end{linenomath*}
 
 
-  where \DIFaddbegin \DIFadd{g$_1$ is presented in units of $\sqrt{\text{mol fraction}}$ for
+  where g$_1$ is presented in units of $\sqrt{\text{mol fraction}}$ for
   convenience (which can be converted to $\sqrt{Pa}$ using the ideal
-  gas law and ambient pressure), }\DIFaddend $\Gamma^*$ is the CO$_2$ compensation
+  gas law and ambient pressure), $\Gamma^*$ is the CO$_2$ compensation
   point for photosynthesis (without dark respiration), and $\lambda$
   is the marginal water cost of leaf carbon
   ($\frac{\partial \; \text{transpiration}}{\partial \; CO_2
@@ -497,7 +467,7 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH}
   \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$
       fixed}}$. $RH$ and $e_s$ are assumed to be approximately
-  independent, which is supported by data (\DIFdelbegin \DIFdel{not shown}\DIFdelend \DIFaddbegin \DIFadd{see supplemental material}\DIFaddend ).
+  independent, which is supported by data (see supplemental material).
 
   This derivation relied either implicitly or explicitly on several
   assumptions. First, we assume that VPD at the leaf surface is the
@@ -510,16 +480,12 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   insolation induces instability and convective boundary layers, and
   we would expect the surface to be generally well coupled. An
   additional assumption in the formulation of uWUE \cite{Zhou_2014,
-    Zhou_2015} and \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citeA{Medlyn_2017}}%DIFAUXCMD
-'s }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend stomatal conductance model \DIFaddbegin \DIFadd{of
-  \mbox{%DIFAUXCMD
-\citeA{Medlyn_2017} }%DIFAUXCMD
-}\DIFaddend is that direct soil evaporation contributions to
+    Zhou_2015} and the stomatal conductance model of
+  \citeA{Medlyn_2017} is that direct soil evaporation contributions to
   ET remain small relative to transpiration. Again, this should be
   more true during the growing season. The ratio of evaporation to
   transpiration may increase immediately after rainfall events due to
-  high soil moisture\DIFdelbegin \DIFdel{and ponding, }\DIFdelend \DIFaddbegin \DIFadd{, ponding, and interception, }\DIFaddend but VPD is generally
+  high soil moisture, ponding, and interception, but VPD is generally
   low anyways during these times. However, some plant types allow for
   systematically larger contributions of evaporation in ET,
   particularly those with sparse canopies and smaller relative amounts
@@ -547,7 +513,7 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   nature of any dependence. We provide it in case it is of interest to
   the reader, and to motivate future research.
 
-  Because Eq. (\ref{d_et}) is a partial derivative, \DIFdelbegin \DIFdel{it's }\DIFdelend \DIFaddbegin \DIFadd{its }\DIFaddend utility is as
+  Because Eq. (\ref{d_et}) is a partial derivative, its utility is as
   a conceptual model for the change in ET in response to VPD with all
   other variables held fixed. This provides a useful tool for
   identifying the effect of VPD on ET through atmospheric demand and
@@ -608,15 +574,15 @@ generate the figures and tables, are publicly available at
   \caption{Variable quantities in the ET response to VPD. Each value
     is varied to determine the effect of a range of expected plant and
     environmental conditions on ET response to VPD. A citation is
-    provided \DIFdelbeginFL \DIFdelFL{in cases where the quantities }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{for values of g$_1$ and uWUE, which }\DIFaddendFL are directly derived
+    provided for values of g$_1$ and uWUE, which are directly derived
     from previous literature. Conceptually, min. values are extracted
     from literature to correspond to approximately the 15th percentile
     of observed conditions during the growing season, med. values
     correspond to approximately the 50th percentile, and max. values
-    correspond to approximately the 85th percentile. \DIFaddbeginFL \DIFaddFL{Values for $T$
+    correspond to approximately the 85th percentile. Values for $T$
     and g$_a$ are calculated from FLUXNET-2015 data (see supplemental
     material for description), rounding the 15th, 50th, and 85th
-    percentile to the nearest 5$^o$C and 0.005 m/s, respectively.}\DIFaddendFL }
+    percentile to the nearest 5$^o$C and 0.005 m/s, respectively.}
   \label{param_varying}
   \centering
   \footnotesize
@@ -625,17 +591,11 @@ generate the figures and tables, are publicly available at
     Symbol & units [units in citation] & min  & med & max
     & citation  \\
     \hline
-\DIFdelbeginFL %DIFDELCMD < \input{param_varying.tex}
-%DIFDELCMD <     %%%
-\DIFdelendFL \DIFaddbeginFL \DIFaddFL{g$_1$ }& \DIFaddFL{Pa$^{1/2}$ }[\DIFaddFL{kPa$^{1/2}$}] & \DIFaddFL{63.25 }[\DIFaddFL{2.00}] & \DIFaddFL{126.49 }[\DIFaddFL{4.00}] & \DIFaddFL{189.74 }[\DIFaddFL{6.00}] & \DIFaddFL{Fig. 2, 7; \mbox{%DIFAUXCMD
-\citeA{Medlyn_2017} }%DIFAUXCMD
-}\\
-\DIFaddFL{uWUE }& \DIFaddFL{$\mu$-mol C Pa$^{0.5}$ J$^{-1}$ ET }[\DIFaddFL{g C hPa$^{1/2}$ kg$^{-1}$ H$_2$O}] & \DIFaddFL{2.33 }[\DIFaddFL{6.99}] & \DIFaddFL{3.17 }[\DIFaddFL{9.52}] & \DIFaddFL{4.01 }[\DIFaddFL{12.05}] & \DIFaddFL{Table 4; \mbox{%DIFAUXCMD
-\citeA{Zhou_2015} }%DIFAUXCMD
-}\\
-\DIFaddFL{T }& \DIFaddFL{$^o$C }& \DIFaddFL{10.00 }& \DIFaddFL{20.00 }& \DIFaddFL{30.00 }& \DIFaddFL{- }\\
-\DIFaddFL{g$_a$ }& \DIFaddFL{m/s }& \DIFaddFL{0.015 }& \DIFaddFL{0.035 }& \DIFaddFL{0.055 }& \DIFaddFL{- }\\
-    \DIFaddendFL \hline
+g$_1$ & Pa$^{1/2}$ [kPa$^{1/2}$] & 63.25 [2.00] & 126.49 [4.00] & 189.74 [6.00] & Fig. 2, 7; \citeA{Medlyn_2017} \\
+uWUE & $\mu$-mol C Pa$^{0.5}$ J$^{-1}$ ET [g C hPa$^{1/2}$ kg$^{-1}$ H$_2$O] & 2.33 [6.99] & 3.17 [9.52] & 4.01 [12.05] & Table 4; \citeA{Zhou_2015} \\
+T & $^o$C & 10.00 & 20.00 & 30.00 & - \\
+g$_a$ & m/s & 0.015 & 0.035 & 0.055 & - \\
+    \hline
   \end{tabular}
 \end{table}
 
@@ -648,13 +608,11 @@ generate the figures and tables, are publicly available at
     \hline
     Symbol & units & value \\
     \hline
-\DIFdelbeginFL %DIFDELCMD < \input{param_fixed.tex}
-%DIFDELCMD <     %%%
-\DIFdelendFL \DIFaddbeginFL \DIFaddFL{P }& \DIFaddFL{Pa }& \DIFaddFL{100000.00 }\\
-\DIFaddFL{$\gamma$ }& \DIFaddFL{Pa K$^{-1}$ }& \DIFaddFL{64.50 }\\
-\DIFaddFL{R$_{air}$ }& \DIFaddFL{J  K$^{-1}$ kg$^{-1}$ }& \DIFaddFL{288.00 }\\
-\DIFaddFL{c$_a$ }& \DIFaddFL{$\mu$ mol CO$_2$ mol$^{-1}$ air }& \DIFaddFL{400.00 }\\
-    \DIFaddendFL \hline
+P & Pa & 100000.00 \\
+$\gamma$ & Pa K$^{-1}$ & 64.50 \\
+R$_{air}$ & J  K$^{-1}$ kg$^{-1}$ & 288.00 \\
+c$_a$ & $\mu$ mol CO$_2$ mol$^{-1}$ air & 400.00 \\
+    \hline
   \end{tabular}
 \end{table}
 
@@ -762,9 +720,9 @@ useful to examine how these quantities vary in previous literature,
 framed by our results on $\frac{\partial \; ET}{\partial \; VPD}$. In
 \citeA{Zhou_2015} most plant types' uWUE is similar to our median
 value, under which the sign of the ET response depends on
-VPD. However, crops, \DIFaddbegin \DIFadd{shrubs, and grass are exceptions; they exhibit an
+VPD. However, crops, shrubs, and grass are exceptions; they exhibit an
 uWUE different than the median value in Table
-\ref{param_varying}. Crops, }\DIFaddend which we expect to prioritize carbon
+\ref{param_varying}. Crops, which we expect to prioritize carbon
 uptake over water conservation, have a higher uWUE value closer to our
 maximum value. This higher uWUE results in a higher likelihood for an
 increasing ET response to VPD, which matches intuition given that we
@@ -777,29 +735,13 @@ role of soil moisture for within plant-type variability of uWUE, we
 might expect some variation, especially in extreme cases when soil
 water becomes a limiting factor (see supplementary material).
 
-\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citeA{Medlyn_2017}}%DIFAUXCMD
-'s }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend ecosystem-scale results \DIFaddbegin \DIFadd{of \mbox{%DIFAUXCMD
-\citeA{Medlyn_2017} }%DIFAUXCMD
-}\DIFaddend did not display the
+The ecosystem-scale results of \citeA{Medlyn_2017} did not display the
 robust relationship between plant type and and plant parameter (g$_1$)
 that was demonstrated by \citeA{Zhou_2015} for uWUE. Given that there
-is a robust relationship between g$_1$ and plant type in \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citeA{Lin_2015}}%DIFAUXCMD
-'s }\DIFdelend \DIFaddbegin \DIFadd{the
-}\DIFaddend leaf-scale results \DIFdelbegin \DIFdel{, and that \mbox{%DIFAUXCMD
-\citeA{Zhou_2015}}%DIFAUXCMD
-'s }\DIFdelend \DIFaddbegin \DIFadd{of \mbox{%DIFAUXCMD
-\citeA{Lin_2015}}%DIFAUXCMD
-, and the }\DIFaddend ecosystem-scale
-results \DIFaddbegin \DIFadd{of \mbox{%DIFAUXCMD
-\citeA{Zhou_2015} }%DIFAUXCMD
-}\DIFaddend rely on the same underlying theory as \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citeA{Medlyn_2017}}%DIFAUXCMD
-'s results}\DIFdelend \DIFaddbegin \DIFadd{in
-\mbox{%DIFAUXCMD
-\citeA{Medlyn_2017}}%DIFAUXCMD
-}\DIFaddend , the ambiguous results in \citeA{Medlyn_2017}
+is a robust relationship between g$_1$ and plant type in the
+leaf-scale results of \citeA{Lin_2015}, and the ecosystem-scale
+results of \citeA{Zhou_2015} rely on the same underlying theory as in
+\citeA{Medlyn_2017}, the ambiguous results in \citeA{Medlyn_2017}
 could be due to noise in ecosystem scale observations, the
 consequences of imposing a model structure in some of their g$_1$
 estimations, or real ecosystem-scale within-plant type variability
@@ -815,15 +757,11 @@ error, then we can use the relationships between g$_1$ and plant
 characteristics defined by \citeA{Lin_2015} to frame the ET response
 to VPD. This is subject to the strong caveat that we still do not
 fully understand g$_1$ behavior at the ecosystem scale. Extrapolating
-\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citeA{Lin_2015}}%DIFAUXCMD
-'s results }\DIFdelend \DIFaddbegin \DIFadd{the results of \mbox{%DIFAUXCMD
-\citeA{Lin_2015} }%DIFAUXCMD
-}\DIFaddend (e.g. Fig. 2) to the ecosystem scale
+the results of \citeA{Lin_2015} (e.g. Fig. 2) to the ecosystem scale
 would reveal the following relationships between g$_1$ and plant
 types:
 
- \begin{itemize} 
+\begin{itemize}
   \item C3 plants would have a generally higher g$_1$ than C4 plants,
   \item Crops would have a larger g$_1$ than shrubs, grass, and
     angiosperm trees, which have a higher g$_1$ than gymnosperm
@@ -831,7 +769,7 @@ types:
   \item Tropical and temperate climates would generally be
     characterized by plants with a higher g$_1$ than arctic and boreal
     climates.
- \end{itemize} 
+\end{itemize}
 For all of the above relationships, a higher g$_1$ means a higher
 likelihood of a positive ET response to increasing VPD (water
 intensive), and a smaller VPD dependence of the ET response.
@@ -887,18 +825,10 @@ quantities based on stomata theory, may not always function optimally
 would not expect that this ecosystem scale WUE quantity will respond
 to VPD exactly analogously to stomata. Direct soil evaporation's
 contributions to ET should shift the exponent of the VPD
-dependence. \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citeA{Zhou_2015}}%DIFAUXCMD
-'s results }\DIFdelend \DIFaddbegin \DIFadd{The results from \mbox{%DIFAUXCMD
-\citeA{Zhou_2015} }%DIFAUXCMD
-}\DIFaddend corroborate this: they
+dependence. The results from \citeA{Zhou_2015} corroborate this: they
 found a mean empirically fit exponential VPD dependence of 0.55,
 varying slightly from the theoretically optimal value of of 0.5 for
-AmeriFlux sites. \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citeA{Lin_2018}}%DIFAUXCMD
-'s results }\DIFdelend \DIFaddbegin \DIFadd{Results in \mbox{%DIFAUXCMD
-\citeA{Lin_2018} }%DIFAUXCMD
-}\DIFaddend also show variance in the
+AmeriFlux sites. Results in \citeA{Lin_2018} also show variance in the
 empirical exponent of the VPD dependence in the stomatal conductance
 model, but interpretation of this variance is more difficult as
 \citeA{Lin_2018} do not handle the GPP dependence of stomatal
@@ -959,13 +889,10 @@ shape of the ET-VPD dependence we find the roots of the second
 derivative of ET, using Eq. (\ref{m_n}) for stomatal conductance
 ($g_s$), with respect to VPD:
 
-\DIFdelbegin %DIFDELCMD < \input{d2_solutions.tex}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \begin{equation}
-\DIFadd{\frac{\partial^2 \; ET}{\partial \; VPD^2} = 0 \quad \forall \quad\frac{VPD^m}{g*} = \frac{m \left(m - 2 n - \sqrt{m^{2} - 4 m n + 2 m - 4 n^{2} + 4 n + 1} + 1\right)}{2 n \left(n - 1\right)} - 1.
+\begin{equation}
+\frac{\partial^2 \; ET}{\partial \; VPD^2} = 0 \quad \forall \quad\frac{VPD^m}{g*} = \frac{m \left(m - 2 n - \sqrt{m^{2} - 4 m n + 2 m - 4 n^{2} + 4 n + 1} + 1\right)}{2 n \left(n - 1\right)} - 1.
 \label{curves}
-}\end{equation}
-\DIFaddend 
+\end{equation}
 
 With this result we have defined the family of curves separating
 concave up from concave down ET solutions (Fig. \ref{concave}). These
@@ -988,14 +915,14 @@ relations reveal themselves from Eq. (\ref{curves}):
     the orange line ($n$ varying) it corresponds to $n$, and for the
     green line it corresponds to the value of both $n$ and $m$
     ($n=m$). Regions of the parameter space that correspond to concave
-    up and concave down results are labeled\DIFaddbeginFL \DIFaddFL{: for each curve, the
+    up and concave down results are labeled: for each curve, the
     parameter space ``below'' the curve corresponds to a concave up
     relationship, while the parameter space ``above'' the curve
-    corresponds to a concave down relationship}\DIFaddendFL .}
+    corresponds to a concave down relationship.}
   \label{concave}
 \end{figure}
 
- \begin{itemize} 
+\begin{itemize}
   \item For optimal behavior (n, m = 1/2) the ET-VPD curve will be
     concave up regardless of the magnitude of the plant constants
     $g_1$ and uWUE. Therefore, the general concave up nature of our
@@ -1016,7 +943,7 @@ relations reveal themselves from Eq. (\ref{curves}):
     dependence of stomatal conductance, and further reconciliation of
     empirical and theoretical stomatal and ecosystem behavior should
     be prioritized.
- \end{itemize} 
+\end{itemize}
 
 While it is possible (and even likely) that in the future some other
 form of VPD dependence is derived, at present \cite{MEDLYN_2011} and
@@ -1026,10 +953,8 @@ concave up result matches physical intuition more than a concave down
 result. Plants must maintain nutrient and sugar transport through the
 phloem and xylem. To accomplish this, stomata must remain slightly
 open \cite{De_2013, Nikinmaa_2013, Ryan_2014}. Furthermore, even if
-complete stomatal closure were possible, cuticular water loss and \DIFdelbegin %DIFDELCMD < [%%%
-\DIFdelend \DIFaddbegin \DIFadd{(}\DIFaddend at
-the ecosystem-scale\DIFdelbegin %DIFDELCMD < ] %%%
-\DIFdelend \DIFaddbegin \DIFadd{) }\DIFaddend direct soil evaporation are still sources of ET
+complete stomatal closure were possible, cuticular water loss and (at
+the ecosystem-scale) direct soil evaporation are still sources of ET
 which increase with VPD, independent of stomatal closure. Therefore,
 in the limit as VPD becomes large and we assume plants are exercising
 all strategies to reduce ET, any further increase in VPD should result
@@ -1047,11 +972,8 @@ This analysis allows us to understand the theoretical shape of the ET
 response to VPD with environmental conditions held
 fixed. Accomplishing this with purely statistical methods applied to
 flux observations would be very difficult, given the relatively fast
-time scale of plant response and the non-stationarity of \DIFdelbegin %DIFDELCMD < [%%%
-\DIFdel{solar
-forced}%DIFDELCMD < ] %%%
-\DIFdelend \DIFaddbegin \DIFadd{(solar
-forced) }\DIFaddend environmental conditions over the relatively coarse (half
+time scale of plant response and the non-stationarity of (solar
+forced) environmental conditions over the relatively coarse (half
 hourly) flux estimates (which is required to obtain robust
 eddy-covariance statistics). Our results on the shape of the ET-VPD
 curve with environmental conditions held fixed can be built upon with
@@ -1067,9 +989,8 @@ previous literature to build baseline intuition for ET-VPD dependence.
 
 
 \section{Conclusions}
-\DIFaddbegin 
 
-\DIFaddend We derived a new form of Penman Monteith using the concept of
+We derived a new form of Penman Monteith using the concept of
 semi-empirical optimal stomatal regulation \cite{Lin_2015,
 MEDLYN_2011} and near constant uWUE \cite{Zhou_2015} to remove the
 implicit dependence of stomatal conductance on GPP and ET. With our
@@ -1341,9 +1262,9 @@ offices. We would like to thank Dr. Trevor Keenan for providing tools
 for citation of the FLUXNET2015 dataset, available at
 \url{https://github.com/trevorkeenan/FLUXNET_citations}. This material
 is based upon work supported by the National Science Foundation
-Graduate Research Fellowship under Grant No. DGE 16-44869\DIFaddbegin \DIFadd{. We would
+Graduate Research Fellowship under Grant No. DGE 16-44869. We would
 like to thank Emma Robinson and one anonymous reviewer for thoughtful
-comments that greatly improved the strength of the manuscript}\DIFaddend .
+comments that greatly improved the strength of the manuscript.
 
 
 %% ------------------------------------------------------------------------ %%
@@ -1356,8 +1277,1651 @@ comments that greatly improved the strength of the manuscript}\DIFaddend .
 % don't specify bibliographystyle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliography{references}
+% \bibliography{references}
 
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Ball%
+, Woodrow%
+\BCBL {}\ \BBA {} Berry%
+}{%
+Ball%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1987}}%
+}]{%
+Ball_1987}
+\APACinsertmetastar {%
+Ball_1987}%
+\begin{APACrefauthors}%
+Ball, J\BPBI T.%
+, Woodrow, I\BPBI E.%
+\BCBL {}\ \BBA {} Berry, J\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1987}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A Model Predicting Stomatal Conductance and its
+  Contribution to the Control of Photosynthesis under Different Environmental
+  Conditions} {A model predicting stomatal conductance and its contribution to
+  the control of photosynthesis under different environmental
+  conditions}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Progress in Photosynthesis Research} {Progress in
+  photosynthesis research}\ (\BPGS\ 221--224).
+\newblock
+\APACaddressPublisher{}{Springer Netherlands}.
+\newblock
+\begin{APACrefDOI} \doi{10.1007/978-94-017-0519-6\_48} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Berg%
+\ \protect \BOthers {.}}{%
+Berg%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2016}}%
+}]{%
+Berg_2016}
+\APACinsertmetastar {%
+Berg_2016}%
+\begin{APACrefauthors}%
+Berg, A.%
+, Findell, K.%
+, Lintner, B.%
+, Giannini, A.%
+, Seneviratne, S\BPBI I.%
+, van~den Hurk, B.%
+\BDBL {}Milly, P\BPBI C\BPBI D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{may}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Land{\textendash}atmosphere feedbacks amplify aridity
+  increase over land under global warming} {Land{\textendash}atmosphere
+  feedbacks amplify aridity increase over land under global warming}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Nature Climate Change}{6}{9}{869--874}.
+\newblock
+\begin{APACrefDOI} \doi{10.1038/nclimate3029} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Berg%
+, Sheffield%
+\BCBL {}\ \BBA {} Milly%
+}{%
+Berg%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+Berg_2017}
+\APACinsertmetastar {%
+Berg_2017}%
+\begin{APACrefauthors}%
+Berg, A.%
+, Sheffield, J.%
+\BCBL {}\ \BBA {} Milly, P\BPBI C\BPBI D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{jan}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Divergent surface and total soil moisture projections
+  under global warming} {Divergent surface and total soil moisture projections
+  under global warming}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Geophysical Research Letters}{44}{1}{236--244}.
+\newblock
+\begin{APACrefDOI} \doi{10.1002/2016gl071921} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Bouchet%
+}{%
+Bouchet%
+}{%
+{\protect \APACyear {1963}}%
+}]{%
+Bouchet_1963}
+\APACinsertmetastar {%
+Bouchet_1963}%
+\begin{APACrefauthors}%
+Bouchet, R\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1963}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Evapotranspiration r{\'e}elle et potentielle,
+  signification climatique} {Evapotranspiration r{\'e}elle et potentielle,
+  signification climatique}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{IAHS Publ}{62}{}{134--142}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Brooker%
+}{%
+Brooker%
+}{%
+{\protect \APACyear {2006}}%
+}]{%
+Brooker_2006}
+\APACinsertmetastar {%
+Brooker_2006}%
+\begin{APACrefauthors}%
+Brooker, R\BPBI W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2006}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Plant–plant interactions and environmental change}
+  {Plant–plant interactions and environmental change}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{New Phytologist}{171}{2}{271-284}.
+\newblock
+\begin{APACrefURL}
+  \url{https://nph.onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-8137.2006.01752.x}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/j.1469-8137.2006.01752.x} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Brutsaert%
+}{%
+Brutsaert%
+}{%
+{\protect \APACyear {1999}}%
+}]{%
+Brutsaert_1999}
+\APACinsertmetastar {%
+Brutsaert_1999}%
+\begin{APACrefauthors}%
+Brutsaert, W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1999}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Aspects of bulk atmospheric boundary layer similarity
+  under free-convective conditions} {Aspects of bulk atmospheric boundary layer
+  similarity under free-convective conditions}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Reviews of {G}eophysics}{37}{4}{439--451}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Byrne%
+\ \BBA {} O'Gorman%
+}{%
+Byrne%
+\ \BBA {} O'Gorman%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+Byrne_2013}
+\APACinsertmetastar {%
+Byrne_2013}%
+\begin{APACrefauthors}%
+Byrne, M\BPBI P.%
+\BCBT {}\ \BBA {} O'Gorman, P\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Land-Ocean Warming Contrast over a Wide Range of
+  Climates: Convective Quasi-Equilibrium Theory and Idealized Simulations}
+  {Land-ocean warming contrast over a wide range of climates: Convective
+  quasi-equilibrium theory and idealized simulations}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Climate}{26}{12}{4000-4016}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1175/JCLI-D-12-00262.1}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1175/JCLI-D-12-00262.1} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Cowan%
+\ \BBA {} Farquhar%
+}{%
+Cowan%
+\ \BBA {} Farquhar%
+}{%
+{\protect \APACyear {1977}}%
+}]{%
+Cowan_1977}
+\APACinsertmetastar {%
+Cowan_1977}%
+\begin{APACrefauthors}%
+Cowan, I.%
+\BCBT {}\ \BBA {} Farquhar, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1977}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Stomatal function in relation to leaf metabolism and
+  environment.} {Stomatal function in relation to leaf metabolism and
+  environment.}{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Symposia of the Society for Experimental Biology}
+  {Symposia of the society for experimental biology}\ (\BVOL~31, \BPG~471).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Cushman%
+}{%
+Cushman%
+}{%
+{\protect \APACyear {2001}}%
+}]{%
+Cushman_2001}
+\APACinsertmetastar {%
+Cushman_2001}%
+\begin{APACrefauthors}%
+Cushman, J\BPBI C.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2001}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Crassulacean Acid Metabolism. A Plastic Photosynthetic
+  Adaptation to Arid Environments} {Crassulacean acid metabolism. a plastic
+  photosynthetic adaptation to arid environments}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant Physiology}{127}{4}{1439--1448}.
+\newblock
+\begin{APACrefURL} \url{http://www.plantphysiol.org/content/127/4/1439}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1104/pp.010818} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Damour%
+, Simonneau%
+, Cochard%
+\BCBL {}\ \BBA {} Urban%
+}{%
+Damour%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2010}}%
+}]{%
+Damour2010}
+\APACinsertmetastar {%
+Damour2010}%
+\begin{APACrefauthors}%
+Damour, G.%
+, Simonneau, T.%
+, Cochard, H.%
+\BCBL {}\ \BBA {} Urban, L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2010}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {An overview of models of stomatal conductance at the
+  leaf level} {An overview of models of stomatal conductance at the leaf
+  level}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant, Cell \& Environment}{33}{9}{1419-1438}.
+\newblock
+\begin{APACrefURL}
+  \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-3040.2010.02181.x}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/j.1365-3040.2010.02181.x} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+De~Kauwe%
+, Medlyn%
+, Knauer%
+\BCBL {}\ \BBA {} Williams%
+}{%
+De~Kauwe%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+De_2017}
+\APACinsertmetastar {%
+De_2017}%
+\begin{APACrefauthors}%
+De~Kauwe, M\BPBI G.%
+, Medlyn, B\BPBI E.%
+, Knauer, J.%
+\BCBL {}\ \BBA {} Williams, C\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Ideas and perspectives: how coupled is the vegetation to
+  the boundary layer?} {Ideas and perspectives: how coupled is the vegetation
+  to the boundary layer?}{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Biogeosciences}{14}{19}{4435}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+De~Schepper%
+, De~Swaef%
+, Bauweraerts%
+\BCBL {}\ \BBA {} Steppe%
+}{%
+De~Schepper%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+De_2013}
+\APACinsertmetastar {%
+De_2013}%
+\begin{APACrefauthors}%
+De~Schepper, V.%
+, De~Swaef, T.%
+, Bauweraerts, I.%
+\BCBL {}\ \BBA {} Steppe, K.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Phloem transport: a review of mechanisms and controls}
+  {Phloem transport: a review of mechanisms and controls}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Experimental Botany}{64}{16}{4839--4850}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+G.~Farquhar%
+}{%
+G.~Farquhar%
+}{%
+{\protect \APACyear {1978}}%
+}]{%
+Farquhar_1978}
+\APACinsertmetastar {%
+Farquhar_1978}%
+\begin{APACrefauthors}%
+Farquhar, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1978}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Feedforward responses of stomata to humidity}
+  {Feedforward responses of stomata to humidity}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Functional Plant Biology}{5}{6}{787--800}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+G\BPBI D.~Farquhar%
+, von Caemmerer%
+\BCBL {}\ \BBA {} Berry%
+}{%
+G\BPBI D.~Farquhar%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1980}}%
+}]{%
+Farquhar_1980}
+\APACinsertmetastar {%
+Farquhar_1980}%
+\begin{APACrefauthors}%
+Farquhar, G\BPBI D.%
+, von Caemmerer, S.%
+\BCBL {}\ \BBA {} Berry, J\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1980}{Jun}{01}.
+\newblock
+{\BBOQ}\APACrefatitle {A biochemical model of photosynthetic {CO}2 assimilation
+  in leaves of {C}3 species} {A biochemical model of photosynthetic {CO}2
+  assimilation in leaves of {C}3 species}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Planta}{149}{1}{78--90}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1007/BF00386231} \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1007/BF00386231} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Franks%
+, Berry%
+, Lombardozzi%
+\BCBL {}\ \BBA {} Bonan%
+}{%
+Franks%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+Franks_2017}
+\APACinsertmetastar {%
+Franks_2017}%
+\begin{APACrefauthors}%
+Franks, P\BPBI J.%
+, Berry, J\BPBI A.%
+, Lombardozzi, D\BPBI L.%
+\BCBL {}\ \BBA {} Bonan, G\BPBI B.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{apr}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Stomatal Function across Temporal and Spatial Scales:
+  Deep-Time Trends, Land-Atmosphere Coupling and Global Models} {Stomatal
+  function across temporal and spatial scales: Deep-time trends,
+  land-atmosphere coupling and global models}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant Physiology}{174}{2}{583--602}.
+\newblock
+\begin{APACrefDOI} \doi{10.1104/pp.17.00287} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Gentine%
+, Chhang%
+, Rigden%
+\BCBL {}\ \BBA {} Salvucci%
+}{%
+Gentine%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2016}}%
+}]{%
+Gentine_2016}
+\APACinsertmetastar {%
+Gentine_2016}%
+\begin{APACrefauthors}%
+Gentine, P.%
+, Chhang, A.%
+, Rigden, A.%
+\BCBL {}\ \BBA {} Salvucci, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Evaporation estimates using weather station data and
+  boundary layer theory} {Evaporation estimates using weather station data and
+  boundary layer theory}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Geophysical Research Letters}{43}{22}{11,661--11,670}.
+\newblock
+\begin{APACrefURL} \url{http://dx.doi.org/10.1002/2016GL070819}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{2016GL070819}
+\newblock
+\begin{APACrefDOI} \doi{10.1002/2016GL070819} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+P.~Jarvis%
+}{%
+P.~Jarvis%
+}{%
+{\protect \APACyear {1984}}%
+}]{%
+Jarvis_1984}
+\APACinsertmetastar {%
+Jarvis_1984}%
+\begin{APACrefauthors}%
+Jarvis, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1984}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Coupling of transpiration to the atmosphere in
+  horticultural crops: the omega factor} {Coupling of transpiration to the
+  atmosphere in horticultural crops: the omega factor}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {I International Symposium on Water Relations in Fruit
+  Crops 171} {I international symposium on water relations in fruit crops 171}\
+  (\BPGS\ 187--206).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+P\BPBI G.~Jarvis%
+\ \BBA {} McNaughton%
+}{%
+P\BPBI G.~Jarvis%
+\ \BBA {} McNaughton%
+}{%
+{\protect \APACyear {1986}}%
+}]{%
+Jarvis_1986}
+\APACinsertmetastar {%
+Jarvis_1986}%
+\begin{APACrefauthors}%
+Jarvis, P\BPBI G.%
+\BCBT {}\ \BBA {} McNaughton, K.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1986}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Stomatal control of transpiration: scaling up from leaf
+  to region} {Stomatal control of transpiration: scaling up from leaf to
+  region}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Advances in Ecological Research} {Advances in ecological
+  research}\ (\BVOL~15, \BPGS\ 1--49).
+\newblock
+\APACaddressPublisher{}{Elsevier}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+G.~Katul%
+, Manzoni%
+, Palmroth%
+\BCBL {}\ \BBA {} Oren%
+}{%
+G.~Katul%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2010}}%
+}]{%
+Katul_2010}
+\APACinsertmetastar {%
+Katul_2010}%
+\begin{APACrefauthors}%
+Katul, G.%
+, Manzoni, S.%
+, Palmroth, S.%
+\BCBL {}\ \BBA {} Oren, R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2010}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A stomatal optimization theory to describe the effects
+  of atmospheric {CO}2 on leaf photosynthesis and transpiration} {A stomatal
+  optimization theory to describe the effects of atmospheric {CO}2 on leaf
+  photosynthesis and transpiration}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Annals of Botany}{105}{3}{431-442}.
+\newblock
+\begin{APACrefURL} \url{+ http://dx.doi.org/10.1093/aob/mcp292}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1093/aob/mcp292} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+G\BPBI G.~Katul%
+, Palmroth%
+\BCBL {}\ \BBA {} Oren%
+}{%
+G\BPBI G.~Katul%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2009}}%
+}]{%
+Katul_2009}
+\APACinsertmetastar {%
+Katul_2009}%
+\begin{APACrefauthors}%
+Katul, G\BPBI G.%
+, Palmroth, S.%
+\BCBL {}\ \BBA {} Oren, R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2009}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Leaf stomatal responses to vapour pressure deficit under
+  current and CO2-enriched atmosphere explained by the economics of gas
+  exchange} {Leaf stomatal responses to vapour pressure deficit under current
+  and co2-enriched atmosphere explained by the economics of gas
+  exchange}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant, Cell \& Environment}{32}{8}{968-979}.
+\newblock
+\begin{APACrefURL}
+  \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-3040.2009.01977.x}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/j.1365-3040.2009.01977.x} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Lawrence%
+\ \protect \BOthers {.}}{%
+Lawrence%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2019}}%
+}]{%
+Lawrence_2019}
+\APACinsertmetastar {%
+Lawrence_2019}%
+\begin{APACrefauthors}%
+Lawrence, D.%
+, Fisher, R.%
+, Koven, C.%
+, Oleson, K.%
+, Swenson, S.%
+, Bonan, G.%
+\BDBL {}Zeng, X.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2019}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The Community Land Model version 5: Description of new
+  features, benchmarking, and impact of forcing uncertainty} {The community
+  land model version 5: Description of new features, benchmarking, and impact
+  of forcing uncertainty}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{submitted to Journal of Advances in Modeling Earth
+  Systems}{}{}{}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Lemordant%
+, Gentine%
+, Swann%
+, Cook%
+\BCBL {}\ \BBA {} Scheff%
+}{%
+Lemordant%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2018}}%
+}]{%
+Lemordant_2018}
+\APACinsertmetastar {%
+Lemordant_2018}%
+\begin{APACrefauthors}%
+Lemordant, L.%
+, Gentine, P.%
+, Swann, A\BPBI S.%
+, Cook, B\BPBI I.%
+\BCBL {}\ \BBA {} Scheff, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2018}{apr}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Critical impact of vegetation physiology on the
+  continental hydrologic cycle in response to increasing {CO}2} {Critical
+  impact of vegetation physiology on the continental hydrologic cycle in
+  response to increasing {CO}2}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Proceedings of the National Academy of
+  Sciences}{}{}{201720712}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1073\%2Fpnas.1720712115}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1073/pnas.1720712115} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Leuning%
+}{%
+Leuning%
+}{%
+{\protect \APACyear {1990}}%
+}]{%
+Leuning_1990}
+\APACinsertmetastar {%
+Leuning_1990}%
+\begin{APACrefauthors}%
+Leuning, R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1990}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Modelling Stomatal Behaviour and and Photosynthesis {of
+  Eucalyptus} grandis} {Modelling stomatal behaviour and and photosynthesis {of
+  Eucalyptus} grandis}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Australian Journal of Plant Physiology}{17}{2}{159}.
+\newblock
+\begin{APACrefDOI} \doi{10.1071/pp9900159} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+C.~Lin%
+\ \protect \BOthers {.}}{%
+C.~Lin%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2018}}%
+}]{%
+Lin_2018}
+\APACinsertmetastar {%
+Lin_2018}%
+\begin{APACrefauthors}%
+Lin, C.%
+, Gentine, P.%
+, Huang, Y.%
+, Guan, K.%
+, Kimm, H.%
+\BCBL {}\ \BBA {} Zhou, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2018}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Diel ecosystem conductance response to vapor pressure
+  deficit is suboptimal and independent of soil moisture} {Diel ecosystem
+  conductance response to vapor pressure deficit is suboptimal and independent
+  of soil moisture}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Agricultural and Forest Meteorology}{250}{}{24--34}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+H.~Lin%
+, Chen%
+, Zhang%
+, Fu%
+\BCBL {}\ \BBA {} Fan%
+}{%
+H.~Lin%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+Lin_2017}
+\APACinsertmetastar {%
+Lin_2017}%
+\begin{APACrefauthors}%
+Lin, H.%
+, Chen, Y.%
+, Zhang, H.%
+, Fu, P.%
+\BCBL {}\ \BBA {} Fan, Z.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Stronger cooling effects of transpiration and leaf
+  physical traits of plants from a hot dry habitat than from a hot wet habitat}
+  {Stronger cooling effects of transpiration and leaf physical traits of plants
+  from a hot dry habitat than from a hot wet habitat}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Functional Ecology}{31}{12}{2202-2211}.
+\newblock
+\begin{APACrefURL}
+  \url{https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1365-2435.12923}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/1365-2435.12923} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Y\BHBI S.~Lin%
+\ \protect \BOthers {.}}{%
+Y\BHBI S.~Lin%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2015}}%
+}]{%
+Lin_2015}
+\APACinsertmetastar {%
+Lin_2015}%
+\begin{APACrefauthors}%
+Lin, Y\BHBI S.%
+, Medlyn, B\BPBI E.%
+, Duursma, R\BPBI A.%
+, Prentice, I\BPBI C.%
+, Wang, H.%
+, Baig, S.%
+\BDBL {}Wingate, L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{mar}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Optimal stomatal behaviour around the world} {Optimal
+  stomatal behaviour around the world}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Nature Climate Change}{5}{5}{459--464}.
+\newblock
+\begin{APACrefDOI} \doi{10.1038/nclimate2550} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Lloyd%
+}{%
+Lloyd%
+}{%
+{\protect \APACyear {1991}}%
+}]{%
+Lloyd_1991}
+\APACinsertmetastar {%
+Lloyd_1991}%
+\begin{APACrefauthors}%
+Lloyd, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1991}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Modelling stomatal responses to environment in
+  {M}acadamia integrifolia} {Modelling stomatal responses to environment in
+  {M}acadamia integrifolia}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Functional Plant Biology}{18}{6}{649--660}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Manzoni%
+, Vico%
+, Palmroth%
+, Porporato%
+\BCBL {}\ \BBA {} Katul%
+}{%
+Manzoni%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+Manzoni2013}
+\APACinsertmetastar {%
+Manzoni2013}%
+\begin{APACrefauthors}%
+Manzoni, S.%
+, Vico, G.%
+, Palmroth, S.%
+, Porporato, A.%
+\BCBL {}\ \BBA {} Katul, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Optimization of stomatal conductance for maximum carbon
+  gain under dynamic soil moisture} {Optimization of stomatal conductance for
+  maximum carbon gain under dynamic soil moisture}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Advances in Water Resources}{62}{}{90 - 105}.
+\newblock
+\begin{APACrefURL}
+  \url{http://www.sciencedirect.com/science/article/pii/S0309170813001814}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{https://doi.org/10.1016/j.advwatres.2013.09.020}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+McNaughton%
+\ \BBA {} Jarvis%
+}{%
+McNaughton%
+\ \BBA {} Jarvis%
+}{%
+{\protect \APACyear {1991}}%
+}]{%
+Mcnaughton_1991}
+\APACinsertmetastar {%
+Mcnaughton_1991}%
+\begin{APACrefauthors}%
+McNaughton, K.%
+\BCBT {}\ \BBA {} Jarvis, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1991}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Effects of spatial scale on stomatal control of
+  transpiration} {Effects of spatial scale on stomatal control of
+  transpiration}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Agricultural and Forest
+  Meteorology}{54}{2-4}{279--302}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Medlyn%
+\ \protect \BOthers {.}}{%
+Medlyn%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+Medlyn_2017}
+\APACinsertmetastar {%
+Medlyn_2017}%
+\begin{APACrefauthors}%
+Medlyn, B\BPBI E.%
+, De~Kauwe, M\BPBI G.%
+, Lin, Y\BHBI S.%
+, Knauer, J.%
+, Duursma, R\BPBI A.%
+, Williams, C\BPBI A.%
+\BDBL {}others%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {How do leaf and ecosystem measures of water-use
+  efficiency compare?} {How do leaf and ecosystem measures of water-use
+  efficiency compare?}{\BBCQ}
+\newblock
+\APACjournalVolNumPages{New Phytologist}{216}{3}{758--770}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Medlyn%
+\ \protect \BOthers {.}}{%
+Medlyn%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+MEDLYN_2011}
+\APACinsertmetastar {%
+MEDLYN_2011}%
+\begin{APACrefauthors}%
+Medlyn, B\BPBI E.%
+, Duursma, R\BPBI A.%
+, Eamus, D.%
+, Ellsworth, D\BPBI S.%
+, Prentice, I\BPBI C.%
+, Barton, C\BPBI V\BPBI M.%
+\BDBL {}Wingate, L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{jan}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Reconciling the optimal and empirical approaches to
+  modelling stomatal conductance} {Reconciling the optimal and empirical
+  approaches to modelling stomatal conductance}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Global Change Biology}{17}{6}{2134--2144}.
+\newblock
+\begin{APACrefDOI} \doi{10.1111/j.1365-2486.2010.02375.x} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Monteith%
+\ \protect \BOthers {.}}{%
+Monteith%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1965}}%
+}]{%
+Monteith_1965}
+\APACinsertmetastar {%
+Monteith_1965}%
+\begin{APACrefauthors}%
+Monteith, J\BPBI L.%
+\BCBT {}\ \BOthersPeriod {.}
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1965}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Evaporation and environment} {Evaporation and
+  environment}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Symp. Soc. Exp. Biol} {Symp. soc. exp. biol}\ (\BVOL~19,
+  \BPG~4).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Morton%
+}{%
+Morton%
+}{%
+{\protect \APACyear {1965}}%
+}]{%
+Morton_1965}
+\APACinsertmetastar {%
+Morton_1965}%
+\begin{APACrefauthors}%
+Morton, F\BPBI I.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1965}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Potential evaporation and river basin evaporation}
+  {Potential evaporation and river basin evaporation}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of the Hydraulics Division}{91}{6}{67--97}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Mott%
+}{%
+Mott%
+}{%
+{\protect \APACyear {2007}}%
+}]{%
+Mott2007}
+\APACinsertmetastar {%
+Mott2007}%
+\begin{APACrefauthors}%
+Mott, K\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2007}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Leaf hydraulic conductivity and stomatal responses to
+  humidity in amphistomatous leaves} {Leaf hydraulic conductivity and stomatal
+  responses to humidity in amphistomatous leaves}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant, Cell \& Environment}{30}{11}{1444-1449}.
+\newblock
+\begin{APACrefURL}
+  \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-3040.2007.01720.x}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/j.1365-3040.2007.01720.x} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Mott%
+\ \BBA {} Peak%
+}{%
+Mott%
+\ \BBA {} Peak%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+Mott2013}
+\APACinsertmetastar {%
+Mott2013}%
+\begin{APACrefauthors}%
+Mott, K\BPBI A.%
+\BCBT {}\ \BBA {} Peak, D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Testing a vapour-phase model of stomatal responses to
+  humidity} {Testing a vapour-phase model of stomatal responses to
+  humidity}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant, Cell \& Environment}{36}{5}{936-944}.
+\newblock
+\begin{APACrefURL}
+  \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/pce.12026}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/pce.12026} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nikinmaa%
+\ \protect \BOthers {.}}{%
+Nikinmaa%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+Nikinmaa_2013}
+\APACinsertmetastar {%
+Nikinmaa_2013}%
+\begin{APACrefauthors}%
+Nikinmaa, E.%
+, H{\"o}ltt{\"a}, T.%
+, Hari, P.%
+, Kolari, P.%
+, M{\"a}kel{\"a}, A.%
+, Sevanto, S.%
+\BCBL {}\ \BBA {} Vesala, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Assimilate transport in phloem sets conditions for leaf
+  gas exchange} {Assimilate transport in phloem sets conditions for leaf gas
+  exchange}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant, Cell \& Environment}{36}{3}{655--669}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Niu%
+\ \protect \BOthers {.}}{%
+Niu%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+Niu_2011}
+\APACinsertmetastar {%
+Niu_2011}%
+\begin{APACrefauthors}%
+Niu, G\BHBI Y.%
+, Yang, Z\BHBI L.%
+, Mitchell, K\BPBI E.%
+, Chen, F.%
+, Ek, M\BPBI B.%
+, Barlage, M.%
+\BDBL {}Xia, Y.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The community Noah land surface model with
+  multiparameterization options (Noah-MP): 1. Model description and evaluation
+  with local-scale measurements} {The community noah land surface model with
+  multiparameterization options (noah-mp): 1. model description and evaluation
+  with local-scale measurements}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Geophysical Research:
+  Atmospheres}{116}{D12}{}.
+\newblock
+\begin{APACrefURL}
+  \url{https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2010JD015139}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1029/2010JD015139} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Novick%
+\ \protect \BOthers {.}}{%
+Novick%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2016}}%
+}]{%
+Novick_2016}
+\APACinsertmetastar {%
+Novick_2016}%
+\begin{APACrefauthors}%
+Novick, K\BPBI A.%
+, Ficklin, D\BPBI L.%
+, Stoy, P\BPBI C.%
+, Williams, C\BPBI A.%
+, Bohrer, G.%
+, Oishi, A\BPBI C.%
+\BDBL {}others%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The increasing importance of atmospheric demand for
+  ecosystem water and carbon fluxes} {The increasing importance of atmospheric
+  demand for ecosystem water and carbon fluxes}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Nature Climate Change}{6}{11}{1023}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Or%
+, Lehmann%
+, Shahraeeni%
+\BCBL {}\ \BBA {} Shokri%
+}{%
+Or%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+Or_2013}
+\APACinsertmetastar {%
+Or_2013}%
+\begin{APACrefauthors}%
+Or, D.%
+, Lehmann, P.%
+, Shahraeeni, E.%
+\BCBL {}\ \BBA {} Shokri, N.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Advances in soil evaporation physics- a review}
+  {Advances in soil evaporation physics- a review}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Vadose Zone Journal}{12}{4}{}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Oren%
+\ \protect \BOthers {.}}{%
+Oren%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1999}}%
+}]{%
+Oren1999}
+\APACinsertmetastar {%
+Oren1999}%
+\begin{APACrefauthors}%
+Oren, R.%
+, Sperry, J\BPBI S.%
+, Katul, G\BPBI G.%
+, Pataki, D\BPBI E.%
+, Ewers, B\BPBI E.%
+, Phillips, N.%
+\BCBL {}\ \BBA {} Schäfer, K\BPBI V\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1999}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Survey and synthesis of intra- and interspecific
+  variation in stomatal sensitivity to vapour pressure deficit} {Survey and
+  synthesis of intra- and interspecific variation in stomatal sensitivity to
+  vapour pressure deficit}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Plant, Cell \& Environment}{22}{12}{1515-1526}.
+\newblock
+\begin{APACrefURL}
+  \url{https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3040.1999.00513.x}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1046/j.1365-3040.1999.00513.x} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Ozdogan%
+, Salvucci%
+\BCBL {}\ \BBA {} Anderson%
+}{%
+Ozdogan%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2006}}%
+}]{%
+Ozdogan_2006}
+\APACinsertmetastar {%
+Ozdogan_2006}%
+\begin{APACrefauthors}%
+Ozdogan, M.%
+, Salvucci, G\BPBI D.%
+\BCBL {}\ \BBA {} Anderson, B\BPBI T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2006}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Examination of the {B}ouchet-{M}orton Complementary
+  Relationship Using a Mesoscale Climate Model and Observations under a
+  Progressive Irrigation Scenario} {Examination of the {B}ouchet-{M}orton
+  complementary relationship using a mesoscale climate model and observations
+  under a progressive irrigation scenario}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Hydrometeorology}{7}{2}{235-251}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1175/JHM485.1} \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1175/JHM485.1} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Penman%
+}{%
+Penman%
+}{%
+{\protect \APACyear {1948}}%
+}]{%
+Penman_1948}
+\APACinsertmetastar {%
+Penman_1948}%
+\begin{APACrefauthors}%
+Penman, H\BPBI L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1948}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Natural evaporation from open water, bare soil and
+  grass} {Natural evaporation from open water, bare soil and grass}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. R. Soc. Lond. A} {Proc. r. soc. lond. a}\
+  (\BVOL~193, \BPGS\ 120--145).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Rawson%
+, Begg%
+\BCBL {}\ \BBA {} Woodward%
+}{%
+Rawson%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1977}}%
+}]{%
+Rawson1977}
+\APACinsertmetastar {%
+Rawson1977}%
+\begin{APACrefauthors}%
+Rawson, H\BPBI M.%
+, Begg, J\BPBI E.%
+\BCBL {}\ \BBA {} Woodward, R\BPBI G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1977}{Jan}{01}.
+\newblock
+{\BBOQ}\APACrefatitle {The effect of atmospheric humidity on photosynthesis,
+  transpiration and water use efficiency of leaves of several plant species}
+  {The effect of atmospheric humidity on photosynthesis, transpiration and
+  water use efficiency of leaves of several plant species}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Planta}{134}{1}{5--10}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1007/BF00390086} \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1007/BF00390086} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Rigden%
+\ \BBA {} Salvucci%
+}{%
+Rigden%
+\ \BBA {} Salvucci%
+}{%
+{\protect \APACyear {2017}}%
+}]{%
+Rigden_2017}
+\APACinsertmetastar {%
+Rigden_2017}%
+\begin{APACrefauthors}%
+Rigden, A\BPBI J.%
+\BCBT {}\ \BBA {} Salvucci, G\BPBI D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Stomatal response to humidity and {CO}2 implicated in
+  recent decline in US evaporation} {Stomatal response to humidity and {CO}2
+  implicated in recent decline in us evaporation}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Global Change Biology}{23}{3}{1140--1151}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Rogers%
+\ \protect \BOthers {.}}{%
+Rogers%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2017}}%
+}]{%
+Rogers_2017}
+\APACinsertmetastar {%
+Rogers_2017}%
+\begin{APACrefauthors}%
+Rogers, A.%
+, Medlyn, B\BPBI E.%
+, Dukes, J\BPBI S.%
+, Bonan, G.%
+, von Caemmerer, S.%
+, Dietze, M\BPBI C.%
+\BDBL {}Zaehle, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2017}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A roadmap for improving the representation of
+  photosynthesis in Earth system models} {A roadmap for improving the
+  representation of photosynthesis in earth system models}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{New Phytologist}{213}{1}{22-42}.
+\newblock
+\begin{APACrefURL}
+  \url{https://nph.onlinelibrary.wiley.com/doi/abs/10.1111/nph.14283}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/nph.14283} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Ryan%
+\ \BBA {} Asao%
+}{%
+Ryan%
+\ \BBA {} Asao%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+Ryan_2014}
+\APACinsertmetastar {%
+Ryan_2014}%
+\begin{APACrefauthors}%
+Ryan, M\BPBI G.%
+\BCBT {}\ \BBA {} Asao, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Phloem transport in trees} {Phloem transport in
+  trees}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Tree Physiology}{34}{1}{1--4}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Salvucci%
+\ \BBA {} Gentine%
+}{%
+Salvucci%
+\ \BBA {} Gentine%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+Salvucci_2013}
+\APACinsertmetastar {%
+Salvucci_2013}%
+\begin{APACrefauthors}%
+Salvucci, G\BPBI D.%
+\BCBT {}\ \BBA {} Gentine, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Emergent relation between surface vapor conductance and
+  relative humidity profiles yields evaporation rates from weather data}
+  {Emergent relation between surface vapor conductance and relative humidity
+  profiles yields evaporation rates from weather data}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Proceedings of the National Academy of
+  Sciences}{110}{16}{6287--6291}.
+\newblock
+\begin{APACrefURL} \url{http://www.pnas.org/content/110/16/6287}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1073/pnas.1215844110} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Shuttleworth%
+}{%
+Shuttleworth%
+}{%
+{\protect \APACyear {2012}}%
+}]{%
+Shuttleworth_2012}
+\APACinsertmetastar {%
+Shuttleworth_2012}%
+\begin{APACrefauthors}%
+Shuttleworth, W\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2012}.
+\newblock
+\APACrefbtitle {Terrestrial hydrometeorology} {Terrestrial hydrometeorology}.
+\newblock
+\APACaddressPublisher{}{John Wiley \& Sons}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Swann%
+, Hoffman%
+, Koven%
+\BCBL {}\ \BBA {} Randerson%
+}{%
+Swann%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2016}}%
+}]{%
+Swann_2016}
+\APACinsertmetastar {%
+Swann_2016}%
+\begin{APACrefauthors}%
+Swann, A\BPBI L\BPBI S.%
+, Hoffman, F\BPBI M.%
+, Koven, C\BPBI D.%
+\BCBL {}\ \BBA {} Randerson, J\BPBI T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Plant responses to increasing {CO}2 reduce estimates of
+  climate impacts on drought severity} {Plant responses to increasing {CO}2
+  reduce estimates of climate impacts on drought severity}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Proceedings of the National Academy of
+  Sciences}{113}{36}{10019--10024}.
+\newblock
+\begin{APACrefURL} \url{http://www.pnas.org/content/113/36/10019}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1073/pnas.1604581113} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Turner%
+, Schulze%
+\BCBL {}\ \BBA {} Gollan%
+}{%
+Turner%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1984}}%
+}]{%
+Turner1984}
+\APACinsertmetastar {%
+Turner1984}%
+\begin{APACrefauthors}%
+Turner, N\BPBI C.%
+, Schulze, E\BHBI D.%
+\BCBL {}\ \BBA {} Gollan, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1984}{Aug}{01}.
+\newblock
+{\BBOQ}\APACrefatitle {The responses of stomata and leaf gas exchange to vapour
+  pressure deficits and soil water content} {The responses of stomata and leaf
+  gas exchange to vapour pressure deficits and soil water content}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Oecologia}{63}{3}{338--342}.
+\newblock
+\begin{APACrefURL} \url{https://doi.org/10.1007/BF00390662} \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1007/BF00390662} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Zhou%
+, Yu%
+, Huang%
+\BCBL {}\ \BBA {} Wang%
+}{%
+Zhou%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2014}}%
+}]{%
+Zhou_2014}
+\APACinsertmetastar {%
+Zhou_2014}%
+\begin{APACrefauthors}%
+Zhou, S.%
+, Yu, B.%
+, Huang, Y.%
+\BCBL {}\ \BBA {} Wang, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The effect of vapor pressure deficit on water use
+  efficiency at the subdaily time scale} {The effect of vapor pressure deficit
+  on water use efficiency at the subdaily time scale}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Geophysical Research Letters}{41}{14}{5005--5013}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Zhou%
+, Yu%
+, Huang%
+\BCBL {}\ \BBA {} Wang%
+}{%
+Zhou%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2015}}%
+}]{%
+Zhou_2015}
+\APACinsertmetastar {%
+Zhou_2015}%
+\begin{APACrefauthors}%
+Zhou, S.%
+, Yu, B.%
+, Huang, Y.%
+\BCBL {}\ \BBA {} Wang, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{may}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Daily underlying water use efficiency for {AmeriFlux}
+  sites} {Daily underlying water use efficiency for {AmeriFlux} sites}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Geophysical Research:
+  Biogeosciences}{120}{5}{887--902}.
+\newblock
+\begin{APACrefDOI} \doi{10.1002/2015jg002947} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Zhou%
+, Zhang%
+, Park~Williams%
+\BCBL {}\ \BBA {} Gentine%
+}{%
+Zhou%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2019}}%
+}]{%
+Zhou_2019}
+\APACinsertmetastar {%
+Zhou_2019}%
+\begin{APACrefauthors}%
+Zhou, S.%
+, Zhang, Y.%
+, Park~Williams, A.%
+\BCBL {}\ \BBA {} Gentine, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2019}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Projected increases in intensity, frequency, and
+  terrestrial carbon costs of compound drought and aridity events} {Projected
+  increases in intensity, frequency, and terrestrial carbon costs of compound
+  drought and aridity events}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Science Advances}{5}{1}{}.
+\newblock
+\begin{APACrefURL} \url{http://advances.sciencemag.org/content/5/1/eaau5740}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1126/sciadv.aau5740} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
 
 %Reference citation instructions and examples:
 %
