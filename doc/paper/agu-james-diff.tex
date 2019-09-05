@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL agu-james-original-submission.tex   Wed Sep  4 09:38:13 2019
-%DIF ADD agu-james-submission.tex            Wed Sep  4 09:45:55 2019
+%DIF ADD agu-james-submission.tex            Thu Sep  5 13:40:16 2019
 % AGUJournalTemplate.tex: this template file is for articles formatted with LaTeX
 %
 % This file includes commands and instructions
@@ -175,23 +175,24 @@ atmospheric drying then soil moisture will be better conserved. This
 represents a sensible evolutionary strategy to cope with aridity: save
 water for periods when atmospheric demand for water is relatively low,
 and atmospheric carbon can be accessed with a relatively smaller cost
-in water loss. If instead stomata were fully passive \cite<similar
-to soil pores, e.g. >[]{Or_2013}, increased atmospheric aridity would
+in water loss. If instead stomata were fully passive \cite<similar to
+soil pores, e.g. >[]{Or_2013}, increased atmospheric aridity would
 strongly reduce soil moisture \cite{Berg_2017}. This could further
 increase aridity as low soil moisture levels increases the Bowen
 ratio, leading to increased temperature and atmospheric drying
 \cite{Bouchet_1963, Morton_1965, Brutsaert_1999, Ozdogan_2006,
-Salvucci_2013, Gentine_2016, Berg_2016, Zhou_2019}. Therefore, passive
-regulation and a lack of soil moisture conservation does not seem to
-be a sensible strategy for plants from an evolutionary
+  Salvucci_2013, Gentine_2016, Berg_2016, Zhou_2019}. Therefore,
+passive regulation and a lack of soil moisture conservation does not
+seem to be a sensible strategy for plants from an evolutionary
 standpoint. This simplified logic explains generally why plants
 evolved to respond to VPD, but also excludes many details and special
 cases \DIFdelbegin \DIFdel{(e.g. plant to plant interaction and highly specialized
 photosynthesis strategies like Crassulacean acid metabolism
 photosynthesis)}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
-\cite<e.g. plant to plant interaction and highly specialized
-photosynthesis strategies like Crassulacean acid metabolism
-photosynthesis>[]{Brooker_2006, Cushman_2001}}%DIFAUXCMD
+\cite<e.g. plant to plant interaction, thermal regulation with
+transpiration, and highly specialized photosynthesis strategies like
+Crassulacean acid metabolism photosynthesis; see>[]{Brooker_2006, Lin_2017,
+  Cushman_2001}}%DIFAUXCMD
 }\DIFaddend .
 
 We can use intuition about plant water conservation strategy to
@@ -374,21 +375,27 @@ VPD. They also extended this model to the ecosystem scale
 
   \begin{equation}
     g_{1}  \propto \sqrt{\frac{3 \, \Gamma^* \,
-        \lambda}{1.6}},\footnote{Note this expression has units of of
+        \lambda}{1.6}},
+    \DIFdelbegin \footnote{\DIFdel{Note this expression has units of of
       (mmol mol$^{-1}$)$^{1/2}$, but this can be converted to
-      Pa$^{1/2}$ using the ideal gas law.}
-    \label{slope}
+      Pa$^{1/2}$ using the ideal gas law.}}
+    %DIFAUXCMD
+\addtocounter{footnote}{-1}%DIFAUXCMD
+\DIFdelend \label{slope}
   \end{equation}
 % \end{linenomath*}
 
-where $\Gamma^*$ is the CO$_2$ compensation point for photosynthesis
-(without dark respiration), and $\lambda$ is the marginal water cost
-of leaf carbon
-($\frac{\partial \; \text{transpiration}}{\partial \; CO_2 assimilation}$)
-\cite{Farquhar_1980, Katul_2009}. So,
-$g_{1}$ is a leaf-scale term reflecting the trade-off of water for
-carbon uptake. The higher $g_{1}$, the more open the stomata and
-the more they release water in exchange for carbon.
+
+  where \DIFaddbegin \DIFadd{g$_1$ is presented in units of $\sqrt{\text{mol fraction}}$ for
+  convenience (which can be converted to $\sqrt{Pa}$ using the ideal
+  gas law and ambient pressure), }\DIFaddend $\Gamma^*$ is the CO$_2$ compensation
+  point for photosynthesis (without dark respiration), and $\lambda$
+  is the marginal water cost of leaf carbon
+  ($\frac{\partial \; \text{transpiration}}{\partial \; CO_2
+    assimilation}$) \cite{Farquhar_1980, Katul_2009}. So, $g_{1}$ is a
+  leaf-scale term reflecting the trade-off of water for carbon
+  uptake. The higher $g_{1}$, the more open the stomata and the more
+  they release water in exchange for carbon.
 
 
 While Eq. (\ref{medlyn}) can be used in PM (Eq. (1)), it will make
@@ -480,17 +487,17 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   \end{equation}
 % \end{linenomath*}
 
-  providing analytical framework for ecosystem response to
-  atmospheric demand with environmental conditions held
-  fixed. There are a few subtleties to taking the derivative in
-  Eq. (\ref{d_et}): $\Delta$ ($\frac{d e_{s}}{d T}$) and $VPD$ are
-  functionally related, so while taking the derivative we evaluate
+  providing analytical framework for ecosystem response to atmospheric
+  demand with environmental conditions held fixed. There are a few
+  subtleties to taking the derivative in Eq. (\ref{d_et}): $\Delta$
+  ($\frac{d e_{s}}{d T}$) and $VPD$ are functionally related, so while
+  taking the derivative we evaluate
   $\frac{\partial \; ET}{\partial \; VPD} = \frac{\partial \; ET}
   {\partial \; e_s} \frac{\partial \; e_s}{\partial \; VPD}
   \Big|_{\text{RH fixed}} + \frac{\partial \; ET}{\partial \; RH}
   \frac{\partial \; RH}{\partial \; VPD} \Big|_{\text{$e_s$
       fixed}}$. $RH$ and $e_s$ are assumed to be approximately
-  independent, which is supported by data (not shown).
+  independent, which is supported by data (\DIFdelbegin \DIFdel{not shown}\DIFdelend \DIFaddbegin \DIFadd{see supplemental material}\DIFaddend ).
 
   This derivation relied either implicitly or explicitly on several
   assumptions. First, we assume that VPD at the leaf surface is the
@@ -503,40 +510,44 @@ to VPD to understand whether VPD drives or reduces ecosystem-scale ET:
   insolation induces instability and convective boundary layers, and
   we would expect the surface to be generally well coupled. An
   additional assumption in the formulation of uWUE \cite{Zhou_2014,
-    Zhou_2015} and \citeA{Medlyn_2017}'s stomatal conductance model is
-  that direct soil evaporation contributions to ET remain small
-  relative to transpiration. Again, this should be more true during
-  the growing season. The ratio of evaporation to transpiration may
-  increase immediately after rainfall events due to high soil moisture
-  and ponding, but VPD is generally low anyways during these
-  times. However, some plant types allow for systematically larger
-  contributions of evaporation in ET, particularly those with sparse
-  canopies and smaller relative amounts of transpiration. We therefore
-  might expect that the theory will be most applicable to forest PFTs,
-  which will be most strongly coupled to the boundary layer due to
-  larger surface roughness, and will also generally have the highest
-  ratios of transpiration to evaporation. Finally, we assume that
-  $g_1$ and uWUE are constant with respect to the conceptual VPD
-  perturbation. Both quantities have been shown to be relatively
-  constant with respect to changes in VPD \cite{Franks_2017,
-    Zhou_2014}. These parameters will however vary with plant species
-  and characteristics \cite<e.g. wood density, >[]{Lin_2015}, as well
-  as environmental conditions including soil water content and
-  temperature \cite{Lin_2015, Manzoni2013}. Exploring possible soil
-  moisture (in)dependence of the plant parameters (g$_1$ and uWUE) is
-  particularly interesting because soil moisture only enters the
-  partial derivative directly through these plant parameters. If the
-  plant parameters are weak functions of soil moisture then the theory
-  can be directly applied to a broader range of conceptual VPD
-  scenarios, including observed compound events between high VPD and
-  low soil moisture \cite{Zhou_2019}. Supplementary material for this
-  manuscript explores the soil moisture dependence of the plant
-  parameters, but excessive noise and inconsistencies preclude
-  conclusions about the nature of any dependence. We provide it in
-  case it is of interest to the reader, and to motivate future
-  research.
+    Zhou_2015} and \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\citeA{Medlyn_2017}}%DIFAUXCMD
+'s }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend stomatal conductance model \DIFaddbegin \DIFadd{of
+  \mbox{%DIFAUXCMD
+\citeA{Medlyn_2017} }%DIFAUXCMD
+}\DIFaddend is that direct soil evaporation contributions to
+  ET remain small relative to transpiration. Again, this should be
+  more true during the growing season. The ratio of evaporation to
+  transpiration may increase immediately after rainfall events due to
+  high soil moisture\DIFdelbegin \DIFdel{and ponding, }\DIFdelend \DIFaddbegin \DIFadd{, ponding, and interception, }\DIFaddend but VPD is generally
+  low anyways during these times. However, some plant types allow for
+  systematically larger contributions of evaporation in ET,
+  particularly those with sparse canopies and smaller relative amounts
+  of transpiration. We therefore might expect that the theory will be
+  most applicable to forest PFTs, which will be most strongly coupled
+  to the boundary layer due to larger surface roughness, and will also
+  generally have the highest ratios of transpiration to
+  evaporation. Finally, we assume that $g_1$ and uWUE are constant
+  with respect to the conceptual VPD perturbation. Both quantities
+  have been shown to be relatively constant with respect to changes in
+  VPD \cite{Franks_2017, Zhou_2014}. These parameters will however
+  vary with plant species and characteristics \cite<e.g. wood density,
+  >[]{Lin_2015}, as well as environmental conditions including soil
+  water content and temperature \cite{Lin_2015,
+    Manzoni2013}. Exploring possible soil moisture (in)dependence of
+  the plant parameters (g$_1$ and uWUE) is particularly interesting
+  because soil moisture only enters the partial derivative directly
+  through these plant parameters. If the plant parameters are weak
+  functions of soil moisture then the theory can be directly applied
+  to a broader range of conceptual VPD scenarios, including observed
+  compound events between high VPD and low soil moisture
+  \cite{Zhou_2019}. Supplementary material for this manuscript
+  explores the soil moisture dependence of the plant parameters, but
+  excessive noise and inconsistencies preclude conclusions about the
+  nature of any dependence. We provide it in case it is of interest to
+  the reader, and to motivate future research.
 
-  Because Eq. (\ref{d_et}) is a partial derivative, it's utility is as
+  Because Eq. (\ref{d_et}) is a partial derivative, \DIFdelbegin \DIFdel{it's }\DIFdelend \DIFaddbegin \DIFadd{its }\DIFaddend utility is as
   a conceptual model for the change in ET in response to VPD with all
   other variables held fixed. This provides a useful tool for
   identifying the effect of VPD on ET through atmospheric demand and
@@ -597,12 +608,15 @@ generate the figures and tables, are publicly available at
   \caption{Variable quantities in the ET response to VPD. Each value
     is varied to determine the effect of a range of expected plant and
     environmental conditions on ET response to VPD. A citation is
-    provided in cases where the quantities are directly derived from
-    previous literature. Conceptually, min. values are extracted from
-    literature to correspond to approximately the 15th percentile of
-    observed conditions during the growing season, med. values
+    provided \DIFdelbeginFL \DIFdelFL{in cases where the quantities }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{for values of g$_1$ and uWUE, which }\DIFaddendFL are directly derived
+    from previous literature. Conceptually, min. values are extracted
+    from literature to correspond to approximately the 15th percentile
+    of observed conditions during the growing season, med. values
     correspond to approximately the 50th percentile, and max. values
-    correspond to approximately the 85th percentile.}
+    correspond to approximately the 85th percentile. \DIFaddbeginFL \DIFaddFL{Values for $T$
+    and g$_a$ are calculated from FLUXNET-2015 data (see supplemental
+    material for description), rounding the 15th, 50th, and 85th
+    percentile to the nearest 5$^o$C and 0.005 m/s, respectively.}\DIFaddendFL }
   \label{param_varying}
   \centering
   \footnotesize
@@ -734,9 +748,11 @@ useful to examine how these quantities vary in previous literature,
 framed by our results on $\frac{\partial \; ET}{\partial \; VPD}$. In
 \citeA{Zhou_2015} most plant types' uWUE is similar to our median
 value, under which the sign of the ET response depends on
-VPD. However, crops, which we expect to prioritize carbon uptake over
-water conservation, have a higher uWUE value closer to our maximum
-value. This higher uWUE results in a higher likelihood for an
+VPD. However, crops, \DIFaddbegin \DIFadd{shrubs, and grass are exceptions; they exhibit an
+uWUE different than the median value in Table
+\ref{param_varying}. Crops, }\DIFaddend which we expect to prioritize carbon
+uptake over water conservation, have a higher uWUE value closer to our
+maximum value. This higher uWUE results in a higher likelihood for an
 increasing ET response to VPD, which matches intuition given that we
 expect crops to keep stomata open for access to carbon, at the cost of
 increased water loss during high VPD. Shrubs, and to a lesser extent
@@ -747,30 +763,51 @@ role of soil moisture for within plant-type variability of uWUE, we
 might expect some variation, especially in extreme cases when soil
 water becomes a limiting factor (see supplementary material).
 
-\citeA{Medlyn_2017}'s ecosystem-scale results did not display the
+\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\citeA{Medlyn_2017}}%DIFAUXCMD
+'s }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend ecosystem-scale results \DIFaddbegin \DIFadd{of \mbox{%DIFAUXCMD
+\citeA{Medlyn_2017} }%DIFAUXCMD
+}\DIFaddend did not display the
 robust relationship between plant type and and plant parameter (g$_1$)
 that was demonstrated by \citeA{Zhou_2015} for uWUE. Given that there
-is a robust relationship between g$_1$ and plant type in
-\citeA{Lin_2015}'s leaf-scale results, and that \citeA{Zhou_2015}'s ecosystem-scale results
-rely on the same underlying theory as \citeA{Medlyn_2017}'s results,
-the ambiguous results in \citeA{Medlyn_2017} could be due to noise in
-ecosystem scale observations, the consequences of imposing a model
-structure in some of their g$_1$ estimations, or real ecosystem-scale
-within-plant type variability (e.g. multiple species impacting the
-relationship within the eddy-covariance footprint). These differences
-between leaf-scale behavior and ecosystem scale behavior highlight the
-importance of understanding how and why slope parameters show
-increased variability at the ecosystem scale, as argued by
-\citeA{Medlyn_2017}. However, if we assume that there is some real
-analogy between leaf scale results in \citeA{Lin_2015} and ecosystem
-scale behavior, and that some of the ambiguity in \citeA{Medlyn_2017}
-is due to model and/or observational error, then we can use the
-relationships between g$_1$ and plant characteristics defined by
-\citeA{Lin_2015} to frame the ET response to VPD. This is subject to
-the strong caveat that we still do not fully understand g$_1$ behavior
-at the ecosystem scale. Extrapolating \citeA{Lin_2015}'s results
-(e.g. Fig. 2) to the ecosystem scale would reveal the following
-relationships between g$_1$ and plant types:
+is a robust relationship between g$_1$ and plant type in \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\citeA{Lin_2015}}%DIFAUXCMD
+'s }\DIFdelend \DIFaddbegin \DIFadd{the
+}\DIFaddend leaf-scale results \DIFdelbegin \DIFdel{, and that \mbox{%DIFAUXCMD
+\citeA{Zhou_2015}}%DIFAUXCMD
+'s }\DIFdelend \DIFaddbegin \DIFadd{of \mbox{%DIFAUXCMD
+\citeA{Lin_2015}}%DIFAUXCMD
+, and the }\DIFaddend ecosystem-scale
+results \DIFaddbegin \DIFadd{of \mbox{%DIFAUXCMD
+\citeA{Zhou_2015} }%DIFAUXCMD
+}\DIFaddend rely on the same underlying theory as \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\citeA{Medlyn_2017}}%DIFAUXCMD
+'s results}\DIFdelend \DIFaddbegin \DIFadd{in
+\mbox{%DIFAUXCMD
+\citeA{Medlyn_2017}}%DIFAUXCMD
+}\DIFaddend , the ambiguous results in \citeA{Medlyn_2017}
+could be due to noise in ecosystem scale observations, the
+consequences of imposing a model structure in some of their g$_1$
+estimations, or real ecosystem-scale within-plant type variability
+(e.g. multiple species impacting the relationship within the
+eddy-covariance footprint). These differences between leaf-scale
+behavior and ecosystem scale behavior highlight the importance of
+understanding how and why slope parameters show increased variability
+at the ecosystem scale, as argued by \citeA{Medlyn_2017}. However, if
+we assume that there is some real analogy between leaf scale results
+in \citeA{Lin_2015} and ecosystem scale behavior, and that some of the
+ambiguity in \citeA{Medlyn_2017} is due to model and/or observational
+error, then we can use the relationships between g$_1$ and plant
+characteristics defined by \citeA{Lin_2015} to frame the ET response
+to VPD. This is subject to the strong caveat that we still do not
+fully understand g$_1$ behavior at the ecosystem scale. Extrapolating
+\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\citeA{Lin_2015}}%DIFAUXCMD
+'s results }\DIFdelend \DIFaddbegin \DIFadd{the results of \mbox{%DIFAUXCMD
+\citeA{Lin_2015} }%DIFAUXCMD
+}\DIFaddend (e.g. Fig. 2) to the ecosystem scale
+would reveal the following relationships between g$_1$ and plant
+types:
 
  \begin{itemize} 
   \item C3 plants would have a generally higher g$_1$ than C4 plants,
@@ -836,22 +873,30 @@ quantities based on stomata theory, may not always function optimally
 would not expect that this ecosystem scale WUE quantity will respond
 to VPD exactly analogously to stomata. Direct soil evaporation's
 contributions to ET should shift the exponent of the VPD
-dependence. \citeA{Zhou_2015}'s results corroborate this: they found a
-mean empirically fit exponential VPD dependence of 0.55, varying
-slightly from the theoretically optimal value of of 0.5 for AmeriFlux
-sites. \citeA{Lin_2018}'s results also show variance in the empirical
-exponent of the VPD dependence in the stomatal conductance model, but
-interpretation of this variance is more difficult as \citeA{Lin_2018}
-do not handle the GPP dependence of stomatal conductance in a directly
-analogous manner to the optimal theory in \citeA{MEDLYN_2011} and
-\citeA{Medlyn_2017}. Regardless, given that these recent results on
-the relationship between VPD, GPP, and ET \cite{MEDLYN_2011,
-  Zhou_2014, Zhou_2015, Medlyn_2017} form the backbone of our analysis
-and are what allowed us to derive an explicit ET expression for the
-first time (Eq. (\ref{et})), we will analyze if and how assumptions
-about the exponent of the VPD dependence impact the shape of the
-ET-VPD dependence. This analysis is also important to understand
-whether the choice of stomatal conductance model alters the
+dependence. \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\citeA{Zhou_2015}}%DIFAUXCMD
+'s results }\DIFdelend \DIFaddbegin \DIFadd{The results from \mbox{%DIFAUXCMD
+\citeA{Zhou_2015} }%DIFAUXCMD
+}\DIFaddend corroborate this: they
+found a mean empirically fit exponential VPD dependence of 0.55,
+varying slightly from the theoretically optimal value of of 0.5 for
+AmeriFlux sites. \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\citeA{Lin_2018}}%DIFAUXCMD
+'s results }\DIFdelend \DIFaddbegin \DIFadd{Results in \mbox{%DIFAUXCMD
+\citeA{Lin_2018} }%DIFAUXCMD
+}\DIFaddend also show variance in the
+empirical exponent of the VPD dependence in the stomatal conductance
+model, but interpretation of this variance is more difficult as
+\citeA{Lin_2018} do not handle the GPP dependence of stomatal
+conductance in a directly analogous manner to the optimal theory in
+\citeA{MEDLYN_2011} and \citeA{Medlyn_2017}. Regardless, given that
+these recent results on the relationship between VPD, GPP, and ET
+\cite{MEDLYN_2011, Zhou_2014, Zhou_2015, Medlyn_2017} form the
+backbone of our analysis and are what allowed us to derive an explicit
+ET expression for the first time (Eq. (\ref{et})), we will analyze if
+and how assumptions about the exponent of the VPD dependence impact
+the shape of the ET-VPD dependence. This analysis is also important to
+understand whether the choice of stomatal conductance model alters the
 fundamental behavior of the ET-VPD relationships, as many commonly
 used models utilize a VPD exponent other than the 1/2 suggested by
 optimal theory \cite<e.g. >[ which uses an exponent of
@@ -912,17 +957,21 @@ relations reveal themselves from Eq. (\ref{curves}):
   \centering
   \centerline{\includegraphics[width=0.75\textwidth]{./concave.pdf}}
   \caption{ Solutions corresponding to inflection points between
-    concave up and concave down ET-VPD curves (Eq. (\ref{curves}))
-    for three specific scenarios. Solutions are defined in terms of a
+    concave up and concave down ET-VPD curves (Eq. (\ref{curves})) for
+    three specific scenarios. Solutions are defined in terms of a
     non-dimensional VPD ($VPD^m/g_*$), but to aide physical
-    interpretation the horizontal axis is additionally provided in terms of dimensionalized VPD assuming $m=1/2$ and
+    interpretation the horizontal axis is additionally provided in
+    terms of dimensionalized VPD assuming $m=1/2$ and
     $g_*=110\; Pa^{1/2}$ (average of all PFT $g_1$). The vertical axis
     has a different interpretation depending on the solution
-    curve. For the blue line ($m$ varying), it corresponds to $m$,
-    for the orange line ($n$ varying) it corresponds to $n$, and for
-    the green line it corresponds to the value of both $n$ and $m$
-    ($n=m$). Regions of the parameter space that correspond to
-    concave up and concave down results are labeled.}
+    curve. For the blue line ($m$ varying), it corresponds to $m$, for
+    the orange line ($n$ varying) it corresponds to $n$, and for the
+    green line it corresponds to the value of both $n$ and $m$
+    ($n=m$). Regions of the parameter space that correspond to concave
+    up and concave down results are labeled\DIFaddbeginFL \DIFaddFL{: for each curve, the
+    parameter space ``below'' the curve corresponds to a concave up
+    relationship, while the parameter space ``above'' the curve
+    corresponds to a concave down relationship}\DIFaddendFL .}
   \label{concave}
 \end{figure}
 
@@ -957,8 +1006,10 @@ concave up result matches physical intuition more than a concave down
 result. Plants must maintain nutrient and sugar transport through the
 phloem and xylem. To accomplish this, stomata must remain slightly
 open \cite{De_2013, Nikinmaa_2013, Ryan_2014}. Furthermore, even if
-complete stomatal closure were possible, cuticular water loss and [at
-the ecosystem-scale] direct soil evaporation are still sources of ET
+complete stomatal closure were possible, cuticular water loss and \DIFdelbegin %DIFDELCMD < [%%%
+\DIFdelend \DIFaddbegin \DIFadd{(}\DIFaddend at
+the ecosystem-scale\DIFdelbegin %DIFDELCMD < ] %%%
+\DIFdelend \DIFaddbegin \DIFadd{) }\DIFaddend direct soil evaporation are still sources of ET
 which increase with VPD, independent of stomatal closure. Therefore,
 in the limit as VPD becomes large and we assume plants are exercising
 all strategies to reduce ET, any further increase in VPD should result
@@ -976,8 +1027,11 @@ This analysis allows us to understand the theoretical shape of the ET
 response to VPD with environmental conditions held
 fixed. Accomplishing this with purely statistical methods applied to
 flux observations would be very difficult, given the relatively fast
-time scale of plant response and the non-stationarity of [solar
-forced] environmental conditions over the relatively coarse (half
+time scale of plant response and the non-stationarity of \DIFdelbegin %DIFDELCMD < [%%%
+\DIFdel{solar
+forced}%DIFDELCMD < ] %%%
+\DIFdelend \DIFaddbegin \DIFadd{(solar
+forced) }\DIFaddend environmental conditions over the relatively coarse (half
 hourly) flux estimates (which is required to obtain robust
 eddy-covariance statistics). Our results on the shape of the ET-VPD
 curve with environmental conditions held fixed can be built upon with
@@ -1267,7 +1321,9 @@ offices. We would like to thank Dr. Trevor Keenan for providing tools
 for citation of the FLUXNET2015 dataset, available at
 \url{https://github.com/trevorkeenan/FLUXNET_citations}. This material
 is based upon work supported by the National Science Foundation
-Graduate Research Fellowship under Grant No. DGE 16-44869.
+Graduate Research Fellowship under Grant No. DGE 16-44869\DIFaddbegin \DIFadd{. We would
+like to thank Emma Robinson and one anonymous reviewer for thoughtful
+comments that greatly improved the strength of the manuscript}\DIFaddend .
 
 
 %% ------------------------------------------------------------------------ %%
