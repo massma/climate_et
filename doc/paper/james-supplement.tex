@@ -116,7 +116,10 @@ procedure as \cite{Zhou_2015}:
 \item We remove days with rain and the day following to avoid issues
   with rain interception and sensor saturation at high relative
   humidity (\cite{Medlyn_2017}).
+\item For SWC measurements, we use the shallowest observed layer
+  available at each site.
 \end{itemize}
+
 Additionally, as in \citet{Lin_2018}, we restrict data to the daytime,
 which is identified when downwelling shortwave radiation is greater
 than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W
@@ -125,16 +128,18 @@ humidity, we remove all time steps for which VPD is less than .01 kPa,
 and to reduce errors at low windspeeds we remove all periods with wind
 magnitudes less than 0.5 m s$^{-1}$. Timesteps with negative observed
 GPP or ET are also removed, and we aggregate half hourly data to
-hourly averages to reduce noise \citep{Lin_2018}. After these quality
+hourly averages to reduce noise \citep{Lin_2018}.  After these quality
 control procedures, 400,983 upscaled hourly observations remain.
 
-\input{supp-figs.tex}
 
 \begin{figure}
   \centering \includegraphics{./supp-figs/0joint_rh_es.pdf}
   \caption{The joint distribution of relative humidity and saturation
     vapor pressure for the FLUXNET2015 dataset.}
   \end{figure}
+
+\input{supp-figs.tex}
+
 
 \section{FLUXNET2015 sites}
   % below taken adapted from Trevor Keenan's FLUXNET citations

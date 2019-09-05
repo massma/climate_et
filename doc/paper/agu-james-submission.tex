@@ -154,20 +154,21 @@ atmospheric drying then soil moisture will be better conserved. This
 represents a sensible evolutionary strategy to cope with aridity: save
 water for periods when atmospheric demand for water is relatively low,
 and atmospheric carbon can be accessed with a relatively smaller cost
-in water loss. If instead stomata were fully passive \cite<similar
-to soil pores, e.g. >[]{Or_2013}, increased atmospheric aridity would
+in water loss. If instead stomata were fully passive \cite<similar to
+soil pores, e.g. >[]{Or_2013}, increased atmospheric aridity would
 strongly reduce soil moisture \cite{Berg_2017}. This could further
 increase aridity as low soil moisture levels increases the Bowen
 ratio, leading to increased temperature and atmospheric drying
 \cite{Bouchet_1963, Morton_1965, Brutsaert_1999, Ozdogan_2006,
-Salvucci_2013, Gentine_2016, Berg_2016, Zhou_2019}. Therefore, passive
-regulation and a lack of soil moisture conservation does not seem to
-be a sensible strategy for plants from an evolutionary
+  Salvucci_2013, Gentine_2016, Berg_2016, Zhou_2019}. Therefore,
+passive regulation and a lack of soil moisture conservation does not
+seem to be a sensible strategy for plants from an evolutionary
 standpoint. This simplified logic explains generally why plants
 evolved to respond to VPD, but also excludes many details and special
-cases \cite<e.g. plant to plant interaction and highly specialized
-photosynthesis strategies like Crassulacean acid metabolism
-photosynthesis>[]{Brooker_2006, Cushman_2001}.
+cases \cite<e.g. plant to plant interaction, thermal regulation with
+transpiration, and highly specialized photosynthesis strategies like
+Crassulacean acid metabolism photosynthesis>[]{Brooker_2006, Lin_2017,
+  Cushman_2001}.
 
 We can use intuition about plant water conservation strategy to
 hypothesize about ET response to changes in VPD. Plants and ecosystems
@@ -573,12 +574,15 @@ generate the figures and tables, are publicly available at
   \caption{Variable quantities in the ET response to VPD. Each value
     is varied to determine the effect of a range of expected plant and
     environmental conditions on ET response to VPD. A citation is
-    provided in cases where the quantities are directly derived from
-    previous literature. Conceptually, min. values are extracted from
-    literature to correspond to approximately the 15th percentile of
-    observed conditions during the growing season, med. values
+    provided for values of g$_1$ and uWUE, which are directly derived
+    from previous literature. Conceptually, min. values are extracted
+    from literature to correspond to approximately the 15th percentile
+    of observed conditions during the growing season, med. values
     correspond to approximately the 50th percentile, and max. values
-    correspond to approximately the 85th percentile.}
+    correspond to approximately the 85th percentile. Values for $T$
+    and g$_a$ are calculated from FLUXNET-2015 data (see supplemental
+    material for description), rounding the 15th, 50th, and 85th
+    percentile to the nearest 5$^o$C and 0.005 m/s, respectively.}
   \label{param_varying}
   \centering
   \footnotesize
@@ -710,9 +714,11 @@ useful to examine how these quantities vary in previous literature,
 framed by our results on $\frac{\partial \; ET}{\partial \; VPD}$. In
 \citeA{Zhou_2015} most plant types' uWUE is similar to our median
 value, under which the sign of the ET response depends on
-VPD. However, crops, which we expect to prioritize carbon uptake over
-water conservation, have a higher uWUE value closer to our maximum
-value. This higher uWUE results in a higher likelihood for an
+VPD. However, crops, shurbs, and grass are exceptions; they exhibit an
+uWUE different than the median value in Table
+\ref{param_varying}. Crops, which we expect to prioritize carbon
+uptake over water conservation, have a higher uWUE value closer to our
+maximum value. This higher uWUE results in a higher likelihood for an
 increasing ET response to VPD, which matches intuition given that we
 expect crops to keep stomata open for access to carbon, at the cost of
 increased water loss during high VPD. Shrubs, and to a lesser extent
