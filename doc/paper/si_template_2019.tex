@@ -45,7 +45,23 @@
 % (If you are submitting to a journal other than jgrga,
 % substitute the initials of the journal for "jgrga" below.)
 
-\documentclass[draft,jgrga]{agutexSI2019}
+\documentclass[draft,ms]{agutexSI2019}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+\usepackage{color}
+\usepackage{longtable}
+\usepackage{textcomp}
+\graphicspath{{../../../etc/plots/climate_et/test_plots/}}
+\newcommand\newblock{\hskip .11em\@plus.33em\@minus.07em}
+
+\RequirePackage{natbib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -88,7 +104,7 @@
 %   when using Draft:
  \setkeys{Gin}{draft=false}
 %
-% You may need to use one of these options for graphicx depending on the driver program you are using. 
+% You may need to use one of these options for graphicx depending on the driver program you are using.
 %
 % [xdvi], [dvipdf], [dvipsone], [dviwindo], [emtex], [dviwin],
 % [pctexps],  [pctexwin],  [pctexhp],  [pctex32], [truetex], [tcidvi],
@@ -124,7 +140,8 @@
 %\includegraphics{agu_pubart-white_reduced.eps}
 
 
-\title{Supporting Information for "Insert Title"}
+\title{Supporting Information for "When does vapor pressure deficit drive or reduce
+  evapotranspiration?"}
 %
 % e.g., \title{Supporting Information for "Terrestrial ring current:
 % Origin, formation, and decay $\alpha\beta\Gamma\Delta$"}
@@ -147,16 +164,14 @@
 % Example: \authors{A. B. Author\affil{1}\thanks{Current address, Antartica}, B. C. Author\affil{2,3}, and D. E.
 % Author\affil{3,4}\thanks{Also funded by Monsanto.}}
 
-\authors{=Authors=}
+
+\authors{A. Massmann\affil{1}, P. Gentine\affil{1}, C. Lin\affil{1,2}}
 
 
-% \affiliation{1}{First Affiliation}
-% \affiliation{2}{Second Affiliation}
-% \affiliation{3}{Third Affiliation}
-% \affiliation{4}{Fourth Affiliation}
-
-\affiliation{=number=}{=Affiliation Address=}
-%(repeat as many times as is necessary)
+\affiliation{1}{Department of Earth and Environmental Engineering,
+  Columbia University, New York, NY 10027}
+\affiliation{2}{State Key Laboratory of Hydroscience and Engineering, Department of Hydraulic
+  Engineering, Tsinghua University, Beijing, CN 100084}
 
 
 
@@ -186,49 +201,106 @@
 \noindent\textbf{Contents of this file}
 %%%Remove or add items as needed%%%
 \begin{enumerate}
-\item Text S1 to Sx
-\item Figures S1 to Sx
-\item Tables S1 to Sx
-%if Tables are larger than 1 page, upload as separate excel file
-\end{enumerate}
-\noindent\textbf{Additional Supporting Information (Files uploaded separately)}
-\begin{enumerate}
-\item Captions for Datasets S1 to Sx
-\item Captions for large Tables S1 to Sx (if larger than 1 page, upload as separate excel file)
-\item Captions for Movies S1 to Sx
-\item Captions for Audio S1 to Sx
+\item Figures S1 to S68
+\item Table S1
 \end{enumerate}
 
 \noindent\textbf{Introduction}
-%Type or paste your text here. The introduction gives a brief overview of the supporting information. You should include information %about as many of the following as possible (when appropriate):
-% 1. a general overview of the kind of data files;
-% 2. information about when and how the data were collected or created;
-% 3. a general description of processing steps used;
-% 4. any known imperfections or anomalies in the data.
+
+The manuscript analyzes the partial derivative of ET with respect to
+VPD. This assumes that all other quantities remain fixed, including the
+plant parameters g$_1$ and uWUE (and by extension, $\lambda$). In
+reality, these parameters may vary with environmental conditions, and
+specifically soil moisture. However because soil moisture
+\textit{only} enters the partial derivative directly through these
+plant terms, if the plant parameters are weak functions of soil
+moisture then the theory can be directly applied to a broader range of
+conceptual VPD scenarios, including observed compound events between
+high VPD and low soil moisture \cite{Zhou_2019}. To help the reader
+assess the soil moisture dependence of uWUE (and partially by
+extension $\lambda$ and g$_1$), we provide here figures showing the
+distribution of uWUE with SWC for each of 66 FLUXNET sites from the
+FLUXNET-2015 database. The functional relationship between uWUE and
+SWC varies, with a mix of sites showing strong and weak
+SWC-dependence. For all sites the ratio of signal to noise is very
+low, an unfortunate consequence of taking a ratio of two highly
+uncertain eddy-covariance derived fluxes. In general we find this
+analysis inconclusive.
+
+The paper does not rely on assumptions about uWUE's functional
+relationship with soil moisture so we do not include the figures in
+the body of the manuscript. But given that constant uWUE and g$_1$
+assumptions can make our theory more useful to the reader we provide
+the figures for their interpretation, and motivation for future
+research.
+
+Additionally, we include a figure showing the joint distribution
+between saturation vapor pressure and relative humidity calculated
+from the FLUXNET-2015 data. Relative humidity and saturation vapor
+pressure are much more independent than saturation vapor pressure and
+VPD, and we use an assumption that relative humidity and saturation
+vapor pressure can be approximated as independent in order to evaluate
+$\frac{\partial ET}{\partial VPD}$. Please note that at a given site,
+the relationship may be more or less independent depending on the
+hydroclimate.
+
+
+\section{Description of data}
+\subsection{Data}
+We use both meteorological and eddy-covariance data from the
+FLUXNET2015 database (data available at \sloppy
+\url{https://fluxnet.fluxdata.org/data/fluxnet2015-dataset/} \sloppy),
+including all Tier 1 sites with at least four years of data. Sixty-six
+sites met these requirements, and were grouped into nine plant
+functional types (PFT) according to the International
+Geosphere-Biosphere Programme vegetation classification scheme
+\cite{Loveland_1999}: cropland (CRO), grass (GRA), deciduous
+broadleaf forest (DBF), evergreen broadleaf forest (EBF), evergreen
+needleleaf forest (ENF), mixed forest (MF), closed shrub (CSH),
+savannah (SAV), and woody savannah (WSA).
+
+\begin{figure}[h]
+  \centering \includegraphics[trim={0 3cm 0 3cm}, clip]{./map.pdf}
+  \caption{Plant functional type and location of FLUXNET2015 sites
+    used in this analysis.}
+  \label{map_fig}
+\end{figure}
+We filter and quality control the FLUXNET-2015 data using a similar
+procedure as \cite{Zhou_2015}:
+
+\begin{itemize}
+\item Only measured or highest (``good'') quality gapfilled data,
+  according to quality control flags, are used.
+\item To isolate the growing season, we only use days in which the
+  average Gross Primary Productivity (GPP) exceeds 10\% of the
+  observed 95th percentile of GPP for a given site. GPP is calculated
+  using the nighttime respiration partitioning method.
+\item We remove days with rain and the day following to avoid issues
+  with rain interception and sensor saturation at high relative
+  humidity (\cite{Medlyn_2017}).
+\item For SWC measurements, we use the shallowest observed layer
+  available at each site.
+\end{itemize}
+
+Additionally, as in \citet{Lin_2018}, we restrict data to the daytime,
+which is identified when downwelling shortwave radiation is greater
+than 50 W m$^{-2}$ and sensible heat flux is greater than 5 W
+m$^{-2}$. To reduce the chance of sensor saturation at high relative
+humidity, we remove all time steps for which VPD is less than .01 kPa,
+and to reduce errors at low windspeeds we remove all periods with wind
+magnitudes less than 0.5 m s$^{-1}$. Timesteps with negative observed
+GPP or ET are also removed, and we aggregate half hourly data to
+hourly averages to reduce noise \cite{Lin_2018}.  After these quality
+control procedures, 400,983 upscaled hourly observations remain.
+
+
+
+
+\bibliography{references}
 
 %\clearpage
 
 %Delete all unused file types below. Copy/paste for multiples of each file type as needed.
-\noindent\textbf{Text S1.}
-%Type or paste text here. This should be additional explanatory text, such as: extended descriptions of results, full details of models, extended lists of acknowledgements etc.  It should not be additional discussion, analysis, interpretation or critique. It should not be an additional scientific experiment or paper.
-%
-%Repeat for any additional Supporting Text
-
-%%Enter Data Set, Movie, and Audio captions here
-%%EXAMPLE CAPTIONS
-
-\noindent\textbf{Data Set S1.} %Type or paste caption here.
-%upload your dataset(s) to AGU's journal submission site and select "Supporting Information (SI)" as the file type. Following naming %convention: ds01.
-
-%Repeat for any additional Supporting data sets
-
-\noindent\textbf{Movie S1.} %Type or paste caption here.
-%upload your movie(s) to AGU's journal submission site and select, "Supporting Information %(SI)" as the file type. Following naming convention: ms01.
-
-%Repeat any additional Supporting movies
-
-\noindent\textbf{Audio S1.} %Type or paste caption here.
-%upload your audio file(s) to AGU's journal submission site and select "Supporting Information %(SI)" as the file type. Following naming convention: auds01.
 
 
 %Repeat for any additional Supporting audio files
@@ -250,7 +322,7 @@
 %%  REFERENCE LIST AND TEXT CITATIONS
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
+%
 %
 % \bibliography{<name of your .bib file>} do not specify file extension
 %
@@ -262,7 +334,7 @@
 % if you get an error about newblock being undefined, uncomment this line:
 %\newcommand{\newblock}{}
 
-% \bibliography{ uncomment this line and enter the name of your bibtex file here } 
+% \bibliography{ uncomment this line and enter the name of your bibtex file here }
 
 
 
@@ -298,68 +370,39 @@
 % Copy/paste for multiples of each file type as needed.
 
 % enter figures and tables below here: %%%%%%%
-%
-%
-%
-%
-% EXAMPLE FIGURES
-% ---------------
-% If you get an error about an unknown bounding box, try specifying the width and height of the figure with the natwidth and natheight options.
-% \begin{figure}
-%\setfigurenum{S1} %%You can change number for each figure if you want, not required. "S" prepended automatically.
-% \noindent\includegraphics[natwidth=800px,natheight=600px]{samplefigure.eps}
-%\caption{caption}
-%\label{epsfiguresample}
-%\end{figure}
-%
-%
-% Giving latex a width will help it to scale the figure properly. A simple trick is to use \textwidth. Try this if large figures run off the side of the page.
-% \begin{figure}
-% \noindent\includegraphics[width=\textwidth]{anothersample.png}
-%\caption{caption}
-%\label{pngfiguresample}
-%\end{figure}
-%
-%
-%\begin{figure}
-%\noindent\includegraphics[width=\textwidth]{athirdsample.pdf}
-%\caption{A pdf test figure}
-%\label{pdffiguresample}
-%\end{figure}
-%
-% PDFLatex does not seem to be able to process EPS figures. You may want to try the epstopdf package.
-%
-%
-% ---------------
-% EXAMPLE TABLE
-%
-%\begin{table}
-%\settablenum{S1} %%Change number for each table
-%\caption{Time of the Transition Between Phase 1 and Phase 2\tablenotemark{a}}
-%\centering
-%\begin{tabular}{l c}
-%\hline
-% Run  & Time (min)  \\
-%\hline
-%  $l1$  & 260   \\
-%  $l2$  & 300   \\
-%  $l3$  & 340   \\
-%  $h1$  & 270   \\
-%  $h2$  & 250   \\
-%  $h3$  & 380   \\
-%  $r1$  & 370   \\
-%  $r2$  & 390   \\
-%\hline
-%\end{tabular}
-%\tablenotetext{a}{Footnote text here.}
-%\end{table}
-% ---------------
-%
-% EXAMPLE LARGE TABLE (UPLOADED SEPARATELY)
-%\begin{table}
-%\settablenum{S1} %%Change number for each table
-%\caption{Time of the Transition Between Phase 1 and Phase 2\tablenotemark{a}}
-%\end{table}
+
+
+\begin{figure}
+  \centering \includegraphics{./supp-figs/0joint_rh_es.pdf}
+  \caption{The joint distribution of relative humidity and saturation
+    vapor pressure for the FLUXNET2015 dataset.}
+  \end{figure}
+
+\input{supp-figs.tex}
+
+
+% tables
+
+
+  % below taken adapted from Trevor Keenan's FLUXNET citations
+  % at github.com/trevorkeenan/FLUXNET_citations
+  Table S1: Metadata and citations for flux sites used in this analysis. All data are gathered from \url{www.fluxdata.org}, and citations are aggregated using tools available at \url{https://github.com/trevorkeenan/FLUXNET_citations}.
+  \begin{longtable}{l l l l l l l}
+    \hline
+    \textbf{Site} &
+    \textbf{PFT} &
+    \textbf{Lat} &
+    \textbf{Lon} &
+    \textbf{Clim\textsuperscript{1}} &
+    \textbf{Period} &
+    \textbf{References} \\
+    [0.5ex]
+    \hline
+    \input{flux_sites.tex}
+    [1ex]
+    \hline
+  \end{longtable}
+\textsuperscript{1} K{\"o}ppen Climate classification.
 
 
 \end{document}
@@ -526,4 +569,3 @@ Math coded inside display math mode \[ ...\]
 % \end{sidewaystable}
 %
 %
-
