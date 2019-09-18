@@ -17,10 +17,7 @@
 \usepackage{hyperref}
 \usepackage[title]{appendix}
 \usepackage{longtable}
-
-\RequirePackage{natbib}
-
-\bibliographystyle{agufull08}
+\usepackage{adjustbox}
 
 \def\acknowledgments{\vskip12pt\noindent{\bf
 Acknowledgments\vrule depth 6pt
@@ -38,20 +35,57 @@ width0pt\relax}\\*\noindent\ignorespaces}
 
 \mathsurround=2pt  \parskip=2pt
 
-% Bib aliases
-\makeatletter
-\def\@citex[#1]#2{\leavevmode
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 12) %% Bibliography, References ===>>
+
+%% Set bibliography style: This brings in agufull08.bst to format
+%% bibliography when using BibTeX.
+%\bibliographystyle{agufull08}
+%
+\bibliographystyle{apacite}
+
+%% In case you want to enter bib entries without using bibtex
+\def\references{\thebibliography{}\item[]}
+\let\endreferences\endthebibliography
+
+\def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+
+\def\@citex[#1]#2{%
   \let\@citea\@empty
   \@cite{\@for\@citeb:=#2\do
     {\@citea\def\@citea{,\penalty\@m\ }%
-\edef\magic##1{\let##1\expandafter\noexpand\csname bibalias@\@citeb\endcsname}%
-\magic\tmp \ifx\tmp\relax\else \let\@citeb\tmp\fi
-     \edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+     \edef\@citeb{\expandafter\@firstofone\@citeb}%
      \if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
-     \@ifundefined{b@\@citeb}{\hbox{\reset@font\bfseries ?}%
+     \@ifundefined{b@\@citeb}{\mbox{\reset@font\bfseries ?}%
        \G@refundefinedtrue
        \@latex@warning
          {Citation `\@citeb' on page \thepage \space undefined}}%
-       {\@cite@ofmt{\csname b@\@citeb\endcsname}}}}{#1}}
-\def\bibalias#1#2{\expandafter\def\csname bibalias@#1\endcsname{#2}}
-\makeatother
+  %%
+  %% This is changed from the default so that lengthy citations can
+  %% be broken across lines
+       {%\hbox{
+\csname b@\@citeb\endcsname%}
+}}}{#1}}
+
+\newdimen\bibindent
+\setlength\bibindent{1.5em}
+
+\def\refname{References}
+
+\def\newblock{\hskip .11em\@plus.33em\@minus.07em}
+
+
+
+
+% Formats bibliography, this .sty file needs to be entered here
+
+ %
+% When using NatBib, this sets brackets for citations:
+%\renewcommand\NAT@open{(} \renewcommand\NAT@close{)}   %xx Parens by default, but not using anyways.  DC
+
+\RequirePackage{apacite}
+%\RequirePackage{natbib}
+\let\cite\shortcite %xx So get et al. with three authors the first time.
+%\let\citep\shortcite %xx A natbib command.
+%\let\citet\shortcite %xx Ditto.
+\let\citeA\shortciteA %xx Ditto.

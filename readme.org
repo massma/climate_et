@@ -2,10 +2,12 @@
 
 ** When does vapor pressure deficit drive or reduce evapotranspiration?
 
-This is the repository for reproducing the (currently pre-printed) manuscript:
+This is the repository for reproducing the manuscript:
 
-Massmann, A., P. Gentine and C. Lin. /When does vapor pressure deficit
-drive or reduce evapotranspiration?/ [[https://arxiv.org/abs/1805.05444][arXiv:1805.05444]]
+ Massmann, A., Gentine, P., & Lin, C. (2019). When does vapor pressure
+ deficit drive or reduce evapotranspiration?. /Journal of Advances in
+ Modeling Earth Systems/, 11. https://doi.org/10.1029/2019MS001790
+
 
 The general directory structure is:
 
@@ -29,17 +31,18 @@ In order to reproduce the paper you will need:
    directory structure, and downloads data.  Note that this step
    downloads about 400 MB of data from my collaborator Changjie, so it
    may take awhile.
-2. ~make paper~ : does all analysis, makes all the figures/tables, and
-   compiles the paper pdf (for submission to HESS) to ~doc/paper/vpd_et_paper_hess.pdf~.
-3. ~make arxiv~ : does all analysis and compiles the arXiv paper
+2. ~make arxiv~ : does all analysis and compiles the arXiv paper
    to doc/paper/ms.pdf, including the actual ~.tar~ submission
    (~doc/paper/arxiv-submission.tar~).
 
 If following these instructions does not work, please open an issue or
 send me an email. Reproducibility is extremely important to me, so I am
 happy to take the time to figure out any problems, especially because
-I have not actually tried these steps on any other computer than mine
-(so, for example, I might be missing some "prerequisites").
+I have not actually tried these steps on any other computer than mine,
+and to be honest I haven't fully tested the above steps on a clean
+repository pull since before substantial changes during review. This is
+on my to do list, but if you end up attempting this before I get to it
+just reach out and I will fix any issues.
 
 Also, if you come across any bugs please open an issue or send me an
 email.

@@ -1,9 +1,9 @@
 FIGURES = doc/paper/fully_idealized.pdf doc/paper/fully_idealized_sign.pdf \
-	doc/paper/fully_idealized_scaling.pdf
+	doc/paper/fully_idealized_scaling.pdf doc/paper/concave.pdf
 
-ARXIV_FILES = doc/paper/ms.tex doc/paper/abstract.tex \
-	doc/paper/agufull08.bst doc/paper/def.tex doc/paper/body.tex \
-	doc/paper/intro.tex doc/paper/conclusions.tex
+ARXIV_FILES = doc/paper/ms.tex \
+	doc/paper/agufull08.bst doc/paper/def.tex \
+
 
 PAPER_FILES = doc/paper/references.bib doc/paper/body.tex \
 doc/paper/abstract.tex doc/paper/agu-james-submission.tex \
@@ -49,8 +49,11 @@ arxiv : doc/paper/arxiv-submission.tar
 clean-arxiv :
 	rm doc/paper/arxiv-submission.tar
 
-doc/paper/arxiv-submission.tar : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/ms.bbl
-	tar -cvf $@ --transform 's?.*/??g' $^
+doc/paper/anc/james-supplement.pdf : doc/paper/james-supplement.pdf
+	cp $^ $@
+
+doc/paper/arxiv-submission.tar : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/ms.bbl doc/paper/anc/james-supplement.pdf
+	tar -cvf $@ --transform 's/doc\/paper\///g' $^
 
 doc/paper/ms.bbl : doc/paper/ms.pdf
 
