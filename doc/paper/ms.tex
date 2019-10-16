@@ -212,7 +212,7 @@ variables and surface conductances:
   $\gamma$ is the psychometric constant, and $g_s$ is the stomatal
   conductance (Table \ref{definitions}). The issue with PM is that
   $g_s$ is a function of carbon uptake, which is has a strong
-  functionally relation to ET through stomatal function. Therefore,
+  functional relation to ET through stomatal function. Therefore,
   when PM is formulated in terms of $g_s$, it is an implicit function
   of ET itself rather than an explicit function of ET. Here we will
   derive a new form of PM in which ET is an explicit function of plant
@@ -234,7 +234,7 @@ variables and surface conductances:
     $e_s$  & saturation vapor pressure & Pa  & - \\
     $T$  & temperature  & K & - \\
     $P$  & pressure & Pa  & - \\
-    $\Delta$  & $\frac{\partial e_s}{\partial T}$ & Pa K$^{-1}$ & - \\
+    $\Delta$  & $\frac{d \, e_s}{d \, T}$ & Pa K$^{-1}$ & - \\
     $R_{net}$  & net radiation at land surface minus ground heat flux & W m$^{-2}$   & - \\
     $g_a$  & aerodynamic conductance & m s$^{-1}$  & \citeA{Shuttleworth_2012} \\
     $\rho_a$  & air density & kg m$^{-3}$  & - \\
@@ -529,7 +529,7 @@ generate the figures and tables, are publicly available at
     & citation  \\
     \hline
 g$_1$ & Pa$^{1/2}$ [kPa$^{1/2}$] & 63.25 [2.00] & 126.49 [4.00] & 189.74 [6.00] & Fig. 2, 7; \citeA{Medlyn_2017} \\
-uWUE & $\mu$-mol C Pa$^{0.5}$ J$^{-1}$ ET [g C hPa$^{1/2}$ kg$^{-1}$ H$_2$O] & 2.33 [6.99] & 3.17 [9.52] & 4.01 [12.05] & Table 4; \citeA{Zhou_2015} \\
+uWUE & $\mu$-mol C Pa$^{1/2}$ J$^{-1}$ ET [g C hPa$^{1/2}$ kg$^{-1}$ H$_2$O] & 2.33 [6.99] & 3.17 [9.52] & 4.01 [12.05] & Table 4; \citeA{Zhou_2015} \\
 T & $^o$C & 10.00 & 20.00 & 30.00 & - \\
 g$_a$ & m/s & 0.015 & 0.035 & 0.055 & - \\
     \hline
@@ -1016,26 +1016,27 @@ atmospherically drier, and enriched CO$_2$ world.
   ZA-Kru, ZM-Mon}
 
 
-\acknowledgments This work used eddy covariance data acquired and shared
-by the FLUXNET community, including these networks: AmeriFlux, AfriFlux,
-AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont,
+\acknowledgments This work used eddy covariance data acquired and
+shared by the FLUXNET community, including these networks: AmeriFlux,
+AfriFlux, AsiaFlux, CarboAfrica, CarboEuropeIP, CarboItaly, CarboMont,
 ChinaFlux, Fluxnet-Canada, GreenGrass, ICOS, KoFlux, LBA, NECC,
 OzFlux-TERN, TCOS-Siberia, and USCCC. The ERA-Interim reanalysis data
-are provided by ECMWF and processed by LSCE. The FLUXNET eddy covariance
-data processing and harmonization was carried out by the European Fluxes
-Database Cluster, AmeriFlux Management Project, and Fluxdata project of
-FLUXNET, with the support of CDIAC and ICOS Ecosystem Thematic Center,
-and the OzFlux, ChinaFlux and AsiaFlux offices. We would like to thank
-Dr. Trevor Keenan for providing tools for citation of the FLUXNET2015
-dataset, available at
-\url{https://github.com/trevorkeenan/FLUXNET_citations}. This material is
-based upon work supported by the National Science Foundation Graduate
-Research Fellowship under Grant No. DGE 16-44869. All code and data used
-in this analysis, including those used to generate the figures and
-tables, are publicly available at
-\url{https://github.com/massma/climate\_et}. We would
-like to thank Emma Robinson and one anonymous reviewer for thoughtful
-comments that greatly improved the strength of the manuscript.
+are provided by ECMWF and processed by LSCE. The FLUXNET eddy
+covariance data processing and harmonization was carried out by the
+European Fluxes Database Cluster, AmeriFlux Management Project, and
+Fluxdata project of FLUXNET, with the support of CDIAC and ICOS
+Ecosystem Thematic Center, and the OzFlux, ChinaFlux and AsiaFlux
+offices. We would like to thank Dr. Trevor Keenan for providing tools
+for citation of the FLUXNET2015 dataset, available at
+\url{https://github.com/trevorkeenan/FLUXNET_citations}. This material
+is based upon work supported by the National Science Foundation
+Graduate Research Fellowship under Grant No. DGE 16-44869 and the
+National Aeronautics and Space Administration under grant
+80NSSC18K0998. All code and data used in this analysis, including
+those used to generate the figures and tables, are publicly available
+at \url{https://github.com/massma/climate\_et}. We would like to thank
+Emma Robinson and one anonymous reviewer for thoughtful comments that
+greatly improved the strength of the manuscript.
 
 \bibliography{references}
 
