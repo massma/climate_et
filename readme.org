@@ -44,6 +44,18 @@ repository pull since before substantial changes during review. This is
 on my to do list, but if you end up attempting this before I get to it
 just reach out and I will fix any issues.
 
+*UPDATE - note to myself* : yes I checked the reproducibility on a
+fresh clone, and at at a very minimum the download-data portion of the
+Makefile got lost at some point. This might not be a bad thing, given
+that the data were not used in the final version of the manuscript
+(with the exception of supplemental material), and that they are
+FLUXNET data so we are trusting people to use them responsibly (see
+[[file:dat/changjie/readme.org][data README]]). However, I really do need to fix the build on a fresh
+clone indendent of this. See commit
+~256d3940b02b3ba8e8d00ca10912a1cf945ee200~ for what was lost re: data
+download. *If you are trying to use this repository, just let me know:
+it will move these fixes to the top of my todo list.*
+
 Also, if you come across any bugs please open an issue or send me an
 email.
 
