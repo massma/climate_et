@@ -51,10 +51,11 @@ that the data were not used in the final version of the manuscript
 (with the exception of supplemental material), and that they are
 FLUXNET data so we are trusting people to use them responsibly (see
 [[file:dat/changjie/readme.org][data README]]). However, I really do need to fix the build on a fresh
-clone indendent of this. See commit
+clone independent of this. See commit
 ~256d3940b02b3ba8e8d00ca10912a1cf945ee200~ for what was lost re: data
 download. *If you are trying to use this repository, just let me know:
-it will move these fixes to the top of my todo list.*
+it will move these fixes to the top of my todo list.* It has been
+languishing at the bottom for awhile.
 
 Also, if you come across any bugs please open an issue or send me an
 email.
