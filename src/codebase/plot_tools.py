@@ -229,11 +229,13 @@ def test_trend(_df, meta, fig=None):
     # ax.set_ylim([0.,1.])
   else:
     g = sns.jointplot(x=_df[meta['x_var']], y=_df[meta['y_var']], kind='hex',\
-                      xlim=meta['xlim'], ylim=meta['ylim'], stat_func=None,\
+                      xlim=meta['xlim'], ylim=meta['ylim'],\
                       gridsize=50)
-    spear = lambda a, b: spearmanr(a, b).correlation
-    g = g.annotate(spear, template="{stat}: {val:.2f}",
-                   stat="Spearman R", loc="upper right", fontsize=10)
+    ax = g.ax_joint
+    ax.text(0.5, 0.9,
+            "Spearman R: %0.2f" % spearmanr(_df[meta['x_var']], _df[meta['y_var']]).correlation,
+            fontsize=10,
+            transform=ax.transAxes)
     g.set_axis_labels(meta['x_label'], meta['y_label'],\
                       fontsize=meta['fontsize'])
     # g.fig.suptitle('Site: %s, PFT: %s' % (_df['site'].iloc[0],_df['pft'].iloc[0]))

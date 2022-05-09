@@ -48,7 +48,7 @@ def plot_box(_df, ax=None, pft=False):
     widths.append((high-low)*0.8/1.0e3)
     labels.append('%4.0f' % positions[-1])
   ax.boxplot(x=data, positions=positions,\
-             sym=(''), widths=widths, manage_xticks=False,\
+             sym=(''), widths=widths, manage_ticks=False,\
              whis=[10, 90], boxprops=boxprops, medianprops=medianprops)#sym=('')
   print('make hist for %s' % _df.pft.iloc[0])
   orig_xlim = ax.get_xlim()

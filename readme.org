@@ -17,45 +17,38 @@ The general directory structure is:
 - etc/ - anything that doesn't fit into above, usually notes etc.
 
 ** Prerequisites
-In order to reproduce the paper you will need:
+Reproducibility has been tested as of May 9, 2022 on Debian GNU/Linux
+11 (bullseye). Software requirements are:
 
-- pipenv and Python 3
-- wget
+- Python 3
+  - numpy
+  - pandas
+  - matplotlib
+  - sympy
+  - mpltoolkits.basemap
 - tar and gzip
 - GNU Make
 - Texlive
 
+You will also need some data from my collaborator
+(~dat/changjie/vpd_data.tar.gz~). Email me (akm2203@columbia.edu) for
+a link to that!
+
 ** Reproducing research:
 
 1. ~make install~ : installs dependencies, creates some needed
-   directory structure, and downloads data.  Note that this step
-   downloads about 400 MB of data from my collaborator Changjie, so it
-   may take awhile.
-2. ~make arxiv~ : does all analysis and compiles the arXiv paper
+   directory structure.
+2. ~make~ : does all analysis and compiles the arXiv paper
    to doc/paper/ms.pdf, including the actual ~.tar~ submission
    (~doc/paper/arxiv-submission.tar~).
 
 If following these instructions does not work, please open an issue or
-send me an email. Reproducibility is extremely important to me, so I am
-happy to take the time to figure out any problems, especially because
-I have not actually tried these steps on any other computer than mine,
-and to be honest I haven't fully tested the above steps on a clean
-repository pull since before substantial changes during review. This is
-on my to do list, but if you end up attempting this before I get to it
-just reach out and I will fix any issues.
-
-*UPDATE - note to myself* : yes I checked the reproducibility on a
-fresh clone, and at at a very minimum the download-data portion of the
-Makefile got lost at some point. This might not be a bad thing, given
-that the data were not used in the final version of the manuscript
-(with the exception of supplemental material), and that they are
-FLUXNET data so we are trusting people to use them responsibly (see
-[[file:dat/changjie/readme.org][data README]]). However, I really do need to fix the build on a fresh
-clone independent of this. See commit
-~256d3940b02b3ba8e8d00ca10912a1cf945ee200~ for what was lost re: data
-download. *If you are trying to use this repository, just let me know:
-it will move these fixes to the top of my todo list.* It has been
-languishing at the bottom for awhile.
+send me an email. Reproducibility is important to me, so I am happy to
+take the time to figure out any problems, especially because I have
+not actually tried these steps on any other computer than mine. And,
+as of the most recent reproducibility test (May 9, 2022), the build
+system was a little shaky with not all file dependencies coded into
+the Makefile.
 
 Also, if you come across any bugs please open an issue or send me an
 email.

@@ -49,3 +49,7 @@ src/paper_figure_code/test.bin
 src/temp_plot.py
 *.pkl
 *.gz
+dat/changjie/MAT_DATA
+doc/paper/param_fixed.tex
+doc/paper/param_varying.tex
+doc/paper/supp-figs.tex

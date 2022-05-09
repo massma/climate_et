@@ -12,14 +12,24 @@ import scipy.io as io
 import codebase.FLUXNET_citations.F15T1_LaTeX.fluxnet_pycite as fluxcite
 
 LV = 2.5e6
-WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
-                         comment='#', delimiter=',')
+try:
+  WUE_MEDLYN = pd.read_csv('../dat/franks_et_al_table2.csv',\
+                           comment='#', delimiter=',')
+except FileNotFoundError:
+  WUE_MEDLYN = pd.read_csv('../../dat/franks_et_al_table2.csv',\
+                           comment='#', delimiter=',')
+
 WUE_MEDLYN.index = WUE_MEDLYN.PFT
 # convert from sqrt(kPa) to sqrt(Pa)
 WUE_MEDLYN.loc[:, 'g1M'] = WUE_MEDLYN.loc[:, 'g1M']*np.sqrt(1000.)
 
-WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
-                  comment='#', delimiter=',')
+try:
+  WUE = pd.read_csv('../dat/zhou_et_al_table_4.csv',\
+                    comment='#', delimiter=',')
+except FileNotFoundError:
+  WUE = pd.read_csv('../../dat/zhou_et_al_table_4.csv',\
+                    comment='#', delimiter=',')
+
 WUE.index = WUE.PFT
 
 def uWUE_converter(zhou_uwue):
@@ -31,11 +41,6 @@ def uWUE_converter(zhou_uwue):
 WUE.loc[:, 'u_wue_yearly'] = uWUE_converter(WUE.loc[:, 'u_wue_yearly'])
 
 WUE.loc[:, 'u_wue_yearly_std'] = uWUE_converter(WUE.loc[:, 'u_wue_yearly_std'])
-
-SITELIST = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
-                       'Site_list_(canopy_height).csv' % os.environ['DATA'],\
-                       delimiter=',')
-SITELIST.index = SITELIST.Site
 
 TIER1_DICT = fluxcite.load_tier1_dict()
 
@@ -60,9 +65,13 @@ def add_atmos_dict(data_out, data):
 
 def add_canopy_dict(data_out, data):
   """generates a canopy dict from loaded data"""
+  sitelist = pd.read_csv('%s/changjie/fluxnet_algorithm/'\
+                       'Site_list_(canopy_height).csv' % os.environ['DATA'],\
+                       delimiter=',')
+  sitelist.index = sitelist.Site
   data_out['g_flux'] = np.squeeze(data['G'])
-  data_out['height'] = float(SITELIST.loc[data['sitecode'], 'Canopy_h'])
-  data_out['zmeas'] = float(SITELIST.loc[data['sitecode'], 'Measure_h'])
+  data_out['height'] = float(sitelist.loc[data['sitecode'], 'Canopy_h'])
+  data_out['zmeas'] = float(sitelist.loc[data['sitecode'], 'Measure_h'])
   data_out['pft'] = str(np.squeeze(data['cover_type']))
   return data_out
 

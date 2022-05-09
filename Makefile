@@ -12,8 +12,6 @@ doc/paper/supp-figs.tex
 
 TABLES = doc/paper/param_fixed.tex doc/paper/param_varying.tex
 
-ALL_REQUIRE = dat/changjie/diagnosed_data.pkl
-
 .PHONY: clean figure-all paper arxiv clearn-arxiv clean-bak clean-paper install
 
 .EXPORT_ALL_VARIABLES:
@@ -21,30 +19,41 @@ ALL_REQUIRE = dat/changjie/diagnosed_data.pkl
 PLOTS = $(CURDIR)/etc/plots
 DATA = $(CURDIR)/dat
 
-
-paper : doc/paper/agu-james-submission.pdf
+arxiv : doc/paper/arxiv-submission.tar
 
 
 # installation, data and python dependencies
-install : src/FLUXNET_citations dat/changjie/MAT_DATA
-	pipenv install && mkdir -p doc/shared_figs
+install : src/FLUXNET_citations dat/changjie/MAT_DATA/US-Ne3.mat
+	mkdir -p doc/shared_figs doc/paper/anc
+
+dat/changjie/MAT_DATA/US-Ne3.mat : ${DATA}/changjie/vpd_data.tar.gz
+	cd ${DATA}/changjie && tar -xzvf vpd_data.tar.gz
+
+${DATA}/changjie/vpd_data.tar.gz :
+# cd ${DATA}/changjie && wget "http://www.columbia.edu/~akm2203/data/vpd_data.tar.gz"
+# update May 9, 2022: I moved the data to Google drive, but it is lionmail-restricted.
+# email Adam Massmann (akm2203@columbia.edu) if you would like the data.
+
+# Full analysis (Changjie's data -> plot/table data)
+dat/changjie/diagnosed_data.pkl : src/analysis.py
+	cd ./src && python3 analysis.py
 
 src/FLUXNET_citations : .gitmodules
 	git submodule init && git submodule update
 
 
 # Figures
-$(FIGURES) : src/paper_figure_code/fully_idealized_figure.py
-	cd src/paper_figure_code && pipenv run python fully_idealized_figure.py
+$(FIGURES) : src/paper_figure_code/fully_idealized_figure.py dat/changjie/diagnosed_data.pkl
+	cd src/paper_figure_code && python3 fully_idealized_figure.py
+	cd src/paper_figure_code && python3 concave.py
 
 
 # tables
-$(TABLES) : src/paper_figure_code/fully_idealized_figure.py
-	cd src/paper_figure_code && pipenv run python fully_idealized_figure.py
+$(TABLES) : src/paper_figure_code/fully_idealized_figure.py dat/changjie/diagnosed_data.pkl
+	cd src/paper_figure_code && python3 fully_idealized_figure.py
 
 
 # Manuscript targets
-arxiv : doc/paper/arxiv-submission.tar
 
 clean-arxiv :
 	rm doc/paper/arxiv-submission.tar
@@ -62,34 +71,30 @@ doc/paper/ms.pdf : $(FIGURES) $(ARXIV_FILES) $(TABLES) doc/paper/references.bib
 	bibtex ms && pdflatex ms && \
 	bibtex ms && pdflatex ms
 
-doc/paper/james-supplement.pdf : doc/paper/james-supplement.tex doc/paper/references.bib
+doc/paper/james-supplement.pdf : doc/paper/james-supplement.tex doc/paper/references.bib doc/paper/map.pdf  doc/paper/supp-figs.tex doc/paper/supp-figs/0joint_rh_es.pdf
 	cd ./doc/paper && pdflatex james-supplement && \
 	bibtex james-supplement && pdflatex james-supplement && \
 	bibtex james-supplement && pdflatex james-supplement
 
-doc/paper/agu-james-submission.pdf : $(FIGURES) $(PAPER_FILES) $(TABLES)
-	cd ./doc/paper && pdflatex agu-james-submission && \
-	bibtex agu-james-submission && pdflatex agu-james-submission && \
-	bibtex agu-james-submission && pdflatex agu-james-submission
+doc/paper/map.pdf : src/paper_figure_code/map.py
+	cd src/paper_figure_code && python3 map.py
 
-doc/paper/agu-james-diff.pdf : $(PAPER_FILES)
-	cd ./doc/paper && latexdiff agu-james-original-submission.tex	\
-	agu-james-submission.tex > agu-james-diff.tex && bibtex		\
-	agu-james-diff && pdflatex agu-james-diff && bibtex		\
-	agu-james-diff && pdflatex agu-james-diff
+doc/paper/supp-figs.tex : src/paper_figure_code/swc_boxplot.py
+	cd src/paper_figure_code && python3 swc_boxplot.py
 
 doc/paper/references.bib : doc/paper/paper_references.bib doc/paper/flux_sites.bib
 	cat $^ > $@
 
-doc/paper/supp-figs.tex : src/paper_figure_code/swc_boxplot.py
-	cd src/paper_figure_code && pipenv run $^
+doc/paper/supp-figs/0joint_rh_es.pdf : src/paper_figure_code/joint_rh_es.py src/codebase/plot_tools.py
+	cd src/paper_figure_code && python3 joint_rh_es.py
+
 
 
 # Clean targets
 clean :
 	rm -f $(FIGURES) doc/paper/arxiv-submission.tar && \
 	cd doc/paper && rm -f ./*.aux ./*.log ./*.blg ./*.bbl ms.pdf \
-	agu-james-submission.pdf
+	agu-james-submission.pdf james-supplement.pdf  supp-figs/*.pdf supp-figs.tex
 
 # below is if you don't want to regenerate figs
 clean-paper :
